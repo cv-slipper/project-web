@@ -73,12 +73,12 @@
   },
   "eslintConfig": {
     "root": true,
+
     "env": {
       "node": true
     },
     "extends": [
-      "plugin:vue/strongly-recommended",
-      "@vue/standard"
+      "plugin:vue/strongly-recommended"
     ],
     "parserOptions": {
       "parser": "babel-eslint"

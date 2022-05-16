@@ -12,7 +12,7 @@
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="日期">
-<!--                <a-range-picker :placeholder="['开始日期','结束日期']" v-model="startTime"/>-->
+                <!--                <a-range-picker :placeholder="['开始日期','结束日期']" v-model="startTime"/>-->
                 <j-date placeholder="请选择日期" v-model="queryParam.startTime"></j-date>
               </a-form-item>
             </a-col>

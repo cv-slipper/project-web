@@ -10,7 +10,7 @@
       cancelText="关闭">
       <a-row :gutter="18">
         <a-col :xs="24" :sm="16">
-          <a-card title="选择人员" :bordered=true>
+          <a-card title="选择人员" :bordered="true">
             <!-- 查询区域 -->
             <div class="table-page-search-wrapper">
               <a-form layout="inline">
@@ -56,7 +56,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="8">
-          <a-card title="用户选择" :bordered=true>
+          <a-card title="用户选择" :bordered="true">
             <!-- table区域-begin -->
             <div>
               <a-table

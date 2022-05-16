@@ -23,12 +23,12 @@
     <template slot="fileSlot" slot-scope="text">
       <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
       <a-button
-              v-else
-              ghost
-              type="primary"
-              icon="download"
-              size="small"
-              @click="uploadFile(text)"
+        v-else
+        ghost
+        type="primary"
+        icon="download"
+        size="small"
+        @click="uploadFile(text)"
       >
         <span>下载</span>
       </a-button>

@@ -14,56 +14,56 @@
     <a-row>
       <a-col span="12">
         <a-col span="12">作业运行时间：</a-col>
-        <a-col span="12">{{dataSource.jobElapsedTime}}</a-col>
+        <a-col span="12">{{ dataSource.jobElapsedTime }}</a-col>
       </a-col>
       <a-col span="12">
         <a-col span="12">作业ID：</a-col>
-        <a-col span="12">{{dataSource.jobId}}</a-col>
+        <a-col span="12">{{ dataSource.jobId }}</a-col>
       </a-col>
     </a-row>
     <a-divider/>
     <a-row>
       <a-col span="12">
         <a-col span="12">作业开始时间：</a-col>
-        <a-col span="12">{{getRealTime(dataSource.jobStartTime)}}</a-col>
+        <a-col span="12">{{ getRealTime(dataSource.jobStartTime) }}</a-col>
       </a-col>
       <a-col span="12">
         <a-col span="12">作业类型：</a-col>
-        <a-col span="12">{{dataSource.jobType}}</a-col>
+        <a-col span="12">{{ dataSource.jobType }}</a-col>
       </a-col>
     </a-row>
     <a-divider/>
     <a-row>
       <a-col span="12">
         <a-col span="12">最后更新时间：</a-col>
-        <a-col span="12">{{getRealTime(dataSource.lastUpdateTime)}}</a-col>
+        <a-col span="12">{{ getRealTime(dataSource.lastUpdateTime) }}</a-col>
       </a-col>
       <a-col span="12">
         <a-col span="12">状态：</a-col>
-        <a-col span="12">{{dataSource.status}}</a-col>
+        <a-col span="12">{{ dataSource.status }}</a-col>
       </a-col>
     </a-row>
     <a-divider/>
     <a-row>
       <a-col span="12">
         <a-col span="12">子客户名称：</a-col>
-        <a-col span="12">{{dataSource.subclientName}}</a-col>
+        <a-col span="12">{{ dataSource.subclientName }}</a-col>
       </a-col>
       <a-col span="12">
         <a-col span="12">客户端名称：</a-col>
-        <a-col span="12">{{subclient.clientName}}</a-col>
+        <a-col span="12">{{ subclient.clientName }}</a-col>
       </a-col>
     </a-row>
     <a-divider/>
     <a-row>
       <a-col span="12">
         <a-col span="12">实例名称：</a-col>
-        <a-col span="12">{{subclient.instanceName}}</a-col>
+        <a-col span="12">{{ subclient.instanceName }}</a-col>
       </a-col>
-<!--      <a-col span="12">-->
-<!--        <a-col span="12">子客户名称：</a-col>-->
-<!--        <a-col span="12">{{subclient.subclientName}}</a-col>-->
-<!--      </a-col>-->
+      <!--      <a-col span="12">-->
+      <!--        <a-col span="12">子客户名称：</a-col>-->
+      <!--        <a-col span="12">{{subclient.subclientName}}</a-col>-->
+      <!--      </a-col>-->
     </a-row>
     <a-divider/>
 
@@ -304,15 +304,15 @@
           :pagination="ipagination"
           :loading="loading"
           @change="handleTableChange">
-            <span slot="action" slot-scope="text, record"></span>
+          <span slot="action" slot-scope="text, record"></span>
           <template slot="path" slot-scope="text, record">
 
-<!--            <a-textarea :v-model="syntaxHighlight(text)"></a-textarea>-->
-            <p v-for="item in JSON.parse(`[${text}]`)">{{item}}</p>
-<!--            <a-textarea :v-model="text"></a-textarea>-->
+            <!--            <a-textarea :v-model="syntaxHighlight(text)"></a-textarea>-->
+            <p v-for="item in JSON.parse(`[${text}]`)">{{ item }}</p>
+            <!--            <a-textarea :v-model="text"></a-textarea>-->
 
-<!--            <span>{{text}}</span>-->
-<!--            <j-ellipsis :value="text" :length="50"/>-->
+            <!--            <span>{{text}}</span>-->
+            <!--            <j-ellipsis :value="text" :length="50"/>-->
           </template>
           <template slot="commonProperties" slot-scope="text, record">
             <j-ellipsis :value="text" :length="50"/>

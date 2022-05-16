@@ -28,13 +28,13 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="开始时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'beginDate', {}]" />
+          <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'beginDate', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="请假结束时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'endDate', {}]" />
+          <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'endDate', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"

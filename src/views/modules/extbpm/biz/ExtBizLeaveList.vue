@@ -33,7 +33,7 @@
     <!-- 操作按钮区域 -->
     <template v-if="queryParam.bizTaskType=='2'">
       <div class="table-operator">
-        <a-button @click="handleAdd" type="primary"  icon="plus">新增</a-button>
+        <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
 
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-menu slot="overlay">
@@ -45,11 +45,11 @@
     </template>
     <template v-else>
       <div class="table-operator">
-        <a-button @click="batchComplete" type="primary"  icon="caret-right">批量发送</a-button>
-        <a-button @click="batchReject" type="primary"  icon="rollback">批量退回</a-button>
-        <a-button @click="batchEntruster" type="primary"  icon="user">批量委托</a-button>
-        <a-button @click="batchSuspend" type="primary"  icon="lock">批量挂起</a-button>
-        <a-button @click="batchRestart" type="primary"  icon="unlock">批量解挂</a-button>
+        <a-button @click="batchComplete" type="primary" icon="caret-right">批量发送</a-button>
+        <a-button @click="batchReject" type="primary" icon="rollback">批量退回</a-button>
+        <a-button @click="batchEntruster" type="primary" icon="user">批量委托</a-button>
+        <a-button @click="batchSuspend" type="primary" icon="lock">批量挂起</a-button>
+        <a-button @click="batchRestart" type="primary" icon="unlock">批量解挂</a-button>
       </div>
     </template>
 
@@ -88,21 +88,21 @@
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <template v-if="queryParam.bizTaskType=='2'">
-              <a-menu-item>
-                <a href="javascript:;" @click="handleDetail(record)">详情</a>
-              </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="handleDetail(record)">详情</a>
+                </a-menu-item>
               </template>
               <template v-if="record.bpmStatus === '1'">
-              <a-menu-item v-if="record.bpmStatus === '1'">
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
+                <a-menu-item v-if="record.bpmStatus === '1'">
+                  <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+                    <a>删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
               </template>
               <template v-else>
                 <!--<a-menu-item v-else @click="handlePreviewPic(record)">审批进度</a-menu-item>-->
                 <a-menu-item v-if="queryParam.bizTaskType=='2'" @click="taskNotify(flowCode,record.id)">催办</a-menu-item>
-                <a-menu-item  @click="handleTrack(record)">审批进度</a-menu-item>
+                <a-menu-item @click="handleTrack(record)">审批进度</a-menu-item>
                 <a-menu-item v-if="showBtn(record.bpmStatus)&&queryParam.bizTaskType=='2'">
                   <a-popconfirm title="确定要作废吗?" @confirm="() => invalidProcess(record)">
                     <a>
@@ -117,7 +117,13 @@
         </span>
 
         <span slot="notify" slot-scope="text, record">
-          <a-icon title="催办提醒" v-if="record.taskUrge" theme="twoTone" twoToneColor="#eb2f96"  @click="taskNotifyMe(flowCode,record.id)" type="notification"/>
+          <a-icon
+            title="催办提醒"
+            v-if="record.taskUrge"
+            theme="twoTone"
+            twoToneColor="#eb2f96"
+            @click="taskNotifyMe(flowCode,record.id)"
+            type="notification"/>
           {{ text }}
         </span>
 

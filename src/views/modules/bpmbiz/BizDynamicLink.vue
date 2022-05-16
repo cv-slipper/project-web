@@ -3,7 +3,7 @@
 </template>
 <script>
   export default {
-    name: 'biz-dynamic-link',
+    name: 'BizDynamicLink',
     data() {
       return {
         compName: this.path

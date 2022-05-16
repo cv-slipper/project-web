@@ -34,8 +34,8 @@
       @expand="handleExpand"
     >
 
-      <template  slot="expandedRowRender" slot-scope="record">
-<!--      <template v-slot:expandedRowRender="{record}">-->
+      <template slot="expandedRowRender" slot-scope="record">
+        <!--      <template v-slot:expandedRowRender="{record}">-->
 
         <a-tabs tabPosition="top">
           <a-tab-pane v-for="subTable of subTableList" :tab="subTable.tab" :key="subTable.key" forceRender>

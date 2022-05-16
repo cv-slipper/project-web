@@ -91,9 +91,9 @@
               <!-- tr 只加载可见的和预加载的总共十条数据 -->
               <div
                 v-if="
-                rowIndex >= parseInt(`${(scrollTop-rowHeight) / rowHeight}`) &&
-                  (parseInt(`${scrollTop / rowHeight}`) + 9) > rowIndex
-              "
+                  rowIndex >= parseInt(`${(scrollTop-rowHeight) / rowHeight}`) &&
+                    (parseInt(`${scrollTop / rowHeight}`) + 9) > rowIndex
+                "
                 :id="`${caseId}tbody-tr-${rowIndex}`"
                 :data-idx="rowIndex"
                 class="tr"
@@ -188,31 +188,31 @@
                         :getPopupContainer="getParentContainer"
                       >
 
-                      <span
-                        @mouseover="()=>{handleMouseoverCommono(row,col)}"
-                        @mouseout="()=>{handleMouseoutCommono(row,col)}">
+                        <span
+                          @mouseover="()=>{handleMouseoverCommono(row,col)}"
+                          @mouseout="()=>{handleMouseoutCommono(row,col)}">
 
-                        <a-select
-                          :id="id"
-                          :key="i"
-                          v-bind="buildProps(row,col)"
-                          style="width: 100%;"
-                          :value="selectValues[id]"
-                          :options="col.options"
-                          :getPopupContainer="getParentContainer"
-                          :placeholder="replaceProps(col, col.placeholder)"
-                          :filterOption="(i,o)=>handleSelectFilterOption(i,o,col)"
-                          @change="(v)=>handleChangeSelectCommon(v,id,row,col)"
-                          @search="(v)=>handleSearchSelect(v,id,row,col)"
-                          @blur="(v)=>handleBlurSearch(v,id,row,col)"
-                          allowClear
-                        >
+                          <a-select
+                            :id="id"
+                            :key="i"
+                            v-bind="buildProps(row,col)"
+                            style="width: 100%;"
+                            :value="selectValues[id]"
+                            :options="col.options"
+                            :getPopupContainer="getParentContainer"
+                            :placeholder="replaceProps(col, col.placeholder)"
+                            :filterOption="(i,o)=>handleSelectFilterOption(i,o,col)"
+                            @change="(v)=>handleChangeSelectCommon(v,id,row,col)"
+                            @search="(v)=>handleSearchSelect(v,id,row,col)"
+                            @blur="(v)=>handleBlurSearch(v,id,row,col)"
+                            allowClear
+                          >
 
                           <!--<template v-for="(opt,optKey) in col.options">-->
                           <!--<a-select-option :value="opt.value" :key="optKey">{{ opt.title }}</a-select-option>-->
                           <!--</template>-->
-                        </a-select>
-                      </span>
+                          </a-select>
+                        </span>
                       </a-tooltip>
                     </template>
                     <!-- date -->
@@ -227,25 +227,25 @@
                         :getPopupContainer="getParentContainer"
                       >
 
-                      <span
-                        @mouseover="()=>{handleMouseoverCommono(row,col)}"
-                        @mouseout="()=>{handleMouseoutCommono(row,col)}">
+                        <span
+                          @mouseover="()=>{handleMouseoverCommono(row,col)}"
+                          @mouseout="()=>{handleMouseoutCommono(row,col)}">
 
-                        <j-date
-                          :id="id"
-                          :key="i"
-                          v-bind="buildProps(row,col)"
-                          style="width: 100%;"
-                          :value="jdateValues[id]"
-                          :getCalendarContainer="getParentContainer"
-                          :placeholder="replaceProps(col, col.placeholder)"
-                          :trigger-change="true"
-                          :showTime="col.type === formTypes.datetime"
-                          :dateFormat="col.type === formTypes.date? 'YYYY-MM-DD':'YYYY-MM-DD HH:mm:ss'"
-                          allowClear
-                          @change="(v)=>handleChangeJDateCommon(v,id,row,col,col.type === formTypes.datetime)"/>
+                          <j-date
+                            :id="id"
+                            :key="i"
+                            v-bind="buildProps(row,col)"
+                            style="width: 100%;"
+                            :value="jdateValues[id]"
+                            :getCalendarContainer="getParentContainer"
+                            :placeholder="replaceProps(col, col.placeholder)"
+                            :trigger-change="true"
+                            :showTime="col.type === formTypes.datetime"
+                            :dateFormat="col.type === formTypes.date? 'YYYY-MM-DD':'YYYY-MM-DD HH:mm:ss'"
+                            allowClear
+                            @change="(v)=>handleChangeJDateCommon(v,id,row,col,col.type === formTypes.datetime)"/>
 
-                      </span>
+                        </span>
                       </a-tooltip>
                     </template>
 
@@ -394,7 +394,7 @@
                         <div :key="fileKey" style="position: relative;">
                           <a-tooltip v-if="file.status==='uploading'" :title="`上传中(${Math.floor(file.percent)}%)`">
                             <a-icon type="loading" style="color:red;"/>
-                            <span style="color:red;margin-left:5px">{{  file.status }}</span>
+                            <span style="color:red;margin-left:5px">{{ file.status }}</span>
                           </a-tooltip>
 
                           <a-tooltip v-else-if="file.status==='done'" :title="file.name">
@@ -660,20 +660,20 @@
                         <span
                           @mouseover="()=>{handleMouseoverCommono(row,col)}"
                           @mouseout="()=>{handleMouseoutCommono(row,col)}">
-                            <slot
-                              :name="(col.slot || col.slotName) || col.key"
-                              :index="rowIndex"
-                              :text="slotValues[id]"
-                              :value="slotValues[id]"
-                              :column="col"
-                              :rowId="getCleanId(row.id)"
-                              :getValue="()=>_getValueForSlot(row.id)"
-                              :caseId="caseId"
-                              :allValues="_getAllValuesForSlot()"
-                              :target="getVM()"
-                              :handleChange="(v)=>handleChangeSlotCommon(v,id,row,col)"
-                              :isNotPass="notPassedIds.includes(col.key+row.id)"
-                            />
+                          <slot
+                            :name="(col.slot || col.slotName) || col.key"
+                            :index="rowIndex"
+                            :text="slotValues[id]"
+                            :value="slotValues[id]"
+                            :column="col"
+                            :rowId="getCleanId(row.id)"
+                            :getValue="()=>_getValueForSlot(row.id)"
+                            :caseId="caseId"
+                            :allValues="_getAllValuesForSlot()"
+                            :target="getVM()"
+                            :handleChange="(v)=>handleChangeSlotCommon(v,id,row,col)"
+                            :isNotPass="notPassedIds.includes(col.key+row.id)"
+                          />
                         </span>
                       </a-tooltip>
                     </div>
@@ -718,7 +718,7 @@
                 <span
                   v-show="col.type === formTypes.inputNumber"
                   style="padding: 0 5px;"
-                >{{statisticsColumns[col.key]}}</span>
+                >{{ statisticsColumns[col.key] }}</span>
               </div>
             </template>
 

@@ -7,104 +7,104 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="备份域">
-          <a-input v-model="queryParam.domain" placeholder="请输入备份域"/>
-        </a-form-item>
-      </a-col>
+              <a-input v-model="queryParam.domain" placeholder="请输入备份域"/>
+            </a-form-item>
+          </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="客户端">
-          <a-input v-model="queryParam.client" placeholder="请输入客户端"/>
-        </a-form-item>
-      </a-col>
+              <a-input v-model="queryParam.client" placeholder="请输入客户端"/>
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="代理/实例">
-            <a-input v-model="queryParam.agent" placeholder="请输入代理/实例"/>
-          </a-form-item>
-        </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="备份集/子客户端">
-          <a-input v-model="queryParam.childClient" placeholder="请输入备份集/子客户端"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="作业ID(CommCell)(状态)">
-          <a-input v-model="queryParam.workId" placeholder="请输入作业ID(CommCell)(状态)"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="类型">
-          <a-input v-model="queryParam.type" placeholder="请输入类型"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="扫描类型">
-          <a-input v-model="queryParam.scanType" placeholder="请输入扫描类型"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="开始时间(写开始时间)">
-          <j-date class="query-group-cust" v-model="queryParam.startTime_begin" placeholder="请选择开始时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
-          <span class="query-group-split-cust"></span>
-          <j-date class="query-group-cust" v-model="queryParam.startTime_end" placeholder="请选择结束时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="结束时间或当前阶段(写结束时间)">
-          <j-date class="query-group-cust" v-model="queryParam.endTime_begin" placeholder="请选择开始时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
-          <span class="query-group-split-cust"></span>
-          <j-date class="query-group-cust" v-model="queryParam.endTime_end" placeholder="请选择结束时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="应用程序大小(压缩率)">
-          <a-input v-model="queryParam.programSize" placeholder="请输入应用程序大小(压缩率)"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="已传送数据">
-          <a-input v-model="queryParam.transportData" placeholder="请输入已传送数据"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="写入数据(空间节省百分比)">
-          <a-input v-model="queryParam.writeData" placeholder="请输入写入数据(空间节省百分比)"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="数据大小更改">
-          <a-input v-model="queryParam.dataSize" placeholder="请输入数据大小更改"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="传送时间">
-          <a-input v-model="queryParam.transportTime" placeholder="请输入传送时间"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="吞吐量(GB/小时)(当前)">
-          <a-input v-model="queryParam.speed" placeholder="请输入吞吐量(GB/小时)(当前)"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="受保护对象">
-          <a-input v-model="queryParam.protectObject" placeholder="请输入受保护对象"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="失败对象">
-          <a-input v-model="queryParam.failObject" placeholder="请输入失败对象"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="失败文件夹">
-          <a-input v-model="queryParam.failFolder" placeholder="请输入失败文件夹"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="原因">
-          <a-input v-model="queryParam.reason" placeholder="请输入原因"/>
-        </a-form-item>
-      </a-col>
+                <a-input v-model="queryParam.agent" placeholder="请输入代理/实例"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="备份集/子客户端">
+                <a-input v-model="queryParam.childClient" placeholder="请输入备份集/子客户端"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="作业ID(CommCell)(状态)">
+                <a-input v-model="queryParam.workId" placeholder="请输入作业ID(CommCell)(状态)"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="类型">
+                <a-input v-model="queryParam.type" placeholder="请输入类型"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="扫描类型">
+                <a-input v-model="queryParam.scanType" placeholder="请输入扫描类型"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="开始时间(写开始时间)">
+                <j-date class="query-group-cust" v-model="queryParam.startTime_begin" placeholder="请选择开始时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
+                <span class="query-group-split-cust"></span>
+                <j-date class="query-group-cust" v-model="queryParam.startTime_end" placeholder="请选择结束时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="结束时间或当前阶段(写结束时间)">
+                <j-date class="query-group-cust" v-model="queryParam.endTime_begin" placeholder="请选择开始时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
+                <span class="query-group-split-cust"></span>
+                <j-date class="query-group-cust" v-model="queryParam.endTime_end" placeholder="请选择结束时间" show-time date-format="YYYY-MM-DD HH:mm:ss"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="应用程序大小(压缩率)">
+                <a-input v-model="queryParam.programSize" placeholder="请输入应用程序大小(压缩率)"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="已传送数据">
+                <a-input v-model="queryParam.transportData" placeholder="请输入已传送数据"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="写入数据(空间节省百分比)">
+                <a-input v-model="queryParam.writeData" placeholder="请输入写入数据(空间节省百分比)"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="数据大小更改">
+                <a-input v-model="queryParam.dataSize" placeholder="请输入数据大小更改"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="传送时间">
+                <a-input v-model="queryParam.transportTime" placeholder="请输入传送时间"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="吞吐量(GB/小时)(当前)">
+                <a-input v-model="queryParam.speed" placeholder="请输入吞吐量(GB/小时)(当前)"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="受保护对象">
+                <a-input v-model="queryParam.protectObject" placeholder="请输入受保护对象"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="失败对象">
+                <a-input v-model="queryParam.failObject" placeholder="请输入失败对象"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="失败文件夹">
+                <a-input v-model="queryParam.failFolder" placeholder="请输入失败文件夹"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="原因">
+                <a-input v-model="queryParam.reason" placeholder="请输入原因"/>
+              </a-form-item>
+            </a-col>
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span class="table-page-search-submitButtons table-operator">
@@ -125,7 +125,13 @@
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('持续异常作业')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
 

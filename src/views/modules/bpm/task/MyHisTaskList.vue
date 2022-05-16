@@ -48,8 +48,8 @@
 
         <span slot="action" slot-scope="text, record">
           <a @click="handleProcess(record)">
-              历史
-            </a>
+            历史
+          </a>
         </span>
 
         <!-- 字符串超长截取省略号显示-->

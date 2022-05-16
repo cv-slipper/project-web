@@ -14,21 +14,21 @@
     <section ref="print" id="printContent" style="background:#ECECEC;" v-if="total!=null">
       <a-row style="page-break-after:always;">
         <a-card :bordered="true">
-          <span style="right: 50px">打印时间：{{getTime()}}</span>
-          <h1 class="erp_title2">{{`${total.startTime}${detail[0].companyName}`}}月度账单</h1>
+          <span style="right: 50px">打印时间：{{ getTime() }}</span>
+          <h1 class="erp_title2">{{ `${total.startTime}${detail[0].companyName}` }}月度账单</h1>
 
           <a-row>
             <a-col :span="6">
-              <span style="margin-left: 50px">服务费：{{total.serveCost}}</span>
+              <span style="margin-left: 50px">服务费：{{ total.serveCost }}</span>
             </a-col>
             <a-col :span="6">
-              <span style="margin-left: 50px">前端费用：{{total.frontendCost}}</span>
+              <span style="margin-left: 50px">前端费用：{{ total.frontendCost }}</span>
             </a-col>
             <a-col :span="6">
-              <span style="margin-left: 50px">后端费用：{{total.backendCost}}</span>
+              <span style="margin-left: 50px">后端费用：{{ total.backendCost }}</span>
             </a-col>
             <a-col :span="6">
-              <span style="margin-left: 50px">合计费用：{{total.cost}}</span>
+              <span style="margin-left: 50px">合计费用：{{ total.cost }}</span>
             </a-col>
           </a-row>
 

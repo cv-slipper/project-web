@@ -19,7 +19,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span>{{nickname}}</span>
+                  <span>{{ nickname }}</span>
                 </a-form-item>
               </td>
               <td>部门</td>
@@ -27,7 +27,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span>{{model.department}}</span>
+                  <span>{{ model.department }}</span>
                 </a-form-item>
               </td>
             </tr>
@@ -41,7 +41,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     disabled
                     v-decorator="[ 'applyTime', {}]"/>
                 </a-form-item>
@@ -66,7 +66,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'beginTime', {}]"
                     :allowClear="false"
                     @change="getStartTime"/>
@@ -83,7 +83,7 @@
                     placeholder=""
                     v-decorator="[ 'endTime', {}]"
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     :allowClear="false"
                     @change="dateDifference"/>
                 </a-form-item>
@@ -110,18 +110,18 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span v-if="model.totalDay!=undefined||model.totalHour!=undefined">{{model.totalDay}}天{{model.totalHour}}小时</span>
+                  <span v-if="model.totalDay!=undefined||model.totalHour!=undefined">{{ model.totalDay }}天{{ model.totalHour }}小时</span>
                 </a-form-item>
               </td>
             </tr>
             <tr style="height: 70px;">
               <td class="colfirst">直接领导审批</td>
               <td>
-                <span>{{model.leaderRemark}}</span>
+                <span>{{ model.leaderRemark }}</span>
               </td>
               <td class="colfour">部门领导审批</td>
               <td>
-                <span>{{model.deptLeaderRemark}}</span>
+                <span>{{ model.deptLeaderRemark }}</span>
               </td>
             </tr>
           </table>

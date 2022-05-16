@@ -3,7 +3,13 @@
     <a-form layout="inline" @keyup.enter.native="handleSearchQuery">
       <a-row :gutter="24" v-if="queryInfo && queryInfo.length > 0">
         <template v-for="(item, index) in queryInfo">
-          <a-col :key="`query${index}`" :xl="6" :lg="7" :md="8" :sm="24" v-show="item.hidden !== '1' || showMoreQueryParams">
+          <a-col
+            :key="`query${index}`"
+            :xl="6"
+            :lg="7"
+            :md="8"
+            :sm="24"
+            v-show="item.hidden !== '1' || showMoreQueryParams">
             <online-query-form-item :queryParam="queryParam" :item="item" :dictOptions="dictOptions"/>
           </a-col>
         </template>

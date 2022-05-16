@@ -8,11 +8,29 @@
     :pagination="false">
 
     <template slot="type" slot-scope="text">
-          <svg v-if="text=='错误'" t="1631494471802" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2414" width="10" height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2415" fill="#ff0000"></path></svg>
-          <svg v-else t="1631494471802" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2414" width="10" height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2415" fill="#F88BB6"></path></svg>
-          <span >{{text}}</span>
+      <svg
+        v-if="text=='错误'"
+        t="1631494471802"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="2414"
+        width="10"
+        height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2415" fill="#ff0000"></path></svg>
+      <svg
+        v-else
+        t="1631494471802"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="2414"
+        width="10"
+        height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2415" fill="#F88BB6"></path></svg>
+      <span >{{ text }}</span>
 
-<!--      <svg t="1631494371812" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2277" width="10" height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2278" data-spm-anchor-id="a313x.7781069.0.i0" class="selected"></path></svg>-->
+      <!--      <svg t="1631494371812" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2277" width="10" height="10"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" p-id="2278" data-spm-anchor-id="a313x.7781069.0.i0" class="selected"></path></svg>-->
 
     </template>
     <span slot="client" slot-scope="text">

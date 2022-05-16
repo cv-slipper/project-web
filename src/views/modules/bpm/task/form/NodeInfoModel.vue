@@ -4,8 +4,8 @@
     :width="280"
     :visible="visible"
     :confirmLoading="confirmLoading"
-    :bodyStyle ="bodyStyle"
-    :mask = "false"
+    :bodyStyle="bodyStyle"
+    :mask="false"
     destroyOnClose
     :footer="null"
     @cancel="handleCancel"
@@ -16,30 +16,30 @@
         <template v-for="(item, key, index) in nodeInfos">
           <table class="gridtable">
             <tbody>
-            <tr>
-              <th width="90">任务名称</th>
-              <td width="150">{{ item.taskName}}</td>
-            </tr>
-            <tr>
-              <th width="90">执行人</th>
-              <td width="150">{{ item.taskAssigneeId}}</td>
-            </tr>
-            <tr>
-              <th width="90">开始时间</th>
-              <td width="150">{{ item.taskBeginTime }}</td>
-            </tr>
-            <tr>
-              <th width="90">结束时间</th>
-              <td width="150">{{ item.taskEndTime }}</td>
-            </tr>
-            <tr>
-              <th width="90">耗时</th>
-              <td width="150">{{ item.durationStr }}</td>
-            </tr>
-            <tr>
-              <th width="90">意见</th>
-              <td width="150">{{ item.remarks }}</td>
-            </tr>
+              <tr>
+                <th width="90">任务名称</th>
+                <td width="150">{{ item.taskName }}</td>
+              </tr>
+              <tr>
+                <th width="90">执行人</th>
+                <td width="150">{{ item.taskAssigneeId }}</td>
+              </tr>
+              <tr>
+                <th width="90">开始时间</th>
+                <td width="150">{{ item.taskBeginTime }}</td>
+              </tr>
+              <tr>
+                <th width="90">结束时间</th>
+                <td width="150">{{ item.taskEndTime }}</td>
+              </tr>
+              <tr>
+                <th width="90">耗时</th>
+                <td width="150">{{ item.durationStr }}</td>
+              </tr>
+              <tr>
+                <th width="90">意见</th>
+                <td width="150">{{ item.remarks }}</td>
+              </tr>
             </tbody>
           </table>
         </template>

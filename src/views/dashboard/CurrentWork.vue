@@ -30,8 +30,11 @@
               @change="handleTableChange"
             >
               <template slot="percentComplete" slot-scope="text, record, index">
-                <a-progress strokeColor="#177cb0" :format="getPercentFormat"
-                            :percent="getFlowRateNumber(text)" style="width:80px"/>
+                <a-progress
+                  strokeColor="#177cb0"
+                  :format="getPercentFormat"
+                  :percent="getFlowRateNumber(text)"
+                  style="width:80px"/>
               </template>
             </a-table>
           </a-col>

@@ -107,24 +107,24 @@
               <head-info title="今日IP" :content="loginfo.todayIp"></head-info>
             </a-col>
             <a-col :span="2">
-              <a-spin class='circle-cust'>
-                <a-icon slot="indicator" type="environment" style="font-size: 24px"  />
+              <a-spin class="circle-cust">
+                <a-icon slot="indicator" type="environment" style="font-size: 24px" />
               </a-spin>
             </a-col>
             <a-col :span="6">
               <head-info title="今日访问" :content="loginfo.todayVisitCount"></head-info>
             </a-col>
             <a-col :span="2">
-              <a-spin class='circle-cust'>
-                <a-icon slot="indicator" type="team" style="font-size: 24px"  />
+              <a-spin class="circle-cust">
+                <a-icon slot="indicator" type="team" style="font-size: 24px" />
               </a-spin>
             </a-col>
             <a-col :span="6">
               <head-info title="总访问量" :content="loginfo.totalVisitCount"></head-info>
             </a-col>
             <a-col :span="2">
-              <a-spin class='circle-cust'>
-                <a-icon slot="indicator" type="rise" style="font-size: 24px"  />
+              <a-spin class="circle-cust">
+                <a-icon slot="indicator" type="rise" style="font-size: 24px" />
               </a-spin>
             </a-col>
           </a-row>

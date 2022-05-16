@@ -9,7 +9,7 @@
     destroyOnClose
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
-        <dynamic-component ref="dynamiclink" :path="path" :formData="formData" @ok="callBackOk" @close="callBackClose"></dynamic-component>
+      <dynamic-component ref="dynamiclink" :path="path" :formData="formData" @ok="callBackOk" @close="callBackClose"></dynamic-component>
     </a-spin>
   </a-modal>
 </template>

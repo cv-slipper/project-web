@@ -4,13 +4,13 @@
       <img :src="imgPath" style="border:2px;cursor:hand;" alt="流程图" usemap="#planetmap">
       <map name="planetmap">
         <template v-for="(item, key, index) in nodePositionInfo.positionList">
-         <area shape="rect" :coords="item.coords" title="Venus" @mouseover="showNodeInfo(nodePositionInfo.hisTasks,item.id)">
+          <area shape="rect" :coords="item.coords" title="Venus" @mouseover="showNodeInfo(nodePositionInfo.hisTasks,item.id)">
         </template>
       </map>
     </div>
     <a-card title="流程历史跟踪">
       <a-table
-         rowKey="taskId"
+        rowKey="taskId"
         :loading="loading"
         :dataSource="dataSource"
         :columns="columns"
@@ -22,7 +22,7 @@
       </a-table>
     </a-card>
 
-      <node-info-model ref="nodeInfoModel" ></node-info-model>
+    <node-info-model ref="nodeInfoModel" ></node-info-model>
   </div>
 </template>
 

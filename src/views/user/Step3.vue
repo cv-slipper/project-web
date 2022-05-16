@@ -8,7 +8,9 @@
       >
         <a-input
           type="text"
-          autocomplete="false" :value="accountName" disabled>
+          autocomplete="false"
+          :value="accountName"
+          disabled>
         </a-input>
       </a-form-item>
       <a-form-item

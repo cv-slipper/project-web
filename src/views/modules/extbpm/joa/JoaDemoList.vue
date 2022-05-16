@@ -16,23 +16,23 @@
               <a-input placeholder="请输入请假天数" v-model="queryParam.days"></a-input>
             </a-form-item>
           </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="开始时间">
-              <a-input placeholder="请输入开始时间" v-model="queryParam.beginDate"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="请假结束时间">
-              <a-input placeholder="请输入请假结束时间" v-model="queryParam.endDate"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="请假原因">
-              <a-input placeholder="请输入请假原因" v-model="queryParam.reason"></a-input>
-            </a-form-item>
-          </a-col>
-        </template>
+          <template v-if="toggleSearchStatus">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="开始时间">
+                <a-input placeholder="请输入开始时间" v-model="queryParam.beginDate"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="请假结束时间">
+                <a-input placeholder="请输入请假结束时间" v-model="queryParam.endDate"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="请假原因">
+                <a-input placeholder="请输入请假原因" v-model="queryParam.reason"></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -82,7 +82,7 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange">
 
-         <span slot="action" slot-scope="text, record">
+        <span slot="action" slot-scope="text, record">
           <template v-if="record.bpmStatus === '1'">
             <a @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical"/>

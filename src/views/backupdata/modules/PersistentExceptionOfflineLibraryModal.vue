@@ -24,7 +24,13 @@
           <a-input v-decorator="['version']" placeholder="请输入版本"></a-input>
         </a-form-item>
         <a-form-item label="安装时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择安装时间" v-decorator="['installTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择安装时间"
+            v-decorator="['installTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="默认暂存池" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['defaultCache']" placeholder="请输入默认暂存池"></a-input>

@@ -1,200 +1,206 @@
 <template>
-<div class="j-super-query-box">
+  <div class="j-super-query-box">
 
-  <slot name="button" :isActive="superQueryFlag" :isMobile="izMobile" :open="handleOpen" :reset="handleReset">
-    <a-tooltip v-if="superQueryFlag" v-bind="tooltipProps" :mouseLeaveDelay="0.2">
-      <!-- begin 不知道为什么不加上这段代码就无法生效 -->
-      <span v-show="false">{{tooltipProps}}</span>
-      <!-- end 不知道为什么不加上这段代码就无法生效 -->
-      <template slot="title">
-        <span>已有高级查询条件生效</span>
-        <a-divider type="vertical"/>
-        <a @click="handleReset">清空</a>
+    <slot name="button" :isActive="superQueryFlag" :isMobile="izMobile" :open="handleOpen" :reset="handleReset">
+      <a-tooltip v-if="superQueryFlag" v-bind="tooltipProps" :mouseLeaveDelay="0.2">
+        <!-- begin 不知道为什么不加上这段代码就无法生效 -->
+        <span v-show="false">{{ tooltipProps }}</span>
+        <!-- end 不知道为什么不加上这段代码就无法生效 -->
+        <template slot="title">
+          <span>已有高级查询条件生效</span>
+          <a-divider type="vertical"/>
+          <a @click="handleReset">清空</a>
+        </template>
+        <a-button-group>
+          <a-button type="primary" @click="handleOpen">
+            <a-icon type="appstore" theme="twoTone" spin/>
+            <span>高级查询</span>
+          </a-button>
+          <a-button v-if="izMobile" type="primary" icon="delete" @click="handleReset"/>
+        </a-button-group>
+      </a-tooltip>
+      <a-button v-else type="primary" icon="filter" @click="handleOpen">高级查询</a-button>
+    </slot>
+
+    <j-modal
+      title="高级查询构造器"
+      :width="1000"
+      :visible="visible"
+      @cancel="handleCancel"
+      :mask="false"
+      :fullscreen="izMobile"
+      class="j-super-query-modal"
+      style="top:5%;max-height: 95%;"
+    >
+
+      <template slot="footer">
+        <div style="float: left">
+          <a-button :loading="loading" @click="handleReset">重置</a-button>
+          <a-button :loading="loading" @click="handleSave">保存查询条件</a-button>
+        </div>
+        <a-button :loading="loading" @click="handleCancel">关闭</a-button>
+        <a-button :loading="loading" type="primary" @click="handleOk">查询</a-button>
       </template>
-      <a-button-group>
-        <a-button type="primary" @click="handleOpen">
-          <a-icon type="appstore" theme="twoTone" spin/>
-          <span>高级查询</span>
-        </a-button>
-        <a-button v-if="izMobile" type="primary" icon="delete" @click="handleReset"/>
-      </a-button-group>
-    </a-tooltip>
-    <a-button v-else type="primary" icon="filter" @click="handleOpen">高级查询</a-button>
-  </slot>
 
-  <j-modal
-    title="高级查询构造器"
-    :width="1000"
-    :visible="visible"
-    @cancel="handleCancel"
-    :mask="false"
-    :fullscreen="izMobile"
-    class="j-super-query-modal"
-    style="top:5%;max-height: 95%;"
-  >
+      <a-spin :spinning="loading">
+        <a-row>
+          <a-col :sm="24" :md="24-5">
 
-    <template slot="footer">
-      <div style="float: left">
-        <a-button :loading="loading" @click="handleReset">重置</a-button>
-        <a-button :loading="loading" @click="handleSave">保存查询条件</a-button>
-      </div>
-      <a-button :loading="loading" @click="handleCancel">关闭</a-button>
-      <a-button :loading="loading" type="primary" @click="handleOk">查询</a-button>
-    </template>
+            <a-empty v-if="queryParamsModel.length === 0" style="margin-bottom: 12px;">
+              <div slot="description">
+                <span>没有任何查询条件</span>
+                <a-divider type="vertical"/>
+                <a @click="handleAdd">点击新增</a>
+              </div>
+            </a-empty>
 
-    <a-spin :spinning="loading">
-      <a-row>
-        <a-col :sm="24" :md="24-5">
+            <a-form v-else layout="inline">
 
-          <a-empty v-if="queryParamsModel.length === 0" style="margin-bottom: 12px;">
-            <div slot="description">
-              <span>没有任何查询条件</span>
-              <a-divider type="vertical"/>
-              <a @click="handleAdd">点击新增</a>
-            </div>
-          </a-empty>
+              <a-row style="margin-bottom: 12px;">
+                <a-col :md="12" :xs="24">
+                  <a-form-item label="过滤条件匹配" :labelCol="{md: 6,xs:24}" :wrapperCol="{md: 18,xs:24}" style="width: 100%;">
+                    <a-select v-model="matchType" :getPopupContainer="node=>node.parentNode" style="width: 100%;">
+                      <a-select-option value="and">AND（所有条件都要求匹配）</a-select-option>
+                      <a-select-option value="or">OR（条件中的任意一个匹配）</a-select-option>
+                    </a-select>
+                  </a-form-item>
+                </a-col>
+              </a-row>
 
-          <a-form v-else layout="inline">
+              <a-row type="flex" style="margin-bottom:10px" :gutter="16" v-for="(item, index) in queryParamsModel" :key="index">
 
-            <a-row style="margin-bottom: 12px;">
-              <a-col :md="12" :xs="24">
-                <a-form-item label="过滤条件匹配" :labelCol="{md: 6,xs:24}" :wrapperCol="{md: 18,xs:24}" style="width: 100%;">
-                  <a-select v-model="matchType" :getPopupContainer="node=>node.parentNode" style="width: 100%;">
-                    <a-select-option value="and">AND（所有条件都要求匹配）</a-select-option>
-                    <a-select-option value="or">OR（条件中的任意一个匹配）</a-select-option>
+                <a-col :md="8" :xs="24" style="margin-bottom: 12px;">
+                  <a-tree-select
+                    showSearch
+                    v-model="item.field"
+                    :treeData="fieldTreeData"
+                    :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+                    placeholder="选择查询字段"
+                    allowClear
+                    treeDefaultExpandAll
+                    :getPopupContainer="node=>node.parentNode"
+                    style="width: 100%"
+                    @select="(val,option)=>handleSelected(option,item)"
+                  >
+                  </a-tree-select>
+                </a-col>
+
+                <a-col :md="4" :xs="24" style="margin-bottom: 12px;">
+                  <a-select placeholder="匹配规则" :value="item.rule" :getPopupContainer="node=>node.parentNode" @change="handleRuleChange(item,$event)">
+                    <a-select-option value="eq">等于</a-select-option>
+                    <a-select-option value="like">包含</a-select-option>
+                    <a-select-option value="right_like">以..开始</a-select-option>
+                    <a-select-option value="left_like">以..结尾</a-select-option>
+                    <a-select-option value="in">在...中</a-select-option>
+                    <a-select-option value="ne">不等于</a-select-option>
+                    <a-select-option value="gt">大于</a-select-option>
+                    <a-select-option value="ge">大于等于</a-select-option>
+                    <a-select-option value="lt">小于</a-select-option>
+                    <a-select-option value="le">小于等于</a-select-option>
                   </a-select>
-                </a-form-item>
-              </a-col>
-            </a-row>
+                </a-col>
 
-            <a-row type="flex" style="margin-bottom:10px" :gutter="16" v-for="(item, index) in queryParamsModel" :key="index">
-
-              <a-col :md="8" :xs="24" style="margin-bottom: 12px;">
-                <a-tree-select
-                  showSearch
-                  v-model="item.field"
-                  :treeData="fieldTreeData"
-                  :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-                  placeholder="选择查询字段"
-                  allowClear
-                  treeDefaultExpandAll
-                  :getPopupContainer="node=>node.parentNode"
-                  style="width: 100%"
-                  @select="(val,option)=>handleSelected(option,item)"
-                >
-                </a-tree-select>
-              </a-col>
-
-              <a-col :md="4" :xs="24" style="margin-bottom: 12px;">
-                <a-select placeholder="匹配规则" :value="item.rule" :getPopupContainer="node=>node.parentNode" @change="handleRuleChange(item,$event)">
-                  <a-select-option value="eq">等于</a-select-option>
-                  <a-select-option value="like">包含</a-select-option>
-                  <a-select-option value="right_like">以..开始</a-select-option>
-                  <a-select-option value="left_like">以..结尾</a-select-option>
-                  <a-select-option value="in">在...中</a-select-option>
-                  <a-select-option value="ne">不等于</a-select-option>
-                  <a-select-option value="gt">大于</a-select-option>
-                  <a-select-option value="ge">大于等于</a-select-option>
-                  <a-select-option value="lt">小于</a-select-option>
-                  <a-select-option value="le">小于等于</a-select-option>
-                </a-select>
-              </a-col>
-
-              <a-col :md="8" :xs="24" style="margin-bottom: 12px;">
-                <template v-if="item.dictCode">
-                  <template v-if="item.type === 'table-dict'">
-                    <j-popup
-                      v-model="item.val"
-                      :code="item.dictTable"
-                      :field="item.dictCode"
-                      :orgFields="item.dictCode"
-                      :destFields="item.dictCode"
-                    ></j-popup>
+                <a-col :md="8" :xs="24" style="margin-bottom: 12px;">
+                  <template v-if="item.dictCode">
+                    <template v-if="item.type === 'table-dict'">
+                      <j-popup
+                        v-model="item.val"
+                        :code="item.dictTable"
+                        :field="item.dictCode"
+                        :orgFields="item.dictCode"
+                        :destFields="item.dictCode"
+                      ></j-popup>
+                    </template>
+                    <template v-else>
+                      <j-multi-select-tag v-show="allowMultiple(item)" v-model="item.val" :dictCode="item.dictCode" placeholder="请选择"/>
+                      <j-dict-select-tag v-show="!allowMultiple(item)" v-model="item.val" :dictCode="item.dictCode" placeholder="请选择"/>
+                    </template>
                   </template>
-                  <template v-else>
-                    <j-multi-select-tag v-show="allowMultiple(item)" v-model="item.val" :dictCode="item.dictCode" placeholder="请选择"/>
-                    <j-dict-select-tag v-show="!allowMultiple(item)" v-model="item.val" :dictCode="item.dictCode" placeholder="请选择"/>
-                  </template>
-                </template>
-                <j-popup v-else-if="item.type === 'popup'" :value="item.val" v-bind="item.popup" group-id="superQuery" @input="(e,v)=>handleChangeJPopup(item,e,v)"/>
-                <j-select-multi-user
-                  v-else-if="item.type === 'select-user' || item.type === 'sel_user'"
-                  v-model="item.val"
-                  :buttons="false"
-                  :multiple="false"
-                  placeholder="请选择用户"
-                  :returnKeys="['id', item.customReturnField || 'username']"
-                />
-                <j-select-depart
-                  v-else-if="item.type === 'select-depart' || item.type === 'sel_depart'"
-                  v-model="item.val"
-                  :multi="false"
-                  placeholder="请选择部门"
-                  :customReturnField="item.customReturnField || 'id'"
-                />
-                <a-select
-                  v-else-if="item.options instanceof Array"
-                  v-model="item.val"
-                  :options="item.options"
-                  allowClear
-                  placeholder="请选择"
-                  :mode="allowMultiple(item)?'multiple':''"
-                />
-                <j-area-linkage v-model="item.val" v-else-if="item.type==='area-linkage' || item.type==='pca'" style="width: 100%"/>
-                <j-date v-else-if=" item.type=='date' " v-model="item.val" placeholder="请选择日期" style="width: 100%"></j-date>
-                <j-date v-else-if=" item.type=='datetime' " v-model="item.val" placeholder="请选择时间" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"></j-date>
-                <a-time-picker v-else-if="item.type==='time'" :value="item.val ? moment(item.val,'HH:mm:ss') : null" format="HH:mm:ss" style="width: 100%" @change="(time,value)=>item.val=value"/>
-                <a-input-number v-else-if=" item.type=='int'||item.type=='number' " style="width: 100%" placeholder="请输入数值" v-model="item.val"/>
-                <a-input v-else v-model="item.val" placeholder="请输入值"/>
-              </a-col>
+                  <j-popup v-else-if="item.type === 'popup'" :value="item.val" v-bind="item.popup" group-id="superQuery" @input="(e,v)=>handleChangeJPopup(item,e,v)"/>
+                  <j-select-multi-user
+                    v-else-if="item.type === 'select-user' || item.type === 'sel_user'"
+                    v-model="item.val"
+                    :buttons="false"
+                    :multiple="false"
+                    placeholder="请选择用户"
+                    :returnKeys="['id', item.customReturnField || 'username']"
+                  />
+                  <j-select-depart
+                    v-else-if="item.type === 'select-depart' || item.type === 'sel_depart'"
+                    v-model="item.val"
+                    :multi="false"
+                    placeholder="请选择部门"
+                    :customReturnField="item.customReturnField || 'id'"
+                  />
+                  <a-select
+                    v-else-if="item.options instanceof Array"
+                    v-model="item.val"
+                    :options="item.options"
+                    allowClear
+                    placeholder="请选择"
+                    :mode="allowMultiple(item)?'multiple':''"
+                  />
+                  <j-area-linkage v-model="item.val" v-else-if="item.type==='area-linkage' || item.type==='pca'" style="width: 100%"/>
+                  <j-date v-else-if=" item.type=='date' " v-model="item.val" placeholder="请选择日期" style="width: 100%"></j-date>
+                  <j-date
+                    v-else-if=" item.type=='datetime' "
+                    v-model="item.val"
+                    placeholder="请选择时间"
+                    :show-time="true"
+                    date-format="YYYY-MM-DD HH:mm:ss"
+                    style="width: 100%"></j-date>
+                  <a-time-picker v-else-if="item.type==='time'" :value="item.val ? moment(item.val,'HH:mm:ss') : null" format="HH:mm:ss" style="width: 100%" @change="(time,value)=>item.val=value"/>
+                  <a-input-number v-else-if=" item.type=='int'||item.type=='number' " style="width: 100%" placeholder="请输入数值" v-model="item.val"/>
+                  <a-input v-else v-model="item.val" placeholder="请输入值"/>
+                </a-col>
 
-              <a-col :md="4" :xs="0" style="margin-bottom: 12px;">
-                <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
-                <a-button @click="handleDel( index )" icon="minus"></a-button>
-              </a-col>
+                <a-col :md="4" :xs="0" style="margin-bottom: 12px;">
+                  <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
+                  <a-button @click="handleDel( index )" icon="minus"></a-button>
+                </a-col>
 
-              <a-col :md="0" :xs="24" style="margin-bottom: 12px;text-align: right;">
-                <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
-                <a-button @click="handleDel( index )" icon="minus"></a-button>
-              </a-col>
+                <a-col :md="0" :xs="24" style="margin-bottom: 12px;text-align: right;">
+                  <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
+                  <a-button @click="handleDel( index )" icon="minus"></a-button>
+                </a-col>
 
-            </a-row>
+              </a-row>
 
-          </a-form>
-        </a-col>
-        <a-col :sm="24" :md="5">
-          <!-- 查询记录 -->
+            </a-form>
+          </a-col>
+          <a-col :sm="24" :md="5">
+            <!-- 查询记录 -->
 
-          <a-card class="j-super-query-history-card" :bordered="true">
-            <div slot="title">
-              保存的查询
-            </div>
+            <a-card class="j-super-query-history-card" :bordered="true">
+              <div slot="title">
+                保存的查询
+              </div>
 
-            <a-empty v-if="saveTreeData.length === 0" class="j-super-query-history-empty" description="没有保存任何查询"/>
-            <a-tree
-              v-else
-              class="j-super-query-history-tree"
-              showIcon
-              :treeData="saveTreeData"
-              :selectedKeys="[]"
-              @select="handleTreeSelect"
-            >
-            </a-tree>
-          </a-card>
-
-
-        </a-col>
-      </a-row>
+              <a-empty v-if="saveTreeData.length === 0" class="j-super-query-history-empty" description="没有保存任何查询"/>
+              <a-tree
+                v-else
+                class="j-super-query-history-tree"
+                showIcon
+                :treeData="saveTreeData"
+                :selectedKeys="[]"
+                @select="handleTreeSelect"
+              >
+              </a-tree>
+            </a-card>
 
 
-    </a-spin>
+          </a-col>
+        </a-row>
 
-    <a-modal title="请输入保存的名称" :visible="prompt.visible" @cancel="prompt.visible=false" @ok="handlePromptOk">
-      <a-input v-model="prompt.value"></a-input>
-    </a-modal>
 
-  </j-modal>
-</div>
+      </a-spin>
+
+      <a-modal title="请输入保存的名称" :visible="prompt.visible" @cancel="prompt.visible=false" @ok="handlePromptOk">
+        <a-input v-model="prompt.value"></a-input>
+      </a-modal>
+
+    </j-modal>
+  </div>
 </template>
 
 <script>

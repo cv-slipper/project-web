@@ -3,10 +3,11 @@
     :title="title"
     width="90%"
     :visible="visible"
-    fullscreen switch-fullscreen
+    fullscreen
+    switch-fullscreen
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     destroyOnClose
     :footer="null"

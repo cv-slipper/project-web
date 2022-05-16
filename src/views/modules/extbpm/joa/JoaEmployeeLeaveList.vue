@@ -16,23 +16,23 @@
               <a-input placeholder="请输入申请日期" v-model="queryParam.applyDate"></a-input>
             </a-form-item>
           </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="职务">
-              <a-input placeholder="请输入职务" v-model="queryParam.duty"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="请假类别">
-              <a-input placeholder="请输入请假类别" v-model="queryParam.leaveCategory"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="请假原因">
-              <a-input placeholder="请输入请假原因" v-model="queryParam.leaveReason"></a-input>
-            </a-form-item>
-          </a-col>
-        </template>
+          <template v-if="toggleSearchStatus">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="职务">
+                <a-input placeholder="请输入职务" v-model="queryParam.duty"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="请假类别">
+                <a-input placeholder="请输入请假类别" v-model="queryParam.leaveCategory"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="请假原因">
+                <a-input placeholder="请输入请假原因" v-model="queryParam.leaveReason"></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -97,7 +97,7 @@
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-              <a-menu-item  v-else @click="handlePreviewPic(record)">审批进度</a-menu-item>
+              <a-menu-item v-else @click="handlePreviewPic(record)">审批进度</a-menu-item>
             </a-menu>
           </a-dropdown>
         </span>

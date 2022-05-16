@@ -1,30 +1,30 @@
 <template>
-    <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="催办类型">
-          <a-checkbox-group v-model="notifyTypeValue" @change="onChangeNotifyType">
-              <a-checkbox value="1">页面通知</a-checkbox>
-              <a-checkbox value="2">邮件</a-checkbox>
-          </a-checkbox-group>
-          <!--<j-dict-select-tag  v-decorator="['notifyType', {}]" placeholder="请选择催办类型" :triggerChange="true" :type="'radio'" dictCode="notify_type"/>-->
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="催办内容">
-          <a-textarea rows="3" placeholder="请输入催办内容"  v-decorator="['remarks', { rules: [{ required: true, message: '催办内容不允许为空!' }] }]" />
-        </a-form-item>
-        <a-form-item>
-          <div style="text-align:center;margin-top: 10px">
-            <a-button type="primary" @click="handleOk()">保存</a-button>
-          </div>
-        </a-form-item>
-      </a-form>
+  <a-spin :spinning="confirmLoading">
+    <a-form :form="form">
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="催办类型">
+        <a-checkbox-group v-model="notifyTypeValue" @change="onChangeNotifyType">
+          <a-checkbox value="1">页面通知</a-checkbox>
+          <a-checkbox value="2">邮件</a-checkbox>
+        </a-checkbox-group>
+        <!--<j-dict-select-tag  v-decorator="['notifyType', {}]" placeholder="请选择催办类型" :triggerChange="true" :type="'radio'" dictCode="notify_type"/>-->
+      </a-form-item>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="催办内容">
+        <a-textarea rows="3" placeholder="请输入催办内容" v-decorator="['remarks', { rules: [{ required: true, message: '催办内容不允许为空!' }] }]" />
+      </a-form-item>
+      <a-form-item>
+        <div style="text-align:center;margin-top: 10px">
+          <a-button type="primary" @click="handleOk()">保存</a-button>
+        </div>
+      </a-form-item>
+    </a-form>
 
-    </a-spin>
+  </a-spin>
 </template>
 
 <script>

@@ -8,7 +8,7 @@
     :pagination="false">
 
     <template slot="increase" slot-scope="text">
-      {{text}}%<span v-if="text>0" style="color: #f00056"><a-icon type="caret-up" /></span>
+      {{ text }}%<span v-if="text>0" style="color: #f00056"><a-icon type="caret-up" /></span>
       <span v-else-if="text<0" style="color: #00e500"><a-icon type="caret-down" /></span>
     </template>
     <span slot="client" slot-scope="text">

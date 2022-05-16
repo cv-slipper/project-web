@@ -51,7 +51,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="修改时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'updateDate', {}]" />
+          <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'updateDate', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"

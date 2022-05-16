@@ -30,7 +30,7 @@
                 v-decorator="[ 'msgCategory', validatorRules.msgCategory]"
                 placeholder="请选择消息类型"
                 :disabled="disableSubmit"
-                :getPopupContainer = "(target) => target.parentNode">
+                :getPopupContainer="(target) => target.parentNode">
                 <a-select-option value="1">通知公告</a-select-option>
                 <a-select-option value="2">系统消息</a-select-option>
               </a-select>
@@ -43,7 +43,13 @@
               :labelCol="labelCol"
               :wrapperCol="wrapperCol"
               label="开始时间:">
-              <j-date style="width: 100%" :getCalendarContainer="node => node.parentNode" v-decorator="[ 'startTime', validatorRules.startTime]" placeholder="请选择开始时间" showTime dateFormat="YYYY-MM-DD HH:mm:ss" ></j-date>
+              <j-date
+                style="width: 100%"
+                :getCalendarContainer="node => node.parentNode"
+                v-decorator="[ 'startTime', validatorRules.startTime]"
+                placeholder="请选择开始时间"
+                showTime
+                dateFormat="YYYY-MM-DD HH:mm:ss" ></j-date>
             </a-form-item>
           </a-col>
           <a-col :span="24/2">
@@ -52,7 +58,13 @@
               :wrapperCol="wrapperCol"
               label="结束时间"
               class="endTime">
-              <j-date style="width: 100%" :getCalendarContainer="node => node.parentNode" v-decorator="[ 'endTime', validatorRules.endTime]" placeholder="请选择结束时间" showTime dateFormat="YYYY-MM-DD HH:mm:ss"></j-date>
+              <j-date
+                style="width: 100%"
+                :getCalendarContainer="node => node.parentNode"
+                v-decorator="[ 'endTime', validatorRules.endTime]"
+                placeholder="请选择结束时间"
+                showTime
+                dateFormat="YYYY-MM-DD HH:mm:ss"></j-date>
             </a-form-item>
           </a-col>
         </a-row>
@@ -66,7 +78,7 @@
                 v-decorator="[ 'priority', {}]"
                 placeholder="请选择优先级"
                 :disabled="disableSubmit"
-                :getPopupContainer = "(target) => target.parentNode">
+                :getPopupContainer="(target) => target.parentNode">
                 <a-select-option value="L">低</a-select-option>
                 <a-select-option value="M">中</a-select-option>
                 <a-select-option value="H">高</a-select-option>
@@ -83,7 +95,7 @@
                 placeholder="请选择通告类型"
                 :disabled="disableSubmit"
                 @change="chooseMsgType"
-                :getPopupContainer = "(target) => target.parentNode">
+                :getPopupContainer="(target) => target.parentNode">
                 <a-select-option value="USER">指定用户</a-select-option>
                 <a-select-option value="ALL">全体用户</a-select-option>
               </a-select>

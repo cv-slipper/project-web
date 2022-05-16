@@ -13,7 +13,7 @@
       <a-row :gutter="24">
         <a-col :xs="24" :sm="6">
 
-          <a-card title="组织机构" :bordered=true>
+          <a-card title="组织机构" :bordered="true">
             <a-alert type="info" :showIcon="true">
               <div slot="message">
                 当前选择：<span v-if="this.currOrgSelected.title">{{ getCurrOrgSelectedTitle() }}</span>
@@ -32,7 +32,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="10">
-          <a-card title="选择人员" :bordered=true>
+          <a-card title="选择人员" :bordered="true">
             <!-- 查询区域 -->
             <div class="table-page-search-wrapper">
               <a-form layout="inline">
@@ -72,10 +72,10 @@
                 @change="handleTableChange">
 
                 <span slot="username" slot-scope="text, record">
-                  <ellipsis :length="12" >{{text}}</ellipsis>
+                  <ellipsis :length="12" >{{ text }}</ellipsis>
                 </span>
                 <span slot="realname" slot-scope="text, record">
-                  <ellipsis :length="10">{{text}}</ellipsis>
+                  <ellipsis :length="10">{{ text }}</ellipsis>
                 </span>
               </a-table>
             </div>
@@ -83,7 +83,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="8">
-          <a-card title="已选用户" :bordered=true>
+          <a-card title="已选用户" :bordered="true">
             <!-- table区域-begin -->
             <div>
               <a-table

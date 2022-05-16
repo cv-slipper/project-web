@@ -1,205 +1,135 @@
 <template>
-  <a-card :bordered="false">
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline" @keyup.enter.native="searchQuery">
-        <a-row :gutter="24">
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="公司名称">
-              <a-input placeholder="请输入公司名称" v-model="queryParam.companyName"></a-input>
+  <a-card :bordered='false'>
+    　
+    <div class='searchParmas'>
+      <a-row>
+        <a-col :span='12'>
+          <a-form :label-col='{span:3}' :wrapper-col='{span:8}'>
+            <a-form-item label='分行'>
+              <a-select mode='multiple' show-search filter-option>
+                <a-select-option v-for='item in branchList' :key='item.id'>
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
-          </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="计费类型">
-              <j-dict-select-tag placeholder="请选择计费类型" v-model="queryParam.chargingType" dictCode="chargingType"/>
-            </a-form-item>
-          </a-col>
-          <template v-if="toggleSearchStatus">
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="库">
-                <a-input placeholder="请输入库" v-model="queryParam.library"></a-input>
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
-              </a>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 查询区域-END -->
-
-    <!-- 操作按钮区域 -->
-    <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('计费设置')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
-      </a-dropdown>
+          </a-form>
+        </a-col>
+        <a-col :span='12'>
+          <a-button type='primary' class='fl'>查询</a-button>
+          <a-button type='primary' class='fl ml-10' @click='billingSetVisible=true'>新增</a-button>
+          <a-button type='primary' class='fl ml-10'>导出</a-button>
+        </a-col>
+      </a-row>
     </div>
 
     <!-- table区域-begin -->
     <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
-      </div>
-
       <a-table
-        ref="table"
-        size="middle"
+        ref='table'
+        size='middle'
         bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        class="j-table-force-nowrap"
-        @change="handleTableChange">
+        rowKey='id'
+        :columns='columns'
+        :dataSource='dataSource'
+        :pagination='ipagination'
+        :loading='loading'
+        class='j-table-force-nowrap'
+        @change='handleTableChange'>
 
-        <template slot="htmlSlot" slot-scope="text">
-          <div v-html="text"></div>
-        </template>
-        <template slot="imgSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
-          <img v-else :src="getImgView(text)" height="25px" alt="" style="max-width:80px;font-size: 12px;font-style: italic;"/>
-        </template>
-        <template slot="fileSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
-          <a-button
-            v-else
-            :ghost="true"
-            type="primary"
-            icon="download"
-            size="small"
-            @click="uploadFile(text)">
-            下载
-          </a-button>
-        </template>
 
-        <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+        <template #action='slotProps'>
 
-          <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </span>
+          <a-button type='primary' @click='billingSetVisible=true'>修改</a-button>
+          <a-button type='primary ml-10'>删除</a-button>
+        </template>
 
       </a-table>
     </div>
 
-    <cvChargingSet-modal ref="modalForm" @ok="modalFormOk"></cvChargingSet-modal>
+    <cvChargingSet-modal ref='modalForm' @ok='modalFormOk'></cvChargingSet-modal>
+    <BillingSetInfoModal
+      :visible='billingSetVisible'
+      @cancel='billingSetVisible=false'
+      @ok='billingSetVisible=false'></BillingSetInfoModal>
   </a-card>
 </template>
 
 <script>
 
-  import '@/assets/less/TableExpand.less'
-  import { mixinDevice } from '@/utils/mixin'
-  import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import CvChargingSetModal from './modules/CvChargingSetModal'
-  import JDictSelectTag from '@/components/dict/JDictSelectTag.vue'
-  import {filterMultiDictText} from '@/components/dict/JDictSelectUtil'
+import '@/assets/less/TableExpand.less'
+import { mixinDevice } from '@/utils/mixin'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import CvChargingSetModal from './modules/CvChargingSetModal'
+import JDictSelectTag from '@/components/dict/JDictSelectTag.vue'
+import { filterMultiDictText } from '@/components/dict/JDictSelectUtil'
+import BillingSetInfoModal from './components/BillingSetInfoModal'
 
-  export default {
-    name: "CvChargingSetList",
-    mixins:[JeecgListMixin, mixinDevice],
-    components: {
-      JDictSelectTag,
-      CvChargingSetModal
-    },
-    data () {
-      return {
-        description: '计费设置管理页面',
-        // 表头
-        columns: [
-          {
-            title: '序号',
-            dataIndex: '',
-            key:'rowIndex',
-            width:60,
-            align:"center",
-            customRender:function (t,r,index) {
-              return parseInt(index)+1;
-            }
-          },
-          {
-            title:'公司名称',
-            align:"center",
-            dataIndex: 'companyName'
-          },
-          {
-            title:'计费类型',
-            align:"center",
-            dataIndex: 'chargingType_dictText'
-          },
-          {
-            title:'库',
-            align:"center",
-            dataIndex: 'library'
-          },
-          {
-            title:'单位',
-            align:"center",
-            dataIndex: 'unit'
-          },
-          {
-            title:'价格',
-            align:"center",
-            dataIndex: 'price'
-          },
-          {
-            title: '操作',
-            dataIndex: 'action',
-            align:"center",
-            // fixed:"right",
-            width:147,
-            scopedSlots: { customRender: 'action' }
-          }
-        ],
-        url: {
-          list: "/cvChargingSet/list",
-          delete: "/cvChargingSet/delete",
-          deleteBatch: "/cvChargingSet/deleteBatch",
-          exportXlsUrl: "/cvChargingSet/exportXls",
-          importExcelUrl: "cvchargingset/cvChargingSet/importExcel",
+export default {
+  name: 'CvChargingSetList',
+  mixins: [mixinDevice],
+  components: {
+    JDictSelectTag,
+    BillingSetInfoModal,
+    CvChargingSetModal
+  },
+  data() {
+    return {
+      branchList: [],
+      billingSetVisible: false,
+      description: '计费设置管理页面',
+      // 表头
+      columns: [
+        {
+          title: '分行名称',
+          align: 'center',
+          dataIndex: 'companyName'
         },
-        dictOptions:{},
-      }
-    },
-    computed: {
-      importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        {
+          title: '服务费单价（元/台）',
+          align: 'center',
+          dataIndex: 'chargingType_dictText'
+        },
+        {
+          title: '前端许可单价（元/GB）',
+          align: 'center',
+          dataIndex: 'library'
+        },
+        {
+          title: '存储写入量单价（元/GB)',
+          align: 'center',
+          dataIndex: 'unit'
+        },
+        {
+          title: ' ',
+          dataIndex: 'action',
+          align: 'center',
+          // fixed:"right",
+          width: 147,
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      dataSource: [{ id: 1 }, { id: 2 }],
+      url: {
+        list: '/cvChargingSet/list',
+        delete: '/cvChargingSet/delete',
+        deleteBatch: '/cvChargingSet/deleteBatch',
+        exportXlsUrl: '/cvChargingSet/exportXls',
+        importExcelUrl: 'cvchargingset/cvChargingSet/importExcel'
       },
-    },
-    methods: {
-      initDictConfig(){
-      }
+      dictOptions: {}
+    }
+  },
+  computed: {
+    importExcelUrl: function() {
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+    }
+  },
+  methods: {
+    initDictConfig() {
     }
   }
+}
 </script>
 <style scoped>
-  @import '~@assets/less/common.less';
+@import '~@assets/less/common.less';
 </style>

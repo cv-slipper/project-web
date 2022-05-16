@@ -20,7 +20,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span>{{nickname}}</span>
+                  <span>{{ nickname }}</span>
                 </a-form-item>
               </td>
               <td>部门</td>
@@ -28,7 +28,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span>{{model.department}}</span>
+                  <span>{{ model.department }}</span>
                 </a-form-item>
               </td>
             </tr>
@@ -40,11 +40,11 @@
                   :wrapperCol="wrapperCol"
                 >
                   <a-date-picker
-                                class="input"
-                                placeholder=""
-                                format='YYYY-MM-DD'
-                                disabled
-                                v-decorator="[ 'applyTime', {}]"/>
+                    class="input"
+                    placeholder=""
+                    format="YYYY-MM-DD"
+                    disabled
+                    v-decorator="[ 'applyTime', {}]"/>
                 </a-form-item>
               </td>
               <td>调休时长</td>
@@ -70,11 +70,11 @@
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
                   <a-date-picker
-                                class="input"
-                                placeholder=""
-                                showTime
-                                format='YYYY-MM-DD HH:mm:ss'
-                                v-decorator="[ 'beginTime', {}]"/>
+                    class="input"
+                    placeholder=""
+                    showTime
+                    format="YYYY-MM-DD HH:mm:ss"
+                    v-decorator="[ 'beginTime', {}]"/>
                 </a-form-item>
               </td>
               <td>结束时间</td>
@@ -84,11 +84,11 @@
                   :wrapperCol="wrapperCol"
                 >
                   <a-date-picker
-                            class="input"
-                            placeholder=""
-                            v-decorator="[ 'endTime', {}]"
-                            showTime
-                            format='YYYY-MM-DD HH:mm:ss'/>
+                    class="input"
+                    placeholder=""
+                    v-decorator="[ 'endTime', {}]"
+                    showTime
+                    format="YYYY-MM-DD HH:mm:ss"/>
 
                 </a-form-item>
               </td>
@@ -118,8 +118,8 @@
                   :wrapperCol="wrapperCol"
                 >
                   <a-textarea
-                              v-decorator="[ 'workPlan', {}]"
-                              style="resize:none;height:118px;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
+                    v-decorator="[ 'workPlan', {}]"
+                    style="resize:none;height:118px;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
 
                   </a-textarea>
                 </a-form-item>
@@ -144,7 +144,7 @@
                   :pagination="false"
                   :scroll="{y: 100 ,x:600}"
                   class="inlineTable">
-                  <template  slot="day">
+                  <template slot="day">
                     <a-popover >
                       <template slot="content">
                         <p style="font-size: 12px">1.补偿天数不能大于未补偿天数</p>
@@ -155,7 +155,7 @@
                       <span style="cursor:pointer;" ><a-icon type="edit"/> 天</span>
                     </a-popover>
                   </template>
-                  <template  slot="hour">
+                  <template slot="hour">
                     <a-popover >
                       <template slot="content">
                         <p style="font-size: 12px">1.补偿小时不能大于未补偿小时</p>
@@ -186,11 +186,11 @@
             <tr style="height: 40px;">
               <td class="colfirst">直接领导审批</td>
               <td>
-                <span>{{model.leaderRemark}}</span>
+                <span>{{ model.leaderRemark }}</span>
               </td>
               <td class="colfour">部门领导审批</td>
               <td>
-                <span>{{model.deptLeaderRemark}}</span>
+                <span>{{ model.deptLeaderRemark }}</span>
               </td>
             </tr>
           </table>

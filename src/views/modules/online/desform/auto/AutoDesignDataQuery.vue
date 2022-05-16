@@ -20,10 +20,16 @@
           :filterOption="filterOption"
           @change="desFormChange"
           v-model="desFormValue">
-          <a-select-option v-for="(site,index) in desFormOptions" :key="index" :value="site.value">{{site.text}}</a-select-option>
+          <a-select-option v-for="(site,index) in desFormOptions" :key="index" :value="site.value">{{ site.text }}</a-select-option>
         </a-select>
         <!-- 高级查询 -->
-        <j-super-query style="margin-left: 10px;" ref="supQuery" :fieldList="squeryFieldList" :saveCode="superQuerySaveCode" :loading="loading" @handleSuperQuery="handleSuperQuery"/>
+        <j-super-query
+          style="margin-left: 10px;"
+          ref="supQuery"
+          :fieldList="squeryFieldList"
+          :saveCode="superQuerySaveCode"
+          :loading="loading"
+          @handleSuperQuery="handleSuperQuery"/>
 
         <!-- 批量操作 -->
         <!-- 查询页面暂时屏蔽操作

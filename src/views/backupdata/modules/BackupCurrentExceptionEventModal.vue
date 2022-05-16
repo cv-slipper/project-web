@@ -27,7 +27,13 @@
           <a-input v-decorator="['workId']" placeholder="请输入作业ID"></a-input>
         </a-form-item>
         <a-form-item label="时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择时间" v-decorator="['time']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择时间"
+            v-decorator="['time']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="程序" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['program']" placeholder="请输入程序"></a-input>

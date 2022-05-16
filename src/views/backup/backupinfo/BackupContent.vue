@@ -24,11 +24,11 @@
               <a-input placeholder="请输入计划编号" v-model="queryParam.planCode"></a-input>
             </a-form-item>
           </a-col>
-<!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--            <a-form-item label="关键字">-->
-<!--              <a-input placeholder="请输入关键字" v-model="queryParam.keyWord"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+          <!--            <a-form-item label="关键字">-->
+          <!--              <a-input placeholder="请输入关键字" v-model="queryParam.keyWord"></a-input>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -47,12 +47,12 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i>
-        共找到 <a style="font-weight: 600">{{  }}</a>项
+        共找到 <a style="font-weight: 600">{{ }}</a>项
         <i class="anticon anticon-info-circle ant-alert-icon"></i>
         共找到 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-<!--        <i class="anticon anticon-info-circle ant-alert-icon"></i>-->
-<!--        共找到 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项-->
-<!--        <a style="margin-left: 24px" @click="onClearSelected">清空</a>-->
+        <!--        <i class="anticon anticon-info-circle ant-alert-icon"></i>-->
+        <!--        共找到 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项-->
+        <!--        <a style="margin-left: 24px" @click="onClearSelected">清空</a>-->
       </div>
 
       <a-table
@@ -84,15 +84,19 @@
         <template slot="state" slot-scope="text">
           <a-badge color="green" :text="text" v-if="text == '计划中'"/>
           <a-badge color="blue" :text="text" v-else/>
-<!--          <a-switch v-model="text"></a-switch>-->
+          <!--          <a-switch v-model="text"></a-switch>-->
         </template>
         <template slot="htmlSlot" slot-scope="text">
           <div v-html="text"></div>
         </template>
         <template slot="imgSlot" slot-scope="text">
           <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
-          <img v-else :src="getImgView(text)" height="25px" alt=""
-               style="max-width:80px;font-size: 12px;font-style: italic;"/>
+          <img
+            v-else
+            :src="getImgView(text)"
+            height="25px"
+            alt=""
+            style="max-width:80px;font-size: 12px;font-style: italic;"/>
         </template>
         <template slot="fileSlot" slot-scope="text">
           <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
@@ -109,7 +113,7 @@
 
         <span slot="action" slot-scope="text, record">
           <a @click="handleConfigure(record)">配置</a>
-<!--          <a-divider type="vertical"/>-->
+          <!--          <a-divider type="vertical"/>-->
         </span>
 
       </a-table>

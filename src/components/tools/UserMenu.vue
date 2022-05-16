@@ -6,7 +6,14 @@
       <a-icon type="search"></a-icon>
     </span>
     <!-- update-begin author:sunjianlei date:20200219 for: 菜单搜索改为动态组件，在手机端呈现出弹出框 -->
-    <component :is="searchMenuComp" v-show="searchMenuVisible || isMobile()" class="borders" :visible="searchMenuVisible" title="搜索菜单" :footer="null" @cancel="searchMenuVisible=false">
+    <component
+      :is="searchMenuComp"
+      v-show="searchMenuVisible || isMobile()"
+      class="borders"
+      :visible="searchMenuVisible"
+      title="搜索菜单"
+      :footer="null"
+      @cancel="searchMenuVisible=false">
       <a-select
         class="search-input"
         showSearch
@@ -20,19 +27,19 @@
         @change="searchMethods"
         @blur="hiddenClick"
       >
-        <a-select-option v-for="(site,index) in searchMenuOptions" :key="index" :value="site.id">{{site.meta.title}}</a-select-option>
+        <a-select-option v-for="(site,index) in searchMenuOptions" :key="index" :value="site.id">{{ site.meta.title }}</a-select-option>
       </a-select>
     </component>
     <!-- update-end author:sunjianlei date:20200219 for: 菜单搜索改为动态组件，在手机端呈现出弹出框 -->
     <!-- update-end author:sunjianlei date:20191220 for: 解决全局样式冲突的问题 -->
     <!-- update_end  author:zhaoxin date:20191129 for: 做头部菜单栏导航 -->
-<!--    <span class="action">-->
-<!--      <a class="logout_title" target="_blank" href="http://doc.jeecg.com">-->
-<!--      <a class="logout_title" target="_blank" href="">-->
-<!--        <a-icon type="question-circle-o"></a-icon>-->
-<!--      </a>-->
-<!--    </span>-->
-<!--    <header-notice class="action"/>-->
+    <!--    <span class="action">-->
+    <!--      <a class="logout_title" target="_blank" href="http://doc.jeecg.com">-->
+    <!--      <a class="logout_title" target="_blank" href="">-->
+    <!--        <a-icon type="question-circle-o"></a-icon>-->
+    <!--      </a>-->
+    <!--    </span>-->
+    <!--    <header-notice class="action"/>-->
     <a-dropdown>
       <span class="action action-full ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="getAvatar()"/>
@@ -51,9 +58,9 @@
             <span>账户设置</span>
           </router-link>
         </a-menu-item>
-        <a-menu-item key="3"  @click="systemSetting">
-           <a-icon type="tool"/>
-           <span>系统设置</span>
+        <a-menu-item key="3" @click="systemSetting">
+          <a-icon type="tool"/>
+          <span>系统设置</span>
         </a-menu-item>
         <a-menu-item key="4" @click="updatePassword">
           <a-icon type="setting"/>
@@ -63,9 +70,9 @@
           <a-icon type="cluster"/>
           <span>切换部门</span>
         </a-menu-item
-       <!-- <a-menu-item key="2" disabled>
-          <a-icon type="setting"/>
-          <span>测试</span>
+        <!-- <a-menu-item key="2" disabled>
+        <a-icon type="setting"/>
+        <span>测试</span>
         </a-menu-item>
         <a-menu-divider/>
         <a-menu-item key="3">

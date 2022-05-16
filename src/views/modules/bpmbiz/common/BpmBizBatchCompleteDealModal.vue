@@ -5,7 +5,7 @@
     :visible="visible"
     :title="title"
     width="100%"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     :footer="null"
     destroyOnClose
@@ -28,30 +28,30 @@
 
 
       <div style="width: 60%;margin:0 auto;">
-          <a-divider orientation="left">处理意见</a-divider>
-          <a-row>
-            <a-col :span="24">
-              <a-list-item>
-                <div style="width: 100%;">
-                  <div style="margin-bottom: 5px">
-                    处理意见：
-                    <a-select style="width: 300px" placeholder="常用审批语" @change="handleChangeSelect">
-                      <a-icon slot="suffixIcon" type="smile" />
-                      <a-select-option v-for="(item, key) in remarksDictOptions" :key="key" :value="item.value">{{ item.text }}</a-select-option>
-                    </a-select>
-                  </div>
-                  <a-textarea rows="3" v-model="model.reason" />
+        <a-divider orientation="left">处理意见</a-divider>
+        <a-row>
+          <a-col :span="24">
+            <a-list-item>
+              <div style="width: 100%;">
+                <div style="margin-bottom: 5px">
+                  处理意见：
+                  <a-select style="width: 300px" placeholder="常用审批语" @change="handleChangeSelect">
+                    <a-icon slot="suffixIcon" type="smile" />
+                    <a-select-option v-for="(item, key) in remarksDictOptions" :key="key" :value="item.value">{{ item.text }}</a-select-option>
+                  </a-select>
                 </div>
-              </a-list-item>
-            </a-col>
-          </a-row>
-          <a-row>
-            <a-col :span="24">
-              <div style="text-align:center;">
-              <a-button type="primary" :disabled="disabledButton" @click="handleBatchComplete">确认提交</a-button>
+                <a-textarea rows="3" v-model="model.reason" />
               </div>
-            </a-col>
-          </a-row>
+            </a-list-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="24">
+            <div style="text-align:center;">
+              <a-button type="primary" :disabled="disabledButton" @click="handleBatchComplete">确认提交</a-button>
+            </div>
+          </a-col>
+        </a-row>
       </div>
 
       <div style="width: 60%;margin:0 auto;" v-show="dealStatus">

@@ -79,11 +79,11 @@
         </span>
 
         <span slot="nodeTimeoutRender" slot-scope="text">
-            <template v-if="text === null || text === 0">
-            </template>
-            <template v-else>
-                {{ text +' 小时' }}
-            </template>
+          <template v-if="text === null || text === 0">
+          </template>
+          <template v-else>
+            {{ text +' 小时' }}
+          </template>
         </span>
 
         <!-- 字符串超长截取省略号显示-->

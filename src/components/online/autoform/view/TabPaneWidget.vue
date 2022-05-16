@@ -13,7 +13,7 @@
         <tr v-for="(item, index) in dataList" :key="index">
           <td v-for="(p_item,p_index) in properties" :key="p_index">
 
-            <a-form-item  style="margin-bottom: 10px;display: inline-block;width: 120px" v-if="p_item.key=='action'">
+            <a-form-item style="margin-bottom: 10px;display: inline-block;width: 120px" v-if="p_item.key=='action'">
               <a-button @click="addRowCustom" icon="plus"></a-button>
               <a-button @click="delRowCustom(index)" icon="minus" style="margin-left: 5px"></a-button>
               <a-input v-show="false" v-decorator="getVdecorator(index,'id',{})"/>

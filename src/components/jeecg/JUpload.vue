@@ -30,7 +30,7 @@
           <div class="ant-upload-text">{{ text }}</div>
         </div>
         <a-button v-else-if="buttonVisible">
-         <a-icon type="upload" />{{ text }}
+          <a-icon type="upload" />{{ text }}
         </a-button>
       </template>
     </a-upload>

@@ -3,11 +3,17 @@
     <a-radio v-for="(item, key) in dictOptions" :key="key" :value="item.value">{{ item.text }}</a-radio>
   </a-radio-group>
 
-  <a-radio-group v-else-if="tagType=='radioButton'"  buttonStyle="solid" @change="handleInput" :value="getValueSting" :disabled="disabled">
+  <a-radio-group v-else-if="tagType=='radioButton'" buttonStyle="solid" @change="handleInput" :value="getValueSting" :disabled="disabled">
     <a-radio-button v-for="(item, key) in dictOptions" :key="key" :value="item.value">{{ item.text }}</a-radio-button>
   </a-radio-group>
 
-  <a-select v-else-if="tagType=='select'" :getPopupContainer = "(target) => target.parentNode" :placeholder="placeholder" :disabled="disabled" :value="getValueSting" @change="handleInput">
+  <a-select
+    v-else-if="tagType=='select'"
+    :getPopupContainer="(target) => target.parentNode"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :value="getValueSting"
+    @change="handleInput">
     <a-select-option :value="undefined">请选择</a-select-option>
     <a-select-option v-for="(item, key) in dictOptions" :key="key" :value="item.value">
       <span style="display: inline-block;width: 100%" :title=" item.text || item.label ">

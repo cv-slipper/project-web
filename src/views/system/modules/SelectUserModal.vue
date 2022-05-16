@@ -12,7 +12,7 @@
 
       <!-- 查询区域 -->
       <div class="table-page-search-wrapper">
-        <a-form layout="inline"  @keyup.enter.native="searchQuery">
+        <a-form layout="inline" @keyup.enter.native="searchQuery">
           <a-row :gutter="24">
 
             <a-col :span="10">
@@ -21,10 +21,10 @@
               </a-form-item>
             </a-col>
             <a-col :span="8">
-                    <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-                      <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-                      <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-                    </span>
+              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+                <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+                <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+              </span>
             </a-col>
 
           </a-row>

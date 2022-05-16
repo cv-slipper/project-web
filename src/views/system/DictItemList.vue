@@ -35,10 +35,10 @@
                 </a-form-item>
               </a-col>
               <a-col :md="7" :sm="24">
-              <span style="float: left;" class="table-page-search-submitButtons">
-                <a-button type="primary" @click="searchQuery">搜索</a-button>
-                <a-button type="primary" @click="searchReset" style="margin-left: 8px">重置</a-button>
-              </span>
+                <span style="float: left;" class="table-page-search-submitButtons">
+                  <a-button type="primary" @click="searchQuery">搜索</a-button>
+                  <a-button type="primary" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                </span>
               </a-col>
             </a-row>
             <a-row>
@@ -60,13 +60,13 @@
             @change="handleTableChange"
           >
 
-          <span slot="action" slot-scope="text, record">
-            <a @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-              <a>删除</a>
-            </a-popconfirm>
-          </span>
+            <span slot="action" slot-scope="text, record">
+              <a @click="handleEdit(record)">编辑</a>
+              <a-divider type="vertical"/>
+              <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+                <a>删除</a>
+              </a-popconfirm>
+            </span>
 
           </a-table>
         </div>

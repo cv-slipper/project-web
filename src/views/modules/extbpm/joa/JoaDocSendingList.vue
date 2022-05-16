@@ -7,11 +7,11 @@
         <a-row :gutter="24">
 
 
-            <a-col :md="6" :sm="8">
-              <a-form-item label="公文标题">
-                <a-input placeholder="请输入所属公司" v-model="queryParam.title"></a-input>
-              </a-form-item>
-            </a-col>
+          <a-col :md="6" :sm="8">
+            <a-form-item label="公文标题">
+              <a-input placeholder="请输入所属公司" v-model="queryParam.title"></a-input>
+            </a-form-item>
+          </a-col>
           <a-col :md="6" :sm="8">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -44,7 +44,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
+          selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -78,7 +78,7 @@
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-              <a-menu-item  v-else @click="handlePreviewPic(record)">审批进度</a-menu-item>
+              <a-menu-item v-else @click="handlePreviewPic(record)">审批进度</a-menu-item>
             </a-menu>
           </a-dropdown>
         </span>

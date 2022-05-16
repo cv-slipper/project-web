@@ -53,9 +53,9 @@
             mode="multiple"
             style="width: 100%"
             placeholder="请选择用户角色"
-            optionFilterProp = "children"
+            optionFilterProp="children"
             v-model="selectedRole"
-            :getPopupContainer= "(target) => target.parentNode">
+            :getPopupContainer="(target) => target.parentNode">
             <a-select-option v-for="(role,roleindex) in roleList" :key="roleindex.toString()" :value="role.id">
               {{ role.roleName }}
             </a-select-option>
@@ -72,7 +72,7 @@
             <a-button slot="enterButton" icon="search">选择</a-button>
           </a-input-search>
         </a-form-item>
-       <!-- update--begin--autor:wangshuai-----date:20200108------for：新增身份和负责部门------ -->
+        <!-- update--begin--autor:wangshuai-----date:20200108------for：新增身份和负责部门------ -->
         <a-form-item label="身份" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-radio-group
             v-model="identity"
@@ -81,18 +81,21 @@
             <a-radio value="2">上级</a-radio>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="负责部门" :labelCol="labelCol" :wrapperCol="wrapperCol"  v-if="departIdShow==true">
+        <a-form-item label="负责部门" :labelCol="labelCol" :wrapperCol="wrapperCol" v-if="departIdShow==true">
           <a-select
             mode="multiple"
             style="width: 100%"
             placeholder="请选择负责部门"
             v-model="departIds"
-            optionFilterProp = "children"
-            :getPopupContainer = "(target) => target.parentNode"
+            optionFilterProp="children"
+            :getPopupContainer="(target) => target.parentNode"
             :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
           >
-            <a-select-option v-for="item in resultDepartOptions" :key="item.key" :value="item.key"
-            >{{item.title}}</a-select-option
+            <a-select-option
+              v-for="item in resultDepartOptions"
+              :key="item.key"
+              :value="item.key"
+            >{{ item.title }}</a-select-option
             >
           </a-select>
         </a-form-item>
@@ -110,7 +113,7 @@
         </a-form-item>
 
         <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'sex', {}]" placeholder="请选择性别" :getPopupContainer= "(target) => target.parentNode">
+          <a-select v-decorator="[ 'sex', {}]" placeholder="请选择性别" :getPopupContainer="(target) => target.parentNode">
             <a-select-option :value="1">男</a-select-option>
             <a-select-option :value="2">女</a-select-option>
           </a-select>
@@ -129,7 +132,7 @@
         </a-form-item>
 
         <a-form-item label="工作流引擎" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-dict-select-tag  v-decorator="['activitiSync', {}]" placeholder="请选择是否同步工作流引擎" :type="'radio'" :triggerChange="true" dictCode="activiti_sync"/>
+          <j-dict-select-tag v-decorator="['activitiSync', {}]" placeholder="请选择是否同步工作流引擎" :type="'radio'" :triggerChange="true" dictCode="activiti_sync"/>
         </a-form-item>
 
       </a-form>

@@ -17,7 +17,7 @@
           <a-col>
             <a-input :value="str" style="text-align: center;width: 40px;"/>
           </a-col>
-          <a-col style="text-align: center;">{{index+1}}</a-col>
+          <a-col style="text-align: center;">{{ index+1 }}</a-col>
         </a-row>
       </a-col>
     </a-row>

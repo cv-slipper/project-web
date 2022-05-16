@@ -5,7 +5,8 @@
     :visible="visible"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
-    fullscreen switchFullscreen
+    fullscreen
+    switchFullscreen
     @ok="handleOk"
     @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">

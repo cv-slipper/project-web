@@ -30,7 +30,7 @@
               :labelCol="labelCol"
               :wrapperCol="wrapperCol"
               label="模板类型">
-              <j-dict-select-tag  @change="handleChangeTemplateType" :triggerChange="true" dictCode="msgType" v-decorator="['templateType', validatorRules.templateType ]" placeholder="请选择模板类型">
+              <j-dict-select-tag @change="handleChangeTemplateType" :triggerChange="true" dictCode="msgType" v-decorator="['templateType', validatorRules.templateType ]" placeholder="请选择模板类型">
               </j-dict-select-tag>
             </a-form-item>
           </a-col>
@@ -70,7 +70,7 @@
               :wrapperCol="wrapperCol"
               label="模板内容"
               style="margin-left: 4px;width: 126%">
-              <j-editor  v-model="templateEditorContent"></j-editor>
+              <j-editor v-model="templateEditorContent"></j-editor>
             </a-form-item>
           </a-col>
         </a-row>

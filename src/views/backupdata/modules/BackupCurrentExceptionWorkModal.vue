@@ -45,10 +45,22 @@
           <a-input v-decorator="['storageStrategy']" placeholder="请输入存储策略"></a-input>
         </a-form-item>
         <a-form-item label="开始时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择开始时间" v-decorator="['startTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择开始时间"
+            v-decorator="['startTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="结束时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择结束时间" v-decorator="['endTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择结束时间"
+            v-decorator="['endTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="持续" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['duration']" placeholder="请输入持续"></a-input>

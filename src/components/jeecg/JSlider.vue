@@ -1,7 +1,7 @@
 <template>
   <div class="drag" ref="dragDiv">
     <div class="drag_bg"></div>
-    <div class="drag_text">{{confirmWords}}</div>
+    <div class="drag_text">{{ confirmWords }}</div>
     <div ref="moveDiv" @mousedown="mousedownFn($event)" :class="{'handler_ok_bg':confirmSuccess}" class="handler handler_bg" style="border: 0.5px solid #fff;height: 34px;position: absolute;top: 0px;left: 0px;"></div>
   </div>
 </template>

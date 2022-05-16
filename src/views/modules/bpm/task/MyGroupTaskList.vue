@@ -48,12 +48,12 @@
 
         <span slot="action" slot-scope="text, record">
           <template v-if="record.taskAssigneeName&&record.taskAssigneeName!=''">
-            <a  @click="handleProcess(record)">
+            <a @click="handleProcess(record)">
               办理
             </a>
           </template>
           <template v-else>
-            <a  @click="handleClaim(record)" >
+            <a @click="handleClaim(record)" >
               签收
             </a>
           </template>

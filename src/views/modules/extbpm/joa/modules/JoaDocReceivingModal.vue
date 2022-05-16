@@ -49,7 +49,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'fromDate', {}]"
                     :allowClear="false"/>
                 </a-form-item>
@@ -150,7 +150,7 @@
                 登记人
               </td>
               <td colspan="2">
-                <span>{{nickname}}</span>
+                <span>{{ nickname }}</span>
               </td>
               <td>
                 登记时间
@@ -163,7 +163,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     v-decorator="[ 'bookDate', {}]"/>
                 </a-form-item>
               </td>

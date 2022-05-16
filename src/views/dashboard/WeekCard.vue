@@ -3,7 +3,7 @@
     <!-- 图表区域-begin -->
     <a-row :gutter="24">
       <a-col :span="9">
-        <a-card  :bordered="false" style="width: 100%">
+        <a-card :bordered="false" style="width: 100%">
           <template slot="title">
             <a-row>
               <a-col :span="4">作业</a-col>

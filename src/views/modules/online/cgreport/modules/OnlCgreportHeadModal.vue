@@ -8,7 +8,8 @@
     :maskClosable="false"
     cancelText="关闭"
     style="top: 40px;"
-    fullscreen switchFullscreen
+    fullscreen
+    switchFullscreen
     @ok="handleOk"
     @cancel="handleCancel">
 

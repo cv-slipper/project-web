@@ -1,26 +1,26 @@
 <template>
-    <!--style="width: calc(100% - 100px); height: calc(100% - 55px);"-->
-    <!-- 弹出框 -->
-    <a-modal
-      :title="title"
-      :visible="visible"
-      width="60%"
-      destroyOnClose
-      :bodyStyle ="bodyStyle"
-      :footer="null"
-      @cancel="handleModalCancel">
-      <a-tabs defaultActiveKey="1" tabPosition="top">
+  <!--style="width: calc(100% - 100px); height: calc(100% - 55px);"-->
+  <!-- 弹出框 -->
+  <a-modal
+    :title="title"
+    :visible="visible"
+    width="60%"
+    destroyOnClose
+    :bodyStyle="bodyStyle"
+    :footer="null"
+    @cancel="handleModalCancel">
+    <a-tabs defaultActiveKey="1" tabPosition="top">
 
-        <a-tab-pane key="1">
-          <span slot="tab">
-            <a-icon type="sliders"/>
-            <span>提醒我的</span>
-          </span>
-          <task-notify-me-list ref="taskNotifyMeList" :procInstId="procInstId"></task-notify-me-list>
-        </a-tab-pane>
+      <a-tab-pane key="1">
+        <span slot="tab">
+          <a-icon type="sliders"/>
+          <span>提醒我的</span>
+        </span>
+        <task-notify-me-list ref="taskNotifyMeList" :procInstId="procInstId"></task-notify-me-list>
+      </a-tab-pane>
 
-      </a-tabs>
-    </a-modal>
+    </a-tabs>
+  </a-modal>
 </template>
 
 <script>

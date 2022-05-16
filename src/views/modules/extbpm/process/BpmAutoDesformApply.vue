@@ -16,7 +16,7 @@
                   <div v-else class="mobName">
                     <a-icon v-if="des.appIcon" :type="des.appIcon" :style="style"/>
                     <a-icon v-else type="file-text" :style="style"/>
-                    {{des.desformName.length>4?des.desformName.substr(0,4):des.desformName}}
+                    {{ des.desformName.length>4?des.desformName.substr(0,4):des.desformName }}
                   </div>
                 </a-card-grid>
               </template>
@@ -24,32 +24,32 @@
           </a-col>
         </template>
         <template v-for="item of processTypeDictOptions">
-            <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-              <a-card :loading="loading"  :title="item.text" :style="{ marginTop: '24px',height:'auto' }" :headStyle="{ backgroundColor:'#eaeaea' }">
-                <!--<a @click="viewMore(item.value)" slot="extra">查看更多</a>-->
-                <template v-for="des of desformList">
-                  <template v-if="des.procType == item.value">
-                    <a-card-grid :style="{width:cardWidth}" @click="handleOk(des)">
-                      <a-icon v-if="des.desformIcon" :type="des.desformIcon" :style="style"/>
-                      <a-icon v-else type="file-text" :style="style"/>
-                      <span class="bsSpan" v-if="screenWidth>700">
-                        <j-ellipsis :value="des.desformName" :length="6"/>
-                      </span>
-                      <div v-else class="mobName">
-                        {{des.desformName.length>4?des.desformName.substr(0,4):des.desformName}}
-                      </div>
-                    </a-card-grid>
-                  </template>
+          <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
+            <a-card :loading="loading" :title="item.text" :style="{ marginTop: '24px',height:'auto' }" :headStyle="{ backgroundColor:'#eaeaea' }">
+              <!--<a @click="viewMore(item.value)" slot="extra">查看更多</a>-->
+              <template v-for="des of desformList">
+                <template v-if="des.procType == item.value">
+                  <a-card-grid :style="{width:cardWidth}" @click="handleOk(des)">
+                    <a-icon v-if="des.desformIcon" :type="des.desformIcon" :style="style"/>
+                    <a-icon v-else type="file-text" :style="style"/>
+                    <span class="bsSpan" v-if="screenWidth>700">
+                      <j-ellipsis :value="des.desformName" :length="6"/>
+                    </span>
+                    <div v-else class="mobName">
+                      {{ des.desformName.length>4?des.desformName.substr(0,4):des.desformName }}
+                    </div>
+                  </a-card-grid>
                 </template>
-              </a-card>
-            </a-col>
+              </template>
+            </a-card>
+          </a-col>
         </template>
       </template>
       <template v-else>
         <span>没有找到配置的流程！</span>
       </template>
     </a-spin>
-    <auto-desform-data-modal ref="desformModal" :dialogOptions="dialogOptions"  @added="handleDesformDataAdded"></auto-desform-data-modal>
+    <auto-desform-data-modal ref="desformModal" :dialogOptions="dialogOptions" @added="handleDesformDataAdded"></auto-desform-data-modal>
     <bpm-auto-desform-set-use ref="setUse" @reload="reload"></bpm-auto-desform-set-use>
   </a-card>
 </template>

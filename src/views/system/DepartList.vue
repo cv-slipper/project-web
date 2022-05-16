@@ -8,7 +8,13 @@
           <a-button @click="handleAdd(1)" type="primary">添加部门</a-button>
           <a-button @click="handleAdd(2)" type="primary">添加下级</a-button>
           <a-button type="primary" icon="download" @click="handleExportXls('部门信息')">导出</a-button>
-          <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+          <a-upload
+            name="file"
+            :showUploadList="false"
+            :multiple="false"
+            :headers="tokenHeader"
+            :action="importExcelUrl"
+            @change="handleImportExcel">
             <a-button type="primary" icon="import">导入</a-button>
           </a-upload>
           <a-button title="删除多条数据" @click="batchDel" type="default">批量删除</a-button>
@@ -26,20 +32,20 @@
           <a-col :md="10" :sm="24">
             <template>
               <a-dropdown :trigger="[this.dropTrigger]" @visibleChange="dropStatus">
-               <span style="user-select: none">
-            <a-tree
-              checkable
-              multiple
-              @select="onSelect"
-              @check="onCheck"
-              @rightClick="rightHandle"
-              :selectedKeys="selectedKeys"
-              :checkedKeys="checkedKeys"
-              :treeData="departTree"
-              :checkStrictly="checkStrictly"
-              :expandedKeys="iExpandedKeys"
-              :autoExpandParent="autoExpandParent"
-              @expand="onExpand"/>
+                <span style="user-select: none">
+                  <a-tree
+                    checkable
+                    multiple
+                    @select="onSelect"
+                    @check="onCheck"
+                    @rightClick="rightHandle"
+                    :selectedKeys="selectedKeys"
+                    :checkedKeys="checkedKeys"
+                    :treeData="departTree"
+                    :checkStrictly="checkStrictly"
+                    :expandedKeys="iExpandedKeys"
+                    :autoExpandParent="autoExpandParent"
+                    @expand="onExpand"/>
                 </span>
                 <!--新增右键点击事件,和增加添加和删除功能-->
                 <a-menu slot="overlay">

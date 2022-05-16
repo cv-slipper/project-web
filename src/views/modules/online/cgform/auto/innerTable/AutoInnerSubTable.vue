@@ -5,7 +5,12 @@
     :table="table"
     :isorter="isorter"
     :show-alert-bar="false"
-    :buttonSwitch="{}" :cgButtonLinkList="[]" currentTableName="" :checkboxFlag="false" :hasBpmStatus="false" :scrollFlag="0"
+    :buttonSwitch="{}"
+    :cgButtonLinkList="[]"
+    currentTableName=""
+    :checkboxFlag="false"
+    :hasBpmStatus="false"
+    :scrollFlag="0"
   />
 
 </template>

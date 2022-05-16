@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title"
-     width="950px"
+    width="950px"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :okButtonProps="{ props: {disabled: disableSubmit} }"
@@ -14,12 +14,12 @@
         <a-card id="staffCard" style="margin: 0 auto;width: 750px">
           <span id="staffLeaveTitle">员工请假单</span>
           <div class="staffLeaveTableId" style="margin-bottom: 5px">
-          <a-form-item
-            :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
-            :wrapperCol="{xs: { span: 24 },sm: { span: 10 }}"
-            label="编号:">
+            <a-form-item
+              :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
+              :wrapperCol="{xs: { span: 24 },sm: { span: 10 }}"
+              label="编号:">
               <a-input class="fontiframe" :readOnly="true" v-model="model.applyNo"/>
-          </a-form-item>
+            </a-form-item>
           </div>
           <table border="1px" id="staffLeaveTable">
             <tr>
@@ -36,7 +36,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.department}}</span>
+                  <span class="fontiframe">{{ model.department }}</span>
                 </a-form-item>
               </td>
               <td class="firstTr">职务</td>
@@ -44,7 +44,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.duty}}</span>
+                  <span class="fontiframe">{{ model.duty }}</span>
                 </a-form-item>
               </td>
             </tr>
@@ -96,7 +96,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'leaveStartDate', {}]"
                     :allowClear="false"
                   />
@@ -106,7 +106,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'leaveEndDate', {}]"
                     :allowClear="false"
                   />
@@ -134,7 +134,7 @@
                   :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
                   :wrapperCol="wrapperCol"
                   label="休息期间应急工作委托人:">
-                  <a-input class="text"  v-decorator="[ 'dutyDeputy', {}]"/>
+                  <a-input class="text" v-decorator="[ 'dutyDeputy', {}]"/>
                 </a-form-item>
               </td>
             </tr>
@@ -144,7 +144,7 @@
                   :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
                   :wrapperCol="wrapperCol"
                   label="部门主管(经理)意见:">
-                  <span>{{model.leaderApproval}}</span><br/>
+                  <span>{{ model.leaderApproval }}</span><br/>
                   <span class="fontiframe" style="text-align: right;">负责人:</span>
                 </a-form-item>
               </td>
@@ -153,7 +153,7 @@
                   :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
                   :wrapperCol="wrapperCol"
                   label="人力资源部(行政办)意见:">
-                  <span class="fontiframe">{{model.hrPrincipalApproval}}</span><br/>
+                  <span class="fontiframe">{{ model.hrPrincipalApproval }}</span><br/>
                   <span class="fontiframe" style="text-align: right;">负责人:</span>
                 </a-form-item>
               </td>
@@ -164,7 +164,7 @@
                   :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
                   :wrapperCol="wrapperCol"
                   label="总经理意见:">
-                  <span class="fontiframe">{{model.deptPrincipalApproval}}</span><br/>
+                  <span class="fontiframe">{{ model.deptPrincipalApproval }}</span><br/>
                   <span class="fontiframe" style="text-align: right;">总经理:</span>
                 </a-form-item>
               </td>
@@ -184,7 +184,7 @@
           :wrapperCol="wrapperCol"
           hidden
         >
-          <a-date-picker class="input" placeholder="" format='YYYY-MM-DD' disabled  v-decorator="[ 'applyDate', {}]" />
+          <a-date-picker class="input" placeholder="" format="YYYY-MM-DD" disabled v-decorator="[ 'applyDate', {}]" />
         </a-form-item>
       </a-form>
     </a-spin>

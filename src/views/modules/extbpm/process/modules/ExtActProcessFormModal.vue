@@ -55,7 +55,7 @@
             <a-input placeholder="请输入流程状态字段" v-decorator="['flowStatusCol', validatorRules.flowStatusCol]" :readOnly="relationCodeReadonly" />
           </a-form-item>
         </template>
-        <template  v-else-if="formTypeValue == '2'">
+        <template v-else-if="formTypeValue == '2'">
           <a-form-item
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"

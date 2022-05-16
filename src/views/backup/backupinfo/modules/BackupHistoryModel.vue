@@ -20,7 +20,7 @@
         <a-col :span="12">
           <a-form-item label="appName" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <j-dict-select-tag v-model="taskData.taskInfo.associations.appName" dictCode="appName" placeholder="请输入-appName"/>
-<!--            <a-input v-model="taskData.taskInfo.associations.appName" placeholder="请输入-appName"></a-input>-->
+            <!--            <a-input v-model="taskData.taskInfo.associations.appName" placeholder="请输入-appName"></a-input>-->
           </a-form-item>
         </a-col>
         <a-col :span="12">

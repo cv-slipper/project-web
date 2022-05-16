@@ -11,7 +11,7 @@
       cancelText="关闭">
       <a-row :gutter="24">
         <a-col :span="16">
-          <a-card title="选择表单权限字段" :bordered=true>
+          <a-card title="选择表单权限字段" :bordered="true">
             <!-- 查询区域 -->
             <!-- table区域-begin -->
             <div>
@@ -32,7 +32,7 @@
           </a-card>
         </a-col>
         <a-col :span="8">
-          <a-card title="权限选择" :bordered=true>
+          <a-card title="权限选择" :bordered="true">
             <!-- table区域-begin -->
             <div>
               <a-table

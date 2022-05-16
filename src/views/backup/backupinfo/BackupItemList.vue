@@ -3,7 +3,7 @@
   <div >
     <span v-for="item in backupItem">
       <a-checkbox :default-checked="item.checked">
-        {{item.text}}
+        {{ item.text }}
       </a-checkbox>
     </span>
   </div>

@@ -12,35 +12,35 @@
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="备份名称">
-          <a-input v-model="queryParam.planName" placeholder="请输入备份名称"/>
-        </a-form-item>
-      </a-col>
+              <a-input v-model="queryParam.planName" placeholder="请输入备份名称"/>
+            </a-form-item>
+          </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="系统名称">
-          <a-input v-model="queryParam.systemName" placeholder="请输入系统名称"/>
-        </a-form-item>
-      </a-col>
+              <a-input v-model="queryParam.systemName" placeholder="请输入系统名称"/>
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="客户端">
-            <a-input v-model="queryParam.client" placeholder="请输入客户端"/>
-          </a-form-item>
-        </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="IP">
-          <a-input v-model="queryParam.ip" placeholder="请输入IP"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="状态">
-          <a-input v-model="queryParam.state" placeholder="请输入状态"/>
-        </a-form-item>
-      </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="内容简述">
-          <a-input v-model="queryParam.contentSketch" placeholder="请输入内容简述"/>
-        </a-form-item>
-      </a-col>
+                <a-input v-model="queryParam.client" placeholder="请输入客户端"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="IP">
+                <a-input v-model="queryParam.ip" placeholder="请输入IP"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="状态">
+                <a-input v-model="queryParam.state" placeholder="请输入状态"/>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="内容简述">
+                <a-input v-model="queryParam.contentSketch" placeholder="请输入内容简述"/>
+              </a-form-item>
+            </a-col>
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span class="table-page-search-submitButtons table-operator">
@@ -61,7 +61,13 @@
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('备份内容')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
 

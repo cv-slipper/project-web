@@ -45,9 +45,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a  @click="showHistory(record)">
-                查看审批
-            </a>
+          <a @click="showHistory(record)">
+            查看审批
+          </a>
         </span>
 
         <!-- 字符串超长截取省略号显示-->

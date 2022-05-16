@@ -1,23 +1,23 @@
 <template>
-    <a-modal
-      destroyOnClose
-      :title="title"
-      :width="900"
-      :visible="visible"
-      @ok="handleOk"
-      @cancel="handleCancel"
-      cancelText="关闭">
+  <a-modal
+    destroyOnClose
+    :title="title"
+    :width="900"
+    :visible="visible"
+    @ok="handleOk"
+    @cancel="handleCancel"
+    cancelText="关闭">
 
-      <div>
-        <a-form-item label="用户名：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-          <a-input-search placeholder="点击选择用户" readOnly @search="handleSelect" v-model="model.userName">
-            <a-button slot="enterButton" icon="search">选择</a-button>
-          </a-input-search>
-        </a-form-item>
-      </div>
+    <div>
+      <a-form-item label="用户名：" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-input-search placeholder="点击选择用户" readOnly @search="handleSelect" v-model="model.userName">
+          <a-button slot="enterButton" icon="search">选择</a-button>
+        </a-input-search>
+      </a-form-item>
+    </div>
 
     <select-single-user-modal ref="selectSingleUserModal" @selectFinished="selectUserOK"></select-single-user-modal>
-    </a-modal>
+  </a-modal>
 </template>
 
 <script>

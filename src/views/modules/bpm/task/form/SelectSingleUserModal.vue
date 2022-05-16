@@ -13,7 +13,7 @@
       <a-row :gutter="{xs:24,sm:24}">
         <a-col :xs="24" :sm="6">
 
-          <a-card title="组织机构" :bordered=true>
+          <a-card title="组织机构" :bordered="true">
             <a-alert type="info" :showIcon="true">
               <div slot="message">
                 当前选择：
@@ -33,7 +33,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="12">
-          <a-card title="选择人员" :bordered=true>
+          <a-card title="选择人员" :bordered="true">
             <!-- 查询区域 -->
             <div class="table-page-search-wrapper">
               <a-form layout="inline" @keyup.enter.native="searchQuery">
@@ -85,7 +85,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="6">
-          <a-card title="已选中用户" :bordered=true>
+          <a-card title="已选中用户" :bordered="true">
             <!-- table区域-begin -->
             <div>
               <a-table

@@ -17,7 +17,7 @@
           <!--</a-col>-->
           <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
             <a-col :md="6" :sm="24">
-             <a-button type="primary" @click="searchQuery" icon="search" style="margin-left: 18px">查询</a-button>
+              <a-button type="primary" @click="searchQuery" icon="search" style="margin-left: 18px">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
             </a-col>
           </span>
@@ -47,7 +47,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
+          selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -75,7 +75,7 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-                <a-menu-item>
+              <a-menu-item>
                 <a href="javascript:;" @click="handleDeptRole(record)">分配部门角色</a>
               </a-menu-item>
 

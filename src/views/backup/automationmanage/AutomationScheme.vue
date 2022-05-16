@@ -122,10 +122,11 @@
     <div class="contentArea">
       <!--    客户端显示区域-->
       <div class="blockArea">
-        <a-list :grid="{ gutter: 24, xxl: 4  }"
-                :data-source="data"
-                :pagination="pagination"
-                @change="listChange"
+        <a-list
+          :grid="{ gutter: 24, xxl: 4 }"
+          :data-source="data"
+          :pagination="pagination"
+          @change="listChange"
         >
           <a-list-item slot="renderItem" slot-scope="item, index">
             <template v-if="item.type == 'view'">

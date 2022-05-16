@@ -52,16 +52,16 @@
 
         <span slot="action" slot-scope="text, record">
           <template v-if="record.taskAssigneeName&&record.taskAssigneeName!=''">
-            <a  @click="handleProcess(record)">
+            <a @click="handleProcess(record)">
               办理
             </a>
             <a-divider type="vertical" />
-            <a  @click="selectEntruster(record)">
+            <a @click="selectEntruster(record)">
               委托
             </a>
           </template>
           <template v-else>
-            <a  @click="handleClaim(record)" >
+            <a @click="handleClaim(record)" >
               签收
             </a>
           </template>
@@ -69,7 +69,13 @@
         </span>
         <!-- 字符串超长截取省略号显示-->
         <span slot="bpmBizTitle" slot-scope="text, record">
-          <a-icon title="催办提醒" v-if="record.taskUrge" theme="twoTone" twoToneColor="#eb2f96"  @click="taskNotify(record)" type="notification"/>
+          <a-icon
+            title="催办提醒"
+            v-if="record.taskUrge"
+            theme="twoTone"
+            twoToneColor="#eb2f96"
+            @click="taskNotify(record)"
+            type="notification"/>
           <j-ellipsis :value="text" :length="15"/>
         </span>
 

@@ -13,7 +13,7 @@
               <!--  <j-dict-select-tag title="性别" dictCode="sex" disabled/>-->
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.sex}}</a-col>
+          <a-col :span="12">选中值：{{ formData.sex }}</a-col>
         </a-row>
 
         <!--  字典表下拉 -->
@@ -23,7 +23,7 @@
               <j-dict-select-tag v-model="formData.user" placeholder="请选择用户" dictCode="sys_user,realname,id"/>
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.user}}</a-col>
+          <a-col :span="12">选中值：{{ formData.user }}</a-col>
         </a-row>
 
         <!--  带条件字典表下拉 -->
@@ -33,7 +33,7 @@
               <j-dict-select-tag v-model="formData.user2" placeholder="请选择用户" dictCode="sys_user,realname,id,username!='admin' order by create_time"/>
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.user2}}</a-col>
+          <a-col :span="12">选中值：{{ formData.user2 }}</a-col>
         </a-row>
 
 
@@ -45,7 +45,7 @@
               </j-search-select-tag>
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.searchValue}}</a-col>
+          <a-col :span="12">选中值：{{ formData.searchValue }}</a-col>
         </a-row>
 
         <!--  字典搜索 异步加载 -->
@@ -60,7 +60,7 @@
               </j-search-select-tag>
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.asyncSelectValue}}</a-col>
+          <a-col :span="12">选中值：{{ formData.asyncSelectValue }}</a-col>
         </a-row>
 
         <!--  JMultiSelectTag -->
@@ -123,17 +123,17 @@
               <j-select-role v-model="formData.selectRole" @change="changeMe"/>
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.selectRole}}</a-col>
+          <a-col :span="12">选中值：{{ formData.selectRole }}</a-col>
         </a-row>
 
         <!-- 职务选择 -->
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="选择职务">
-              <j-select-position  v-model="formData.selectPosition" />
+              <j-select-position v-model="formData.selectPosition" />
             </a-form-item>
           </a-col>
-          <a-col :span="12">选中值：{{ formData.selectPosition}}</a-col>
+          <a-col :span="12">选中值：{{ formData.selectPosition }}</a-col>
         </a-row>
 
         <!--  JCheckbox -->

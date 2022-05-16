@@ -3,10 +3,10 @@
     :title="title"
     :width="modelStyle.width"
     :visible="visible"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     :switchFullscreen="switchFullscreen"
     @cancel="handleCancel"
-   >
+  >
     <template slot="footer">
       <a-button key="back" @click="handleCancel">关闭</a-button>
       <a-button v-if="record.openType==='url'" type="primary" @click="toHandle">去处理</a-button>

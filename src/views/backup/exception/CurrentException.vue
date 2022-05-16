@@ -2,10 +2,10 @@
   <a-card :bordered="false">
     <!-- 查询区域 -->
     <div class="table-page-search-wrapper">
-      <div  v-if="toggleSearchStatus">
+      <div v-if="toggleSearchStatus">
         <!-- 页签 -->
         <a-row :gutter="24">
-<!--          <span class="tag-title">严重性：</span>-->
+          <!--          <span class="tag-title">严重性：</span>-->
           <a-radio-group default-value="work" button-style="solid" v-model="viewLabel" @change="onViewLabelChange">
             <a-radio-button value="work">
               作业
@@ -63,13 +63,13 @@
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-<!--              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>-->
+              <!--              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>-->
               <a-button type="primary" @click="filterDataSource" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-<!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
-<!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
-<!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-<!--              </a>-->
+              <!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
+              <!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
+              <!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
+              <!--              </a>-->
             </span>
           </a-col>
         </a-row>
@@ -80,11 +80,25 @@
     <!-- 指标卡区域-begin -->
     <div class="space">
       <a-row :gutter="24">
-        <a-col :xs="0" :sm="0" :md="0" :lg="0" :xl="0" :xxl="1">
+        <a-col
+          :xs="0"
+          :sm="0"
+          :md="0"
+          :lg="0"
+          :xl="0"
+          :xxl="1">
 
         </a-col>
         <template v-for="item in dataCard" >
-          <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="3" @click="handleCardClick(item.text)" v-show="item.group === viewLabel">
+          <a-col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="8"
+            :xl="8"
+            :xxl="3"
+            @click="handleCardClick(item.text)"
+            v-show="item.group === viewLabel">
             <a>
               <a-col span="7">
                 <a-icon :type="item.icon" theme="twoTone" :two-tone-color="label == item.text?item.color:'Gainsboro'" style="font-size: 50px"/>
@@ -92,10 +106,10 @@
             </a>
             <a-col span="16">
               <a-row>
-                <span style="font-size: 20px">{{item.num}}</span>
+                <span style="font-size: 20px">{{ item.num }}</span>
               </a-row>
               <a-row>
-                <span style="font-size: 10px">{{item.text}}</span>
+                <span style="font-size: 10px">{{ item.text }}</span>
               </a-row>
             </a-col>
           </a-col>
@@ -110,7 +124,7 @@
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;" v-if="label!='作业量'">
         <i class="anticon anticon-info-circle ant-alert-icon"></i>
         已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-<!--        <a style="margin-left: 24px" @click="onClearSelected">清空</a>-->
+        <!--        <a style="margin-left: 24px" @click="onClearSelected">清空</a>-->
         <a-popconfirm placement="topLeft" ok-text="确认" cancel-text="取消" @confirm="confirmHandle" style="width: 300rem">
           <a-icon slot="icon" type="question-circle-o" style="color: red" />
           <template slot="title">
@@ -142,13 +156,13 @@
               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
               @change="handleTableChange1">
               <template slot="endTime" slot-scope="text">
-                <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+                <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
               </template>
               <template slot="duration" slot-scope="text">
-                <span>{{formatTime(text)}}</span>
+                <span>{{ formatTime(text) }}</span>
               </template>
               <template slot="programSize" slot-scope="text">
-                <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+                <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
               </template>
               <span slot="action" slot-scope="text, record">
                 <a @click="showDetail(record)">详情</a>
@@ -173,17 +187,17 @@
               @change="handleTableChange2">
 
               <template slot="endTime" slot-scope="text">
-                <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+                <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
               </template>
               <template slot="duration" slot-scope="text">
-                <span>{{formatTime(text)}}</span>
+                <span>{{ formatTime(text) }}</span>
               </template>
               <template slot="programSize" slot-scope="text">
-                <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+                <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
               </template>
               <span slot="action" slot-scope="text, record">
                 <a @click="showDetail(record)">详情</a>
-<!--                <a-divider type="vertical"/>-->
+                <!--                <a-divider type="vertical"/>-->
               </span>
 
             </a-table>
@@ -204,17 +218,17 @@
               @change="handleTableChange3">
 
               <template slot="endTime" slot-scope="text">
-                <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+                <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
               </template>
               <template slot="duration" slot-scope="text">
-                <span>{{formatTime(text)}}</span>
+                <span>{{ formatTime(text) }}</span>
               </template>
               <template slot="programSize" slot-scope="text">
-                <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+                <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
               </template>
               <span slot="action" slot-scope="text, record">
                 <a @click="showDetail(record)">详情</a>
-<!--                <a-divider type="vertical"/>-->
+                <!--                <a-divider type="vertical"/>-->
               </span>
 
             </a-table>
@@ -235,17 +249,17 @@
               @change="handleTableChange4">
 
               <template slot="endTime" slot-scope="text">
-                <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+                <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
               </template>
               <template slot="duration" slot-scope="text">
-                <span>{{formatTime(text)}}</span>
+                <span>{{ formatTime(text) }}</span>
               </template>
               <template slot="programSize" slot-scope="text">
-                <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+                <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
               </template>
               <span slot="action" slot-scope="text, record">
                 <a @click="showDetail(record)">详情</a>
-<!--                <a-divider type="vertical"/>-->
+                <!--                <a-divider type="vertical"/>-->
               </span>
 
             </a-table>
@@ -274,8 +288,8 @@
         </span>
 
         <span slot="action" slot-scope="text, record">
-<!--          <a @click="showDetail(record)">详情</a>-->
-<!--          <a-divider type="vertical"/>-->
+          <!--          <a @click="showDetail(record)">详情</a>-->
+          <!--          <a-divider type="vertical"/>-->
         </span>
       </a-table>
       <!-- 事件列表-begin -->
@@ -297,7 +311,7 @@
 
         <span slot="action" slot-scope="text, record">
           <a @click="showDetail(record)">详情</a>
-<!--          <a-divider type="vertical"/>-->
+          <!--          <a-divider type="vertical"/>-->
         </span>
       </a-table>
       <!-- 备份资源不足列表-begin -->
@@ -320,8 +334,8 @@
               @change="handleTableChange">
 
               <span slot="action" slot-scope="text, record">
-<!--                <a @click="showDetail(record)">详情</a>-->
-<!--                <a-divider type="vertical"/>-->
+                <!--                <a @click="showDetail(record)">详情</a>-->
+                <!--                <a-divider type="vertical"/>-->
               </span>
             </a-table>
           </a-tab-pane>
@@ -341,8 +355,8 @@
               @change="handleTableChange">
 
               <span slot="action" slot-scope="text, record">
-<!--                <a @click="showDetail(record)">详情</a>-->
-<!--                <a-divider type="vertical"/>-->
+                <!--                <a @click="showDetail(record)">详情</a>-->
+                <!--                <a-divider type="vertical"/>-->
               </span>
 
             </a-table>

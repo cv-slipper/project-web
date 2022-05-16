@@ -11,7 +11,7 @@
 
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-card id="staffCard"  style="margin: 0 auto;width: 750px">
+        <a-card id="staffCard" style="margin: 0 auto;width: 750px">
           <span id="staffBmTitle">借款单</span>
           <table border="1px" id="staffBmTable">
             <tr>
@@ -28,7 +28,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.departName}}</span>
+                  <span class="fontiframe">{{ model.departName }}</span>
                 </a-form-item>
               </td>
               <td>
@@ -42,7 +42,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     disabled
                     v-decorator="[ 'loanTime', {}]"/>
                 </a-form-item>
@@ -55,18 +55,18 @@
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol"
                 >
-                <a-input-number
-                  class="smallText"
-                  v-decorator="[ 'loanAmount', validatorRules.loanAmount]"
-                  size="small"
-                  :min="1"
-                  :max="99999999"
-                  @change="upperOnChange"/>
+                  <a-input-number
+                    class="smallText"
+                    v-decorator="[ 'loanAmount', validatorRules.loanAmount]"
+                    size="small"
+                    :min="1"
+                    :max="99999999"
+                    @change="upperOnChange"/>
                 </a-form-item>
               </td>
               <td>金额大写</td>
               <td colspan="3">
-                  {{upperSum}}
+                {{ upperSum }}
               </td>
             </tr>
             <tr>
@@ -108,19 +108,19 @@
                 部门领导审核
               </td>
               <td>
-                <span>{{model.departLeaderAudit}}</span>
+                <span>{{ model.departLeaderAudit }}</span>
               </td>
               <td>
                 财务审核
               </td>
               <td>
-                <span>{{model.financeAudit}}</span>
+                <span>{{ model.financeAudit }}</span>
               </td>
               <td>
                 总经理审核
               </td>
               <td>
-                <span>{{model. managerAudit}}</span>
+                <span>{{ model. managerAudit }}</span>
               </td>
             </tr>
             <tr style="height: 45px;">
@@ -128,12 +128,12 @@
                 出纳放款
               </td>
               <td>
-                <span>{{model. cashierLoanAmount}}</span>
+                <span>{{ model. cashierLoanAmount }}</span>
               </td>
               <td>借款发放时间</td>
               <td colspan="3">
                 <span>
-                  {{model.cashierLoanTime}}
+                  {{ model.cashierLoanTime }}
                 </span>
               </td>
             </tr>

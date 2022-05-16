@@ -64,7 +64,7 @@
   import { httpAction } from '@/api/manage'
 
   export default {
-    name: 'createTaskModal',
+    name: 'CreateTaskModal',
     components: {
       JCron,
       JEllipsis,

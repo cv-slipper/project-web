@@ -1,20 +1,20 @@
 <template>
   <div class="page-header-index-wide">
     <!-- 指标卡区域-begin -->
-    <a-card  :bordered="false" style="width: 100%">
-<!--      <template slot="title">-->
-<!--        <a-row>-->
-<!--&lt;!&ndash;          <a-col :span="4">{{term}}h</a-col>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a-col :span="16">&ndash;&gt;-->
-<!--            <a-select v-model="term" style="width: 200px" @change="handleTermChange">-->
-<!--              <a-select-option :value="24">24h</a-select-option>-->
-<!--              <a-select-option :value="48">48h</a-select-option>-->
-<!--              <a-select-option :value="72">72h</a-select-option>-->
-<!--&lt;!&ndash;              <a-select-option :value="2400">2400h</a-select-option>&ndash;&gt;-->
-<!--            </a-select>-->
-<!--&lt;!&ndash;          </a-col>&ndash;&gt;-->
-<!--        </a-row>-->
-<!--      </template>-->
+    <a-card :bordered="false" style="width: 100%">
+      <!--      <template slot="title">-->
+      <!--        <a-row>-->
+      <!--&lt;!&ndash;          <a-col :span="4">{{term}}h</a-col>&ndash;&gt;-->
+      <!--&lt;!&ndash;          <a-col :span="16">&ndash;&gt;-->
+      <!--            <a-select v-model="term" style="width: 200px" @change="handleTermChange">-->
+      <!--              <a-select-option :value="24">24h</a-select-option>-->
+      <!--              <a-select-option :value="48">48h</a-select-option>-->
+      <!--              <a-select-option :value="72">72h</a-select-option>-->
+      <!--&lt;!&ndash;              <a-select-option :value="2400">2400h</a-select-option>&ndash;&gt;-->
+      <!--            </a-select>-->
+      <!--&lt;!&ndash;          </a-col>&ndash;&gt;-->
+      <!--        </a-row>-->
+      <!--      </template>-->
       <a-row>
         <!--          <a-col :span="4">{{term}}h</a-col>-->
         <!--          <a-col :span="16">-->
@@ -29,13 +29,20 @@
       <br/>
       <a-row :gutter="24">
         <template v-for="item in dataCard">
-          <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="3" @click="handTabClick(item)">
-<!--            <a-card-grid style="width: 100%;text-align:center;background-color:#009ad6;border-radius: 3px;padding: 0!important;margin-right: 2%;margin-left: 1%">-->
-<!--            <a-card-grid :style="{'width': '100%','text-align':'center','background-color':item.num!=0?item.color:'#a1a3a6','border-radius': '3px','padding': '0!important','margin-right': '2%','margin-left': '1%'}">-->
+          <a-col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="8"
+            :xl="8"
+            :xxl="3"
+            @click="handTabClick(item)">
+            <!--            <a-card-grid style="width: 100%;text-align:center;background-color:#009ad6;border-radius: 3px;padding: 0!important;margin-right: 2%;margin-left: 1%">-->
+            <!--            <a-card-grid :style="{'width': '100%','text-align':'center','background-color':item.num!=0?item.color:'#a1a3a6','border-radius': '3px','padding': '0!important','margin-right': '2%','margin-left': '1%'}">-->
             <a-card-grid :style="{'width': '100%','text-align':'center','background-color':item.num!=0?item.color:'#a1a3a6','border-radius': '3px','padding': '0!important','margin-right': '2%','margin-left': '1%'}">
               <a-row style="padding: 0;margin-top: 5px">
                 <a-col :span="8" style="padding: 0">
-                  <span style="color: white;font-size: 24px;">{{item.num}}</span>
+                  <span style="color: white;font-size: 24px;">{{ item.num }}</span>
                 </a-col>
                 <a-col :span="10" style="padding: 0" :offset="6">
                   <a-icon :type="item.icon" style="font-size: 40px;color: rgba(255,255,255,0.4)"/>
@@ -43,7 +50,7 @@
               </a-row>
               <a-row>
                 <a-col :span="24">
-                  <div style="text-align: left;width: 100%"><span style="color: white;font-size: 12px">{{item.text}}</span></div>
+                  <div style="text-align: left;width: 100%"><span style="color: white;font-size: 12px">{{ item.text }}</span></div>
                 </a-col>
               </a-row>
               <a-row style="margin-top: 14px;background-color: rgba(255,255,255,0.2);color: #ffffff;">
@@ -52,18 +59,18 @@
                 </a-col>
               </a-row>
             </a-card-grid>
-<!--            <a-col span="6" align="bottom">-->
+            <!--            <a-col span="6" align="bottom">-->
 
-<!--              <a-icon :type="item.icon" theme="twoTone" :two-tone-color="item.color" style="font-size: 30px"/>-->
-<!--            </a-col>-->
-<!--            <a-col span="12">-->
-<!--              <a-row>-->
-<!--                <span style="font-size: 20px">{{item.num}}</span>-->
-<!--              </a-row>-->
-<!--              <a-row>-->
-<!--                <span style="font-size: 10px">{{item.text}}</span>-->
-<!--              </a-row>-->
-<!--            </a-col>-->
+            <!--              <a-icon :type="item.icon" theme="twoTone" :two-tone-color="item.color" style="font-size: 30px"/>-->
+            <!--            </a-col>-->
+            <!--            <a-col span="12">-->
+            <!--              <a-row>-->
+            <!--                <span style="font-size: 20px">{{item.num}}</span>-->
+            <!--              </a-row>-->
+            <!--              <a-row>-->
+            <!--                <span style="font-size: 10px">{{item.text}}</span>-->
+            <!--              </a-row>-->
+            <!--            </a-col>-->
           </a-col>
         </template>
       </a-row>

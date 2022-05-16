@@ -5,7 +5,7 @@
     :visible="visible"
     width="100%"
     destroyOnClose
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     :footer="null"
     @cancel="handleModalCancel">
@@ -33,14 +33,14 @@
         &nbsp;&nbsp;
         <span style="color: red" v-if="currTask.suspendFlag">当前流程已挂起，需要进行解挂，再进行办理！</span>
       </div>
-        <div>
+      <div>
         <template v-if="isComp">
           <biz-dynamic-link :path="path" :formData="formData"></biz-dynamic-link>
         </template>
         <template v-else>
           <iframe :src="iframeUrl" frameborder="0" width="100%" :height="height" scrolling="auto"></iframe>
         </template>
-        </div>
+      </div>
     </a-spin>
     <bpm-biz-task-opt-modal ref="bpmBizTaskOptModal" :formData="formData" @ok="completeProcess"></bpm-biz-task-opt-modal>
     <biz-task-select-entruster-modal ref="selectEntrusterModal" @selectFinished="handleEntruster"></biz-task-select-entruster-modal>

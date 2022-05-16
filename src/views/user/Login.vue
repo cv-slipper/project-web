@@ -48,49 +48,49 @@
 
 
         </a-tab-pane>
-<!--        <a-tab-pane key="tab2" tab="手机号登陆">-->
-<!--          <a-form-item>-->
-<!--            <a-input-->
-<!--              v-decorator="['mobile',validatorRules.mobile]"-->
-<!--              size="large"-->
-<!--              type="text"-->
-<!--              placeholder="手机号">-->
-<!--              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>-->
-<!--            </a-input>-->
-<!--          </a-form-item>-->
+        <!--        <a-tab-pane key="tab2" tab="手机号登陆">-->
+        <!--          <a-form-item>-->
+        <!--            <a-input-->
+        <!--              v-decorator="['mobile',validatorRules.mobile]"-->
+        <!--              size="large"-->
+        <!--              type="text"-->
+        <!--              placeholder="手机号">-->
+        <!--              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>-->
+        <!--            </a-input>-->
+        <!--          </a-form-item>-->
 
-<!--          <a-row :gutter="16">-->
-<!--            <a-col class="gutter-row" :span="16">-->
-<!--              <a-form-item>-->
-<!--                <a-input-->
-<!--                  v-decorator="['captcha',validatorRules.captcha]"-->
-<!--                  size="large"-->
-<!--                  type="text"-->
-<!--                  placeholder="请输入验证码">-->
-<!--                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>-->
-<!--                </a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col class="gutter-row" :span="8">-->
-<!--              <a-button-->
-<!--                class="getCaptcha"-->
-<!--                tabindex="-1"-->
-<!--                :disabled="state.smsSendBtn"-->
-<!--                @click.stop.prevent="getCaptcha"-->
-<!--                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"></a-button>-->
-<!--            </a-col>-->
-<!--          </a-row>-->
-<!--        </a-tab-pane>-->
+        <!--          <a-row :gutter="16">-->
+        <!--            <a-col class="gutter-row" :span="16">-->
+        <!--              <a-form-item>-->
+        <!--                <a-input-->
+        <!--                  v-decorator="['captcha',validatorRules.captcha]"-->
+        <!--                  size="large"-->
+        <!--                  type="text"-->
+        <!--                  placeholder="请输入验证码">-->
+        <!--                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>-->
+        <!--                </a-input>-->
+        <!--              </a-form-item>-->
+        <!--            </a-col>-->
+        <!--            <a-col class="gutter-row" :span="8">-->
+        <!--              <a-button-->
+        <!--                class="getCaptcha"-->
+        <!--                tabindex="-1"-->
+        <!--                :disabled="state.smsSendBtn"-->
+        <!--                @click.stop.prevent="getCaptcha"-->
+        <!--                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"></a-button>-->
+        <!--            </a-col>-->
+        <!--          </a-row>-->
+        <!--        </a-tab-pane>-->
       </a-tabs>
 
       <a-form-item>
         <a-checkbox v-decorator="['rememberMe', {initialValue: true, valuePropName: 'checked'}]" >自动登陆</a-checkbox>
-<!--        <router-link :to="{ name: 'alteration'}" class="forge-password" style="float: right;">-->
-<!--          忘记密码-->
-<!--        </router-link>-->
-<!--       <router-link :to="{ name: 'register'}" class="forge-password" style="float: right;margin-right: 10px" >-->
-<!--          注册账户-->
-<!--        </router-link>-->
+        <!--        <router-link :to="{ name: 'alteration'}" class="forge-password" style="float: right;">-->
+        <!--          忘记密码-->
+        <!--        </router-link>-->
+        <!--       <router-link :to="{ name: 'register'}" class="forge-password" style="float: right;margin-right: 10px" >-->
+        <!--          注册账户-->
+        <!--        </router-link>-->
       </a-form-item>
 
       <a-form-item style="margin-top:24px">
@@ -105,12 +105,12 @@
         </a-button>
       </a-form-item>
 
-<!--      <div class="user-login-other">-->
-<!--        <span>其他登陆方式</span>-->
-<!--        <a @click="onThirdLogin('github')" title="github"><a-icon class="item-icon" type="github"></a-icon></a>-->
-<!--        <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"><a-icon class="item-icon" type="wechat"></a-icon></a>-->
-<!--        <a @click="onThirdLogin('dingtalk')" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>-->
-<!--      </div>-->
+      <!--      <div class="user-login-other">-->
+      <!--        <span>其他登陆方式</span>-->
+      <!--        <a @click="onThirdLogin('github')" title="github"><a-icon class="item-icon" type="github"></a-icon></a>-->
+      <!--        <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"><a-icon class="item-icon" type="wechat"></a-icon></a>-->
+      <!--        <a @click="onThirdLogin('dingtalk')" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>-->
+      <!--      </div>-->
     </a-form>
 
     <two-step-captcha

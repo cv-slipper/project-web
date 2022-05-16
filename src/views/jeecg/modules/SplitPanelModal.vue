@@ -9,7 +9,7 @@
     @cancel="handleCancel"
     cancelText="关闭">
 
-    <split-pane :min-percent='20' :default-percent='50' split="vertical">
+    <split-pane :min-percent="20" :default-percent="50" split="vertical">
       <template slot="paneL">
         <split-panel-a></split-panel-a>
       </template>

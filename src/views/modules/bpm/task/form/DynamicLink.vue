@@ -38,7 +38,7 @@
 </template>
 <script>
   export default {
-    name: 'dynamic-link',
+    name: 'DynamicLink',
     data () {
       return {
         compName: this.path

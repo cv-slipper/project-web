@@ -3,7 +3,7 @@
     <a-spin :spinning="loading">
       <template v-if="processTypeDictOptions.length>0">
         <template v-for="item of processTypeDictOptions">
-            <!--<a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
+          <!--<a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
               <a-card :loading="loading"  :title="item.text" :style="{ marginTop: '24px',height:'auto' }" :headStyle="{ backgroundColor:'#eaeaea' }">
                 <template v-for="des of desformList">
                   <template v-if="des.procType == item.value">
@@ -46,7 +46,7 @@
         <span>没有找到配置的流程！</span>
       </template>
     </a-spin>
-    <auto-desform-data-modal ref="desformModal" :dialogOptions="dialogOptions"  @added="handleDesformDataAdded"></auto-desform-data-modal>
+    <auto-desform-data-modal ref="desformModal" :dialogOptions="dialogOptions" @added="handleDesformDataAdded"></auto-desform-data-modal>
   </a-card>
 </template>
 

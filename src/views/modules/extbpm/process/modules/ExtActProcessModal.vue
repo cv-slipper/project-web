@@ -3,7 +3,7 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     width="100%"
     :style="{ top: '0', padding: '0' }"
     destroyOnClose
@@ -11,7 +11,13 @@
     cancelText="关闭">
     
     <a-spin :spinning="confirmLoading">
-      <iframe  :id="id" :src="url" frameborder="0" width="100%" :height="iframeHeight" scrolling="auto"></iframe>
+      <iframe
+        :id="id"
+        :src="url"
+        frameborder="0"
+        width="100%"
+        :height="iframeHeight"
+        scrolling="auto"></iframe>
     </a-spin>
   </a-modal>
 </template>

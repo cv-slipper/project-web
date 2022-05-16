@@ -86,13 +86,13 @@
                   :labelCol="threeCol.label"
                   :wrapperCol="threeCol.wrapper"
                   label="表单分类">
-                 <!-- <a-select v-decorator="[ 'formCategory', {initialValue: 'bdfl_include'}]">
+                  <!-- <a-select v-decorator="[ 'formCategory', {initialValue: 'bdfl_include'}]">
                     <a-select-option value="bdfl_include">导入表单</a-select-option>
                     <a-select-option value="bdfl_ptbd">普通表单</a-select-option>
                     <a-select-option value="bdfl_fzbd">复杂表单</a-select-option>
                     <a-select-option value="bdfl_vipbd">VIP表单</a-select-option>
                   </a-select>-->
-                  <j-dict-select-tag dict-code="ol_form_biz_type"  v-decorator="[ 'formCategory', {initialValue: 'temp'}]" :trigger-change="true" placeholder="请选择"></j-dict-select-tag>
+                  <j-dict-select-tag dict-code="ol_form_biz_type" v-decorator="[ 'formCategory', {initialValue: 'temp'}]" :trigger-change="true" placeholder="请选择"></j-dict-select-tag>
                 </a-form-item>
               </a-col>
               <a-col :span="24/3">
@@ -163,7 +163,7 @@
                     <a-select-option value="2">两列</a-select-option>
                     <a-select-option value="3">三列</a-select-option>
                     <a-select-option value="4">四列</a-select-option>
-                   <!-- <a-select-option value="99">自适应</a-select-option>-->
+                    <!-- <a-select-option value="99">自适应</a-select-option>-->
                   </a-select>
                 </a-form-item>
               </a-col>

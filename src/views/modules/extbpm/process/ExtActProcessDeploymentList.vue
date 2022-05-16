@@ -52,8 +52,8 @@
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-               <a-menu-item>
-                  <a @click="downProcessXml(record)">下载</a>
+              <a-menu-item>
+                <a @click="downProcessXml(record)">下载</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -65,7 +65,7 @@
 
     <ext-act-process-pic-modal ref="extActProcessPicModal"></ext-act-process-pic-modal>
     <ext-act-process-node-deployment-modal ref="extActProcessNodeDeploymentModal"></ext-act-process-node-deployment-modal>
-   </a-card>
+  </a-card>
 </template>
 
 <script>

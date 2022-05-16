@@ -5,7 +5,7 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     destroyOnClose
     :footer="null"
@@ -13,7 +13,7 @@
     
     <a-spin :spinning="confirmLoading">
       <a-card class="card" :bordered="false">
-        <ext-act-process-deployment-list :processKey = "processKey"></ext-act-process-deployment-list>
+        <ext-act-process-deployment-list :processKey="processKey"></ext-act-process-deployment-list>
       </a-card>
     </a-spin>
   </a-modal>

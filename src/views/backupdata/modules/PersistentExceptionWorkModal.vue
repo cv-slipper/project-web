@@ -50,12 +50,24 @@
           </a-col>
           <a-col :xs="24" :sm="12">
             <a-form-item label="开始时间(写开始时间)" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <j-date placeholder="请选择开始时间(写开始时间)" v-decorator="['startTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+              <j-date
+                placeholder="请选择开始时间(写开始时间)"
+                v-decorator="['startTime']"
+                :trigger-change="true"
+                :show-time="true"
+                date-format="YYYY-MM-DD HH:mm:ss"
+                style="width: 100%"/>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="12">
             <a-form-item label="结束时间或当前阶段(写结束时间)" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <j-date placeholder="请选择结束时间或当前阶段(写结束时间)" v-decorator="['endTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+              <j-date
+                placeholder="请选择结束时间或当前阶段(写结束时间)"
+                v-decorator="['endTime']"
+                :trigger-change="true"
+                :show-time="true"
+                date-format="YYYY-MM-DD HH:mm:ss"
+                style="width: 100%"/>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="12">

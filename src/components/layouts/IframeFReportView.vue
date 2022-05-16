@@ -1,6 +1,13 @@
 <template>
 
-    <iframe  :id="id" :src="url" frameborder="0" width="100%" height="800px" scrolling="auto" style="background-color: #fff;"></iframe>
+  <iframe
+    :id="id"
+    :src="url"
+    frameborder="0"
+    width="100%"
+    height="800px"
+    scrolling="auto"
+    style="background-color: #fff;"></iframe>
 
 </template>
 

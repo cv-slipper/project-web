@@ -11,27 +11,27 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
-<!--        <a-form-item label="备份域" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <j-dict-select-tag type="list" v-decorator="['domain']" :trigger-change="true" dictCode="domain" placeholder="请选择备份域"/>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="client对象" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <a-input-number v-decorator="['clientId']" placeholder="请输入client对象" style="width: 100%"/>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="客户端名称" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <a-input v-decorator="['clientName']" placeholder="请输入客户端名称"></a-input>-->
-<!--        </a-form-item>-->
+        <!--        <a-form-item label="备份域" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <j-dict-select-tag type="list" v-decorator="['domain']" :trigger-change="true" dictCode="domain" placeholder="请选择备份域"/>-->
+        <!--        </a-form-item>-->
+        <!--        <a-form-item label="client对象" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <a-input-number v-decorator="['clientId']" placeholder="请输入client对象" style="width: 100%"/>-->
+        <!--        </a-form-item>-->
+        <!--        <a-form-item label="客户端名称" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <a-input v-decorator="['clientName']" placeholder="请输入客户端名称"></a-input>-->
+        <!--        </a-form-item>-->
         <a-form-item label="客户端描述" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['description']" placeholder="请输入客户端描述"></a-input>
         </a-form-item>
-<!--        <a-form-item label="ip地址" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <a-input v-decorator="['hostname']" placeholder="请输入ip地址"></a-input>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="CV里客户端描述" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <a-input v-decorator="['displayName']" placeholder="请输入CV里客户端描述"></a-input>-->
-<!--        </a-form-item>-->
-<!--        <a-form-item label="客户端全局ID" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
-<!--          <a-input v-decorator="['clientGuid']" placeholder="请输入客户端全局ID"></a-input>-->
-<!--        </a-form-item>-->
+        <!--        <a-form-item label="ip地址" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <a-input v-decorator="['hostname']" placeholder="请输入ip地址"></a-input>-->
+        <!--        </a-form-item>-->
+        <!--        <a-form-item label="CV里客户端描述" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <a-input v-decorator="['displayName']" placeholder="请输入CV里客户端描述"></a-input>-->
+        <!--        </a-form-item>-->
+        <!--        <a-form-item label="客户端全局ID" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+        <!--          <a-input v-decorator="['clientGuid']" placeholder="请输入客户端全局ID"></a-input>-->
+        <!--        </a-form-item>-->
 
       </a-form>
     </a-spin>

@@ -45,28 +45,28 @@
       @change="handleTableChange">
 
 
-        <span slot="action" slot-scope="text, record">
-            <a-popconfirm v-if="record.isSuspended!=''&& record.isSuspended==='true'" title="确定激活吗?" @confirm="() => handleRestart(record.id)"><a>启动</a></a-popconfirm>
-            <a-popconfirm v-if="record.isSuspended!=''&& record.isSuspended==='false'" title="确定挂起吗?" @confirm="() => handleSuspend(record.id)"><a>挂起</a></a-popconfirm>
+      <span slot="action" slot-scope="text, record">
+        <a-popconfirm v-if="record.isSuspended!=''&& record.isSuspended==='true'" title="确定激活吗?" @confirm="() => handleRestart(record.id)"><a>启动</a></a-popconfirm>
+        <a-popconfirm v-if="record.isSuspended!=''&& record.isSuspended==='false'" title="确定挂起吗?" @confirm="() => handleSuspend(record.id)"><a>挂起</a></a-popconfirm>
 
-            <a-divider type="vertical"/>
-            <a-dropdown>
-              <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
-              <a-menu slot="overlay">
-                <a-menu-item v-if="record.isSuspended!=''&& record.isSuspended!='finished'">
-                  <a-popconfirm title="确定关闭吗?" @confirm="() => handleClose(record.id)"><a>关闭</a></a-popconfirm>
-                </a-menu-item>
-                <a-menu-item v-if="record.isSuspended!=''&& record.isSuspended==='false'&& record.isSuspended!='finished'"><a @click="selectEntruster(record)">委派</a></a-menu-item>
-                <a-menu-item v-if="record.isSuspended!=''"><a @click="handleSkipNode(record.taskId)">跳转</a></a-menu-item>
-                <a-menu-item v-if="record.isSuspended!=''"><a @click="showHistory(record)">历史</a></a-menu-item>
-              </a-menu>
-            </a-dropdown>
-        </span>
+        <a-divider type="vertical"/>
+        <a-dropdown>
+          <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
+          <a-menu slot="overlay">
+            <a-menu-item v-if="record.isSuspended!=''&& record.isSuspended!='finished'">
+              <a-popconfirm title="确定关闭吗?" @confirm="() => handleClose(record.id)"><a>关闭</a></a-popconfirm>
+            </a-menu-item>
+            <a-menu-item v-if="record.isSuspended!=''&& record.isSuspended==='false'&& record.isSuspended!='finished'"><a @click="selectEntruster(record)">委派</a></a-menu-item>
+            <a-menu-item v-if="record.isSuspended!=''"><a @click="handleSkipNode(record.taskId)">跳转</a></a-menu-item>
+            <a-menu-item v-if="record.isSuspended!=''"><a @click="showHistory(record)">历史</a></a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </span>
 
-        <!-- 字符串超长截取省略号显示-->
-        <span slot="bpmBizTitle" slot-scope="text, record">
-          <j-ellipsis :value="text"/>
-        </span>
+      <!-- 字符串超长截取省略号显示-->
+      <span slot="bpmBizTitle" slot-scope="text, record">
+        <j-ellipsis :value="text"/>
+      </span>
 
     </a-table>
     <!-- table区域-end -->

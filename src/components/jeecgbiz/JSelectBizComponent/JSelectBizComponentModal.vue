@@ -21,10 +21,10 @@
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                  <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-                    <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-                    <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-                  </span>
+                <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+                  <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+                  <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+                </span>
               </a-col>
 
             </a-row>
@@ -50,9 +50,9 @@
         <a-card :title="'已选' + name" :bordered="false" :head-style="{padding:0}" :body-style="{padding:0}">
 
           <a-table size="small" :rowKey="rowKey" bordered v-bind="selectedTable">
-              <span slot="action" slot-scope="text, record, index">
-                <a @click="handleDeleteSelected(record, index)">删除</a>
-              </span>
+            <span slot="action" slot-scope="text, record, index">
+              <a @click="handleDeleteSelected(record, index)">删除</a>
+            </span>
           </a-table>
 
         </a-card>

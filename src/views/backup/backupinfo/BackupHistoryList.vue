@@ -14,11 +14,11 @@
               <j-dict-select-tag placeholder="请选择备份域" v-model="queryParam.domain" dictCode="domain"/>
             </a-form-item>
           </a-col>
-<!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--            <a-form-item label="类型">-->
-<!--              <a-input placeholder="请输入类型" v-model="queryParam.type"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+          <!--            <a-form-item label="类型">-->
+          <!--              <a-input placeholder="请输入类型" v-model="queryParam.type"></a-input>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="作业ID">
               <a-input placeholder="请输入作业ID" v-model="queryParam.workId"></a-input>
@@ -62,20 +62,36 @@
             </a-col>
             <a-col :xl="10" :lg="11" :md="12" :sm="24">
               <a-form-item label="开始时间">
-                <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间"
-                        class="query-group-cust" v-model="queryParam.startTime_begin"></j-date>
+                <j-date
+                  :show-time="true"
+                  date-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择开始时间"
+                  class="query-group-cust"
+                  v-model="queryParam.startTime_begin"></j-date>
                 <span class="query-group-split-cust"></span>
-                <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间"
-                        class="query-group-cust" v-model="queryParam.startTime_end"></j-date>
+                <j-date
+                  :show-time="true"
+                  date-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择结束时间"
+                  class="query-group-cust"
+                  v-model="queryParam.startTime_end"></j-date>
               </a-form-item>
             </a-col>
             <a-col :xl="10" :lg="11" :md="12" :sm="24">
               <a-form-item label="结束时间">
-                <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间"
-                        class="query-group-cust" v-model="queryParam.endTime_begin"></j-date>
+                <j-date
+                  :show-time="true"
+                  date-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择开始时间"
+                  class="query-group-cust"
+                  v-model="queryParam.endTime_begin"></j-date>
                 <span class="query-group-split-cust"></span>
-                <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间"
-                        class="query-group-cust" v-model="queryParam.endTime_end"></j-date>
+                <j-date
+                  :show-time="true"
+                  date-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择结束时间"
+                  class="query-group-cust"
+                  v-model="queryParam.endTime_end"></j-date>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -123,30 +139,30 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-<!--      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
+      <!--      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
       <a-button type="primary" icon="download" @click="handleExportXls('当前异常备份作业')">导出</a-button>
-<!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl"-->
-<!--                @change="handleImportExcel">-->
-<!--        <a-button type="primary" icon="import">导入</a-button>-->
-<!--      </a-upload>-->
-<!--      <a-dropdown v-if="selectedRowKeys.length > 0">-->
-<!--        <a-menu slot="overlay">-->
-<!--          <a-menu-item key="1" @click="batchDel">-->
-<!--            <a-icon type="delete"/>-->
-<!--            删除-->
-<!--          </a-menu-item>-->
-<!--        </a-menu>-->
-<!--        <a-button style="margin-left: 8px"> 批量操作-->
-<!--          <a-icon type="down"/>-->
-<!--        </a-button>-->
-<!--      </a-dropdown>-->
+      <!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl"-->
+      <!--                @change="handleImportExcel">-->
+      <!--        <a-button type="primary" icon="import">导入</a-button>-->
+      <!--      </a-upload>-->
+      <!--      <a-dropdown v-if="selectedRowKeys.length > 0">-->
+      <!--        <a-menu slot="overlay">-->
+      <!--          <a-menu-item key="1" @click="batchDel">-->
+      <!--            <a-icon type="delete"/>-->
+      <!--            删除-->
+      <!--          </a-menu-item>-->
+      <!--        </a-menu>-->
+      <!--        <a-button style="margin-left: 8px"> 批量操作-->
+      <!--          <a-icon type="down"/>-->
+      <!--        </a-button>-->
+      <!--      </a-dropdown>-->
     </div>
 
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
+          selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -165,21 +181,25 @@
         @change="handleTableChange">
 
         <template slot="endTime" slot-scope="text">
-          <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+          <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
         </template>
         <template slot="duration" slot-scope="text">
-          <span>{{formatTime(text)}}</span>
+          <span>{{ formatTime(text) }}</span>
         </template>
         <template slot="programSize" slot-scope="text">
-          <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+          <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
         </template>
         <template slot="htmlSlot" slot-scope="text">
           <div v-html="text"></div>
         </template>
         <template slot="imgSlot" slot-scope="text">
           <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
-          <img v-else :src="getImgView(text)" height="25px" alt=""
-               style="max-width:80px;font-size: 12px;font-style: italic;"/>
+          <img
+            v-else
+            :src="getImgView(text)"
+            height="25px"
+            alt=""
+            style="max-width:80px;font-size: 12px;font-style: italic;"/>
         </template>
         <template slot="fileSlot" slot-scope="text">
           <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
@@ -202,7 +222,7 @@
     </div>
 
     <detail-modal ref="detail"/>
-<!--    <backup-history-model ref="modalForm"/>-->
+    <!--    <backup-history-model ref="modalForm"/>-->
     <create-task-model ref="createTask"/>
   </a-card>
 </template>

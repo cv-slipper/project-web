@@ -11,7 +11,7 @@
 
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-card id="staffCard"  style="margin: 0 auto;width: 1000px">
+        <a-card id="staffCard" style="margin: 0 auto;width: 1000px">
           <span id="documentsIssuedTitle">发文单</span>
           <table border="1px" id="documentsIssueTable">
             <tr>
@@ -40,11 +40,11 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="{xs: { span: 20 }}">
-                <a-radio-group class="fontiframe" name="radioGroup" v-decorator="[ 'docType', {}]">
-                  <a-radio class="radioGroup" value="1">普通文件</a-radio>
-                  <a-radio class="radioGroup" value="2">盖章文件</a-radio>
-                  <a-radio class="radioGroup" value="3">正式文件</a-radio>
-                </a-radio-group>
+                  <a-radio-group class="fontiframe" name="radioGroup" v-decorator="[ 'docType', {}]">
+                    <a-radio class="radioGroup" value="1">普通文件</a-radio>
+                    <a-radio class="radioGroup" value="2">盖章文件</a-radio>
+                    <a-radio class="radioGroup" value="3">正式文件</a-radio>
+                  </a-radio-group>
                 </a-form-item>
               </td>
               <td>
@@ -188,7 +188,7 @@
                 登记人
               </td>
               <td colspan="2">
-                <span>{{nickname}}</span>
+                <span>{{ nickname }}</span>
               </td>
               <td>
                 登记时间
@@ -201,7 +201,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     v-decorator="[ 'bookDate', {}]"/>
                 </a-form-item>
               </td>
@@ -218,7 +218,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     v-decorator="[ 'writtenDate', {}]"/>
                 </a-form-item>
               </td>
@@ -233,7 +233,7 @@
                   <a-date-picker
                     class="input"
                     placeholder=""
-                    format='YYYY-MM-DD'
+                    format="YYYY-MM-DD"
                     v-decorator="[ 'reviewDate', {}]"/>
                 </a-form-item>
               </td>

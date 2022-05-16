@@ -2,75 +2,75 @@
   <div>
     <!-- 步骤条 -->
     <a-spin :spinning="loading">
-    <a-card>
-      <a-steps progressDot :current="stepIndex" style="padding: 10px" size="default">
-        <template v-if="resultObj.bpmLogListCount >3">
-          <a-step>
-            <template slot="title">
-              <div class="task-title">...</div>
-            </template>
-          </a-step>
-        </template>
-        <template v-for="(item,index) in resultObj.bpmLogStepList">
-          <a-step>
-            <template slot="title">
-              <div class="task-title">{{ item.taskName }}</div>
-            </template>
-            <template slot="description">
-              <div class="task-date"> <span><j-ellipsis :value="'处理时间：'+item.opTime"></j-ellipsis></span></div>
-              <div class="task-user">操作人：{{ item.opUserName }}</div>
-            </template>
-          </a-step>
-        </template>
-        <template v-if="resultObj.currTaskName&&resultObj.currTaskName!=''">
-          <a-step >
-            <template slot="title">
-              <div class="task-title">{{ resultObj.currTaskName }}</div>
-            </template>
-            <template slot="description">
-              <div class="task-date"> <span style="color: #ff6d75;"><j-ellipsis :value="'处理时间：'+resultObj.currTaskNameStartTime"></j-ellipsis></span></div>
-              <div class="task-user">操作人：{{ resultObj.currTaskNameAssignee }}</div>
-            </template>
-          </a-step>
-          <a-step>
-            <template slot="title">
-              <div class="task-title">...</div>
-            </template>
-          </a-step>
+      <a-card>
+        <a-steps progressDot :current="stepIndex" style="padding: 10px" size="default">
+          <template v-if="resultObj.bpmLogListCount >3">
+            <a-step>
+              <template slot="title">
+                <div class="task-title">...</div>
+              </template>
+            </a-step>
+          </template>
+          <template v-for="(item,index) in resultObj.bpmLogStepList">
+            <a-step>
+              <template slot="title">
+                <div class="task-title">{{ item.taskName }}</div>
+              </template>
+              <template slot="description">
+                <div class="task-date"> <span><j-ellipsis :value="'处理时间：'+item.opTime"></j-ellipsis></span></div>
+                <div class="task-user">操作人：{{ item.opUserName }}</div>
+              </template>
+            </a-step>
+          </template>
+          <template v-if="resultObj.currTaskName&&resultObj.currTaskName!=''">
+            <a-step >
+              <template slot="title">
+                <div class="task-title">{{ resultObj.currTaskName }}</div>
+              </template>
+              <template slot="description">
+                <div class="task-date"> <span style="color: #ff6d75;"><j-ellipsis :value="'处理时间：'+resultObj.currTaskNameStartTime"></j-ellipsis></span></div>
+                <div class="task-user">操作人：{{ resultObj.currTaskNameAssignee }}</div>
+              </template>
+            </a-step>
+            <a-step>
+              <template slot="title">
+                <div class="task-title">...</div>
+              </template>
+            </a-step>
           <!--<a-step>
             <template slot="title">
               <div class="task-title"></div>
             </template>
           </a-step>-->
-        </template>
+          </template>
 
-      </a-steps>
-    </a-card>
-    <!-- 意见 -->
-    <a-card title="意见信息" :bodyStyle="{padding:'0 20px'}" size="default" style="margin-top:20px">
-      <a-list itemLayout="vertical">
-        <template v-for="(item,index) in resultObj.bpmLogList">
-          <a-list-item >
-            <a-list-item-meta :description="item.remarks">
-              <a slot="title">{{ item.opUserName }}<span style="color: #ff6d75;">[{{ item.taskName }}]</span> {{ item.opTime }}</a>
-              <a-avatar slot="avatar" :size="36" icon="user" style="background-color: #51cbff;"></a-avatar>
-            </a-list-item-meta>
-            <template v-for="(file,index) in item.bpmFiles">
-              <div class="ant-upload-list ant-upload-list-text">
-                <div class="ant-upload-list-item ant-upload-list-item-done">
-                  <div class="ant-upload-list-item-info">
-                <span>
-                    <a-icon type="paper-clip" />
-                    <a target="_blank" rel="noopener noreferrer" :title="file.fileName" :href="getFileDownloadUrl(file.filePath)" class="ant-upload-list-item-name">{{ file.fileName }}</a>
-                </span>
+        </a-steps>
+      </a-card>
+      <!-- 意见 -->
+      <a-card title="意见信息" :bodyStyle="{padding:'0 20px'}" size="default" style="margin-top:20px">
+        <a-list itemLayout="vertical">
+          <template v-for="(item,index) in resultObj.bpmLogList">
+            <a-list-item >
+              <a-list-item-meta :description="item.remarks">
+                <a slot="title">{{ item.opUserName }}<span style="color: #ff6d75;">[{{ item.taskName }}]</span> {{ item.opTime }}</a>
+                <a-avatar slot="avatar" :size="36" icon="user" style="background-color: #51cbff;"></a-avatar>
+              </a-list-item-meta>
+              <template v-for="(file,index) in item.bpmFiles">
+                <div class="ant-upload-list ant-upload-list-text">
+                  <div class="ant-upload-list-item ant-upload-list-item-done">
+                    <div class="ant-upload-list-item-info">
+                      <span>
+                        <a-icon type="paper-clip" />
+                        <a target="_blank" rel="noopener noreferrer" :title="file.fileName" :href="getFileDownloadUrl(file.filePath)" class="ant-upload-list-item-name">{{ file.fileName }}</a>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </template>
-          </a-list-item>
-        </template>
-      </a-list>
-    </a-card>
+              </template>
+            </a-list-item>
+          </template>
+        </a-list>
+      </a-card>
     </a-spin>
   </div>
 </template>

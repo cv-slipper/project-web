@@ -16,23 +16,23 @@
               <a-input placeholder="请输入加班ID" v-model="queryParam.overtimeId"></a-input>
             </a-form-item>
           </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="调休申请（天）">
-              <a-input placeholder="请输入调休申请（天）" v-model="queryParam.applyDay"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="调休申请（小时）">
-              <a-input placeholder="请输入调休申请（小时）" v-model="queryParam.applyHour"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="创建人">
-              <a-input placeholder="请输入创建人" v-model="queryParam.createName"></a-input>
-            </a-form-item>
-          </a-col>
-        </template>
+          <template v-if="toggleSearchStatus">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="调休申请（天）">
+                <a-input placeholder="请输入调休申请（天）" v-model="queryParam.applyDay"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="调休申请（小时）">
+                <a-input placeholder="请输入调休申请（小时）" v-model="queryParam.applyHour"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="创建人">
+                <a-input placeholder="请输入创建人" v-model="queryParam.createName"></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>

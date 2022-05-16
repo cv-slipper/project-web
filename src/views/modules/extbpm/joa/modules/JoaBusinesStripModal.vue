@@ -28,7 +28,7 @@
                 <a-form-item
                   :labelCol="labelCol"
                   :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.departName}}</span>
+                  <span class="fontiframe">{{ model.departName }}</span>
                 </a-form-item>
               </td>
             </tr>
@@ -66,7 +66,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'departureTime', {}]"
                     :allowClear="false"
                     @change="getStartTime"
@@ -84,7 +84,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'plannedReturnTime', {}]"
                     :allowClear="false"
                     @change="getEndTime"
@@ -104,7 +104,7 @@
                     class="input"
                     placeholder=""
                     showTime
-                    format='YYYY-MM-DD HH:mm:ss'
+                    format="YYYY-MM-DD HH:mm:ss"
                     v-decorator="[ 'actualReturnTime', {}]"
                     :allowClear="false"
                   />
@@ -231,13 +231,13 @@
                 部门领导审核
               </td>
               <td colspan="2">
-                <span>{{model.departLeaderAudit}}</span>
+                <span>{{ model.departLeaderAudit }}</span>
               </td>
               <td>
                 财务审核
               </td>
               <td colspan="2">
-                <span>{{model.financeAudit}}</span>
+                <span>{{ model.financeAudit }}</span>
               </td>
             </tr>
             <tr style="height: 38px;">
@@ -245,13 +245,13 @@
                 出纳放款
               </td>
               <td colspan="2">
-                <span>{{model.cashierLoanAmount}}</span>
+                <span>{{ model.cashierLoanAmount }}</span>
               </td>
               <td>
                 总经理审核
               </td>
               <td colspan="2">
-                <span>{{model.managerAudit}}</span>
+                <span>{{ model.managerAudit }}</span>
               </td>
             </tr>
           </table>

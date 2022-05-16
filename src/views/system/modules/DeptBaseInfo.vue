@@ -27,17 +27,17 @@
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="机构类型">
-          <a-radio-group :disabled="true" v-decorator="['orgCategory',{}]" placeholder="请选择机构类型">
-            <a-radio value="1">
-              公司
-            </a-radio>
-            <a-radio value="2">
-              部门
-            </a-radio>
-            <a-radio value="3">
-              岗位
-            </a-radio>
-          </a-radio-group>
+        <a-radio-group :disabled="true" v-decorator="['orgCategory',{}]" placeholder="请选择机构类型">
+          <a-radio value="1">
+            公司
+          </a-radio>
+          <a-radio value="2">
+            部门
+          </a-radio>
+          <a-radio value="3">
+            岗位
+          </a-radio>
+        </a-radio-group>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"

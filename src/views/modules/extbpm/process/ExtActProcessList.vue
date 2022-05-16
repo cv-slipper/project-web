@@ -35,7 +35,7 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新建流程</a-button>
-<!--      <a-button @click="handleEdit" type="primary" icon="plus">编辑流程</a-button>-->
+      <!--      <a-button @click="handleEdit" type="primary" icon="plus">编辑流程</a-button>-->
       <!--<a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
@@ -64,12 +64,13 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a-upload :showUploadList="false"
-                    :action="uploadAction(record.id)"
-                    :data="{'isup':1}"
-                    :headers="tokenHeader"
-                    @change="handleChange">
-             <a>上传流程</a>
+          <a-upload
+            :showUploadList="false"
+            :action="uploadAction(record.id)"
+            :data="{'isup':1}"
+            :headers="tokenHeader"
+            @change="handleChange">
+            <a>上传流程</a>
           </a-upload>
           <a-divider type="vertical" />
           <a @click="handleEdit(record)">设计流程</a>
@@ -88,13 +89,13 @@
                 </a-popconfirm>
               </a-menu-item>
               <a-menu-item v-if="record.processStatus === 1">
-                  <a @click="handleDeploymentList(record)">版本监控</a>
+                <a @click="handleDeploymentList(record)">版本监控</a>
               </a-menu-item>
-               <a-menu-item>
-                  <a @click="copyProcess(record.id)">流程复制</a>
+              <a-menu-item>
+                <a @click="copyProcess(record.id)">流程复制</a>
               </a-menu-item>
-                <a-menu-item>
-                  <a @click="setProcessIcon(record)">表单图标</a>
+              <a-menu-item>
+                <a @click="setProcessIcon(record)">表单图标</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>

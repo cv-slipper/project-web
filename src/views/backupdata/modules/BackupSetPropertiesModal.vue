@@ -21,7 +21,13 @@
           <a-input-number v-decorator="['backupsetId']" placeholder="请输入backupsetId" style="width: 100%"/>
         </a-form-item>
         <a-form-item label="modifiedTime" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择modifiedTime" v-decorator="['modifiedTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择modifiedTime"
+            v-decorator="['modifiedTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="applicationSize" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['applicationSize']" placeholder="请输入applicationSize"></a-input>
@@ -30,10 +36,22 @@
           <a-input v-decorator="['totalBackupSize']" placeholder="请输入totalBackupSize"></a-input>
         </a-form-item>
         <a-form-item label="lastBackupTime" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择lastBackupTime" v-decorator="['lastBackupTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择lastBackupTime"
+            v-decorator="['lastBackupTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="firstBackupTime" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择firstBackupTime" v-decorator="['firstBackupTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择firstBackupTime"
+            v-decorator="['firstBackupTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="dedupeRatio" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['dedupeRatio']" placeholder="请输入dedupeRatio"></a-input>

@@ -16,14 +16,14 @@
           :wrapperCol="wrapperCol"
           label="流程名字"
           hasFeedback >
-          <a-input placeholder="请输入流程名字" v-decorator="['name',  {rules: [{ required: true, message: '请输入流程名!' }]}]" />
+          <a-input placeholder="请输入流程名字" v-decorator="['name', {rules: [{ required: true, message: '请输入流程名!' }]}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="标识"
           hasFeedback >
-          <a-input placeholder="请输入标识" v-decorator="['key',  {rules: [{ required: true, message: '请输入流程标识!' }]}]" />
+          <a-input placeholder="请输入标识" v-decorator="['key', {rules: [{ required: true, message: '请输入流程标识!' }]}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"

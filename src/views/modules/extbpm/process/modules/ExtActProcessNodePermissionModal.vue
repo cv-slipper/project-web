@@ -60,7 +60,7 @@
             <a-input placeholder="请输入规则名称" v-decorator="['ruleName', {}]" />
           </a-form-item>
         </template>
-        <template  v-else-if="formTypeValue == '2'">
+        <template v-else-if="formTypeValue == '2'">
           <a-form-item
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
@@ -69,9 +69,10 @@
               <a-select-option v-for="(item, key) in formBizCodeList" :key="key" :value="item.formTableName">{{ item.formTableName }}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="规则名称"
-                       :labelCol="labelCol"
-                       :wrapperCol="wrapperCol">
+          <a-form-item
+            label="规则名称"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol">
             <a-input-search placeholder="请选择授权规则" readOnly @search="handleSelect" v-decorator="['ruleName', {}]">
               <a-button slot="enterButton" icon="search">选择</a-button>
             </a-input-search>
@@ -113,37 +114,37 @@
           label="策略">
           <a-radio-group v-decorator="['ruleType', {}]">
             <a-tooltip placement="topLeft" title="显示的反向： 隐藏">
-            <a-radio value="1">
-              显示
-            </a-radio>
+              <a-radio value="1">
+                显示
+              </a-radio>
             </a-tooltip>
             <a-tooltip placement="topLeft" title="禁用的反向： 可编辑">
-            <a-radio value="2">
-              禁用
-            </a-radio>
+              <a-radio value="2">
+                禁用
+              </a-radio>
             </a-tooltip>
           </a-radio-group>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol">
-           <span slot="label">
-              状态&nbsp;
-              <a-tooltip title="策略与状态组合使用实现表单控件的：显示、可编辑、隐藏、禁用?">
-                <a-icon type="question-circle-o" />
-              </a-tooltip>
-            </span>
+          <span slot="label">
+            状态&nbsp;
+            <a-tooltip title="策略与状态组合使用实现表单控件的：显示、可编辑、隐藏、禁用?">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
 
           <a-radio-group v-decorator="['status', {}]">
             <a-tooltip placement="topLeft" title="实现页面组件‘显示/禁用’功能">
-            <a-radio value="1">
-              正向有效
-            </a-radio>
+              <a-radio value="1">
+                正向有效
+              </a-radio>
             </a-tooltip>
             <a-tooltip placement="topLeft" title="实现页面组件‘隐藏/可编辑’功能">
-            <a-radio value="0">
-              反向有效
-            </a-radio>
+              <a-radio value="0">
+                反向有效
+              </a-radio>
             </a-tooltip>
           </a-radio-group>
         </a-form-item>

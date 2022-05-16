@@ -1,263 +1,263 @@
 <template>
 
-        <a-card id="staffCard" style="margin: 0 auto;width: 750px">
-          <a-form :form="form">
-          <span id="staffBmTitle">借款单</span>
-          <table border="1px" id="staffBmTable">
-            <tr>
-              <td class="colfirst">借款人</td>
-              <td class="secend">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" :disabled="disabled" v-decorator="[ 'loanUserName', {}]" />
-                </a-form-item>
-              </td>
-              <td>借款人部门</td>
-              <td style="width:100px;">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.departName}}</span>
-                </a-form-item>
-              </td>
-              <td>
-                借款时间
-              </td>
-              <td>
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                >
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    format='YYYY-MM-DD'
-                    disabled
-                    v-decorator="[ 'loanTime', {}]"/>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>借款金额</td>
-              <td>
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                  class="fontiframe lineHeight"
-                >
-                <a-input-number
-                  class="smallText"
-                  v-model="model.loanAmount"
-                  size="small"
-                  :min="1"
-                  :max="99999999"
-                  @change="upperOnChange"/>
-                </a-form-item>
-              </td>
-              <td>金额大写</td>
-              <td colspan="3">
-                  {{upperSum}}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                借款用途
-              </td>
-              <td colspan="5">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                >
-                  <a-textarea
-                    v-decorator="[ 'loanUsage', {}]"
-                    style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
+  <a-card id="staffCard" style="margin: 0 auto;width: 750px">
+    <a-form :form="form">
+      <span id="staffBmTitle">借款单</span>
+      <table border="1px" id="staffBmTable">
+        <tr>
+          <td class="colfirst">借款人</td>
+          <td class="secend">
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol">
+              <a-input class="text" :disabled="disabled" v-decorator="[ 'loanUserName', {}]" />
+            </a-form-item>
+          </td>
+          <td>借款人部门</td>
+          <td style="width:100px;">
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol">
+              <span class="fontiframe">{{ model.departName }}</span>
+            </a-form-item>
+          </td>
+          <td>
+            借款时间
+          </td>
+          <td>
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol"
+            >
+              <a-date-picker
+                class="input"
+                placeholder=""
+                format="YYYY-MM-DD"
+                disabled
+                v-decorator="[ 'loanTime', {}]"/>
+            </a-form-item>
+          </td>
+        </tr>
+        <tr>
+          <td>借款金额</td>
+          <td>
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol"
+              class="fontiframe lineHeight"
+            >
+              <a-input-number
+                class="smallText"
+                v-model="model.loanAmount"
+                size="small"
+                :min="1"
+                :max="99999999"
+                @change="upperOnChange"/>
+            </a-form-item>
+          </td>
+          <td>金额大写</td>
+          <td colspan="3">
+            {{ upperSum }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            借款用途
+          </td>
+          <td colspan="5">
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol"
+            >
+              <a-textarea
+                v-decorator="[ 'loanUsage', {}]"
+                style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
 
-                  </a-textarea>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                备注
-              </td>
-              <td colspan="5">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                >
-                  <a-textarea
-                    v-decorator="[ 'remarks', {}]"
-                    style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
+              </a-textarea>
+            </a-form-item>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            备注
+          </td>
+          <td colspan="5">
+            <a-form-item
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol"
+            >
+              <a-textarea
+                v-decorator="[ 'remarks', {}]"
+                style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
 
-                  </a-textarea>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr style="height: 45px;">
-              <td>
-                部门领导审核
-              </td>
-              <td>
-                <span>{{model.departLeaderAudit}}</span>
-              </td>
-              <td>
-                财务审核
-              </td>
-              <td>
-                <span>{{model.financeAudit}}</span>
-              </td>
-              <td>
-                总经理审核
-              </td>
-              <td>
-                <span>{{model. managerAudit}}</span>
-              </td>
-            </tr>
-            <tr style="height: 45px;">
-              <td>
-                出纳放款
-              </td>
-              <td>
-                <span>{{model. cashierLoanAmount}}</span>
-              </td>
-              <td>借款发放时间</td>
-              <td colspan="3">
-                <span>
-                  {{model.cashierLoanTime}}
-                </span>
-              </td>
-            </tr>
-          </table>
-          <div style="text-align:center;margin-top: 10px">
-          <a-button type="primary" @click="handleOk()">保存</a-button>
-          </div>
-          </a-form>
+              </a-textarea>
+            </a-form-item>
+          </td>
+        </tr>
+        <tr style="height: 45px;">
+          <td>
+            部门领导审核
+          </td>
+          <td>
+            <span>{{ model.departLeaderAudit }}</span>
+          </td>
+          <td>
+            财务审核
+          </td>
+          <td>
+            <span>{{ model.financeAudit }}</span>
+          </td>
+          <td>
+            总经理审核
+          </td>
+          <td>
+            <span>{{ model. managerAudit }}</span>
+          </td>
+        </tr>
+        <tr style="height: 45px;">
+          <td>
+            出纳放款
+          </td>
+          <td>
+            <span>{{ model. cashierLoanAmount }}</span>
+          </td>
+          <td>借款发放时间</td>
+          <td colspan="3">
+            <span>
+              {{ model.cashierLoanTime }}
+            </span>
+          </td>
+        </tr>
+      </table>
+      <div style="text-align:center;margin-top: 10px">
+        <a-button type="primary" @click="handleOk()">保存</a-button>
+      </div>
+    </a-form>
 
-          <a-form :form="form2">
-          <a-divider orientation="left">员工出差申请记录</a-divider>
-          <j-form-container :disabled="true">
-          <table border="1px" id="staffEvectionTable">
-            <tr>
-              <td class="firstTr">出差人</td>
-              <td class="firstTr" colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" v-decorator="[ 'applyUserName', {}]"/>
-                </a-form-item>
-              </td>
-              <td class="firstTr">部门</td>
-              <td class="firstTr" colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model2.departName}}</span>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                目的地
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" v-decorator="[ 'destination', {}]"/>
-                </a-form-item>
-              </td>
-              <td>
-                项目名称
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" v-decorator="[ 'projectName', {}]"/>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                出发时间
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    showTime
-                    format='YYYY-MM-DD HH:mm:ss'
-                    v-decorator="[ 'departureTime', {}]"
-                    :allowClear="false"
-                  />
-                </a-form-item>
-              </td>
-              <td>
-                计划返回时间
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    showTime
-                    format='YYYY-MM-DD HH:mm:ss'
-                    v-decorator="[ 'plannedReturnTime', {}]"
-                    :allowClear="false"
-                  />
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                实际返回时间
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    showTime
-                    format='YYYY-MM-DD HH:mm:ss'
-                    v-decorator="[ 'actualReturnTime', {}]"
-                    :allowClear="false"
-                  />
-                </a-form-item>
-              </td>
-              <td>
-                出差天数
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" v-model="model2.dayNum"/>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                出差经费支出
-              </td>
-              <td colspan="5">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-radio-group class="fontiframe" name="radioGroup" v-model="flag">
-                    <a-radio class="radioGroup" value="1">预支借款</a-radio>
-                    <a-radio class="radioGroup" value="2">个人垫付</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-              </td>
-              <!--<td>
+    <a-form :form="form2">
+      <a-divider orientation="left">员工出差申请记录</a-divider>
+      <j-form-container :disabled="true">
+        <table border="1px" id="staffEvectionTable">
+          <tr>
+            <td class="firstTr">出差人</td>
+            <td class="firstTr" colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" v-decorator="[ 'applyUserName', {}]"/>
+              </a-form-item>
+            </td>
+            <td class="firstTr">部门</td>
+            <td class="firstTr" colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <span class="fontiframe">{{ model2.departName }}</span>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              目的地
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" v-decorator="[ 'destination', {}]"/>
+              </a-form-item>
+            </td>
+            <td>
+              项目名称
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" v-decorator="[ 'projectName', {}]"/>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              出发时间
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-date-picker
+                  class="input"
+                  placeholder=""
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-decorator="[ 'departureTime', {}]"
+                  :allowClear="false"
+                />
+              </a-form-item>
+            </td>
+            <td>
+              计划返回时间
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-date-picker
+                  class="input"
+                  placeholder=""
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-decorator="[ 'plannedReturnTime', {}]"
+                  :allowClear="false"
+                />
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              实际返回时间
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-date-picker
+                  class="input"
+                  placeholder=""
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-decorator="[ 'actualReturnTime', {}]"
+                  :allowClear="false"
+                />
+              </a-form-item>
+            </td>
+            <td>
+              出差天数
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" v-model="model2.dayNum"/>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              出差经费支出
+            </td>
+            <td colspan="5">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-radio-group class="fontiframe" name="radioGroup" v-model="flag">
+                  <a-radio class="radioGroup" value="1">预支借款</a-radio>
+                  <a-radio class="radioGroup" value="2">个人垫付</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </td>
+            <!--<td>
                 借款金额
               </td>
               <td colspan="2">
@@ -273,8 +273,8 @@
                     @change="upperOnChange"/>
                 </a-form-item>
               </td>-->
-            </tr>
-            <!--<tr>
+          </tr>
+          <!--<tr>
               <td>
                 借款金额大写
               </td>
@@ -301,84 +301,84 @@
                 </a-form-item>
               </td>
             </tr>-->
-            <tr>
-              <td>
-                出发地
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" v-decorator="[ 'departAddress', {}]"/>
-                </a-form-item>
-              </td>
-              <td>
-                出行工具
-              </td>
-              <td colspan="2">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-radio-group
-                    class="fontiframe"
-                    name="radioGroup"
-                    v-model="flagTravelTool">
-                    <a-radio class="radioGroup" value="1">客车</a-radio>
-                    <a-radio class="radioGroup" value="2">火车</a-radio>
-                    <a-radio class="radioGroup" value="3">飞机</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                任务及事由
-              </td>
-              <td colspan="5">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                >
-                  <a-textarea
-                    v-decorator="[ 'reason', {}]"
-                    style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
+          <tr>
+            <td>
+              出发地
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" v-decorator="[ 'departAddress', {}]"/>
+              </a-form-item>
+            </td>
+            <td>
+              出行工具
+            </td>
+            <td colspan="2">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-radio-group
+                  class="fontiframe"
+                  name="radioGroup"
+                  v-model="flagTravelTool">
+                  <a-radio class="radioGroup" value="1">客车</a-radio>
+                  <a-radio class="radioGroup" value="2">火车</a-radio>
+                  <a-radio class="radioGroup" value="3">飞机</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              任务及事由
+            </td>
+            <td colspan="5">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+              >
+                <a-textarea
+                  v-decorator="[ 'reason', {}]"
+                  style="resize:none;height:98px;width:100%;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
 
-                  </a-textarea>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr style="height: 38px;">
-              <td>
-                部门领导审核
-              </td>
-              <td colspan="2">
-                <span>{{model2.departLeaderAudit}}</span>
-              </td>
-              <td>
-                财务审核
-              </td>
-              <td colspan="2">
-                <span>{{model2.financeAudit}}</span>
-              </td>
-            </tr>
-            <tr style="height: 38px;">
-              <td>
-                出纳放款
-              </td>
-              <td colspan="2">
-                <span>{{model2.cashierLoanAmount}}</span>
-              </td>
-              <td>
-                总经理审核
-              </td>
-              <td colspan="2">
-                <span>{{model2.managerAudit}}</span>
-              </td>
-            </tr>
-          </table>
-          </j-form-container>
-          </a-form>
-        </a-card>
+                </a-textarea>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr style="height: 38px;">
+            <td>
+              部门领导审核
+            </td>
+            <td colspan="2">
+              <span>{{ model2.departLeaderAudit }}</span>
+            </td>
+            <td>
+              财务审核
+            </td>
+            <td colspan="2">
+              <span>{{ model2.financeAudit }}</span>
+            </td>
+          </tr>
+          <tr style="height: 38px;">
+            <td>
+              出纳放款
+            </td>
+            <td colspan="2">
+              <span>{{ model2.cashierLoanAmount }}</span>
+            </td>
+            <td>
+              总经理审核
+            </td>
+            <td colspan="2">
+              <span>{{ model2.managerAudit }}</span>
+            </td>
+          </tr>
+        </table>
+      </j-form-container>
+    </a-form>
+  </a-card>
 </template>
 
 <script>

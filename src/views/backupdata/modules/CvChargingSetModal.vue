@@ -15,7 +15,13 @@
           <a-input v-decorator="['companyName', validatorRules.companyName]" placeholder="请输入公司名称"></a-input>
         </a-form-item>
         <a-form-item label="计费类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-dict-select-tag type="list" v-decorator="['chargingType', validatorRules.chargingType]" :trigger-change="true" dictCode="chargingType" placeholder="请选择计费类型" @change="handleTypeChage"/>
+          <j-dict-select-tag
+            type="list"
+            v-decorator="['chargingType', validatorRules.chargingType]"
+            :trigger-change="true"
+            dictCode="chargingType"
+            placeholder="请选择计费类型"
+            @change="handleTypeChage"/>
         </a-form-item>
         <a-form-item label="库" :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="chargingType == '后端'">
           <a-input v-decorator="['library']" placeholder="请输入库"></a-input>

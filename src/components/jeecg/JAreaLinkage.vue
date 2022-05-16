@@ -20,7 +20,7 @@
       @change="handleChange"
     />
     <div v-else>
-      <span style="color:red;"> Bad type value: {{_type}}</span>
+      <span style="color:red;"> Bad type value: {{ _type }}</span>
     </div>
   </div>
 </template>

@@ -19,7 +19,13 @@
     </template>
 
 
-    <desform-view :mode="mode" :dataId="dataId" :height="fullScreenProps.height" :desformCode="desform.desformCode" @success="handleSuccess" @dialogChange="handleDialogChange"/>
+    <desform-view
+      :mode="mode"
+      :dataId="dataId"
+      :height="fullScreenProps.height"
+      :desformCode="desform.desformCode"
+      @success="handleSuccess"
+      @dialogChange="handleDialogChange"/>
 
   </a-modal>
 </template>

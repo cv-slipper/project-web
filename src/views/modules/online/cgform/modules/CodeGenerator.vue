@@ -99,7 +99,7 @@
             </a-form-item>
           </a-col>
 
-         <!-- <a-col :span="6" v-show="false">
+          <!-- <a-col :span="6" v-show="false">
             <a-form-item label="子包名" :labelCol="subLabelCol" :wrapperCol="subWrapperCol">
               <a-input v-decorator="['subList['+index+'].entityPackage',{rules: [{required: true, message: '请输入子包名!'}]}]" placeholder="请输入子包名(小写)"></a-input>
             </a-form-item>

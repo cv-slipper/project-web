@@ -1,6 +1,12 @@
 
 <template>
-  <component ref="compModel" :is="comp" :formData="formData" v-if="comp" @ok="callBackOk" @close="callBackClose"></component>
+  <component
+    ref="compModel"
+    :is="comp"
+    :formData="formData"
+    v-if="comp"
+    @ok="callBackOk"
+    @close="callBackClose"></component>
 </template>
 <script>
   export default {

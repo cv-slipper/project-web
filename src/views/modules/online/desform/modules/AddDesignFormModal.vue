@@ -30,7 +30,7 @@
             v-decorator="[ 'desformCode', rules.desformCode]"/>
         </a-form-item>
 
-     <!--   <a-form-item label="表单图标" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <!--   <a-form-item label="表单图标" :labelCol="labelCol" :wrapperCol="wrapperCol">
 
           <a-input placeholder="点击选择表单图标" v-decorator="[ 'desformIcon']" :readOnly="true">
             <a-icon slot="addonAfter" type="setting" @click="iconChooseVisible=true"/>

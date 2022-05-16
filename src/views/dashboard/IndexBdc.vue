@@ -149,7 +149,13 @@
 
           <a-tab-pane loading="true" tab="业务流程限时监管" key="1">
 
-            <a-table :dataSource="dataSource1" size="default" rowKey="id" :columns="columns" :pagination="ipagination1" @change="tableChange1">
+            <a-table
+              :dataSource="dataSource1"
+              size="default"
+              rowKey="id"
+              :columns="columns"
+              :pagination="ipagination1"
+              @change="tableChange1">
               <template slot="flowRate" slot-scope="text, record, index">
                 <a-progress :strokeColor="getPercentColor(record.flowRate)" :format="getPercentFormat" :percent="getFlowRateNumber(record.flowRate)" style="width:80px" />
               </template>
@@ -157,7 +163,13 @@
           </a-tab-pane>
 
           <a-tab-pane loading="true" tab="业务节点限时监管" key="2">
-            <a-table :dataSource="dataSource2" size="default" rowKey="id" :columns="columns2" :pagination="ipagination2" @change="tableChange2">
+            <a-table
+              :dataSource="dataSource2"
+              size="default"
+              rowKey="id"
+              :columns="columns2"
+              :pagination="ipagination2"
+              @change="tableChange2">
               <template slot="flowRate" slot-scope="text, record, index">
                 <span style="color: red;">{{ record.flowRate }}小时</span>
               </template>

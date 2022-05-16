@@ -1,7 +1,13 @@
 <template>
   <div class="antv-chart-mini">
     <div class="chart-wrapper" :style="{ height: 46 }">
-      <v-chart :force-fit="true" :height="height" :data="data" :scale="scale" :padding="[36, 0, 18, 0]" ref="chart">
+      <v-chart
+        :force-fit="true"
+        :height="height"
+        :data="data"
+        :scale="scale"
+        :padding="[36, 0, 18, 0]"
+        ref="chart">
         <v-tooltip/>
         <v-smooth-area position="x*y"/>
       </v-chart>

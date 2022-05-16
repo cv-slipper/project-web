@@ -48,7 +48,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a
-        style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
+          style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -65,8 +65,10 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a :href="getDesignrURL(record.id)" target="_blank"
-             class="el-button el-button--text el-button--small">在线设计</a>
+          <a
+            :href="getDesignrURL(record.id)"
+            target="_blank"
+            class="el-button el-button--text el-button--small">在线设计</a>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>

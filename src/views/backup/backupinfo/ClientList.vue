@@ -5,7 +5,7 @@
       <div class="searchArea">
         <a-card :bordered="false">
           <div class="table-page-search-wrapper">
-            <a-form layout="inline"  @keyup.enter.native="searchQuery">
+            <a-form layout="inline" @keyup.enter.native="searchQuery">
               <a-row :gutter="48">
                 <a-col :xl="6" :lg="7" :md="8" :sm="24">
                   <a-form-item label="备份域">
@@ -18,7 +18,7 @@
                 </a-col>
                 <a-col :xl="6" :lg="7" :md="8" :sm="24">
                   <a-form-item label="客户端组">
-                    <a-select placeholder="请选择客户端组" :allowClear="true"  v-model="params.clientGroup">
+                    <a-select placeholder="请选择客户端组" :allowClear="true" v-model="params.clientGroup">
                       <a-select-option v-for="item in clientGroupList" :key="item.id">
                         {{ item.name }}
                       </a-select-option>
@@ -37,22 +37,22 @@
                   </a-form-item>
                 </a-col>
 
-<!--                <template v-if="toggleSearchStatus">-->
-                  <a-col :xl="6" :lg="7" :md="8" :sm="24">
-                    <a-form-item label="描 述">
-                      <a-input placeholder="请输入客户端描述" v-model="params.description"></a-input>
-                    </a-form-item>
-                  </a-col>
-<!--                </template>-->
+                <!--                <template v-if="toggleSearchStatus">-->
+                <a-col :xl="6" :lg="7" :md="8" :sm="24">
+                  <a-form-item label="描 述">
+                    <a-input placeholder="请输入客户端描述" v-model="params.description"></a-input>
+                  </a-form-item>
+                </a-col>
+                <!--                </template>-->
 
                 <a-col :span="6" :md="6" :sm="24">
                   <span class="table-page-search-submitButtons">
                     <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
                     <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-<!--                    <a @click="handleToggleSearch" style="margin-left: 8px">-->
-<!--                      {{ toggleSearchStatus ? '收起' : '展开' }}-->
-<!--                      <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-<!--                    </a>-->
+                    <!--                    <a @click="handleToggleSearch" style="margin-left: 8px">-->
+                    <!--                      {{ toggleSearchStatus ? '收起' : '展开' }}-->
+                    <!--                      <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
+                    <!--                    </a>-->
                   </span>
                 </a-col>
               </a-row>
@@ -67,10 +67,11 @@
     <div class="contentArea">
       <!--    客户端显示区域-->
       <div class="blockArea">
-        <a-list :grid="{ gutter: 30, xxl: 4  }"
-                :data-source="data"
-                :pagination="pagination"
-                :loading="listLoading"
+        <a-list
+          :grid="{ gutter: 30, xxl: 4 }"
+          :data-source="data"
+          :pagination="pagination"
+          :loading="listLoading"
         >
           <a-list-item slot="renderItem" slot-scope="item, index">
             <a-card class="cardBackground">
@@ -88,35 +89,35 @@
                   <img src="@/assets/clientpicture/Unix.png"/>
                 </template>
               </div>
-              <div class="clientName">{{item.clientName}}</div>
+              <div class="clientName">{{ item.clientName }}</div>
               <!--              <div class="status">-->
               <!--                <a-radio :checked="item.status === '在线' ? true : false"></a-radio>-->
               <!--                <span :style="item.status === '在线' ? {color: 'green'} : {color: 'red'}">{{item.status}}</span>-->
               <!--              </div>-->
               <div class="extra">
-<!--                <a-dropdown :trigger="['click']">-->
-<!--                  <a-icon :style="{width: '20px', height: '20px'}" type="more"/>-->
-<!--                  &ndash;&gt;-->
-<!--                  <a-menu slot="overlay">-->
-<!--                    <a-menu-item key="1" @click="">-->
-<!--                      <a-icon type="eye"/>-->
-<!--                      详情-->
-<!--                    </a-menu-item>-->
-<!--                    <a-menu-item key="2" @click="">-->
-<!--                      <a-icon type="check"/>-->
-<!--                      详情-->
-<!--                    </a-menu-item>-->
-<!--                    <a-menu-item key="3" @click="">-->
-<!--                      <a-icon type="sync"/>-->
-<!--                      详情-->
-<!--                    </a-menu-item>-->
-<!--                  </a-menu>-->
-<!--                </a-dropdown>-->
+                <!--                <a-dropdown :trigger="['click']">-->
+                <!--                  <a-icon :style="{width: '20px', height: '20px'}" type="more"/>-->
+                <!--                  &ndash;&gt;-->
+                <!--                  <a-menu slot="overlay">-->
+                <!--                    <a-menu-item key="1" @click="">-->
+                <!--                      <a-icon type="eye"/>-->
+                <!--                      详情-->
+                <!--                    </a-menu-item>-->
+                <!--                    <a-menu-item key="2" @click="">-->
+                <!--                      <a-icon type="check"/>-->
+                <!--                      详情-->
+                <!--                    </a-menu-item>-->
+                <!--                    <a-menu-item key="3" @click="">-->
+                <!--                      <a-icon type="sync"/>-->
+                <!--                      详情-->
+                <!--                    </a-menu-item>-->
+                <!--                  </a-menu>-->
+                <!--                </a-dropdown>-->
               </div>
               <div style="align: center"><img style="width: 100%" src="@/assets/clientpicture/line.png"></div>
               <div class="clientInfo">
                 <span>IP：<j-ellipsis :value="item.hostname" :length="20"/></span>
-                <p>{{item.domain=='prod'?'生产域':'分行域'}}</p>
+                <p>{{ item.domain=='prod'?'生产域':'分行域' }}</p>
                 <span></span>
                 <p></p>
                 <!-- 代理 -->
@@ -146,7 +147,7 @@
                   <a-col :span="6">
                     <template v-for="tag in item.tags.slice(0,5)">
                       <a-row>
-                        <a-tag color="orange">{{tag}}</a-tag>
+                        <a-tag color="orange">{{ tag }}</a-tag>
                       </a-row>
                     </template>
                   </a-col>
@@ -161,7 +162,7 @@
                 <span @click="handleCreateTask(item)"><a-icon key="setting" type="plus"/>备份</span>
                 <span @click="handleShowList(item)"><a-icon key="list" type="menu-unfold"/>备份历史</span>
                 <span @click="handleEdit(item)"><a-icon key="edit" type="edit"/>编辑描述</span>
-<!--                <a-icon key="ellipsis" type="reload"/>-->
+                <!--                <a-icon key="ellipsis" type="reload"/>-->
               </template>
             </a-card>
           </a-list-item>

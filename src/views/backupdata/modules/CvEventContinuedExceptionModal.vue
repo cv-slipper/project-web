@@ -24,7 +24,13 @@
           <a-input v-decorator="['details']" placeholder="请输入明细"></a-input>
         </a-form-item>
         <a-form-item label="发生时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择发生时间" v-decorator="['triggerTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择发生时间"
+            v-decorator="['triggerTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
         <a-form-item label="是否处理 " :labelCol="labelCol" :wrapperCol="wrapperCol">
           <j-dict-select-tag type="list" v-decorator="['handled']" :trigger-change="true" dictCode="boolean_dict" placeholder="请选择是否处理 "/>

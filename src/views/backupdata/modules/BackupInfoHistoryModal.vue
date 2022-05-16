@@ -33,7 +33,13 @@
           <a-input v-decorator="['status']" placeholder="请输入状态"></a-input>
         </a-form-item>
         <a-form-item label="执行时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择执行时间" v-decorator="['execTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
+          <j-date
+            placeholder="请选择执行时间"
+            v-decorator="['execTime']"
+            :trigger-change="true"
+            :show-time="true"
+            date-format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"/>
         </a-form-item>
 
       </a-form>

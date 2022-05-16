@@ -1,12 +1,12 @@
 <template>
   <a-modal
-          title="corn表达式"
-          :width="modalWidth"
-          :visible="visible"
-          :confirmLoading="confirmLoading"
-          @ok="handleSubmit"
-          @cancel="close"
-          cancelText="关闭">
+    title="corn表达式"
+    :width="modalWidth"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @ok="handleSubmit"
+    @cancel="close"
+    cancelText="关闭">
     <div class="card-container">
       <a-tabs type="card">
         <a-tab-pane key="1" type="card">
@@ -245,7 +245,7 @@
         </a-tab-pane>
       </a-tabs>
       <div class="bottom">
-        <span class="value">{{this.cron }}</span>
+        <span class="value">{{ this.cron }}</span>
       </div>
     </div>
   </a-modal>

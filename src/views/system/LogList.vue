@@ -39,8 +39,8 @@
 
           <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
             <a-col :md="6" :sm="24" >
-                <a-button type="primary"  style="left: 10px" @click="searchQuery" icon="search">查询</a-button>
-                <a-button type="primary"  @click="searchReset" icon="reload" style="margin-left: 8px;left: 10px">重置</a-button>
+              <a-button type="primary" style="left: 10px" @click="searchQuery" icon="search">查询</a-button>
+              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px;left: 10px">重置</a-button>
             </a-col>
           </span>
 
@@ -65,8 +65,8 @@
       </div>
       <!-- 字符串超长截取省略号显示-->
       <span slot="logContent" slot-scope="text, record">
-          <j-ellipsis :value="text" :length="40"/>
-        </span>
+        <j-ellipsis :value="text" :length="40"/>
+      </span>
     </a-table>
     <!-- table区域-end -->
   </a-card>

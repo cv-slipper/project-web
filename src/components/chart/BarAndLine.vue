@@ -1,7 +1,13 @@
 <template>
   <div :style="{ padding: '0 50px 32px 0' }">
     <h4 :style="{ marginBottom: '20px' }">{{ title }}</h4>
-    <v-chart :forceFit="true" :height="height" :data="data" :scale="scale" :padding=" padding" :onClick="handleClick">
+    <v-chart
+      :forceFit="true"
+      :height="height"
+      :data="data"
+      :scale="scale"
+      :padding=" padding"
+      :onClick="handleClick">
       <v-tooltip/>
       <v-legend/>
       <v-axis/>

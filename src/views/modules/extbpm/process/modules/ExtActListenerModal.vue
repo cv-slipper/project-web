@@ -31,7 +31,7 @@
           :wrapperCol="wrapperCol"
           label="Event属性">
           <a-select v-decorator="[ 'listenerEvent', {}]" placeholder="请选择Event属性">
-            <a-select-option v-for="listenerEvent in listenerEvents" :key="listenerEvent">{{listenerEvent}}</a-select-option>
+            <a-select-option v-for="listenerEvent in listenerEvents" :key="listenerEvent">{{ listenerEvent }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item

@@ -5,7 +5,7 @@
     :visible="visible"
     :title="title"
     width="100%"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     :footer="null"
     destroyOnClose
@@ -28,21 +28,21 @@
 
 
       <div style="width: 60%;margin:0 auto;">
-          <a-divider orientation="left">选择委托人</a-divider>
-          <a-row>
-            <a-col :span="18">
-              <a-form-item label="用户名：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-                <a-input-search placeholder="点击选择用户" readOnly @search="handleSelect" v-model="model.userName">
-                  <a-button slot="enterButton" icon="search">选择</a-button>
-                </a-input-search>
-              </a-form-item>
-            </a-col>
-            <a-col :span="6">
-              <a-form-item >
+        <a-divider orientation="left">选择委托人</a-divider>
+        <a-row>
+          <a-col :span="18">
+            <a-form-item label="用户名：" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+              <a-input-search placeholder="点击选择用户" readOnly @search="handleSelect" v-model="model.userName">
+                <a-button slot="enterButton" icon="search">选择</a-button>
+              </a-input-search>
+            </a-form-item>
+          </a-col>
+          <a-col :span="6">
+            <a-form-item >
               <a-button type="primary" :disabled="disabledButton" @click="handleBatchEntruster">确认委托</a-button>
-              </a-form-item>
-            </a-col>
-          </a-row>
+            </a-form-item>
+          </a-col>
+        </a-row>
       </div>
 
       <div style="width: 60%;margin:0 auto;" v-show="dealStatus">

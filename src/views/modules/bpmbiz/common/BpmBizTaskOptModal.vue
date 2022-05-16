@@ -7,7 +7,7 @@
     width="90%"
     style="top: 20px;"
     destroyOnClose
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     :footer="null"
     @cancel="handleModalCancel">
     <a-spin :spinning="confirmLoading">
@@ -19,14 +19,14 @@
             <span>任务处理</span>
           </span>
           <br>
-        <br>
-        <template v-if="opt=='submit'">
-          <biz-task-module :formData="formData" @complete = "completeProcess"></biz-task-module>
-        </template>
-        <template v-else-if="opt=='reject'">
-          <biz-task-reject-module :formData="formData" @complete = "completeProcess"></biz-task-reject-module>
-        </template>
-        <br>
+          <br>
+          <template v-if="opt=='submit'">
+            <biz-task-module :formData="formData" @complete="completeProcess"></biz-task-module>
+          </template>
+          <template v-else-if="opt=='reject'">
+            <biz-task-reject-module :formData="formData" @complete="completeProcess"></biz-task-reject-module>
+          </template>
+          <br>
         </a-tab-pane>
         <a-tab-pane key="2">
           <span slot="tab">

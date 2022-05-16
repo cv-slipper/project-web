@@ -5,7 +5,7 @@
       <v-tooltip />
       <v-legend />
       <v-axis dataKey="State" :label="label" />
-      <v-stack-bar position="State*流程数量"  color="流程状态" />
+      <v-stack-bar position="State*流程数量" color="流程状态" />
     </v-chart>
   </div>
 

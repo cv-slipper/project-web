@@ -5,7 +5,7 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 50px;"
     destroyOnClose
     :footer="null"

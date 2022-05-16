@@ -5,7 +5,7 @@
     :visible="visible"
     :title="title"
     width="100%"
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     style="top: 0px;"
     :footer="null"
     destroyOnClose

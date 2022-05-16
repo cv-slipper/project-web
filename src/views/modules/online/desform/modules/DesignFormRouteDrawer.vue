@@ -77,7 +77,7 @@
         </template>
 
         <template slot="ellipsis" slot-scope="text">
-          <ellipsis :length="18">{{text}}</ellipsis>
+          <ellipsis :length="18">{{ text }}</ellipsis>
         </template>
 
         <template slot="action" slot-scope="text, record">

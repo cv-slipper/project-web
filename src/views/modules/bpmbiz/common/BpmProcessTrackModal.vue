@@ -7,7 +7,7 @@
     width="100%"
     style="top: 20px;"
     destroyOnClose
-    :bodyStyle ="bodyStyle"
+    :bodyStyle="bodyStyle"
     :footer="null"
     @cancel="handleModalCancel">
     <a-spin :spinning="confirmLoading">

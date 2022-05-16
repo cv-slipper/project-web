@@ -8,8 +8,10 @@
 
           <a-col :md="6" :sm="8">
             <a-form-item label="表单名称">
-              <j-dict-select-tag v-model="queryParam.desformCode" placeholder="请选择表单名称"
-                                 dictCode="design_form,desform_name,desform_code"/>
+              <j-dict-select-tag
+                v-model="queryParam.desformCode"
+                placeholder="请选择表单名称"
+                dictCode="design_form,desform_name,desform_code"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
@@ -42,7 +44,7 @@
     </div>
 
     <!-- 操作按钮区域 -->
-   <!-- <div class="table-operator">
+    <!-- <div class="table-operator">
       <a-button @click="handleAddBpm" type="primary" icon="plus">发起流程</a-button>
     </div>-->
 
@@ -88,7 +90,7 @@
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-              <a-menu-item  v-else  @click="handleTrack(record)">审批进度</a-menu-item>
+              <a-menu-item v-else @click="handleTrack(record)">审批进度</a-menu-item>
             </a-menu>
           </a-dropdown>
         </span>

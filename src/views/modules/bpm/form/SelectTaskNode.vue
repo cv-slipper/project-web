@@ -10,7 +10,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form>
         <a-form-item label="请选择跳转节点" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" has-feedback>
-          <a-select placeholder="请选择跳转到那个节点"  v-model="taskNodeValue">
+          <a-select placeholder="请选择跳转到那个节点" v-model="taskNodeValue">
             <a-select-option v-for="(item, key) in options" :key="key" :value="item.taskKey">{{ item.name }}
             </a-select-option>
           </a-select>

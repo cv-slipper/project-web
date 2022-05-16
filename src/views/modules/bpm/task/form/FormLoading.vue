@@ -1,8 +1,8 @@
 <template>
   <a-form>
-  <a-skeleton />
-  <a-skeleton />
-  <a-skeleton />
+    <a-skeleton />
+    <a-skeleton />
+    <a-skeleton />
   </a-form>
 </template>
 

@@ -8,7 +8,7 @@
         <a-dropdown v-if="component">
           <a-menu slot="overlay">
             <template v-for="(data,idx) of dataSources">
-              <a-menu-item :key="idx" @click="goToInfo(data)">{{data.head.name}}</a-menu-item>
+              <a-menu-item :key="idx" @click="goToInfo(data)">{{ data.head.name }}</a-menu-item>
             </template>
           </a-menu>
           <a-button ghost type="primary">

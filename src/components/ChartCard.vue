@@ -9,7 +9,7 @@
       </div>
       <a-divider />
       <div class="total"><span>{{ total }}</span><span class="total-text">{{ totalText }}</span></div>
-      <span>{{descriptions}}</span>
+      <span>{{ descriptions }}</span>
     </div>
     <div class="chart-card-content">
       <div class="content-fix">

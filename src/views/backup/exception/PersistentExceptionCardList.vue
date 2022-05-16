@@ -57,14 +57,14 @@
           </a-col>
 
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-          <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-            <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-            <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-<!--            <a @click="handleToggleSearch" style="margin-left: 15px">-->
-<!--            {{ toggleSearchStatus ? '收起筛选' : '展开筛选' }}-->
-<!--            <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-<!--          </a>-->
-          </span>
+            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+              <!--            <a @click="handleToggleSearch" style="margin-left: 15px">-->
+              <!--            {{ toggleSearchStatus ? '收起筛选' : '展开筛选' }}-->
+              <!--            <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
+              <!--          </a>-->
+            </span>
           </a-col>
         </a-row>
       </a-form>
@@ -87,13 +87,13 @@
           @change="handleTableChange">
 
           <template slot="endTime" slot-scope="text">
-            <span>{{text=='1970-01-01 00:00:00'?'':text}}</span>
+            <span>{{ text=='1970-01-01 00:00:00'?'':text }}</span>
           </template>
           <template slot="duration" slot-scope="text">
-            <span>{{formatTime(text)}}</span>
+            <span>{{ formatTime(text) }}</span>
           </template>
           <template slot="programSize" slot-scope="text">
-            <span>{{`${(text/1024/1024).toFixed(2)}G`}}</span>
+            <span>{{ `${(text/1024/1024).toFixed(2)}G` }}</span>
           </template>
           <span slot="details" slot-scope="text">
             <j-ellipsis :value="text" :length="90"/>
@@ -101,14 +101,21 @@
           <span slot="action" slot-scope="text, record">
             <a @click="showDetail(record)">详情</a>
             <a-divider type="vertical" />
-            <a-popconfirm placement="topLeft" ok-text="确认" cancel-text="取消" @confirm="confirmHandle(record)"
-                          style="width: 300rem">
+            <a-popconfirm
+              placement="topLeft"
+              ok-text="确认"
+              cancel-text="取消"
+              @confirm="confirmHandle(record)"
+              style="width: 300rem">
               <a-icon slot="icon" type="question-circle-o" style="color: red"/>
               <template slot="title">
                 <a-form layout="vertical" style="width: 30rem;height: 8rem">
                   <a-form-item label="处理原因:">
-                    <a-textarea placeholder="请输入处理原因" v-model="handleReason" :rows="4"
-                                :auto-size="{minRows:4,maxRows:4}"></a-textarea>
+                    <a-textarea
+                      placeholder="请输入处理原因"
+                      v-model="handleReason"
+                      :rows="4"
+                      :auto-size="{minRows:4,maxRows:4}"></a-textarea>
                   </a-form-item>
                 </a-form>
               </template>
@@ -137,14 +144,21 @@
             <j-ellipsis :value="text" :length="90"/>
           </span>
           <span slot="action" slot-scope="text, record">
-            <a-popconfirm placement="topLeft" ok-text="确认" cancel-text="取消" @confirm="confirmHandle(record)"
-                          style="width: 300rem">
+            <a-popconfirm
+              placement="topLeft"
+              ok-text="确认"
+              cancel-text="取消"
+              @confirm="confirmHandle(record)"
+              style="width: 300rem">
               <a-icon slot="icon" type="question-circle-o" style="color: red"/>
               <template slot="title">
                 <a-form layout="vertical" style="width: 30rem;height: 8rem">
                   <a-form-item label="处理原因:">
-                    <a-textarea placeholder="请输入处理原因" v-model="handleReason" :rows="4"
-                                :auto-size="{minRows:4,maxRows:4}"></a-textarea>
+                    <a-textarea
+                      placeholder="请输入处理原因"
+                      v-model="handleReason"
+                      :rows="4"
+                      :auto-size="{minRows:4,maxRows:4}"></a-textarea>
                   </a-form-item>
                 </a-form>
               </template>
@@ -173,14 +187,21 @@
             <j-ellipsis :value="text" :length="90"/>
           </span>
           <span slot="action" slot-scope="text, record">
-            <a-popconfirm placement="topLeft" ok-text="确认" cancel-text="取消" @confirm="confirmHandle(record)"
-                          style="width: 300rem">
+            <a-popconfirm
+              placement="topLeft"
+              ok-text="确认"
+              cancel-text="取消"
+              @confirm="confirmHandle(record)"
+              style="width: 300rem">
               <a-icon slot="icon" type="question-circle-o" style="color: red"/>
               <template slot="title">
                 <a-form layout="vertical" style="width: 30rem;height: 8rem">
                   <a-form-item label="处理原因:">
-                    <a-textarea placeholder="请输入处理原因" v-model="handleReason" :rows="4"
-                                :auto-size="{minRows:4,maxRows:4}"></a-textarea>
+                    <a-textarea
+                      placeholder="请输入处理原因"
+                      v-model="handleReason"
+                      :rows="4"
+                      :auto-size="{minRows:4,maxRows:4}"></a-textarea>
                   </a-form-item>
                 </a-form>
               </template>
@@ -211,14 +232,21 @@
             <j-ellipsis :value="text" :length="90"/>
           </span>
           <span slot="action" slot-scope="text, record">
-            <a-popconfirm placement="topLeft" ok-text="确认" cancel-text="取消" @confirm="confirmHandle(record)"
-                          style="width: 300rem">
+            <a-popconfirm
+              placement="topLeft"
+              ok-text="确认"
+              cancel-text="取消"
+              @confirm="confirmHandle(record)"
+              style="width: 300rem">
               <a-icon slot="icon" type="question-circle-o" style="color: red"/>
               <template slot="title">
                 <a-form layout="vertical" style="width: 30rem;height: 8rem">
                   <a-form-item label="处理原因:">
-                    <a-textarea placeholder="请输入处理原因" v-model="handleReason" :rows="4"
-                                :auto-size="{minRows:4,maxRows:4}"></a-textarea>
+                    <a-textarea
+                      placeholder="请输入处理原因"
+                      v-model="handleReason"
+                      :rows="4"
+                      :auto-size="{minRows:4,maxRows:4}"></a-textarea>
                   </a-form-item>
                 </a-form>
               </template>

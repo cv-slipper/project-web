@@ -9,10 +9,10 @@
         @change="handleChange"
         @pressEnter="check"
       /><a-icon
-      type="check"
-      class="editable-cell-icon-check"
-      @click="check"
-    />
+        type="check"
+        class="editable-cell-icon-check"
+        @click="check"
+      />
     </div>
     <div
       v-else

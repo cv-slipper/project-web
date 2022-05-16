@@ -10,7 +10,7 @@
       cancelText="关闭">
       <a-row :gutter="24">
         <a-col :xs="24" :sm="16">
-          <a-card title="选择人员" :bordered=true>
+          <a-card title="选择人员" :bordered="true">
             <!-- 查询区域 -->
             <div class="table-page-search-wrapper">
               <a-form layout="inline">
@@ -44,7 +44,7 @@
                 :rowSelection="{selectedRowKeys: selectedRowKeys,onSelect:onSelect,onChange: onSelectChange,type: type}"
                 @change="handleTableChange">
 
-               <span slot="username" slot-scope="text, record">
+                <span slot="username" slot-scope="text, record">
                   <j-ellipsis :value="text" :length="15"/>
                 </span>
                 <span slot="realname" slot-scope="text, record">
@@ -56,7 +56,7 @@
           </a-card>
         </a-col>
         <a-col :xs="24" :sm="8">
-          <a-card title="用户选择" :bordered=true>
+          <a-card title="用户选择" :bordered="true">
             <!-- table区域-begin -->
             <div>
               <a-table

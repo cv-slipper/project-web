@@ -7,162 +7,162 @@
     :confirmLoading="confirmLoading">
 
     <div :style="{width: '100%',border: '1px solid #e9e9e9',padding: '10px 16px',background: '#fff',}">
-    <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
+      <a-spin :spinning="confirmLoading">
+        <a-form :form="form">
 
-        <a-form-item label="菜单类型" :labelCol="labelCol" :wrapperCol="wrapperCol" >
-          <a-radio-group @change="onChangeMenuType" v-decorator="['menuType',{'initialValue':localMenuType}]">
-            <a-radio :value="0">一级菜单</a-radio>
-            <a-radio :value="1">子菜单</a-radio>
-            <a-radio :value="2">按钮/权限</a-radio>
-          </a-radio-group>
-        </a-form-item>
+          <a-form-item label="菜单类型" :labelCol="labelCol" :wrapperCol="wrapperCol" >
+            <a-radio-group @change="onChangeMenuType" v-decorator="['menuType',{'initialValue':localMenuType}]">
+              <a-radio :value="0">一级菜单</a-radio>
+              <a-radio :value="1">子菜单</a-radio>
+              <a-radio :value="2">按钮/权限</a-radio>
+            </a-radio-group>
+          </a-form-item>
 
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          :label="menuLabel"
-          hasFeedback >
-          <a-input placeholder="请输入菜单名称" v-decorator="[ 'name', validatorRules.name]" :readOnly="disableSubmit"/>
-        </a-form-item>
-
-
-        <a-form-item
-          v-show="localMenuType!=0"
-          label="上级菜单"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          :validate-status="validateStatus"
-          :hasFeedback="true"
-          :required="true">
-          <span slot="help">{{ validateStatus=='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
-          <a-tree-select
-            style="width:100%"
-            :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
-            :treeData="treeData"
-            v-model="model.parentId"
-            placeholder="请选择父级菜单"
-            :disabled="disableSubmit"
-            @change="handleParentIdChange">
-          </a-tree-select>
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="菜单路径">
-          <a-input placeholder="请输入菜单路径" v-decorator="[ 'url',validatorRules.url]" :readOnly="disableSubmit"/>
-        </a-form-item>
-
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="前端组件">
-          <a-input placeholder="请输入前端组件" v-decorator="[ 'component',validatorRules.component]" :readOnly="disableSubmit"/>
-        </a-form-item>
-
-        <a-form-item
-          v-show="localMenuType==0"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="默认跳转地址">
-          <a-input placeholder="请输入路由参数 redirect" v-decorator="[ 'redirect',{}]" :readOnly="disableSubmit"/>
-        </a-form-item>
-
-        <a-form-item
-          v-show="!show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="授权标识">
-          <a-input placeholder="多个用逗号分隔, 如: user:list,user:create" v-decorator="[ 'perms', {rules:[{ required: false, message: '请输入授权标识!' },{validator: this.validatePerms }]}]" :readOnly="disableSubmit"/>
-        </a-form-item>
-
-        <a-form-item
-          v-show="!show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="授权策略">
-          <j-dict-select-tag  v-decorator="['permsType', {}]" placeholder="请选择授权策略" :type="'radio'" :triggerChange="true" dictCode="global_perms_type"/>
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            :label="menuLabel"
+            hasFeedback >
+            <a-input placeholder="请输入菜单名称" v-decorator="[ 'name', validatorRules.name]" :readOnly="disableSubmit"/>
+          </a-form-item>
 
 
-        </a-form-item>
-        <a-form-item
-          v-show="!show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="状态">
-          <j-dict-select-tag  v-decorator="['status', {}]" placeholder="请选择状态" :type="'radio'" :triggerChange="true" dictCode="valid_status"/>
+          <a-form-item
+            v-show="localMenuType!=0"
+            label="上级菜单"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            :validate-status="validateStatus"
+            :hasFeedback="true"
+            :required="true">
+            <span slot="help">{{ validateStatus=='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
+            <a-tree-select
+              style="width:100%"
+              :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
+              :treeData="treeData"
+              v-model="model.parentId"
+              placeholder="请选择父级菜单"
+              :disabled="disableSubmit"
+              @change="handleParentIdChange">
+            </a-tree-select>
+          </a-form-item>
 
-        </a-form-item>
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="菜单路径">
+            <a-input placeholder="请输入菜单路径" v-decorator="[ 'url',validatorRules.url]" :readOnly="disableSubmit"/>
+          </a-form-item>
 
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="菜单图标">
-          <a-input placeholder="点击选择图标" v-model="model.icon" :readOnly="disableSubmit">
-            <a-icon slot="addonAfter" type="setting" @click="selectIcons" />
-          </a-input>
-        </a-form-item>
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="前端组件">
+            <a-input placeholder="请输入前端组件" v-decorator="[ 'component',validatorRules.component]" :readOnly="disableSubmit"/>
+          </a-form-item>
 
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="排序">
-          <a-input-number placeholder="请输入菜单排序" style="width: 200px" v-decorator="[ 'sortNo',validatorRules.sortNo]" :readOnly="disableSubmit"/>
-        </a-form-item>
+          <a-form-item
+            v-show="localMenuType==0"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="默认跳转地址">
+            <a-input placeholder="请输入路由参数 redirect" v-decorator="[ 'redirect',{}]" :readOnly="disableSubmit"/>
+          </a-form-item>
 
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="是否路由菜单">
-          <a-switch checkedChildren="是" unCheckedChildren="否" v-model="routeSwitch"/>
-        </a-form-item>
+          <a-form-item
+            v-show="!show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="授权标识">
+            <a-input placeholder="多个用逗号分隔, 如: user:list,user:create" v-decorator="[ 'perms', {rules:[{ required: false, message: '请输入授权标识!' },{validator: this.validatePerms }]}]" :readOnly="disableSubmit"/>
+          </a-form-item>
 
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="隐藏路由">
-          <a-switch checkedChildren="是" unCheckedChildren="否" v-model="menuHidden"/>
-        </a-form-item>
-
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="是否缓存路由">
-          <a-switch checkedChildren="是" unCheckedChildren="否" v-model="isKeepalive"/>
-        </a-form-item>
+          <a-form-item
+            v-show="!show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="授权策略">
+            <j-dict-select-tag v-decorator="['permsType', {}]" placeholder="请选择授权策略" :type="'radio'" :triggerChange="true" dictCode="global_perms_type"/>
 
 
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="聚合路由">
-          <a-switch checkedChildren="是" unCheckedChildren="否" v-model="alwaysShow"/>
-        </a-form-item>
+          </a-form-item>
+          <a-form-item
+            v-show="!show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="状态">
+            <j-dict-select-tag v-decorator="['status', {}]" placeholder="请选择状态" :type="'radio'" :triggerChange="true" dictCode="valid_status"/>
 
-        <!--update_begin author:wuxianquan date:20190908 for:增加组件，外链打开方式可选 -->
-        <a-form-item
-          v-show="show"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="打开方式">
-          <a-switch checkedChildren="外部" unCheckedChildren="内部" v-model="internalOrExternal"/>
-        </a-form-item>
+          </a-form-item>
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="菜单图标">
+            <a-input placeholder="点击选择图标" v-model="model.icon" :readOnly="disableSubmit">
+              <a-icon slot="addonAfter" type="setting" @click="selectIcons" />
+            </a-input>
+          </a-form-item>
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="排序">
+            <a-input-number placeholder="请输入菜单排序" style="width: 200px" v-decorator="[ 'sortNo',validatorRules.sortNo]" :readOnly="disableSubmit"/>
+          </a-form-item>
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="是否路由菜单">
+            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="routeSwitch"/>
+          </a-form-item>
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="隐藏路由">
+            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="menuHidden"/>
+          </a-form-item>
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="是否缓存路由">
+            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="isKeepalive"/>
+          </a-form-item>
+
+
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="聚合路由">
+            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="alwaysShow"/>
+          </a-form-item>
+
+          <!--update_begin author:wuxianquan date:20190908 for:增加组件，外链打开方式可选 -->
+          <a-form-item
+            v-show="show"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="打开方式">
+            <a-switch checkedChildren="外部" unCheckedChildren="内部" v-model="internalOrExternal"/>
+          </a-form-item>
         <!--update_end author:wuxianquan date:20190908 for:增加组件，外链打开方式可选 -->
 
 
-      </a-form>
+        </a-form>
 
-      <!-- 选择图标 -->
-      <icons @choose="handleIconChoose" @close="handleIconCancel" :iconChooseVisible="iconChooseVisible"></icons>
-    </a-spin>
+        <!-- 选择图标 -->
+        <icons @choose="handleIconChoose" @close="handleIconCancel" :iconChooseVisible="iconChooseVisible"></icons>
+      </a-spin>
       <a-row :style="{textAlign:'right'}">
         <a-button :style="{marginRight: '8px'}" @click="handleCancel">
           关闭

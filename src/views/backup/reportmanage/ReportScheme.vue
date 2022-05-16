@@ -122,10 +122,11 @@
     <div class="contentArea">
       <!--    客户端显示区域-->
       <div class="blockArea">
-        <a-list :grid="{ gutter: 24, xxl: 4  }"
-                :data-source="data"
-                :pagination="pagination"
-                @change="listChange"
+        <a-list
+          :grid="{ gutter: 24, xxl: 4 }"
+          :data-source="data"
+          :pagination="pagination"
+          @change="listChange"
         >
           <a-list-item slot="renderItem" slot-scope="item, index" @click="handleClickReport">
             <a-card hoverable >
@@ -134,20 +135,20 @@
                 alt="example"
                 src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
               />
-<!--              <template slot="actions" class="ant-card-actions">-->
-<!--                <a-icon key="setting" type="setting" />-->
-<!--                <a-icon key="edit" type="edit" />-->
-<!--                <a-icon key="ellipsis" type="ellipsis" />-->
-<!--              </template>-->
+              <!--              <template slot="actions" class="ant-card-actions">-->
+              <!--                <a-icon key="setting" type="setting" />-->
+              <!--                <a-icon key="edit" type="edit" />-->
+              <!--                <a-icon key="ellipsis" type="ellipsis" />-->
+              <!--              </template>-->
               <a-card-meta :title="item.title" :description="item.description">
-<!--                <a-avatar-->
-<!--                  slot="avatar"-->
-<!--                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
-<!--                />-->
+                <!--                <a-avatar-->
+                <!--                  slot="avatar"-->
+                <!--                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
+                <!--                />-->
               </a-card-meta>
               <br/>
               <a-row>
-                <a-col :span="12">{{formatTime(item.createTime)}}</a-col>
+                <a-col :span="12">{{ formatTime(item.createTime) }}</a-col>
                 <a-col :span="12"></a-col>
               </a-row>
             </a-card>

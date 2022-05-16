@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <template v-if="this.departId">
       <a-form>
-        <a-form-item label='所拥有的权限'>
+        <a-form-item label="所拥有的权限">
           <a-tree
             checkable
             @check="onCheck"

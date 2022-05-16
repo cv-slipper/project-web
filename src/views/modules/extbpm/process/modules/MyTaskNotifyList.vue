@@ -1,19 +1,19 @@
 <template>
-    <div>
-      <a-table
-        ref="table"
-        size="middle"
-        bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        @change="handleTableChange">
-      </a-table>
-    </div>
-    <!-- table区域-end -->
+  <div>
+    <a-table
+      ref="table"
+      size="middle"
+      bordered
+      rowKey="id"
+      :columns="columns"
+      :dataSource="dataSource"
+      :pagination="ipagination"
+      :loading="loading"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+      @change="handleTableChange">
+    </a-table>
+  </div>
+  <!-- table区域-end -->
 </template>
 
 <script>

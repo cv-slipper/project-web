@@ -36,7 +36,7 @@
     >
 
       <template slot="ellipsis" slot-scope="text">
-        <ellipsis :length="13">{{text}}</ellipsis>
+        <ellipsis :length="13">{{ text }}</ellipsis>
       </template>
 
       <template slot="switch" slot-scope="text,record">
@@ -86,7 +86,8 @@
         <a-form-item label="规则字段" :labelCol="modal.labelCol" :wrapperCol="modal.wrapperCol">
           <a-select
             placeholder="请选择规则字段"
-            showSearch allowClear
+            showSearch
+            allowClear
             :filterOption="filterAuthFieldOption"
             :options="modal.authFieldOptions"
             v-decorator="['authField', modal.validatorRules.authField]"

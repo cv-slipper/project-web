@@ -17,7 +17,7 @@
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="策略类型">
               <j-dict-select-tag placeholder="请选择备份域" v-model="queryParam.policyType" dictCode="policyType"/>
-<!--              <a-input placeholder="请输入策略类型" v-model="queryParam.policyType"></a-input>-->
+              <!--              <a-input placeholder="请输入策略类型" v-model="queryParam.policyType"></a-input>-->
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -30,82 +30,82 @@
               <a-input placeholder="请输入警报" v-model="queryParam.alertName"></a-input>
             </a-form-item>
           </a-col>
-<!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--            <a-form-item label="appGroup">-->
-<!--              <a-input placeholder="请输入appGroup" v-model="queryParam.appGroup"></a-input>-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+          <!--            <a-form-item label="appGroup">-->
+          <!--              <a-input placeholder="请输入appGroup" v-model="queryParam.appGroup"></a-input>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <template v-if="toggleSearchStatus">
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="GUID">-->
-<!--                <a-input placeholder="请输入GUID" v-model="queryParam.guid"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="alertId">-->
-<!--                <a-input placeholder="请输入alertId" v-model="queryParam.alertId"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="关联的对象">-->
-<!--                <a-input placeholder="请输入关联的对象" v-model="queryParam.associatedObjects"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="originalCC">-->
-<!--                <a-input placeholder="请输入originalCC" v-model="queryParam.originalcc"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="ownerId">-->
-<!--                <a-input placeholder="请输入ownerId" v-model="queryParam.ownerId"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="ownerName">-->
-<!--                <a-input placeholder="请输入ownerName" v-model="queryParam.ownerName"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="GUID">-->
+            <!--                <a-input placeholder="请输入GUID" v-model="queryParam.guid"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="alertId">-->
+            <!--                <a-input placeholder="请输入alertId" v-model="queryParam.alertId"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="关联的对象">-->
+            <!--                <a-input placeholder="请输入关联的对象" v-model="queryParam.associatedObjects"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="originalCC">-->
+            <!--                <a-input placeholder="请输入originalCC" v-model="queryParam.originalcc"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="ownerId">-->
+            <!--                <a-input placeholder="请输入ownerId" v-model="queryParam.ownerId"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="ownerName">-->
+            <!--                <a-input placeholder="请输入ownerName" v-model="queryParam.ownerName"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
 
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="runUserId">-->
-<!--                <a-input placeholder="请输入runUserId" v-model="queryParam.runUserid"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="task">-->
-<!--                <a-input placeholder="请输入task" v-model="queryParam.task"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="任务ID">-->
-<!--                <a-input placeholder="请输入任务ID" v-model="queryParam.taskId"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="任务名">-->
-<!--                <a-input placeholder="请输入任务名" v-model="queryParam.taskName"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="taskFlags">-->
-<!--                <a-input placeholder="请输入taskFlags" v-model="queryParam.taskFlags"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-<!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
-<!--              <a-form-item label="taskType">-->
-<!--                <a-input placeholder="请输入taskType" v-model="queryParam.tasktype"></a-input>-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="runUserId">-->
+            <!--                <a-input placeholder="请输入runUserId" v-model="queryParam.runUserid"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="task">-->
+            <!--                <a-input placeholder="请输入task" v-model="queryParam.task"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="任务ID">-->
+            <!--                <a-input placeholder="请输入任务ID" v-model="queryParam.taskId"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="任务名">-->
+            <!--                <a-input placeholder="请输入任务名" v-model="queryParam.taskName"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="taskFlags">-->
+            <!--                <a-input placeholder="请输入taskFlags" v-model="queryParam.taskFlags"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
+            <!--            <a-col :xl="6" :lg="7" :md="8" :sm="24">-->
+            <!--              <a-form-item label="taskType">-->
+            <!--                <a-input placeholder="请输入taskType" v-model="queryParam.tasktype"></a-input>-->
+            <!--              </a-form-item>-->
+            <!--            </a-col>-->
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-<!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
-<!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
-<!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-<!--              </a>-->
+              <!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
+              <!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
+              <!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
+              <!--              </a>-->
             </span>
           </a-col>
         </a-row>
@@ -115,17 +115,17 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-<!--      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
+      <!--      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
       <a-button type="primary" icon="download" @click="handleExportXls('计划策略')">导出</a-button>
-<!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">-->
-<!--        <a-button type="primary" icon="import">导入</a-button>-->
-<!--      </a-upload>-->
-<!--      <a-dropdown v-if="selectedRowKeys.length > 0">-->
-<!--        <a-menu slot="overlay">-->
-<!--          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>-->
-<!--        </a-menu>-->
-<!--        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>-->
-<!--      </a-dropdown>-->
+      <!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">-->
+      <!--        <a-button type="primary" icon="import">导入</a-button>-->
+      <!--      </a-upload>-->
+      <!--      <a-dropdown v-if="selectedRowKeys.length > 0">-->
+      <!--        <a-menu slot="overlay">-->
+      <!--          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>-->
+      <!--        </a-menu>-->
+      <!--        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>-->
+      <!--      </a-dropdown>-->
     </div>
 
     <!-- table区域-begin -->
@@ -174,26 +174,26 @@
           </a-button>
         </template>
 
-<!--        <span slot="action" slot-scope="text, record">-->
-<!--          <a @click="handleEdit(record)">编辑</a>-->
+        <!--        <span slot="action" slot-scope="text, record">-->
+        <!--          <a @click="handleEdit(record)">编辑</a>-->
 
-<!--          <a-divider type="vertical" />-->
-<!--          <a-dropdown>-->
-<!--            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>-->
-<!--            <a-menu slot="overlay">-->
-<!--              <a-menu-item>-->
-<!--                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">-->
-<!--                  <a>删除</a>-->
-<!--                </a-popconfirm>-->
-<!--              </a-menu-item>-->
-<!--            </a-menu>-->
-<!--          </a-dropdown>-->
-<!--        </span>-->
+        <!--          <a-divider type="vertical" />-->
+        <!--          <a-dropdown>-->
+        <!--            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>-->
+        <!--            <a-menu slot="overlay">-->
+        <!--              <a-menu-item>-->
+        <!--                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">-->
+        <!--                  <a>删除</a>-->
+        <!--                </a-popconfirm>-->
+        <!--              </a-menu-item>-->
+        <!--            </a-menu>-->
+        <!--          </a-dropdown>-->
+        <!--        </span>-->
 
       </a-table>
     </div>
 
-<!--    <cvSchedulePolicy-modal ref="modalForm" @ok="modalFormOk"></cvSchedulePolicy-modal>-->
+    <!--    <cvSchedulePolicy-modal ref="modalForm" @ok="modalFormOk"></cvSchedulePolicy-modal>-->
   </a-card>
 </template>
 

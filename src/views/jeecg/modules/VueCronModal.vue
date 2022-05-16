@@ -196,7 +196,7 @@
               <a-row>
                 <a-radio class="long" value="3">具体月数(可多选)</a-radio>
                 <a-select style="width:354px;" size="small" filterable mode="multiple" v-model="result.month.specificSpecific">
-                  <a-select-option v-for="(val,index) in Array(12)" :key="index"  :value="index">{{ index+1 }}</a-select-option>
+                  <a-select-option v-for="(val,index) in Array(12)" :key="index" :value="index">{{ index+1 }}</a-select-option>
                 </a-select>
               </a-row>
               <a-row>
@@ -244,7 +244,7 @@
         </a-tab-pane>
       </a-tabs>
       <div class="bottom">
-        <span class="value">{{this.cron.label }}</span>
+        <span class="value">{{ this.cron.label }}</span>
       </div>
     </div>
   </a-modal>

@@ -8,27 +8,27 @@
     @cancel="handleCancel"
     cancelText="关闭"
     wrapClassName="ant-modal-cust-warp"
-    >
+  >
     <!--部门树-->
     <template>
       <a-form :form="form">
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上级部门">
-      <a-tree
-        multiple
-        treeCheckable="tree"
-        checkable
-        @expand="onExpand"
-        :expandedKeys="expandedKeysss"
-        :checkedKeys="checkedKeys"
-        allowClear="true"
-        :checkStrictly="true"
-        @check="onCheck"
-        :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
-        :treeData="departTree"
-        placeholder="请选择上级部门"
-        >
-      </a-tree>
-      </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上级部门">
+          <a-tree
+            multiple
+            treeCheckable="tree"
+            checkable
+            @expand="onExpand"
+            :expandedKeys="expandedKeysss"
+            :checkedKeys="checkedKeys"
+            allowClear="true"
+            :checkStrictly="true"
+            @check="onCheck"
+            :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
+            :treeData="departTree"
+            placeholder="请选择上级部门"
+          >
+          </a-tree>
+        </a-form-item>
       </a-form>
     </template>
   </a-modal>

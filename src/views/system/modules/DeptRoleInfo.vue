@@ -33,7 +33,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">
-          {{selectedRowKeys.length }}</a>项
+          {{ selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
       <a-table
@@ -63,7 +63,7 @@
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-             </a-menu>
+            </a-menu>
           </a-dropdown>
         </span>
       </a-table>

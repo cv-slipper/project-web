@@ -1,39 +1,39 @@
 <template>
-      <a-form :form="form">
-      <j-form-container :disabled="true">
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="请假人">
-          <a-input  placeholder="请输入请假人" v-decorator="['name', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="请假天数">
-          <a-input-number  v-decorator="[ 'days', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="开始时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'beginDate', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="请假结束时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'endDate', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="请假原因">
-          <a-input placeholder="请输入请假原因" v-decorator="['reason', {}]" />
-        </a-form-item>
+  <a-form :form="form">
+    <j-form-container :disabled="true">
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="请假人">
+        <a-input placeholder="请输入请假人" v-decorator="['name', {}]" />
+      </a-form-item>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="请假天数">
+        <a-input-number v-decorator="[ 'days', {}]" />
+      </a-form-item>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="开始时间">
+        <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'beginDate', {}]" />
+      </a-form-item>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="请假结束时间">
+        <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'endDate', {}]" />
+      </a-form-item>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="请假原因">
+        <a-input placeholder="请输入请假原因" v-decorator="['reason', {}]" />
+      </a-form-item>
 
-      </j-form-container>
-      </a-form>
+    </j-form-container>
+  </a-form>
 </template>
 
 <script>

@@ -23,12 +23,12 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="cron表达式">
-<!--                    <a-input placeholder="请输入cron表达式" v-decorator="['cronExpression', {'initialValue':'0/1 * * * * ?',rules: [{ required: true, message: '请输入任务类名!' }]}]" />-->
-<!--                    <a target="_blank" href="http://cron.qqe2.com/">-->
-<!--                      <a-icon type="share-alt" />-->
-<!--                      在线cron表达式生成-->
-<!--                    </a>-->
-<!--          <j-cron ref="innerVueCron" v-decorator="['cronExpression', {'initialValue':'0/1 * * * * ?',rules: [{ required: true, message: '请输入cron表达式!' }]}]"  @change="setCorn"></j-cron>-->
+          <!--                    <a-input placeholder="请输入cron表达式" v-decorator="['cronExpression', {'initialValue':'0/1 * * * * ?',rules: [{ required: true, message: '请输入任务类名!' }]}]" />-->
+          <!--                    <a target="_blank" href="http://cron.qqe2.com/">-->
+          <!--                      <a-icon type="share-alt" />-->
+          <!--                      在线cron表达式生成-->
+          <!--                    </a>-->
+          <!--          <j-cron ref="innerVueCron" v-decorator="['cronExpression', {'initialValue':'0/1 * * * * ?',rules: [{ required: true, message: '请输入cron表达式!' }]}]"  @change="setCorn"></j-cron>-->
           <j-cron ref="innerVueCron" v-decorator="['cronExpression', { initialValue: '* * * * * ? *' }]" @change="setCorn"></j-cron>
         </a-form-item>
         <a-form-item
@@ -47,7 +47,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="状态">
-          <j-dict-select-tag type="radioButton"  v-decorator="[ 'status', {'initialValue':0}]" :trigger-change="true" dictCode="quartz_status"/>
+          <j-dict-select-tag type="radioButton" v-decorator="[ 'status', {'initialValue':0}]" :trigger-change="true" dictCode="quartz_status"/>
         </a-form-item>
       </a-form>
     </a-spin>

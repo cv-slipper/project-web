@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="true"
-    width=600
+    width="600"
     placement="right"
     :closable="true"
     @close="close"
@@ -12,7 +12,7 @@
     <a-spin :spinning="confirmLoading">
 
       <a-form :form="form" v-if="designNameOption.length>0">
-        <a-form-item label=''>
+        <a-form-item label="">
           <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
             <a-card :style="{ marginTop: '12px',height:'auto' }">
               <a-checkbox-group @change="designNameChange" v-model="designNameValue" style="width: 100%">
@@ -40,7 +40,7 @@
           操作 <a-icon type="up" />
         </a-button>
       </a-dropdown>
-      <a-popconfirm  title="确定放弃编辑？" @confirm="close" okText="确定" cancelText="取消">
+      <a-popconfirm title="确定放弃编辑？" @confirm="close" okText="确定" cancelText="取消">
         <a-button style="margin-right: .8rem">取消</a-button>
       </a-popconfirm>
       <a-button @click="handleSubmit(true)" type="primary">保存</a-button>

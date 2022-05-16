@@ -1,187 +1,188 @@
 <template>
-      <a-form  :form="form">
-        <j-form-container :disabled="true">
-        <a-card id="staffCard" style="margin: 0 auto;width: 750px">
-          <span id="staffLeaveTitle">员工请假单</span>
-          <div class="staffLeaveTableId" style="margin-bottom: 5px">
+  <a-form :form="form">
+    <j-form-container :disabled="true">
+      <a-card id="staffCard" style="margin: 0 auto;width: 750px">
+        <span id="staffLeaveTitle">员工请假单</span>
+        <div class="staffLeaveTableId" style="margin-bottom: 5px">
           <a-form-item
             :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
             :wrapperCol="{xs: { span: 24 },sm: { span: 10 }}"
             label="编号:">
-              <a-input :disabled="disabled" class="fontiframe" v-model="model.applyNo" readOnly/>
+            <a-input :disabled="disabled" class="fontiframe" v-model="model.applyNo" readOnly/>
           </a-form-item>
-          </div>
-          <table border="1px" id="staffLeaveTable">
-            <tr>
-              <td class="firstTr">请假人</td>
-              <td class="firstTr">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <a-input class="text" :disabled="disabled" v-decorator="[ 'name', {}]" />
-                </a-form-item>
-              </td>
-              <td class="firstTr">部门</td>
-              <td class="firstTr">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.department}}</span>
-                </a-form-item>
-              </td>
-              <td class="firstTr">职务</td>
-              <td class="firstTr">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol">
-                  <span class="fontiframe">{{model.duty}}</span>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="6">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                  label="请假类别:">
-                  <a-radio-group :disabled="disabled" class="fontiframe" name="radioGroup" v-model="flag" @change="onChange">
-                    <a-radio class="radioGroup" value="1">病假</a-radio>
-                    <a-radio class="radioGroup" value="2">事假</a-radio>
-                    <a-radio class="radioGroup" value="3">年假</a-radio>
-                    <a-radio class="radioGroup" value="4">婚假</a-radio>
-                    <a-radio class="radioGroup" value="5">产假</a-radio>
-                    <a-radio class="radioGroup" value="6">丧假</a-radio>
-                    <a-radio class="radioGroup" value="7">探亲假</a-radio>
-                    <a-radio class="radioGroup" value="8">护理假</a-radio>
-                    <a-radio class="radioGroup" value="9">其他</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="6">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                  label="请假事由:"
-                >
-                  <a-textarea :disabled="disabled"
-                    v-decorator="[ 'leaveReason', {}]"
-                    style="resize:none;height:118px;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
+        </div>
+        <table border="1px" id="staffLeaveTable">
+          <tr>
+            <td class="firstTr">请假人</td>
+            <td class="firstTr">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <a-input class="text" :disabled="disabled" v-decorator="[ 'name', {}]" />
+              </a-form-item>
+            </td>
+            <td class="firstTr">部门</td>
+            <td class="firstTr">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <span class="fontiframe">{{ model.department }}</span>
+              </a-form-item>
+            </td>
+            <td class="firstTr">职务</td>
+            <td class="firstTr">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol">
+                <span class="fontiframe">{{ model.duty }}</span>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="请假类别:">
+                <a-radio-group :disabled="disabled" class="fontiframe" name="radioGroup" v-model="flag" @change="onChange">
+                  <a-radio class="radioGroup" value="1">病假</a-radio>
+                  <a-radio class="radioGroup" value="2">事假</a-radio>
+                  <a-radio class="radioGroup" value="3">年假</a-radio>
+                  <a-radio class="radioGroup" value="4">婚假</a-radio>
+                  <a-radio class="radioGroup" value="5">产假</a-radio>
+                  <a-radio class="radioGroup" value="6">丧假</a-radio>
+                  <a-radio class="radioGroup" value="7">探亲假</a-radio>
+                  <a-radio class="radioGroup" value="8">护理假</a-radio>
+                  <a-radio class="radioGroup" value="9">其他</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="请假事由:"
+              >
+                <a-textarea
+                  :disabled="disabled"
+                  v-decorator="[ 'leaveReason', {}]"
+                  style="resize:none;height:118px;font-size: 12px;border: 0px solid white;border-radius: 0px;margin-bottom: 0px;">
 
-                  </a-textarea>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="6">
-                <a-form-item
-                  :labelCol="labelCol"
-                  :wrapperCol="wrapperCol"
-                  class="fontiframe lineHeight"
-                  label="请假事由:"
-                >
-                  自(
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    :disabled="disabled"
-                    showTime
-                    format='YYYY-MM-DD HH:mm:ss'
-                    v-decorator="[ 'leaveStartDate', {}]"
-                    :allowClear="false"
-                  />
-                  )
-                  至(
-                  <a-date-picker
-                    class="input"
-                    placeholder=""
-                    :disabled="disabled"
-                    showTime
-                    format='YYYY-MM-DD HH:mm:ss'
-                    v-decorator="[ 'leaveEndDate', {}]"
-                    :allowClear="false"
-                  />
-                  )
-                  总共请<a-input-number
-                    class="smallText"
-                    size="small"
-                    v-model="model.total"
-                    :disabled="disabled"
-                    :min="0"/>天假<br/>
-                  <span class="fontiframe" style="color: #ff0000;position: relative;right: 86px;">1.请假半天可以写0.5不能写0.1,0.2等小数。2.全天假以00:00:00开始以23:59:59结束,下午请假以12:00:00开始</span>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr class="fifthTr">
-              <td colspan="3">
-                <a-form-item
-                  :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
-                  :wrapperCol="wrapperCol"
-                  label="休息期间联系方式:">
-                  <a-input class="text" :disabled="disabled" v-decorator="[ 'contactWay', {}]" />
-                </a-form-item>
-              </td>
-              <td colspan="3">
-                <a-form-item
-                  :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
-                  :wrapperCol="wrapperCol"
-                  label="休息期间应急工作委托人:">
-                  <a-input class="text" :disabled="disabled" v-decorator="[ 'dutyDeputy', {}]"/>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3">
-                <a-form-item
-                  :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
-                  :wrapperCol="wrapperCol"
-                  label="部门主管(经理)意见:">
-                  <span>{{model.leaderApproval}}</span><br/>
-                  <span class="fontiframe" style="text-align: right;">负责人:</span>
-                </a-form-item>
-              </td>
-              <td colspan="3">
-                <a-form-item
-                  :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
-                  :wrapperCol="wrapperCol"
-                  label="人力资源部(行政办)意见:">
-                  <span class="fontiframe">{{model.hrPrincipalApproval}}</span><br/>
-                  <span class="fontiframe" style="text-align: right;">负责人:</span>
-                </a-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3">
-                <a-form-item
-                  :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
-                  :wrapperCol="wrapperCol"
-                  label="总经理意见:">
-                  <span class="fontiframe">{{model.deptPrincipalApproval}}</span><br/>
-                  <span class="fontiframe" style="text-align: right;">总经理:</span>
-                </a-form-item>
-              </td>
-              <td colspan="3" style="text-align: left;">
-                <p class="fontiframe">
-                  说明<br/>
-                  1.返回公司报到时间为销假时间。<br/>
-                  2.所有员工3天及以上请假需总经理批准。<br/>
-                  3.本表存人力资源部(行政办)备案。<br/>
-                </p>
-              </td>
-            </tr>
-          </table>
-        </a-card>
-        <br/>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          hidden
-        >
-          <a-date-picker class="input" placeholder="" format='YYYY-MM-DD' disabled  v-decorator="[ 'applyDate', {}]" />
-        </a-form-item>
-        </j-form-container>
-      </a-form>
+                </a-textarea>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                class="fontiframe lineHeight"
+                label="请假事由:"
+              >
+                自(
+                <a-date-picker
+                  class="input"
+                  placeholder=""
+                  :disabled="disabled"
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-decorator="[ 'leaveStartDate', {}]"
+                  :allowClear="false"
+                />
+                )
+                至(
+                <a-date-picker
+                  class="input"
+                  placeholder=""
+                  :disabled="disabled"
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-decorator="[ 'leaveEndDate', {}]"
+                  :allowClear="false"
+                />
+                )
+                总共请<a-input-number
+                  class="smallText"
+                  size="small"
+                  v-model="model.total"
+                  :disabled="disabled"
+                  :min="0"/>天假<br/>
+                <span class="fontiframe" style="color: #ff0000;position: relative;right: 86px;">1.请假半天可以写0.5不能写0.1,0.2等小数。2.全天假以00:00:00开始以23:59:59结束,下午请假以12:00:00开始</span>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr class="fifthTr">
+            <td colspan="3">
+              <a-form-item
+                :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
+                :wrapperCol="wrapperCol"
+                label="休息期间联系方式:">
+                <a-input class="text" :disabled="disabled" v-decorator="[ 'contactWay', {}]" />
+              </a-form-item>
+            </td>
+            <td colspan="3">
+              <a-form-item
+                :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
+                :wrapperCol="wrapperCol"
+                label="休息期间应急工作委托人:">
+                <a-input class="text" :disabled="disabled" v-decorator="[ 'dutyDeputy', {}]"/>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <a-form-item
+                :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
+                :wrapperCol="wrapperCol"
+                label="部门主管(经理)意见:">
+                <span>{{ model.leaderApproval }}</span><br/>
+                <span class="fontiframe" style="text-align: right;">负责人:</span>
+              </a-form-item>
+            </td>
+            <td colspan="3">
+              <a-form-item
+                :labelCol="{xs: { span: 24 },sm: { span: 11 }}"
+                :wrapperCol="wrapperCol"
+                label="人力资源部(行政办)意见:">
+                <span class="fontiframe">{{ model.hrPrincipalApproval }}</span><br/>
+                <span class="fontiframe" style="text-align: right;">负责人:</span>
+              </a-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <a-form-item
+                :labelCol="{xs: { span: 24 },sm: { span: 10 }}"
+                :wrapperCol="wrapperCol"
+                label="总经理意见:">
+                <span class="fontiframe">{{ model.deptPrincipalApproval }}</span><br/>
+                <span class="fontiframe" style="text-align: right;">总经理:</span>
+              </a-form-item>
+            </td>
+            <td colspan="3" style="text-align: left;">
+              <p class="fontiframe">
+                说明<br/>
+                1.返回公司报到时间为销假时间。<br/>
+                2.所有员工3天及以上请假需总经理批准。<br/>
+                3.本表存人力资源部(行政办)备案。<br/>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </a-card>
+      <br/>
+      <a-form-item
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        hidden
+      >
+        <a-date-picker class="input" placeholder="" format="YYYY-MM-DD" disabled v-decorator="[ 'applyDate', {}]" />
+      </a-form-item>
+    </j-form-container>
+  </a-form>
 </template>
 
 <script>

@@ -11,14 +11,13 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
  * 则映射后端域名，通过 vue.config.js
  * @type {*|string}
  */
+
+
 // 开发环境
 let apiBaseUrl
-if (process.env.NODE_ENV === 'development') {
-  apiBaseUrl = window._CONFIG['domianURL']
-// 编译环境
-} else {
+
+
   apiBaseUrl = '/master-api'
-}
 console.log('apiBaseUrl= ', apiBaseUrl)
 // 创建 axios 实例
 const service = axios.create({

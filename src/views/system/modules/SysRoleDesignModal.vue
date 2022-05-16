@@ -10,7 +10,7 @@
 
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-form-item label='所拥有的工单权限'>
+        <a-form-item label="所拥有的工单权限">
           <template v-if="processTypeDictOptions.length>0">
             <template v-for="(item,index) of processTypeDictOptions">
               <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">

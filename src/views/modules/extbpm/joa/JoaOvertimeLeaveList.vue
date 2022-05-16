@@ -16,23 +16,23 @@
               <a-input placeholder="请输入部门" v-model="queryParam.department"></a-input>
             </a-form-item>
           </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="申请时间">
-              <a-input placeholder="请输入申请时间" v-model="queryParam.applyTime"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="调休时长(天/小时)">
-              <a-input placeholder="请输入调休时长(天/小时)" v-model="queryParam.leaveTime"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="调休开始时间">
-              <a-input placeholder="请输入调休开始时间" v-model="queryParam.beginTime"></a-input>
-            </a-form-item>
-          </a-col>
-        </template>
+          <template v-if="toggleSearchStatus">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="申请时间">
+                <a-input placeholder="请输入申请时间" v-model="queryParam.applyTime"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="调休时长(天/小时)">
+                <a-input placeholder="请输入调休时长(天/小时)" v-model="queryParam.leaveTime"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="调休开始时间">
+                <a-input placeholder="请输入调休开始时间" v-model="queryParam.beginTime"></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
