@@ -8,6 +8,8 @@ export const downloadCsv = (header, data, fileName = '导出结果.csv') => {
   if (!header || !data || !Array.isArray(header) || !Array.isArray(data) || !header.length || !data.length) {
     return
   }
+  const whiteList = ['操作', '序号']
+  header = header.map(item => whiteList.includes(item.title) ? null : item).filter(item => item)
   var csvContent = 'data:text/csv;charset=utf-8,\ufeff'
   const _header = header.map(h => h.title).join(',')
   const keys = header.map(item => item.dataIndex)
