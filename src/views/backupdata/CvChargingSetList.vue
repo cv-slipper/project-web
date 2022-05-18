@@ -3,21 +3,15 @@
     <div class='searchParmas mb-20'>
       <a-row>
         <a-col :span='12'>
-          <div class='form-item'>
-            <div class='label fl ml-10'>分行:</div>
-            <div class='wrapper fl ml-10'>
-              <a-select style='width:150px' show-search filter-option>
-                <a-select-option v-for='item in branchList' :value='item.branchCode' :key='item.branchCode'>
-                  {{ item.branchName }}
-                </a-select-option>
-              </a-select>
-            </div>
-            <a-button type='primary' class='ml-40'>查询</a-button>
+          <div class='flex-center fl'>
+            <div class='label fl'>分行:</div>
+            <branch-search style='width:240px' class='fl ml-10' v-model='branchIds'></branch-search>
           </div>
+          <a-button type='primary' class='ml-40' @click='search'>查询</a-button>
         </a-col>
         <a-col :span='12'>
           <div class='fr'>
-            <a-button type='primary' class='fl ml-10' @click='billingSetVisible=true'>新增</a-button>
+            <a-button type='primary' class='fl ml-10' @click='openInfoModel("add")'>新增</a-button>
             <a-button type='default' class='fl ml-10' @click='exportExcel'>导出</a-button>
           </div>
 
@@ -38,15 +32,25 @@
           class='j-table-force-nowrap my-table'
           @change='handleTableChange'>
           <template #action='slotProps'>
-            <a-button type='link' @click='billingSetVisible=true'>修改</a-button>
-            <a-button type='link' danger class='color-daner'>删除</a-button>
+            <a-button type='link' @click='openInfoModel("edit",slotProps)'>修改</a-button>
+            <a-popconfirm
+              title='确认删除该计费设置吗？'
+              ok-text='是的'
+              cancel-text='取消'
+              @confirm='deleteCharging(slotProps)'
+            >
+              <a-button type='link' danger class='color-daner'>删除</a-button>
+            </a-popconfirm>
+
           </template>
         </a-table>
       </div>
       <BillingSetInfoModal
         :visible='billingSetVisible'
+        :type='infoType'
+        :id='infoId'
         @cancel='billingSetVisible=false'
-        @ok='billingSetVisible=false'></BillingSetInfoModal>
+        @ok='handleOk'></BillingSetInfoModal>
     </a-card>
   </div>
 </template>
@@ -60,8 +64,9 @@ import CvChargingSetModal from './modules/CvChargingSetModal'
 import JDictSelectTag from '@/components/dict/JDictSelectTag.vue'
 import { filterMultiDictText } from '@/components/dict/JDictSelectUtil'
 import BillingSetInfoModal from './components/BillingSetInfoModal'
-import { getChargingList } from '@/api/modules/backupdata/CvChargingApi.js'
+import { getChargingList, deleteCharging } from '@/api/modules/backupdata/CvChargingApi.js'
 import { downloadCsv } from '@/utils/modules/download'
+import BranchSearch from '@/components/searchParms/BranchSearch.vue'
 
 export default {
   name: 'CvChargingSetList',
@@ -69,12 +74,15 @@ export default {
   components: {
     JDictSelectTag,
     BillingSetInfoModal,
-    CvChargingSetModal
+    CvChargingSetModal,
+    BranchSearch
   },
   data() {
     return {
       branchList: [],
       billingSetVisible: false,
+      infoType: '',
+      infoId: '',
       description: '计费设置管理页面',
       ipagination: {
         current: 1,
@@ -90,26 +98,25 @@ export default {
         {
           title: '分行名称',
           align: 'center',
-          dataIndex: 'companyName'
+          dataIndex: 'branchName'
         },
         {
           title: '服务费单价（元/台）',
           align: 'center',
-          dataIndex: 'chargingType_dictText'
+          dataIndex: 'serverPrice'
         },
         {
           title: '前端许可单价（元/GB）',
           align: 'center',
-          dataIndex: 'library'
+          dataIndex: 'foreLicensePrice'
         },
         {
           title: '存储写入量单价（元/GB)',
           align: 'center',
-          dataIndex: 'unit'
+          dataIndex: 'backLicensePrice'
         },
         {
           title: '操作',
-          dataIndex: 'action',
           align: 'center',
           // fixed:"right",
           width: 100,
@@ -118,8 +125,9 @@ export default {
       ],
       dataSource: [],
       dictOptions: {},
+      branchIds: [],
       searchParams: {
-        pageNo: 1,
+        current: 1,
         pageSize: 10
       }
     }
@@ -135,8 +143,9 @@ export default {
      */
     async getChargingList() {
       this.loading = true
-      this.searchParams.pageNo = this.ipagination.current
+      this.searchParams.current = this.ipagination.current
       this.searchParams.pageSize = this.ipagination.pageSize
+      this.searchParams.branchId = this.branchIds.map(item => item.id).join(',')
       try {
         let res = await getChargingList(this.searchParams)
         if (res.code === 200) {
@@ -151,6 +160,19 @@ export default {
 
     },
     /**
+     * 删除计费
+     * @param {*} id
+     */
+    async deleteCharging({ id }) {
+      const res = await deleteCharging(id)
+      if (res.code === 200) {
+        this.$message.success('删除成功')
+        this.getChargingList()
+      } else {
+        this.$message.error(res.message)
+      }
+    },
+    /**
      * 分页
      */
     handleTableChange(pagination) {
@@ -161,8 +183,28 @@ export default {
      * 另存为csv
      */
     exportExcel() {
-      console.log(213, '123')
       downloadCsv(this.columns, this.dataSource)
+    },
+    /**
+     * 搜索
+     */
+    search() {
+      this.getChargingList()
+    },
+    /**
+     * 打开计费设置弹窗
+     */
+    openInfoModel(type, row) {
+      this.infoType = type
+      type == 'edit' && (this.infoId = row.id)
+      this.billingSetVisible = true
+    },
+    /**
+     * ok
+     */
+    handleOk() {
+      this.billingSetVisible = false
+      this.getChargingList()
     }
   },
   created() {

@@ -1,88 +1,60 @@
 <template>
-  <a-card :bordered='false'>
-    <div class='table-page-search-wrapper'>
-      <a-form layout='inline' @keyup.enter.native='searchQuery'>
-        <a-row :gutter='24'>
-          <template v-if='toggleSearchStatus'>
-            <a-col :lg='7' :md='8' :sm='24' :xl='6'>
-              <a-form-item label='分行'>
-                <a-select filter-option show-search>
-                  <a-select-option v-for='item in branchList' :key='item.id' :value='item.id'>{{ item.name }}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :lg='7' :md='8' :sm='24' :xl='6'>
-              <a-form-item label='日期'>
-                <a-month-picker v-model='queryParam.startTime' format='YYYY-MM' placeholder='请选择日期'></a-month-picker>
-              </a-form-item>
-            </a-col>
+  <div>
+    <div class='searchParams mb-20'>
+      <a-row>
+        <a-col :span='12'>
+          <div class='flex-center'>
+            <branch-search v-model='branchId'></branch-search>
+          </div>
+        </a-col>
+      </a-row>
+    </div>
+    <a-card :bordered='false'>
+      <!-- table区域-begin -->
+      <div>
+        <a-table
+          ref='table'
+          :columns='columns'
+          :dataSource='dataSource'
+          :loading='loading'
+          :pagination='ipagination'
+          :rowSelection='{selectedRowKeys: selectedRowKeys, onChange: onSelectChange,type:type}'
+          bordered
+          class='j-table-force-nowrap'
+          rowKey='id'
+          size='middle'
+          @change='handleTableChange'>
+          <template #action='{record}'>
+            <a-button type='link' @click='goToDetail(record)'>详情</a-button>
           </template>
-          <a-col :lg='7' :md='8' :sm='24' :xl='6'>
-
-            <span class='table-page-search-submitButtons' style='float: left;overflow: hidden;'>
-              <a-button icon='search' type='primary' @click='searchQuery'>查询</a-button>
-              <a-button icon='reload' style='margin-left: 8px' type='primary' @click='searchReset'>重置</a-button>
-              <a-button class='ml-10' type='primary'>生成月账单</a-button>
-              <a-button class='ml-10' type='primary'>生成月详单</a-button>
-              <a-button class='ml-10' type='primary'>批量生成账单/详单</a-button>
-              <!--                            <a-button type='primary' @click='handlePrint' icon='printer'-->
-              <!--                                      style='margin-left: 8px'>打印</a-button>-->
-
-              <!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
-              <!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-              <!--              </a>-->
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 查询区域-END -->
-    <!-- table区域-begin -->
-    <div>
-      <a-table
-        ref='table'
-        :columns='columns'
-        :dataSource='dataSource'
-        :loading='loading'
-        :pagination='ipagination'
-        :rowSelection='{selectedRowKeys: selectedRowKeys, onChange: onSelectChange,type:type}'
-        bordered
-        class='j-table-force-nowrap'
-        rowKey='id'
-        size='middle'
-        @change='handleTableChange'>
-        <template #action='{record}'>
-          <a-button type='link' @click='goToDetail(record)'>详情</a-button>
-        </template>
-      </a-table>
-    </div>
-    <MonthBillDetail :visible='monthBillInfoVisible' @close='monthBillInfoVisible=false'></MonthBillDetail>
-    <cost-print-model ref='printModel' />
-  </a-card>
+        </a-table>
+      </div>
+      <cost-print-model ref='printModel' />
+    </a-card>
+  </div>
 </template>
 
 <script>
-import MonthBillDetail from './components/MonthBillDetail.vue'
-import CostPieChart from './CostPieChart'
-import CostHistogram from './CostHistogram'
+
 import { getAction } from '@/api/manage'
-import { keepTwoDecimal } from '@/utils/util'
-import JDate from '@/components/jeecg/JDate'
 import CostPrintModel from './modules/CostPrintModel'
+import BranchSearch from '@comp/searchParms/BranchSearch'
 import dayjs from 'dayjs'
 
 export default {
   name: 'CostList',
-  components: { JDate, CostPieChart, CostHistogram, CostPrintModel, MonthBillDetail },
+  components: { CostPrintModel, BranchSearch },
   data() {
     return {
       // 月账单详情弹窗visible
       monthBillInfoVisible: false,
       toggleSearchStatus: true,
-      type: 'radio',
-      queryParam: {},
+      type: 'checkbox',
+      branchId: [],
+      searchParms: {
+        branchId: '',
+        startTime: ''
+      },
       loading: false,
       detailLoading: false,
       selectedRowKeys: [],

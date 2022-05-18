@@ -12,7 +12,7 @@ import enquireScreen from '@/utils/device'
 export default {
   data() {
     return {
-      locale: zhCN,
+      locale: zhCN
     }
   },
   created() {
@@ -37,6 +37,8 @@ export default {
 }
 </script>
 <style>
+@import '~@assets/less/common.less';
+
 #app {
   height: 100%;
 }

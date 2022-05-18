@@ -17,7 +17,7 @@ export const downloadCsv = (header, data, fileName = '导出结果.csv') => {
   data.forEach((item, index) => {
     let dataString = ''
     for (let i = 0; i < keys.length; i++) {
-      dataString += item[keys[i]] + ','
+      dataString += (item[keys[i]] || '') + ','
     }
     csvContent += index < data.length ? dataString.replace(/,$/, '\n') : dataString.replace(/,$/, '')
   })

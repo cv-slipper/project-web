@@ -2,54 +2,38 @@
   <!-- 计费设置弹窗-->
 
   <a-modal :visible='visible' @cancel='cancel' @ok='handleOk'>
+
     <div slot='title' style='display: flex;align-items: center'>
       <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
       <span class='ml-10'>{{ title }}</span>
     </div>
     <a-form-model :model='form' :label-col='{span:10}' :wrapper-col='{span:10}'>
       <a-form-model-item label='分行名称'>
-        <a-select show-search filter-option>
-          <a--select-option v-for='item in branchList' :key='item.branchCode'>
-            {{ item.branchName }}
-          </a--select-option>
-        </a-select>
+        <branch-search type='default' :label-text='null' v-model='branchIds'></branch-search>
       </a-form-model-item>
       <a-form-model-item label='服务器单价（元／台）:'>
-        <a-input></a-input>
+        <a-input v-model='form.serverPrice'></a-input>
       </a-form-model-item>
       <a-form-model-item label='前端许可单价（元/GB):'>
-        <a-input></a-input>
+        <a-input v-model='form.foreLicensePrice'></a-input>
       </a-form-model-item>
-      <a-form-model-item label='后端写入单价（元/GB):'>
-        <a-input></a-input>
+      <a-form-model-item label='后端写入单价(元/GB):'>
+        <a-input v-model='form.backLicensePrice'></a-input>
       </a-form-model-item>
-      <a-form-model-item label='Disklib-cloud:'>
-        <a-input></a-input>
-      </a-form-model-item>
-      <a-form-model-item :colon='false'>
-        <a-button slot='label' type='primary' @click='otherVisible=true'>
-          <a-icon type='check-square' />
-          配置其他存储
-        </a-button>
-      </a-form-model-item>
-      <template v-if='otherVisible'>
-        <a-form-model-item label='Disklib-bj:'>
-          <a-input></a-input>
-        </a-form-model-item>
-        <a-form-model-item label='Disklib-bjnew:'>
-          <a-input></a-input>
-        </a-form-model-item>
-      </template>
     </a-form-model>
 
   </a-modal>
 </template>
 
 <script>
-import { addCharging, updateCharging, getChargingDetail } from '@/api/modules/backupdata/CvChargingApi'
+import { addCharging, updateCharging, getChargingDetail, getStorageList } from '@/api/modules/backupdata/CvChargingApi'
+import BranchSearch from '@comp/searchParms/BranchSearch'
 
 export default {
   name: 'BillingSetInfoModal',
+  components: {
+    BranchSearch
+  },
   props: {
     type: {
       type: String,
@@ -69,7 +53,14 @@ export default {
       title: '新增',
       branchList: [],
       otherVisible: false,
-      form: {}
+      form: {
+        serverPrice: '',
+        foreLicensePrice: '',
+        masterLibraryPrice: '',
+        backLicensePrice: ''
+      },
+      branchIds: [],
+      storeageList: []
     }
   },
   watch: {
@@ -79,21 +70,34 @@ export default {
         if (val && this.type == 'edit') {
           this.getChargingDetail(this.id)
         }
+        this.resetForm()
       },
       immediate: true
     },
     type: {
       handler(val) {
         if (val === 'edit') {
-          this.title = '编辑'
+          this.title = '修改'
         } else {
           this.title = '新增'
         }
       },
       immediate: true
+
     }
   },
   methods: {
+    /**
+     * 获取存储库列表
+     */
+    async getStorageList() {
+      const res = await getStorageList()
+      if (res.code == 200) {
+        this.storeageList = res.result || []
+      } else {
+        this.$message.error(res.message)
+      }
+    },
     /**
      * 获取计费设置详情
      * @param {String} id
@@ -101,7 +105,9 @@ export default {
     async getChargingDetail(id) {
       const res = await getChargingDetail(id)
       if (res.code === 200) {
-        this.form = res.data
+        this.oldForm = JSON.parse(JSON.stringify(res.result))
+        this.form = res.result
+        this.branchIds = res.result.branchId ? res.result.branchId.split(',') : []
       } else {
         this.$message.error(res.message)
         this.cancel()
@@ -139,10 +145,35 @@ export default {
      */
     async handleOk() {
       const data = this.form
+      data.branchName = this.branchIds.map(item => item.name).join(',')
+      data.branchId = this.branchIds.map(item => item.id).join(',')
       if (this.type === 'edit') {
-        await updateCharging(data)
+        await this.updateCharging(data)
       } else {
-        await addCharging(data)
+        await this.addCharging(data)
+      }
+    },
+    /**
+     * 其他选项
+     */
+    other() {
+      this.otherVisible = !this.otherVisible
+      this.otherVisible && this.getStorageList()
+      !this.otherVisible && this.initForm()
+    },
+    /**
+     * 默认form
+     */
+    initForm() {
+      if (this.type === 'edit') {
+        this.form = JSON.parse(JSON.stringify(this.oldForm))
+      } else {
+        this.form = {
+          serverPrice: '',
+          foreLicensePrice: '',
+          masterLibraryPrice: '',
+          backLicensePrice: ''
+        }
       }
     },
     /**
@@ -150,6 +181,15 @@ export default {
      */
     cancel() {
       this.$emit('cancel')
+    },
+    /**
+     * 重置form
+     */
+    resetForm() {
+      for (let key in this.form) {
+        this.form[key] = ''
+      }
+      this.branchIds = []
     }
   }
 }

@@ -6,8 +6,8 @@ import { axios } from '@/utils/request'
 export function getChargingList(parameter) {
   return axios({
     url: '/cvChargingSet/list',
-    method: 'get',
-    params: parameter
+    method: 'post',
+    data: parameter
   })
 }
 
@@ -17,7 +17,7 @@ export function getChargingList(parameter) {
  */
 export function addCharging(parameter) {
   return axios({
-    url: '／cvChargingSet/add',
+    url: '/cvChargingSet/add',
     method: 'post',
     data: parameter
   })
@@ -43,7 +43,7 @@ export function deleteCharging(id) {
   return axios({
     url: '/cvChargingSet/delete',
     method: 'DELETE',
-    data: { id }
+    params: { id }
   })
 }
 
@@ -54,7 +54,17 @@ export function deleteCharging(id) {
 export function updateCharging(parameter) {
   return axios({
     url: '/cvChargingSet/edit',
-    method: 'put',
+    method: 'post',
     data: parameter
+  })
+}
+
+/**
+ * 获取存储库列表
+ */
+export function getStorageList(parameter) {
+  return axios({
+    url: '/cvLibrary/list',
+    method: 'get'
   })
 }
