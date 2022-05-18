@@ -66,7 +66,7 @@ export default {
           val = typeof val === 'string' ? val.split(',') : val
           this.values = val.map(item => typeof item == 'string' ? item : item[this.keys])
         } else {
-          this.values = val[0][this.keys]
+          this.values = val.map(item => typeof item == 'string' ? item : item[this.keys])
         }
       },
       immediate: true,

@@ -7,9 +7,10 @@
       <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
       <span class='ml-10'>{{ title }}</span>
     </div>
-    <a-form-model :model='form' :label-col='{span:10}' :wrapper-col='{span:10}'>
+    <a-form-model :model='form' :label-col='{span:10}' :wrapper-col='{span:10}' labelAlign='left'>
       <a-form-model-item label='分行名称'>
-        <branch-search type='default' :label-text='null' v-model='branchIds'></branch-search>
+        <branch-search v-if='type!="edit"' type='default' :label-text='null' v-model='branchIds'></branch-search>
+        <span v-else style='color:#838181'>{{ form.branchName }}</span>
       </a-form-model-item>
       <a-form-model-item label='服务器单价（元／台）:'>
         <a-input v-model='form.serverPrice'></a-input>

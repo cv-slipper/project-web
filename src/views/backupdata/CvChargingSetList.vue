@@ -5,7 +5,11 @@
         <a-col :span='12'>
           <div class='flex-center fl'>
             <div class='label fl'>分行:</div>
-            <branch-search style='width:240px' class='fl ml-10' v-model='branchIds'></branch-search>
+            <branch-search
+
+              style='width:240px'
+              class='fl ml-10'
+              v-model='branchIds'></branch-search>
           </div>
           <a-button type='primary' class='ml-40' @click='search'>查询</a-button>
         </a-col>
@@ -39,7 +43,7 @@
               cancel-text='取消'
               @confirm='deleteCharging(slotProps)'
             >
-              <a-button type='link' danger class='color-daner'>删除</a-button>
+              <a-button v-if='slotProps.id!=1' type='link' danger class='color-daner'>删除</a-button>
             </a-popconfirm>
 
           </template>
