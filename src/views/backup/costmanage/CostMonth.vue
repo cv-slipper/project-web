@@ -3,8 +3,21 @@
     <div class='searchParams mb-20'>
       <a-row>
         <a-col :span='12'>
-          <div class='flex-center'>
-            <branch-search v-model='branchId'></branch-search>
+          <div class='flex-center fl'>
+            <div class='label ml-10'>分行:</div>
+            <branch-search class='ml-10' v-model='branchId'></branch-search>
+          </div>
+          <div class='flex-center fl ml-40'>
+            <div class='label mr-10'>日期:</div>
+            <a-date-picker class='fl ml-10' v-model='searchParms.startTime' value-format='YYYY-MM-DD' />
+          </div>
+          <a-button type='primary' class='ml-40'>查询</a-button>
+        </a-col>
+        <a-col :span='12'>
+          <div class='fr'>
+            <a-button class='fl ml-10'>生成账单</a-button>
+            <a-button class='fl ml-10'>生成详单</a-button>
+            <a-button type='primary' class='fl ml-10'>批量生成账单</a-button>
           </div>
         </a-col>
       </a-row>
@@ -20,7 +33,7 @@
           :pagination='ipagination'
           :rowSelection='{selectedRowKeys: selectedRowKeys, onChange: onSelectChange,type:type}'
           bordered
-          class='j-table-force-nowrap'
+
           rowKey='id'
           size='middle'
           @change='handleTableChange'>
@@ -78,7 +91,7 @@ export default {
           title: '序号',
           dataIndex: '',
           key: 'rowIndex',
-          width: 60,
+          width: 50,
           align: 'center',
           customRender: function(t, r, index) {
             return parseInt(index) + 1
@@ -91,31 +104,31 @@ export default {
           dataIndex: 'companyName'
         },
         {
-          title: '服务费',
+          title: '服务费(元)',
           width: 120,
           align: 'center',
           dataIndex: 'serveCost'
         },
         {
-          title: '前端费用',
+          title: '前端许可费用(元)',
           width: 120,
           align: 'center',
           dataIndex: 'frontendCost'
         },
         {
-          title: '后端费用',
-          width: 120,
+          title: '后端存储写入费用(元)',
+          width: 150,
           align: 'center',
           dataIndex: 'backendCost'
         },
         {
-          title: '月度总费用',
+          title: '月度总费用(元)',
           width: 120,
           align: 'center',
           dataIndex: 'cost'
         },
         {
-          title: '费用日期',
+          title: '费用月份',
           width: 120,
           align: 'center',
           dataIndex: 'startTime'
@@ -131,124 +144,23 @@ export default {
       ],
 
       dataSource: [],
-      detailDataSource: [],
-      url: {
-        getMonthCost: '/cvCostMonth/list?column=startTime&order=asc'
-      }
+      detailDataSource: []
     }
   },
   created() {
-    this.loadData()
+
   },
   methods: {
     // 月账单详情弹窗
     goToDetail(record) {
       this.monthBillInfoVisible = true
     },
-    loadData(arg) {
-      this.loading = true
-      if (arg === 1) {
-        this.ipagination.current = 1
-      }
-      let params = Object.assign({}, this.queryParam)
-      if (!this.queryParam.startTime) {
-        params.startTime = dayjs(new Date()).format('YYYY-MM') + '-01'
-      } else {
-        params.startTime = dayjs(this.queryParam.startTime._d).format('YYYY-MM') + '-01'
-      }
-      params.type = '合计'
-      params.pageNo = this.ipagination.current
-      params.pageSize = this.ipagination.pageSize
-      getAction(this.url.getMonthCost, params).then((res) => {
-        if (res.success) {
-          let result = res.result
-          this.ipagination.total = result.total
-          for (let item of result.records) {
-            item.startTime = dayjs(item.startTime).format('YYYY-MM')
-          }
-          // this.dataSource = result.records || []
-          this.dataSource = [{}]
-        }
-      }).finally(() => {
-        this.loading = false
-      })
-    },
-    loadDetailData(arg) {
-      this.detailLoading = true
-      if (arg === 1) {
-        this.ipagination.current = 1
-      }
-      let params = {}
-      params = Object.assign({}, this.queryParam)
-      let nowTime = new Date()
-      let days = dayjs(nowTime).date()
-      if (!this.queryParam.startTime) {
-        params.startTime_begin = dayjs(nowTime).format('YYYY-MM') + '-01'
-        params.startTime_end = dayjs(nowTime).add(1, 'month').subtract(days, 'day').format('YYYY-MM-DD')
-      } else {
-        delete params.startTime
-        nowTime = this.queryParam.startTime._d
-        days = dayjs(this.queryParam.startTime._d).date()
-        params.startTime_begin = dayjs(nowTime).format('YYYY-MM') + '-01'
-        params.startTime_end = dayjs(nowTime).add(1, 'month').subtract(days, 'day').format('YYYY-MM-DD')
-      }
-      params.companyName = this.selectionRows[0].companyName
-      params.type = '明细'
-      params.pageNo = this.detailIpagination.current
-      params.pageSize = this.detailIpagination.pageSize
-      getAction(this.url.getMonthCost, params).then((res) => {
-        if (res.success) {
-          let result = res.result
-          this.detailIpagination.total = result.total
-          this.detailDataSource = result.records
-        }
-      }).finally(() => {
-        this.detailLoading = false
-      })
-    },
-    searchQuery() {
-      this.loadData()
-      this.onClearSelected()
-    },
-    searchReset() {
-      this.queryParam = {}
-      this.loadData()
-      this.onClearSelected()
-    },
+
     handleTableChange(pagination, filters, sorter) {
-      this.ipagination = pagination
-      this.loadData()
-    },
-    handleTableChange1(pagination, filters, sorter) {
-      this.detailIpagination = pagination
-      this.loadDetailData()
-    },
-    handleExpand(expanded, record) {
-      console.log(record)
-    },
-    onSelectChange(selectedRowKeys, selectionRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectionRows = selectionRows
-      this.loadDetailData()
-    },
-    onClearSelected() {
-      this.selectedRowKeys = []
-      this.selectionRows = []
-      this.detailDataSource = []
-    },
-    showDetail(record) {
-      this.$router.push({
-        path: '/backup/costmanage/CostList',
-        query: { companyName: record.companyName, startTime: record.startTime }
-      })
-    },
-    handlePrint() {
-      if (this.selectionRows.length == 0) {
-        this.$message.warning('请选择一个分公司打印')
-        return
-      }
-      this.$refs.printModel.toPrint(this.selectionRows[0], this.detailDataSource)
+
+
     }
+
 
   }
 }
