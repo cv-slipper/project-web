@@ -1,29 +1,29 @@
 <template>
 
   <a-modal
-    title='月账单详情'
     :visible='visible'
-    :footer='null'
-    width='80%'
+    width='60%'
     @cancel='handleCancel'
+    @ok='handleOk'
   >
+    <div slot='title' style='display: flex;align-items: center'>
+      <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
+      <span class='ml-10'>月账单详情</span>
+    </div>
     <div class='header mb-20'>
       <a-row type='flex' align-items='center'>
-        <a-col :span='8' style='display:flex;align-items:center'>
+        <a-col :span='12' style='display:flex;align-items:center'>
 
           <span class='fl'>分行:</span>
-          <a-select class='fl ml-10' style='width:60%' show-search filter-option>
-            <a-select-option v-for='item in branchList' :key='item.id' :value='item.id'>{{ item.name }}
-            </a-select-option>
-          </a-select>
+          <span class='fl ml-10'>北京分行</span>
+          <span class='fl ml-20' style='width:100px'>账单时间段:</span>
+          <span class='fl ml-10'>123</span>
         </a-col>
-        <a-col :span='8' style='display:flex;align-items:center'>
-          <span class='fl' style='width:100px'>账单时间段:</span>
-          <a-range-picker style='width:80%' class='fl ml-10' />
-        </a-col>
-        <a-col :span='8'>
-          <a-button class='fr mr-10 ' type='primary'>生成月账单</a-button>
-          <a-button class='fr mr-10' type='primary'>生成月详单</a-button>
+        <a-col :span='12'>
+          <div class='fr'>
+            <a-button class='fl ml-10 ' @click='openPrintModal'>生成月账单</a-button>
+            <a-button class='fl ml-10' type='primary'>生成月详单</a-button>
+          </div>
         </a-col>
       </a-row>
     </div>
@@ -37,16 +37,19 @@
       class='j-table-force-nowrap'
       rowKey='id'
       size='middle'
-      @change='handleTableChange1'>
+      @change='handleTableChange'>
 
       <template slot='action' slot-scope='text,record'>
         <a @click='showDetail(record)'>详情</a>
       </template>
     </a-table>
+    <month-print-modal ref='monthPrintModal'></month-print-modal>
   </a-modal>
 </template>
 
 <script>
+import MonthPrintModal from '@views/backup/costmanage/components/modal/MonthPrintModal'
+
 export default {
   name: 'MonthBillDetail',
   props: {
@@ -54,6 +57,9 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  components: {
+    MonthPrintModal
   },
   data() {
     return {
@@ -85,11 +91,6 @@ export default {
           align: 'center',
           dataIndex: 'startTime'
         },
-        // {
-        //   title: '分行',
-        //   align: 'center',
-        //   dataIndex: 'companyName'
-        // },
         {
           title: '服务费',
           align: 'center',
@@ -106,7 +107,7 @@ export default {
           dataIndex: 'backendCost'
         },
         {
-          title: '小计',
+          title: '小计(元)',
           align: 'center',
           dataIndex: 'cost'
         },
@@ -125,6 +126,17 @@ export default {
   methods: {
     handleCancel() {
       this.$emit('close')
+    },
+    handleOk() {
+      this.$emit('close')
+    },
+    openPrintModal() {
+      console.log(this.$refs)
+      this.$refs.monthPrintModal.toPrint()
+    },
+    handleTableChange(pagination, filters, sorter) {
+      this.detailIpagination.current = pagination.current
+      this.detailIpagination.pageSize = pagination.pageSize
     }
   }
 }

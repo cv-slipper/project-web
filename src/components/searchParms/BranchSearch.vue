@@ -8,6 +8,7 @@
         :show-search='model=="multiple"?false:true'
         :filter-option='filterOption'
         　:disabled='disabled'
+        :placeholder='placeholder'
         :mode='model'>
         <a-select-option v-for='item in branchList' :value='item[keys]' :key='item[keys]'>
           {{ item.name }}
@@ -44,6 +45,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: '请选择分行'
     }
   },
   data() {

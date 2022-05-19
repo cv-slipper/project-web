@@ -11,7 +11,7 @@
     <a-row class='mt-20'>
       <a-col :span='spanNum'>
         <div style='position: relative;padding-left:50px'>
-          <div class='table-left'>前端许可费</div>
+          <div class='table-left'>服务费</div>
           <a-table
             :columns='firstColumns'
             :data-source='firstDataSource'
@@ -19,7 +19,15 @@
             :bordered='true'
             :pagination='false'
           >
-
+            <template #num='scope'>
+              {{ scope.number }}台
+            </template>
+            <template #price='scope'>
+              {{ scope.price }}元
+            </template>
+            <template #total='scope'>
+              {{ scope.total }}元
+            </template>
           </a-table>
         </div>
       </a-col>
@@ -27,11 +35,14 @@
         <a-table
           :columns='firstInfoColumns'
           :data-source='firstInfoDataSource'
-          :loading='firstInfoLoading'
+          :loading='firstLoading'
           :bordered='true'
-          :pagination='true'
+          :pagination='firstPage'
+          @change='firstChange'
         >
-
+          <template #installTime='scope'>
+            {{ scope.installTime.substring(0, 10) }}
+          </template>
         </a-table>
       </a-col>
     </a-row>
@@ -56,9 +67,10 @@
         <a-table
           :columns='secondInfoColumns'
           :data-source='secondInfoDataSource'
-          :loading='secondInfoLoading'
+          :loading='secondLoading'
           :bordered='true'
-          :pagination='true'
+          :pagination='secondPage'
+          @change='secondChange'
         >
 
         </a-table>
@@ -85,9 +97,10 @@
         <a-table
           :columns='thirdInfoColumns'
           :data-source='thirdInfoDataSource'
-          :loading='thirdInfoLoading'
+          :loading='thirdLoading'
           :bordered='true'
-          :pagination='true'
+          :pagination='thirdPage'
+          @change='thirdChange'
         >
 
         </a-table>
@@ -97,6 +110,8 @@
 </template>
 
 <script>
+import { getBackFee, getFrontFee, getServiceFee } from '@api/modules/backup/costManage/costDay'
+
 export default {
   name: 'DailyBillDetail',
   data() {
@@ -105,160 +120,308 @@ export default {
       firstColumns: [
         {
           title: '客户端数量(台)',
-          key: 'clientNum',
-          dataIndex: 'clientNum',
-          align: 'center'
+          key: 'num',
+          align: 'center',
+          scopedSlots: {
+            customRender: 'num'
+          }
 
         },
         {
           title: '单价(元）',
           key: 'price',
-          dataIndex: 'price',
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'price'
+          }
 
         },
         {
           title: '合计(元）',
           key: 'total',
-          dataIndex: 'total',
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'total'
+          }
         }
       ],
       firstInfoColumns: [
         {
           title: '客户端',
-          key: 'type',
-          dataIndex: 'type',
+          key: 'clientName',
+          dataIndex: 'clientName',
           align: 'center'
         },
         {
           title: '安装日期',
-          key: 'detail',
-          dataIndex: 'detail',
-          align: 'center'
+          key: 'installTime',
+          align: 'center',
+          scopedSlots: {
+            customRender: 'installTime'
+          }
         }
       ],
-      firstDataSource: [{
-        clientNum: '1台',
-        price: '1',
-        total: '1'
-      }],
-      firstInfoDataSource: [{}, {}, {}],
+      firstDataSource: [],
+      firstInfoDataSource: [],
       firstLoading: false,
       firstInfoLoading: false,
+      firstPage: {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+        showTotal: total => `共 ${total} 条`
+      },
 
 
       secondColumns: [
         {
           title: '许可用量(GB)',
-          key: 'clientNum',
-          dataIndex: 'clientNum',
-          align: 'center'
+          key: 'volume',
+          align: 'center',
+          dataIndex: 'volume',
+          customRender: (text, row, index) => {
+            return text + 'GB'
+          }
 
         },
         {
           title: '单价(元）',
           key: 'price',
           dataIndex: 'price',
-          align: 'center'
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
 
         },
         {
           title: '合计(元）',
           key: 'total',
           dataIndex: 'total',
-          align: 'center'
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         }
       ],
       secondInfoColumns: [
         {
           title: '客户端',
-          key: 'type',
-          dataIndex: 'type',
+          key: 'clientName',
+          dataIndex: 'clientName',
           align: 'center'
         },
         {
           title: '前端许可用量（GB)',
-          key: 'detail',
-          dataIndex: 'detail',
-          align: 'center'
+          key: 'foreLicenseVol',
+          dataIndex: 'foreLicenseVol',
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + 'GB'
+          }
         }
       ],
-      secondDataSource: [{
-        clientNum: '1台',
-        price: '1',
-        total: '1'
-      }],
-      secondInfoDataSource: [{}, {}, {}],
+      secondDataSource: [],
+      secondInfoDataSource: [],
       secondLoading: false,
       secondInfoLoading: false,
-
+      secondPage: {
+        current: 1,
+        pageSize: 10,
+        total: 0
+      },
 
       thirdColumns: [
         {
           title: '存储库',
-          key: 'clientNum',
-          dataIndex: 'clientNum',
+          key: 'libraryName',
+          dataIndex: 'libraryName',
           align: 'center'
         },
         {
           title: '储存写入量(GB)',
-          key: 'clientNum',
-          dataIndex: 'clientNum',
-          align: 'center'
+          key: 'writtenVolume',
+          dataIndex: 'writtenVolume',
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + 'GB'
+          }
         },
         {
           title: '单价(元）',
           key: 'price',
           dataIndex: 'price',
-          align: 'center'
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
 
         },
         {
           title: '合计(元）',
           key: 'total',
           dataIndex: 'total',
-          align: 'center'
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         }
       ],
       thirdInfoColumns: [
         {
           title: '客户端',
-          key: 'type',
-          dataIndex: 'type',
+          key: 'clientName',
+          dataIndex: 'clientName',
           align: 'center'
         },
         {
           title: '作业ID',
-          key: 'detail',
-          dataIndex: 'detail',
+          key: 'jobId',
+          dataIndex: 'jobId',
           align: 'center'
         },
         {
           title: '写入存储库',
-          key: 'detail',
-          dataIndex: 'detail',
+          key: 'library',
+          dataIndex: 'library',
           align: 'center'
         },
         {
           title: '写入量(GB)',
-          key: 'detail',
-          dataIndex: 'detail',
-          align: 'center'
+          key: 'writtenVolume',
+          dataIndex: 'writtenVolume',
+          align: 'center',
+          customRender: (text, row, index) => {
+            return text + 'GB'
+          }
         }
 
       ],
-      thirdDataSource: [{
-        clientNum: '1台',
-        price: '1',
-        total: '1'
-      },
-        {}
-      ],
-      thirdInfoDataSource: [{}, {}, {}],
+      thirdDataSource: [],
+      thirdInfoDataSource: [],
       thirdLoading: false,
-      thirdInfoLoading: false
+      thirdInfoLoading: false,
+      thirdPage: {
+        current: 1,
+        pageSize: 10,
+        total: 0
+      },
+      startTime: '',
+      branchId: ''
 
+    }
+  },
+  created() {
+  },
+  methods: {
+    /**
+     * 获取后端数据
+     * @param {object} params
+     */
+    async getBackFee() {
+      let params = {
+        startTime: this.startTime,
+        branchId: this.branchId,
+        current: this.thirdPage.current,
+        pageSize: this.thirdPage.pageSize
+      }
+      try {
+        this.thirdLoading = true
+        const res = await getBackFee(params)
+        if (res.code === 200) {
+          this.thirdDataSource = [res.result.summary]
+          this.thirdInfoDataSource = res.result.clientList.list || []
+          this.thirdPage.total = res.result.clientList.totalSize || 0
+
+        } else {
+          this.$message.error(res.message)
+        }
+
+      } finally {
+        this.thirdLoading = false
+      }
+
+
+    },
+
+    /**
+     * 获取前端费用
+     * @param {Object} params
+     */
+    async getFrontendFee() {
+      let params = {
+        current: this.secondPage.current,
+        pageSize: this.secondPage.pageSize,
+        startTime: this.startTime,
+        branchId: this.branchId
+      }
+      try {
+        this.secondLoading = true
+        let res = await getFrontFee(params)
+        if (res.code == 200) {
+          this.secondDataSource = [res.result.summary]
+          this.secondInfoDataSource = res.result.clientList.list || []
+          this.secondPage.total = res.result.clientList.totalSize
+        } else {
+          this.$message.error(res.message)
+
+        }
+      } finally {
+        this.secondLoading = false
+      }
+
+    },
+    /**
+     * 获取服务费
+     * @param {Object} params
+     */
+    async getServiceFee() {
+      let params = {
+        current: this.firstPage.current,
+        pageSize: this.firstPage.pageSize,
+        startTime: this.startTime,
+        branchId: this.branchId
+      }
+      try {
+        this.firstLoading = true
+        const res = await getServiceFee(params)
+        if (res.code == 200) {
+          this.firstDataSource = [res.result.summary] || []
+          this.firstInfoDataSource = res.result.clientList.list || []
+          this.firstPage.total = res.result.clientList.totalSize
+        } else {
+          this.$message.error(res.message)
+        }
+      } finally {
+        this.firstLoading = false
+      }
+    },
+    /**
+     * 分页
+     * @param {Object} page
+     */
+    firstChange(page) {
+      this.firstPage.current = page.current
+      this.firstPage.pageSize = page.pageSize
+      this.getServiceFee()
+    },
+    secondChange(page) {
+      this.secondPage.current = page.current
+      this.secondPage.pageSize = page.pageSize
+      this.getFrontendFee()
+    },
+    thirdChange(page) {
+      this.thirdPage.current = page.current
+      this.thirdPage.pageSize = page.pageSize
+      this.getBackFee()
+    },
+    init({ branchId, startTime }) {
+      this.branchId = branchId.map(item => item.id).join(',')
+      this.startTime = startTime
+      Promise.all([this.getServiceFee(), this.getFrontendFee(), this.getBackFee()]).then(() => {
+        let total = (this.firstDataSource[0].total || 0) + (this.secondDataSource[0].total || 0) + (this.thirdDataSource[0].total || 0)
+        this.$emit('total', total)
+      })
     }
   }
 }

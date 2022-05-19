@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div class='searchParmas mb-20' style='background: white;'>
+    <div class='searchParams mb-20' style='background: white;'>
       <a-row>
         <a-col :span='24'>
           <div class='flex-center fl'>
             <div class='label fl'>分行:</div>
-            <branch-search model='default' style='width:240px' class='fl ml-10' v-model='branchIds'></branch-search>
+            <branch-search
+              type='default'
+              style='width:240px'
+              class='fl ml-10'
+              v-model='searchParms.branchId'></branch-search>
           </div>
           <div class='flex-center fl ml-20'>
             <div class='label fl mr-10'>日期:</div>
@@ -16,14 +20,14 @@
 
       </a-row>
     </div>
-    <a-card :bordered='false'>
+    <div :style='{background: "white",padding:titleVisible || dailyBillVisible ?"20px":"0"}'>
       <div>
-        <div class='my-title mb-40' style='font-weight: bold;font-size: 16px'>
+        <div v-if='titleVisible' class='my-title mb-40' style='font-weight: bold;font-size: 16px'>
           当前费用合计: <span class='red'>{{ totalCost }} 元</span>
         </div>
-        <daily-bill-detail></daily-bill-detail>
+        <daily-bill-detail @total='getTotal' v-show='dailyBillVisible' ref='dailyBillDetail'></daily-bill-detail>
       </div>
-    </a-card>
+    </div>
   </div>
 </template>
 
@@ -38,11 +42,12 @@ export default {
   data() {
     return {
       searchParms: {
-        startTime: ''
-
+        startTime: '',
+        branchId: []
       },
       totalCost: 150,
-      branchIds: []
+      dailyBillVisible: false,
+      titleVisible: false
     }
   },
   created() {
@@ -53,7 +58,23 @@ export default {
      * 查询
      */
     search() {
-      this.$message.success('查询成功')
+      if (this.searchParms.branchId.length == 0) {
+        this.$message.warning('请选择分行')
+        return
+      } else if (this.searchParms.startTime == '') {
+        this.$message.warning('请选择日期')
+        return
+      } else {
+        this.dailyBillVisible = true
+        this.$refs.dailyBillDetail.init(this.searchParms)
+      }
+    },
+    /**
+     * 获取总费用
+     */
+    getTotal(total) {
+      this.titleVisible = true
+      this.totalCost = total
     }
   }
 }
