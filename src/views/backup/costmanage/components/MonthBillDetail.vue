@@ -78,6 +78,12 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    detail: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   watch: {
@@ -106,7 +112,8 @@ export default {
         showSizeChanger: true,
         showTotal: (total, range) => {
           return range[0] + '-' + range[1] + ' 共' + total + '条'
-        }
+        },
+        pageSizeOptions: ['10', '20', '50', '100']
       },
       dailyBranchName: '',
       dailyBranchId: '',
@@ -206,7 +213,7 @@ export default {
       if (month * 1 == new Date().getMonth() + 1) {
         return year + '-' + month + '-01' + '——' + year + '-' + month + '-' + new Date().getDate()
       } else {
-        if (dateRange.indexOf(month) > -1) {
+        if (dateRange.indexOf(month) == -1) {
           return year + '-' + month + '-01' + '——' + year + '-' + month + '-30'
         } else {
           return year + '-' + month + '-01' + '——' + year + '-' + month + '-31'
@@ -220,7 +227,7 @@ export default {
       this.$emit('close')
     },
     openPrintModal() {
-      this.$refs.monthPrintModal.toPrint()
+      this.$refs.monthPrintModal.toPrint(this.detail)
     },
     handleTableChange(pagination, filters, sorter) {
       this.detailIpagination.current = pagination.current
@@ -232,7 +239,7 @@ export default {
       this.dailyBranchId = this.branchId
       this.dailyBranchName = this.branchName
       this.dailyBillDetaVisible = true
-    },
+    }
 
   }
 }

@@ -13,13 +13,13 @@
         <span v-else style='color:#838181'>{{ form.branchName }}</span>
       </a-form-model-item>
       <a-form-model-item label='服务器单价（元／台）:'>
-        <a-input v-model='form.serverPrice'></a-input>
+        <a-input v-model='form.serverPrice' @change='isNumber("serverPrice")'></a-input>
       </a-form-model-item>
       <a-form-model-item label='前端许可单价（元/GB):'>
-        <a-input v-model='form.foreLicensePrice'></a-input>
+        <a-input v-model='form.foreLicensePrice' @change='isNumber("foreLicensePrice")'></a-input>
       </a-form-model-item>
       <a-form-model-item label='后端写入单价(元/GB):'>
-        <a-input v-model='form.backLicensePrice'></a-input>
+        <a-input v-model='form.backLicensePrice' @change='isNumber("backLicensePrice")'></a-input>
       </a-form-model-item>
     </a-form-model>
 
@@ -153,6 +153,9 @@ export default {
       } else {
         await this.addCharging(data)
       }
+    },
+    isNumber(key) {
+      this.form[key] = this.form[key].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')//只能输入两位小数
     },
     /**
      * 其他选项

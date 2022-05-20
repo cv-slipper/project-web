@@ -4,19 +4,23 @@ import Storage from 'vue-ls'
 import router from './router'
 import store from './store/'
 
-import { VueAxios } from "@/utils/request"
+import { VueAxios } from '@/utils/request'
 
 import Antd from 'ant-design-vue'
 import Viser from 'viser-vue'
-import 'ant-design-vue/dist/antd.less';  // or 'ant-design-vue/dist/antd.less'
+import 'ant-design-vue/dist/antd.less'  // or 'ant-design-vue/dist/antd.less'
 
 import '@/permission' // permission control
 import '@/utils/filter' // base filter
 import Print from 'vue-print-nb-jeecg'
+import htmlPDF from './utils/modules/downloadPDF.js'
+
+
 /*import '@babel/polyfill'*/
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
+
 Vue.prototype.$echarts = echarts
 
 import {
@@ -31,13 +35,13 @@ import {
   DEFAULT_FIXED_SIDEMENU,
   DEFAULT_CONTENT_WIDTH_TYPE,
   DEFAULT_MULTI_PAGE
-} from "@/store/mutation-types"
+} from '@/store/mutation-types'
 import config from '@/defaultSettings'
 
 import JDictSelectTag from './components/dict/index.js'
 import hasPermission from '@/utils/hasPermission'
 import DynamicForm from '@/components/online/autoform/index'
-import vueBus from '@/utils/vueBus';
+import vueBus from '@/utils/vueBus'
 import JeecgComponents from '@/components/jeecg/index'
 import '@/assets/less/JAreaLinkage.less'
 import VueAreaLinkage from 'vue-area-linkage'
@@ -53,14 +57,14 @@ Vue.use(hasPermission)
 Vue.use(JDictSelectTag)
 Vue.use(Print)
 Vue.use(preview)
-Vue.use(vueBus);
-Vue.use(JeecgComponents);
-Vue.use(VueAreaLinkage);
-
+Vue.use(vueBus)
+Vue.use(JeecgComponents)
+Vue.use(VueAreaLinkage)
+Vue.use(htmlPDF)
 new Vue({
   router,
   store,
-  mounted () {
+  mounted() {
     store.commit('SET_SIDEBAR_TYPE', Vue.ls.get(SIDEBAR_TYPE, true))
     store.commit('TOGGLE_THEME', Vue.ls.get(DEFAULT_THEME, config.navTheme))
     store.commit('TOGGLE_LAYOUT_MODE', Vue.ls.get(DEFAULT_LAYOUT_MODE, config.layout))
@@ -71,7 +75,7 @@ new Vue({
     store.commit('TOGGLE_WEAK', Vue.ls.get(DEFAULT_COLOR_WEAK, config.colorWeak))
     store.commit('TOGGLE_COLOR', Vue.ls.get(DEFAULT_COLOR, config.primaryColor))
     store.commit('SET_TOKEN', Vue.ls.get(ACCESS_TOKEN))
-    store.commit('SET_MULTI_PAGE',Vue.ls.get(DEFAULT_MULTI_PAGE,config.multipage))
+    store.commit('SET_MULTI_PAGE', Vue.ls.get(DEFAULT_MULTI_PAGE, config.multipage))
   },
   render: h => h(App)
 }).$mount('#app')

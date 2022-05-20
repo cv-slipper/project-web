@@ -94,7 +94,8 @@ export default {
         total: 0,
         showSizeChanger: true,
         showQuickJumper: true,
-        showTotal: total => `共 ${total} 条`
+        showTotal: total => `共 ${total} 条`,
+        pageSizeOptions: ['10', '20', '50', '100']
       },
       loading: false,
       // 表头
@@ -158,6 +159,9 @@ export default {
         } else {
           this.$message.error(res.message)
         }
+      } catch (e) {
+        this.dataSource = []
+        this.ipagination.total = 0
       } finally {
         this.loading = false
       }

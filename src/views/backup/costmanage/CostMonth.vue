@@ -51,6 +51,7 @@
         :start-time='rowStartTime'
         :visible='monthBillInfoVisible'
         :branch-name='rowBranchName'
+        :detail='selectionRows[0]'
         @close='monthBillInfoVisible=false'></month-bill-detail>
     </a-card>
   </div>
@@ -90,7 +91,8 @@ export default {
         showSizeChanger: true,
         showTotal: (total, range) => {
           return range[0] + '-' + range[1] + ' 共' + total + '条'
-        }
+        },
+        pageSizeOptions: ['10', '20', '50', '100']
       },
 
       columns: [
@@ -193,6 +195,9 @@ export default {
         } else {
           this.$message.error(res.message)
         }
+      } catch (e) {
+        this.dataSource = []
+        this.ipagination.total = 0
       } finally {
         this.loading = false
       }
@@ -220,14 +225,15 @@ export default {
       if (this.selectedRowKeys.length == 0) {
         return this.$message.warning('请选择一条数据')
       } else {
-        this.$refs.printModal.toPrint()
+        this.$refs.printModal.toPrint(this.selectionRows[0])
       }
     },
     // 月账单详情弹窗
-    goToDetail({ branchId, startTime, name }) {
-      this.rowBranchId = branchId
-      this.rowStartTime = startTime
-      this.rowBranchName = name
+    goToDetail(row) {
+      this.selectionRows = [row]
+      this.rowBranchId = row.branchId
+      this.rowStartTime = row.startTime
+      this.rowBranchName = row.name
       this.monthBillInfoVisible = true
     },
 

@@ -88,6 +88,7 @@
             :loading='thirdLoading'
             :bordered='true'
             :pagination='false'
+            class='backTable'
           >
 
           </a-table>
@@ -233,7 +234,8 @@ export default {
       secondPage: {
         current: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        showTotal: total => `共 ${total} 条`
       },
 
       thirdColumns: [
@@ -309,7 +311,8 @@ export default {
       thirdPage: {
         current: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        showTotal: total => `共 ${total} 条`
       },
       startTime: '',
       branchId: ''
@@ -423,6 +426,12 @@ export default {
     init({ branchId, startTime }) {
       this.branchId = branchId.map(item => item.id).join(',')
       this.startTime = startTime
+      this.thirdPage.current = 1
+      this.thirdPage.pageSize = 10
+      this.secondPage.current = 1
+      this.secondPage.pageSize = 10
+      this.firstPage.current = 1
+      this.firstPage.pageSize = 10
       Promise.all([this.getServiceFee(), this.getFrontendFee(), this.getBackFee()]).then(() => {
         let total = (this.firstDataSource[0].total || 0) + (this.secondDataSource[0].total || 0) + (this.thirdDataSource[0].total || 0)
         this.$emit('total', total.toFixed(2))
@@ -463,5 +472,9 @@ export default {
   justify-content: space-around;
   border: 1px solid #e8e8e8;
   border-right: none;
+}
+
+/deep/ .backTable table tbody td {
+  padding: 30px 20px !important;
 }
 </style>
