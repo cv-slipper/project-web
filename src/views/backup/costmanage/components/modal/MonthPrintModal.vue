@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getCostMonthDetail } from '@api/modules/backup/costManage/costMonth'
+import { getCostMonthDetail, getCostMonthDetailList } from '@api/modules/backup/costManage/costMonth'
 import { downloadCsv } from '@/utils/modules/download'
 
 export default {
@@ -150,6 +150,31 @@ export default {
   },
   methods: {
     /**
+     * 获取月详单
+     * @param {Object} params
+     */
+    async getCostMonthDetailList() {
+      let params = {
+        branchId: this.branchId,
+        startTime: this.startTime,
+        current: this.detailIpagination.current,
+        pageSize: this.detailIpagination.pageSize
+      }
+      this.loading = true
+      try {
+        const res = await getCostMonthDetailList(params)
+        if (res.code == 200) {
+          this.data = res.result.list
+          this.printPage.total = res.result.totalSize
+        }
+      } catch (err) {
+        this.$message.error(err.message)
+      } finally {
+        this.loading = false
+
+      }
+    },
+    /**
      * getCostMonthDetail
      */
     async getCostMonthDetail() {
@@ -200,7 +225,11 @@ export default {
       this.detail = detail
       this.visible = true
       this.title = type
-      this.getCostMonthDetail()
+      if (type == '账') {
+        this.getCostMonthDetail()
+      } else {
+        this.getCostMonthDetailList()
+      }
     },
     /**
      * 日期格式化

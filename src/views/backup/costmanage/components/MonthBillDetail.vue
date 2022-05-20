@@ -57,7 +57,7 @@
 
 <script>
 import MonthPrintModal from '@views/backup/costmanage/components/modal/MonthPrintModal'
-import { getCostMonthDetail } from '@/api/modules/backup/costManage/costMonth.js'
+import { getCostMonthDetail, } from '@/api/modules/backup/costManage/costMonth.js'
 import DailyBillDetaModal from '@views/backup/costmanage/components/modal/DailyBillDetaModal'
 
 export default {
@@ -179,6 +179,7 @@ export default {
     }
   },
   methods: {
+
     /**
      * 获取月账单详情
      * @param {Object} params

@@ -197,6 +197,8 @@ export default {
      * 搜索
      */
     search() {
+      this.ipagination.current = 1
+      this.ipagination.pageSize = 10
       this.getChargingList()
     },
     /**

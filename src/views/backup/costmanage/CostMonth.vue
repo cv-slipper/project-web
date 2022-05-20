@@ -208,6 +208,8 @@ export default {
      * 搜索
      */
     search() {
+      this.ipagination.current = 1
+      this.ipagination.pageSize = 10
       this.getCostMonthList()
     },
     /**
@@ -225,7 +227,12 @@ export default {
       if (this.selectedRowKeys.length == 0) {
         return this.$message.warning('请选择一条数据')
       } else {
-        this.$refs.printModal.toPrint(this.selectionRows[0])
+        if (type == 'bill') {
+          this.$refs.printModal.toPrint(this.selectionRows[0])
+        } else {
+          this.$refs.printModal.toPrint(this.selectionRows[0], '详')
+        }
+
       }
     },
     // 月账单详情弹窗

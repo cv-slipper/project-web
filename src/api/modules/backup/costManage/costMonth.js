@@ -18,7 +18,19 @@ export function getCostMonthList(data) {
  */
 export function getCostMonthDetail(data) {
   return axios({
-    url: '/cvCostMonth/detailsList',
+    url: '/cvCostMonth/list',
+    method: 'post',
+    data: data
+  })
+}
+
+/**
+ * 获取月详单
+ * @param {Object} data
+ */
+export function getCostMonthDetailList(data) {
+  return axios({
+    url: '/cvCostMonthDetail//detailsList',
     method: 'post',
     data: data
   })
