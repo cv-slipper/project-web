@@ -1,9 +1,18 @@
 <template>
-  <a-modal width='60%' :bodyStyle='{padding: "30px 50px"}' :visible='visible' @ok='handleOk' @cancel='handleCancel'>
+  <a-modal width='70%' :bodyStyle='{padding: "30px 50px"}' :visible='visible' @ok='handleOk' @cancel='handleCancel'>
     <div slot='title' style='display: flex;align-items: center'>
       <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
       <span class='ml-10'>生成月{{ title }}单</span>
     </div>
+    <div class='mb-20'>
+      <div class='fr '>
+        <a-button v-print="'#printWrapper'">打印</a-button>
+        <a-button type='primary' class='ml-10'>另存为PDF</a-button>
+        <a-button class='ml-10'>另存为CSV</a-button>
+      </div>
+
+    </div>
+    <div class='clearFix' style='height:20px'></div>
     <div id='printWrapper'>
       <div class='title'>
         2022-05 北京银行北京分行月度账单
@@ -15,7 +24,7 @@
           </a-col>
           <a-col :span='12'>
             <div class='fr'>
-              <span>{{ title }}单生成日期:</span>
+              <span>{{ title }}单生成日期:{{ dateFormat() }}</span>
             </div>
           </a-col>
         </a-row>
@@ -39,11 +48,7 @@
       </div>
       <div class='cost-title mt-20'>
         <div style='color:#262626'>费用明细:</div>
-        <div>
-          <a-button v-print="'#printWrapper'">打印</a-button>
-          <a-button type='primary' class='ml-10'>另存为PDF</a-button>
-          <a-button class='ml-10'>另存为CSV</a-button>
-        </div>
+
       </div>
       <div class='table-box mt-20'>
         <a-table bordered :columns='columns' :data='data'></a-table>
@@ -107,6 +112,21 @@ export default {
     },
     toPrint() {
       this.visible = true
+    },
+    /**
+     * 日期格式化
+     */
+    dateFormat() {
+      let year = new Date().getFullYear()
+      let month = new Date().getMonth() + 1
+      let day = new Date().getDate()
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (day < 10) {
+        day = '0' + day
+      }
+      return year + '-' + month + '-' + day
     }
   }
 }

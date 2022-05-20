@@ -114,9 +114,14 @@ import { getBackFee, getFrontFee, getServiceFee } from '@api/modules/backup/cost
 
 export default {
   name: 'DailyBillDetail',
+  props: {
+    spanNum: {
+      type: Number,
+      default: 10
+    }
+  },
   data() {
     return {
-      spanNum: 10,
       firstColumns: [
         {
           title: '客户端数量(台)',
@@ -420,7 +425,7 @@ export default {
       this.startTime = startTime
       Promise.all([this.getServiceFee(), this.getFrontendFee(), this.getBackFee()]).then(() => {
         let total = (this.firstDataSource[0].total || 0) + (this.secondDataSource[0].total || 0) + (this.thirdDataSource[0].total || 0)
-        this.$emit('total', total)
+        this.$emit('total', total.toFixed(2))
       })
     }
   }

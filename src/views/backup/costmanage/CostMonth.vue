@@ -46,7 +46,12 @@
         </a-table>
       </div>
       <month-print-modal ref='printModal'></month-print-modal>
-      <month-bill-detail :visible='monthBillInfoVisible' @close='monthBillInfoVisible=false'></month-bill-detail>
+      <month-bill-detail
+        :branch-id='rowBranchId'
+        :start-time='rowStartTime'
+        :visible='monthBillInfoVisible'
+        :branch-name='rowBranchName'
+        @close='monthBillInfoVisible=false'></month-bill-detail>
     </a-card>
   </div>
 </template>
@@ -109,25 +114,37 @@ export default {
           title: '服务费(元)',
           width: 120,
           align: 'center',
-          dataIndex: 'serveCost'
+          dataIndex: 'serveCost',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         },
         {
           title: '前端许可费用(元)',
           width: 120,
           align: 'center',
-          dataIndex: 'frontendCost'
+          dataIndex: 'frontendCost',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         },
         {
           title: '后端存储写入费用(元)',
           width: 150,
           align: 'center',
-          dataIndex: 'backendCost'
+          dataIndex: 'backendCost',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         },
         {
           title: '月度总费用(元)',
           width: 120,
           align: 'center',
-          dataIndex: 'cost'
+          dataIndex: 'total',
+          customRender: (text, row, index) => {
+            return text + '元'
+          }
         },
         {
           title: '费用月份',
@@ -146,7 +163,10 @@ export default {
       ],
 
       dataSource: [],
-      detailDataSource: []
+      detailDataSource: [],
+      rowStartTime: '',
+      rowBranchId: '',
+      rowBranchName: ''
     }
   },
   created() {
@@ -204,8 +224,10 @@ export default {
       }
     },
     // 月账单详情弹窗
-    goToDetail(record) {
-      console.log(record, 'record')
+    goToDetail({ branchId, startTime, name }) {
+      this.rowBranchId = branchId
+      this.rowStartTime = startTime
+      this.rowBranchName = name
       this.monthBillInfoVisible = true
     },
 
