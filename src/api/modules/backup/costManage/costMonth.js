@@ -18,7 +18,7 @@ export function getCostMonthList(data) {
  */
 export function getCostMonthDetail(data) {
   return axios({
-    url: '/cvCostMonth/list',
+    url: '/cvCostMonth/dailyList',
     method: 'post',
     data: data
   })
@@ -30,7 +30,7 @@ export function getCostMonthDetail(data) {
  */
 export function getCostMonthDetailList(data) {
   return axios({
-    url: '/cvCostMonthDetail//detailsList',
+    url: '/cvCostMonthDetail/detailsList',
     method: 'post',
     data: data
   })
