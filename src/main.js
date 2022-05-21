@@ -13,7 +13,6 @@ import 'ant-design-vue/dist/antd.less'  // or 'ant-design-vue/dist/antd.less'
 import '@/permission' // permission control
 import '@/utils/filter' // base filter
 import Print from 'vue-print-nb-jeecg'
-import htmlPDF from './utils/modules/downloadPDF.js'
 
 
 /*import '@babel/polyfill'*/
@@ -60,7 +59,7 @@ Vue.use(preview)
 Vue.use(vueBus)
 Vue.use(JeecgComponents)
 Vue.use(VueAreaLinkage)
-Vue.use(htmlPDF)
+
 new Vue({
   router,
   store,
