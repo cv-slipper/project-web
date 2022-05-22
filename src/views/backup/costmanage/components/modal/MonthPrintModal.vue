@@ -7,7 +7,7 @@
     <div class='mb-20'>
       <div class='fr '>
         <a-button v-print="'#printWrapperAndPdfContent'">打印</a-button>
-        <a-button type='primary' class='ml-10'>另存为PDF</a-button>
+        <a-button type='primary' class='ml-10' @click='downLoadPDF'>另存为PDF</a-button>
         <a-button class='ml-10' @click='downloadCSV'>另存为CSV</a-button>
       </div>
 
@@ -198,6 +198,19 @@ export default {
       }
 
 
+    },
+    /**
+     * 下载pdf
+     */
+    downLoadPDF() {
+      let params = {
+        branchId: this.detail.branchId,
+        startTime: this.detail.startTime,
+        current: 1,
+        pageSize: -1,
+        csvType: this.title == '账' ? '1' : '2'
+      }
+      downloadFile('/cvCostMonth/export-pdf', this.detail.name + this.detail.startTime + '月' + this.title + '单.pdf', params)
     },
     /**
      * 下载csv

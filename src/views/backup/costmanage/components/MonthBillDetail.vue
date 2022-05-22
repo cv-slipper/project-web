@@ -21,7 +21,7 @@
         </a-col>
         <a-col :span='7'>
           <div class='fr'>
-            <a-button class='fl ml-10 ' @click='openPrintModal'>生成月账单</a-button>
+            <a-button class='fl ml-10 ' @click='openPrintModal("账")'>生成月账单</a-button>
             <a-button class='fl ml-10' @click='openPrintModal("详")' type='primary'>生成月详单</a-button>
           </div>
         </a-col>

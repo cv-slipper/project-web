@@ -21,11 +21,23 @@
           <div class='fr'>
             <a-button class='fl ml-10' @click='openPrintModal("bill")'>生成账单</a-button>
             <a-button class='fl ml-10' @click='openPrintModal("info")'>生成详单</a-button>
-            <a-button type='primary' class='fl ml-10'>批量生成账单</a-button>
+
+            <a-button type='primary' class='fl ml-10' @click='downloadAll'>批量生成账单</a-button>
+
+
           </div>
         </a-col>
       </a-row>
     </div>
+    <a-modal :visible='visible' :dialog-style="{ top: '120px' }" @ok='handleOk' @cancel='visible=false'>
+      <div class='mt-20' style='color:black;font-size: 16px;text-align:center'>
+        已选择生成全部银行{{ searchParms.startTime }}月的月账单
+      </div>
+      <div class='mt-20'>
+        <a-checkbox class='fr' v-model='isHave'>包含月详单</a-checkbox>
+      </div>
+      <div style='height:20px'></div>
+    </a-modal>
     <a-card :bordered='false'>
       <!-- table区域-begin -->
       <div>
@@ -62,12 +74,15 @@ import BranchSearch from '@comp/searchParms/BranchSearch'
 import { getCostMonthList } from '@/api/modules/backup/costManage/costMonth.js'
 import MonthPrintModal from '@views/backup/costmanage/components/modal/MonthPrintModal'
 import MonthBillDetail from '@views/backup/costmanage/components/MonthBillDetail'
+import { downloadFile } from '@/api/manage'
 
 export default {
   name: 'CostList',
   components: { BranchSearch, MonthPrintModal, MonthBillDetail },
   data() {
     return {
+      visible: false,
+      isHave: false,
       // 月账单详情弹窗visible
       monthBillInfoVisible: false,
       toggleSearchStatus: true,
@@ -210,6 +225,8 @@ export default {
     search() {
       this.ipagination.current = 1
       this.ipagination.pageSize = 10
+      this.selectedRowKeys = []
+      this.selectionRows = []
       this.getCostMonthList()
     },
     /**
@@ -234,6 +251,28 @@ export default {
         }
 
       }
+    },
+    downloadAll() {
+
+      if (this.searchParms.startTime) {
+        this.isHave = false
+        this.visible = true
+      } else {
+        this.$message.warning('请选择月份')
+      }
+
+    },
+    handleOk() {
+      let params = {
+        current: 1,
+        pageSize: -1,
+        startTime: this.searchParms.startTime,
+        branchId: '',
+        csvType: this.isHave ? 4 : 3
+      }
+      let fileName = this.isHave ? '全部银行' + this.searchParms.startTime + '月账单(不含月详单)' : '全部银行' + this.searchParms.startTime + '月账单(含月详单)'
+      downloadFile('/cvCostMonth/export-pdf', fileName + '.zip', params)
+      this.visible = false
     },
     // 月账单详情弹窗
     goToDetail(row) {
