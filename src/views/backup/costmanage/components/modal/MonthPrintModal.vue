@@ -81,7 +81,7 @@
 
 <script>
 import { getCostMonthDetail, getCostMonthDetailList } from '@api/modules/backup/costManage/costMonth'
-import { downloadCsv } from '@/utils/modules/download'
+import { downloadFile } from '@/api/manage'
 
 export default {
   name: 'MonthPrintModal',
@@ -155,10 +155,10 @@ export default {
      */
     async getCostMonthDetailList() {
       let params = {
-        branchId: this.branchId,
-        startTime: this.startTime,
-        current: this.detailIpagination.current,
-        pageSize: this.detailIpagination.pageSize
+        branchId: this.detail.branchId,
+        startTime: this.detail.startTime,
+        current: this.printPage.current,
+        pageSize: this.printPage.pageSize
       }
       this.loading = true
       try {
@@ -205,15 +205,13 @@ export default {
     async downloadCSV() {
       let params = {
         branchId: this.detail.branchId,
-        startTime: this.detail.startTime
+        startTime: this.detail.startTime,
+        current: 1,
+        pageSize: -1,
+        csvType: this.title == '账' ? '1' : '2'
       }
-      const res = await getCostMonthDetail(params)
-      if (res.code = 200) {
-        let fileName = this.detail.startTime + this.detail.name + '月度' + this.title + '单'
-        downloadCsv(this.columns, res.result.list, fileName)
-      } else {
-        this.$message.error(res.message)
-      }
+      downloadFile('/cvCostMonth/export-csv', this.detail.name + this.detail.startTime + '月' + this.title + '单.csv', params)
+
     },
     handleOk() {
       this.visible = false
@@ -225,6 +223,8 @@ export default {
       this.detail = detail
       this.visible = true
       this.title = type
+      this.printPage.current = 1
+      this.printPage.pageSize = 10
       if (type == '账') {
         this.getCostMonthDetail()
       } else {
@@ -252,12 +252,20 @@ export default {
     handlePrintPageChange(page, size) {
       this.printPage.current = page
       this.printPage.pageSize = size
-      this.getCostMonthDetail()
+      if (this.title == '账') {
+        this.getCostMonthDetail()
+      } else {
+        this.getCostMonthDetailList()
+      }
     },
     handlePrintPageSizeChange(page, size) {
       this.printPage.current = page
       this.printPage.pageSize = size
-      this.getCostMonthDetail()
+      if (this.title == '账') {
+        this.getCostMonthDetail()
+      } else {
+        this.getCostMonthDetailList()
+      }
     },
     /**
      * 获取日期范围

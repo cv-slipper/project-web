@@ -22,7 +22,7 @@
         <a-col :span='7'>
           <div class='fr'>
             <a-button class='fl ml-10 ' @click='openPrintModal'>生成月账单</a-button>
-            <a-button class='fl ml-10' type='primary'>生成月详单</a-button>
+            <a-button class='fl ml-10' @click='openPrintModal("详")' type='primary'>生成月详单</a-button>
           </div>
         </a-col>
       </a-row>
@@ -57,7 +57,7 @@
 
 <script>
 import MonthPrintModal from '@views/backup/costmanage/components/modal/MonthPrintModal'
-import { getCostMonthDetail, } from '@/api/modules/backup/costManage/costMonth.js'
+import { getCostMonthDetail } from '@/api/modules/backup/costManage/costMonth.js'
 import DailyBillDetaModal from '@views/backup/costmanage/components/modal/DailyBillDetaModal'
 
 export default {
@@ -227,8 +227,8 @@ export default {
     handleOk() {
       this.$emit('close')
     },
-    openPrintModal() {
-      this.$refs.monthPrintModal.toPrint(this.detail)
+    openPrintModal(type = '账') {
+      this.$refs.monthPrintModal.toPrint(this.detail, type)
     },
     handleTableChange(pagination, filters, sorter) {
       this.detailIpagination.current = pagination.current

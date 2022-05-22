@@ -12,34 +12,34 @@ const api = {
 export default api
 
 //post
-export function postAction(url,parameter) {
+export function postAction(url, parameter) {
   return axios({
     url: url,
-    method:'post' ,
+    method: 'post',
     data: parameter
   })
 }
 
 //post method= {post | put}
-export function httpAction(url,parameter,method) {
+export function httpAction(url, parameter, method) {
   return axios({
     url: url,
-    method:method ,
+    method: method,
     data: parameter
   })
 }
 
 //put
-export function putAction(url,parameter) {
+export function putAction(url, parameter) {
   return axios({
     url: url,
-    method:'put',
+    method: 'put',
     data: parameter
   })
 }
 
 //get
-export function getAction(url,parameter) {
+export function getAction(url, parameter) {
   return axios({
     url: url,
     method: 'get',
@@ -48,7 +48,7 @@ export function getAction(url,parameter) {
 }
 
 //deleteAction
-export function deleteAction(url,parameter) {
+export function deleteAction(url, parameter) {
   return axios({
     url: url,
     method: 'delete',
@@ -104,11 +104,11 @@ export function saveService(parameter) {
  * @param parameter
  * @returns {*}
  */
-export function downFile(url,parameter){
+export function downFile(url, parameter) {
   return axios({
     url: url,
-    params: parameter,
-    method:'get' ,
+    data: parameter,
+    method: 'post',
     responseType: 'blob'
   })
 }
@@ -148,14 +148,14 @@ export function downloadFile(url, fileName, parameter) {
  * @param parameter
  * @returns {*}
  */
-export function uploadAction(url,parameter){
+export function uploadAction(url, parameter) {
   return axios({
     url: url,
     data: parameter,
-    method:'post' ,
+    method: 'post',
     headers: {
-      'Content-Type': 'multipart/form-data',  // 文件上传
-    },
+      'Content-Type': 'multipart/form-data'  // 文件上传
+    }
   })
 }
 
@@ -165,13 +165,13 @@ export function uploadAction(url,parameter){
  * @param subStr
  * @returns {*}
  */
-export function getFileAccessHttpUrl(avatar,subStr) {
-  if(!subStr) subStr = 'http'
-  if(avatar && avatar.startsWith(subStr)){
-    return avatar;
-  }else{
-    if(avatar &&　avatar.length>0 && avatar.indexOf('[')==-1){
-      return window._CONFIG['staticDomainURL'] + "/" + avatar;
+export function getFileAccessHttpUrl(avatar, subStr) {
+  if (!subStr) subStr = 'http'
+  if (avatar && avatar.startsWith(subStr)) {
+    return avatar
+  } else {
+    if (avatar && avatar.length > 0 && avatar.indexOf('[') == -1) {
+      return window._CONFIG['staticDomainURL'] + '/' + avatar
     }
   }
 }

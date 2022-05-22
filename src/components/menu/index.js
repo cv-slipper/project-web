@@ -147,7 +147,7 @@ export default {
     },
     renderIcon(icon) {
       if (icon === 'none' || icon === undefined) {
-        return null
+        return (<div class='fl' style='width:20px;height:10px'></div>)
       }
       const props = {}
       typeof (icon) === 'object' ? props.component = icon : props.type = icon

@@ -71,6 +71,7 @@ import BillingSetInfoModal from './components/BillingSetInfoModal'
 import { getChargingList, deleteCharging } from '@/api/modules/backupdata/CvChargingApi.js'
 import { downloadCsv } from '@/utils/modules/download'
 import BranchSearch from '@/components/searchParms/BranchSearch.vue'
+import { downloadFile } from '@/api/manage'
 
 export default {
   name: 'CvChargingSetList',
@@ -191,7 +192,12 @@ export default {
      * 另存为csv
      */
     exportExcel() {
-      downloadCsv(this.columns, this.dataSource)
+      downloadFile('/cvChargingSet/export-csv', '计费设置导出结果', {
+        current: 1,
+        pageSize: -1,
+        branchId: this.branchIds.map(item => item.id).join(','),
+        startTime: this.searchParams.startTime
+      })
     },
     /**
      * 搜索

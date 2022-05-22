@@ -16,130 +16,195 @@ export default {
       cluster: null
     }
   },
-  created() {
-    this.initmapFn()
+  mounted() {
+    this.initMap()
 
 
   },
   methods: {
-    // 初始化点聚合
-    initMarkerClusterer(AMap) {
-      for (var i = 0; i < points.length; i += 1) {
-        this.markers.push(new AMap.Marker({
-          position: points[i]['lnglat'],
-          content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-          offset: new AMap.Pixel(-15, -15)
-        }))
+
+    initMap() {
+
+      const roomData = [
+        {
+          'lnglat': {
+            className: 'AMap.LongLat',
+            lng: 116.397428,
+            lat: 39.90923
+          },
+          'building': '1号楼',
+          'city': '北京',
+          'area': '朝阳区'
+
+        },
+        {
+          'lnglat': { className: 'AMap.LngLat', lng: 114.177087, lat: 22.313861 },
+
+
+          'building': '旺角高级公寓',
+          'area': '旺角',
+          'city': '香港'
+        },
+        {
+          'lnglat': { className: 'AMap.LngLat', lng: 114.174986, lat: 22.310604 },
+
+          'building': '油麻地一期',
+          'area': '油麻地',
+          'city': '香港'
+        },
+        {
+          'lnglat': { className: 'AMap.LngLat', lng: 114.194512, lat: 22.326271 },
+
+
+          'building': '九龙城二期公寓',
+          'area': '九龙城',
+          'city': '香港'
+        },
+        {
+          'lnglat': { className: 'AMap.LngLat', lng: 114.193718, lat: 22.320204 },
+
+          'building': '九龙城一期公寓',
+          'area': '九龙',
+          'city': '香港'
+        }
+
+      ]
+      const district = {
+        '香港': {
+          'center': '114.171202,22.277469'
+        },
+        '北京': {
+          'center': '116.407526,39.90403'
+        }
       }
-      var count = this.markers.length
-      this.addCluster(2, AMap)
-
-    },
-    renderClusterMarker(context) {
-      console.log(context, 'context')
-      var count = this.markers.length
-      var factor = Math.pow(context.count / count, 1 / 18)
-      var div = document.createElement('div')
-      var Hue = 180 - factor * 180
-      var bgColor = 'hsla(' + Hue + ',100%,50%,0.7)'
-      var fontColor = 'hsla(' + Hue + ',100%,20%,1)'
-      var borderColor = 'hsla(' + Hue + ',100%,40%,1)'
-      var shadowColor = 'hsla(' + Hue + ',100%,50%,1)'
-      div.style.backgroundColor = bgColor
-      var size = Math.round(30 + Math.pow(context.count / count, 1 / 5) * 20)
-      div.style.width = div.style.height = size + 'px'
-      div.style.border = 'solid 1px ' + borderColor
-      div.style.borderRadius = size / 2 + 'px'
-      div.style.boxShadow = '0 0 1px ' + shadowColor
-      div.innerHTML = context.count
-      div.style.lineHeight = size + 'px'
-      div.style.color = fontColor
-      div.style.fontSize = '14px'
-      div.style.textAlign = 'center'
-      context.marker.setOffset(new AMap.Pixel(-size / 2, -size / 2))
-      context.marker.setContent(div)
-
-    },
-
-    addCluster(tag, AMap) {
-
-      if (this.cluster) {
-        this.cluster.setMap(null)
-      }
-      if (tag == 2) {//完全自定义
-        this.cluster = new AMap.MarkerClusterer(this.map, this.markers, {
-          gridSize: 80,
-          renderClusterMarker: this.renderClusterMarker
-        })
-      } else if (tag == 1) {//自定义图标
-        var sts = [{
-          url: 'https://a.amap.com/jsapi_demos/static/images/blue.png',
-          size: new AMap.Size(32, 32),
-          offset: new AMap.Pixel(-16, -16)
-        }, {
-          url: 'https://a.amap.com/jsapi_demos/static/images/green.png',
-          size: new AMap.Size(32, 32),
-          offset: new AMap.Pixel(-16, -16)
-        }, {
-          url: 'https://a.amap.com/jsapi_demos/static/images/orange.png',
-          size: new AMap.Size(36, 36),
-          offset: new AMap.Pixel(-18, -18)
-        }, {
-          url: 'https://a.amap.com/jsapi_demos/static/images/red.png',
-          size: new AMap.Size(48, 48),
-          offset: new AMap.Pixel(-24, -24)
-        }, {
-          url: 'https://a.amap.com/jsapi_demos/static/images/darkRed.png',
-          size: new AMap.Size(48, 48),
-          offset: new AMap.Pixel(-24, -24)
-        }]
-        this.cluster = new AMap.MarkerClusterer(map, markers, {
-          styles: sts,
-          gridSize: 80
-        })
-      } else {//默认样式
-        this.cluster = new AMap.MarkerClusterer(map, markers, { gridSize: 80 })
-      }
-    },
-    initmapFn() {
-      AMapLoader.load({
-        'key': 'f5ada6176c6a7f1a9ae57985b2f9e1a1',              // 申请好的Web端开发者Key，首次调用 load 时必填
-        'version': '2.0',   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        'plugin': ['AMap.MarkerClusterer']           // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-      }).then((AMap) => {
-        this.map = new AMap.Map('container', {
-          zoom: 13,
-          resizeEnable: true
-        })
-        this.initMarkerClusterer(AMap)
-      }).catch(e => {
-        console.log(e)
+// 绘制初始化地图
+      var map = new AMap.Map('container', {
+        zoom: 5,//级别
+        center: [114.177087, 22.313861],//中心点坐标
+        viewMode: '3D'//使用3D视图
       })
-    },
-    // 地图标注
-    onMarkerMap(data) {
-      if (data[0]) {
-        data.forEach((element, index) => {
-          if (element.lng) {
-            let marker = new AMap.Marker({
-              //在回调函数里面创建Marker实例,添加经纬度和标题
-              position: new AMap.LngLat(element.lng, element.lat), //添加经纬度
-              offset: new AMap.Pixel(-13, -30) // 偏移量
-              // title: "广州塔", // 鼠标移上去时显示的内容
-              // 可以自定义标记点显示的内容,允许插入html字符串
-              // content: "<h1>广州塔Content</h1>",
-            })
-            this.map1.add(marker) // 将创建的点标记添加到已有的地图实例：
-            //marker.setMap(this.map1);
-            //名称
-            marker.setLabel({// 设置label标签
-              offset: new AMap.Pixel(-50, -30), //设置文本标注偏移量
-              content: `<div class='info'>${element.enterpriseName}</div>`, //设置文本标注内容
-              direction: 'right' //设置文本标注方位
-            })
-          }
+
+      var count = roomData.length
+
+      function clusterMarkers() {
+        var markerList = []
+        var marker = new AMap.Marker({
+          map: map
         })
+        markerList.push(marker)
+        return markerList
       }
+
+// 设置不同组群不同缩放级别
+      var clusterIndexSet = {
+        city: {
+          minZoom: 2,
+          maxZoom: 12
+        },
+        area: {
+          minZoom: 12,
+          maxZoom: 20
+        }
+      }
+
+// 设置样式
+      function getStyle(context) {
+        var clusterData = context.clusterData // 聚合中包含数据
+        var index = context.index // 聚合的条件
+        var count = context.count // 聚合中点的总数
+        var marker = context.marker // 聚合绘制点 Marker 对象
+        var color = [
+          '8,60,156',
+          '66,130,198',
+          '107,174,214',
+          '78,200,211'
+        ]
+        console.log(index, 'index')
+        var indexs = ['city', 'district', 'area', 'community']
+        var i = indexs.indexOf(index['mainKey'])
+        var text = clusterData[0][index['mainKey']]
+        var size = Math.round(30 + Math.pow(count / roomData.length, 1 / 5) * 70)
+        if (i < 2) {
+          var extra = '<span class="showCount">' + context.count + '套</span>'
+          text = '<span class="showName">' + text + '</span>'
+          text += extra
+        } else {
+          size = 12 * text.length + 20
+        }
+        var style = {
+          bgColor: 'rgba(' + color[i] + ',.8)',
+          borderColor: 'rgba(' + color[i] + ',1)',
+          text: text,
+          size: size,
+          index: i,
+          color: '#ffffff',
+          textAlign: 'center',
+          boxShadow: '0px 0px 5px rgba(0,0,0,0.8)'
+        }
+        return style
+      }
+
+      function getPosition(context) {
+        var key = context.index.mainKey
+        var dataItem = context.clusterData && context.clusterData[0]
+        var districtName = dataItem[key]
+        if (!district[districtName]) {
+          return null
+        }
+        var center = district[districtName].center.split(',')
+        var centerLnglat = new AMap.LngLat(center[0], center[1])
+        return centerLnglat
+      }
+
+// 自定义聚合点样式
+      function _renderClusterMarker(context) {
+        var clusterData = context.clusterData // 聚合中包含数据
+        var index = context.index // 聚合的条件
+        var count = context.count // 聚合中点的总数
+        var marker = context.marker // 聚合点标记对象
+        var styleObj = getStyle(context)
+        // 自定义点标记样式
+        var div = document.createElement('div')
+        div.className = 'amap-cluster'
+        div.style.backgroundColor = styleObj.bgColor
+        div.style.width = styleObj.size + 'px'
+        if (styleObj.index <= 2) {
+          div.style.height = styleObj.size + 'px'
+          div.style.lineHeight = styleObj.size + 'px'
+          // 自定义点击事件
+          context.marker.on('click', function(e) {
+            console.log(e)
+            var curZoom = map.getZoom()
+            var center = e.target.getPosition()
+            if (curZoom < 20) {
+              curZoom = 12
+            }
+            map.setZoomAndCenter(curZoom, center)
+          })
+        }
+        div.style.border = 'solid 1px ' + styleObj.borderColor
+        div.style.borderRadius = index['mainKey'] == 'area' ? '12px' : styleObj.size + 'px'
+        div.innerHTML = styleObj.text
+        div.style.color = styleObj.color
+        div.style.textAlign = styleObj.textAlign
+        div.style.boxShadow = styleObj.boxShadow
+        div.style.fontSize = 14 + 'px'
+        div.style.padding = `5px 0`
+        context.marker.setContent(div)
+        // 自定义聚合点标记显示位置
+        var position = getPosition(context)
+        if (position) {
+          context.marker.setPosition(position)
+        }
+        context.marker.setAnchor('center')
+
+      }
+
+// IndexCluster
+      var cluster = new AMap.IndexCluster(map, roomData, {
+        renderClusterMarker: _renderClusterMarker,
+        clusterIndexSet: clusterIndexSet
+      })
     }
   }
 }
