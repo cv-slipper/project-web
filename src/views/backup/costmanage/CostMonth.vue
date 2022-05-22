@@ -271,7 +271,7 @@ export default {
         branchId: '',
         csvType: this.isHave ? 4 : 3
       }
-      let fileName = this.isHave ? '全部银行' + this.searchParms.startTime + '月账单(不含月详单)' : '全部银行' + this.searchParms.startTime + '月账单(含月详单)'
+      let fileName = this.isHave ? '全部银行' + this.searchParms.startTime + '月账单(含月详单)' : '全部银行' + this.searchParms.startTime + '月账单(不含月详单)'
       downloadFile('/cvCostMonth/export-pdf', fileName + '.zip', params)
       this.visible = false
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--    <main-map></main-map>-->
-    <!--    &lt;!&ndash;    头部&ndash;&gt;-->
+    <!--    头部-->
     <a-row>
       <head-card @domainChange='handleDomainChange' :domain='domain' />
     </a-row>
