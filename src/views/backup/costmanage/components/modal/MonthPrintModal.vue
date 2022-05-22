@@ -98,54 +98,7 @@ export default {
         total: 0
       },
       loading: false,
-      columns: [
-        {
-          title: '序号',
-          dataIndex: '',
-          key: 'rowIndex',
-          align: 'center',
-          customRender: function(t, r, index) {
-            return parseInt(index) + 1
-          }
-        },
-        {
-          title: '日期',
-          align: 'center',
-          dataIndex: 'startTime'
-        },
-        {
-          title: '服务费',
-          align: 'center',
-          dataIndex: 'serveCost',
-          customRender: function(t, r, index) {
-            return t + '元'
-          }
-        },
-        {
-          title: '前端许可费用(元)',
-          align: 'center',
-          dataIndex: 'frontendCost',
-          customRender: function(t, r, index) {
-            return t + '元'
-          }
-        },
-        {
-          title: '后端存储写入费用(元)',
-          align: 'center',
-          dataIndex: 'backendCost',
-          customRender: function(t, r, index) {
-            return t + '元'
-          }
-        },
-        {
-          title: '费用小计(元)',
-          align: 'center',
-          dataIndex: 'total',
-          customRender: function(t, r, index) {
-            return t + '元'
-          }
-        }
-      ]
+      columns: []
     }
   },
   methods: {
@@ -238,9 +191,112 @@ export default {
       this.title = type
       this.printPage.current = 1
       this.printPage.pageSize = 10
+      this.data = []
       if (type == '账') {
+        this.columns = [
+          {
+            title: '序号',
+            dataIndex: '',
+            key: 'rowIndex',
+            align: 'center',
+            customRender: function(t, r, index) {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '日期',
+            align: 'center',
+            dataIndex: 'startTime'
+          },
+          {
+            title: '服务费',
+            align: 'center',
+            dataIndex: 'serveCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '前端许可费用(元)',
+            align: 'center',
+            dataIndex: 'frontendCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '后端存储写入费用(元)',
+            align: 'center',
+            dataIndex: 'backendCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '费用小计(元)',
+            align: 'center',
+            dataIndex: 'total',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          }
+        ]
         this.getCostMonthDetail()
       } else {
+        this.columns = [
+          {
+            title: '序号',
+            dataIndex: '',
+            key: 'rowIndex',
+            align: 'center',
+            customRender: function(t, r, index) {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '日期',
+            align: 'center',
+            dataIndex: 'startTime'
+          },
+          {
+            title: '客户端',
+            align: 'center',
+            dataIndex: 'clientName'
+
+          },
+          {
+            title: '服务费',
+            align: 'center',
+            dataIndex: 'serveCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '前端许可费用(元)',
+            align: 'center',
+            dataIndex: 'frontendCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '后端存储写入费用(元)',
+            align: 'center',
+            dataIndex: 'backendCost',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          },
+          {
+            title: '费用小计(元)',
+            align: 'center',
+            dataIndex: 'total',
+            customRender: function(t, r, index) {
+              return t == null ? '' : t
+            }
+          }
+        ]
         this.getCostMonthDetailList()
       }
     },
@@ -267,8 +323,10 @@ export default {
       this.printPage.pageSize = size
       if (this.title == '账') {
         this.getCostMonthDetail()
+
       } else {
         this.getCostMonthDetailList()
+
       }
     },
     handlePrintPageSizeChange(page, size) {

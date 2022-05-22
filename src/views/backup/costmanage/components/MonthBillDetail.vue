@@ -138,32 +138,32 @@ export default {
           title: '服务费',
           align: 'center',
           dataIndex: 'serveCost',
-          customRender: (text, record) => {
-            return text + '元'
+          customRender: (t, record) => {
+            return t == null ? '' : t
           }
         },
         {
           title: '前端许可费用(元)',
           align: 'center',
           dataIndex: 'frontendCost',
-          customRender: (text, record) => {
-            return text + '元'
+          customRender: (t, record) => {
+            return t == null ? '' : t
           }
         },
         {
           title: '后端存储写入费用(元)',
           align: 'center',
           dataIndex: 'backendCost',
-          customRender: (text, record) => {
-            return text + '元'
+          customRender: (t, record) => {
+            return t == null ? '' : t
           }
         },
         {
           title: '小计(元)',
           align: 'center',
           dataIndex: 'total',
-          customRender: (text, record) => {
-            return text + '元'
+          customRender: (t, record) => {
+            return t == null ? '' : t
           }
         },
 

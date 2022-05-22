@@ -132,8 +132,8 @@ export default {
           width: 120,
           align: 'center',
           dataIndex: 'serveCost',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         },
         {
@@ -141,8 +141,8 @@ export default {
           width: 120,
           align: 'center',
           dataIndex: 'frontendCost',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         },
         {
@@ -150,8 +150,8 @@ export default {
           width: 150,
           align: 'center',
           dataIndex: 'backendCost',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         },
         {
@@ -159,8 +159,8 @@ export default {
           width: 120,
           align: 'center',
           dataIndex: 'total',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         },
         {
@@ -244,6 +244,7 @@ export default {
       if (this.selectedRowKeys.length == 0) {
         return this.$message.warning('请选择一条数据')
       } else {
+        console.log(this.selectionRows[0], 'this.selectionRows[0]')
         if (type == 'bill') {
           this.$refs.printModal.toPrint(this.selectionRows[0])
         } else {

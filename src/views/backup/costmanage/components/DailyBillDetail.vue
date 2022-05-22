@@ -185,8 +185,8 @@ export default {
           key: 'volume',
           align: 'center',
           dataIndex: 'volume',
-          customRender: (text, row, index) => {
-            return text + 'GB'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
 
         },
@@ -195,8 +195,8 @@ export default {
           key: 'price',
           dataIndex: 'price',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
 
         },
@@ -205,8 +205,8 @@ export default {
           key: 'total',
           dataIndex: 'total',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         }
       ],
@@ -222,8 +222,8 @@ export default {
           key: 'foreLicenseVol',
           dataIndex: 'foreLicenseVol',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + 'GB'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         }
       ],
@@ -250,8 +250,8 @@ export default {
           key: 'writtenVolume',
           dataIndex: 'writtenVolume',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + 'GB'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         },
         {
@@ -259,8 +259,8 @@ export default {
           key: 'price',
           dataIndex: 'price',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
 
         },
@@ -269,8 +269,8 @@ export default {
           key: 'total',
           dataIndex: 'total',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + '元'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         }
       ],
@@ -298,8 +298,8 @@ export default {
           key: 'writtenVolume',
           dataIndex: 'writtenVolume',
           align: 'center',
-          customRender: (text, row, index) => {
-            return text + 'GB'
+          customRender: (t, row, index) => {
+            return t == null ? '' : t
           }
         }
 
