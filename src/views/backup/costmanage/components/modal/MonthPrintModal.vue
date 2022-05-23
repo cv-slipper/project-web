@@ -20,11 +20,11 @@
       <div class='time mt-20'>
         <a-row>
           <a-col :span='12'>
-            <span>{{ title }}单时间段:{{ getDateRange() }}</span>
+            <span>{{ title }}单时间段：{{ getDateRange() }}</span>
           </a-col>
           <a-col :span='12'>
             <div class='fr'>
-              <span>{{ title }}单生成日期:{{ dateFormat() }}</span>
+              <span>{{ title }}单生成日期：{{ dateFormat() }}</span>
             </div>
           </a-col>
         </a-row>
@@ -34,20 +34,20 @@
           <a-col :span='24'>
             <div style='width: 100%;padding:30px 20px;background: #EDF2FC'>
               <ul>
-                <li>服务费:{{ detail.serveCost }}元</li>
+                <li>服务费：{{ detail.serveCost }}元</li>
                 <li class='grap'>|</li>
-                <li>前端许可费用:{{ detail.frontendCost }}元</li>
+                <li>前端许可费用：{{ detail.frontendCost }}元</li>
                 <li class='grap'>|</li>
-                <li>后端存储写入费用:{{ detail.backendCost }}元</li>
+                <li>后端存储写入费用：{{ detail.backendCost }}元</li>
                 <li class='grap'>|</li>
-                <li>合计费用: <span style='color:#EF0D0D'> {{ detail.total }}元</span></li>
+                <li>合计费用： <span style='color:#EF0D0D'> {{ detail.total }}元</span></li>
               </ul>
             </div>
           </a-col>
         </a-row>
       </div>
       <div class='cost-title mt-20'>
-        <div style='color:#262626'>费用明细:</div>
+        <div style='color:#262626'>费用明细：</div>
 
       </div>
       <div class='table-box mt-20'>
@@ -82,6 +82,7 @@
 <script>
 import { getCostMonthDetail, getCostMonthDetailList } from '@api/modules/backup/costManage/costMonth'
 import { downloadFile } from '@/api/manage'
+import { downloadCsv } from '@/utils/modules/download'
 
 export default {
   name: 'MonthPrintModal',
@@ -173,10 +174,29 @@ export default {
         branchId: this.detail.branchId,
         startTime: this.detail.startTime,
         current: 1,
-        pageSize: -1,
-        csvType: this.title == '账' ? '1' : '2'
+        pageSize: -1
       }
-      downloadFile('/cvCostMonth/export-csv', this.detail.name + this.detail.startTime + '月' + this.title + '单.csv', params)
+      try {
+        let data = []
+        if (this.title == '账') {
+          const res = await getCostMonthDetail(params)
+          if (res.code === 200) {
+            downloadCsv(this.columns, res.result.list, this.detail.name + this.detail.startTime + '月' + this.title + '单.csv')
+
+          } else {
+            this.$message.error(res.message)
+          }
+        } else {
+          const res = await getCostMonthDetailList(params)
+          if (res.code === 200) {
+            downloadCsv(this.columns, res.result.list, this.detail.name + this.detail.startTime + '月' + this.title + '单.csv')
+          } else {
+            this.$message.error(res.message)
+          }
+        }
+      } catch (e) {
+        this.$message.warning('下载失败')
+      }
 
     },
     handleOk() {
@@ -348,12 +368,12 @@ export default {
         let year = this.detail.startTime.split('-')[0] * 1
 
         if (month * 1 == new Date().getMonth() + 1) {
-          return year + '-' + month + '-01' + '——' + year + '-' + month + '-' + new Date().getDate()
+          return year + '-' + month + '-01' + ' ～ ' + year + '-' + month + '-' + new Date().getDate()
         } else {
           if (dateRange.indexOf(month) == -1) {
-            return year + '-' + month + '-01' + '——' + year + '-' + month + '-30'
+            return year + '-' + month + '-01' + ' ～ ' + year + '-' + month + '-30'
           } else {
-            return year + '-' + month + '-01' + '——' + year + '-' + month + '-31'
+            return year + '-' + month + '-01' + ' ～ ' + year + '-' + month + '-31'
           }
         }
       } else {
@@ -397,6 +417,7 @@ export default {
       display: flex;
       justify-content: space-around;
       align-items: center;
+      padding: 10px 20px
     }
   }
 }

@@ -385,11 +385,12 @@ export default {
     color: rgba(168, 165, 165, 1) !important;
     border-radius: 0 !important;
     border-right: 1px solid rgba(242, 241, 241, 1) !important;
+    background: #F4F5F7 !important;
   }
 
   .ant-tabs-tab-active {
 
-    background: rgba(244, 245, 247, 1) !important;
+    background: white !important;
   }
 }
 

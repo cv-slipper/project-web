@@ -191,13 +191,21 @@ export default {
     /**
      * 另存为csv
      */
-    exportExcel() {
-      downloadFile('/cvChargingSet/export-csv', '计费设置导出结果', {
-        current: 1,
-        pageSize: -1,
+    async exportExcel() {
+      let params = {
         branchId: this.branchIds.map(item => item.id).join(','),
-        startTime: this.searchParams.startTime
-      })
+        pageSize: -1,
+        current: 1
+      }
+      try {
+        const res = await getChargingList(params)
+        if (res.code == 200) {
+          downloadCsv(this.columns, res.result.records, '计费设置导出结果.csv')
+        }
+      } catch (e) {
+        this.$message.warning('导出失败')
+      }
+
     },
     /**
      * 搜索
