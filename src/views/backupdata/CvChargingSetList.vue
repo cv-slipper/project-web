@@ -15,7 +15,7 @@
         </a-col>
         <a-col :span='12'>
           <div class='fr'>
-            <a-button type='primary' class='fl' @click='updateChargingFee'> 费用更新</a-button>
+            <!--            <a-button type='primary' class='fl' @click='updateChargingFee'> 费用更新</a-button>-->
             <a-button type='primary' class='fl ml-10' @click='openInfoModel("add")'>新增</a-button>
             <a-button type='default' class='fl ml-10' @click='exportExcel'>导出</a-button>
           </div>
