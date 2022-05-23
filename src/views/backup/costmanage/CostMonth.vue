@@ -2,7 +2,7 @@
   <div>
     <div class='searchParams mb-20'>
       <a-row>
-        <a-col :span='12'>
+        <a-col :span='16'>
           <div class='flex-center fl'>
             <div class='label ml-10'>分行:</div>
             <branch-search class='ml-10' v-model='searchParms.branchId'></branch-search>
@@ -17,7 +17,7 @@
           </div>
           <a-button type='primary' class='ml-40' @click='search'>查询</a-button>
         </a-col>
-        <a-col :span='12'>
+        <a-col :span='8'>
           <div class='fr'>
             <a-button class='fl ml-10' @click='openPrintModal("bill")'>生成账单</a-button>
             <a-button class='fl ml-10' @click='openPrintModal("info")'>生成详单</a-button>

@@ -2,7 +2,7 @@
   <div class='form-item'>
     <div class='wrapper fl' :style='{width:"100%"}'>
       <a-select
-        style='min-width:150px;width:100%'
+        :style='{minWidth:"150px",width:"100%",maxWidth:width}'
         v-model='values'
         @change='selectChange'
         :show-search='model=="multiple"?false:true'
@@ -49,6 +49,10 @@ export default {
     placeholder: {
       type: String,
       default: '请选择分行'
+    },
+    width: {
+      type: String,
+      default: '240px'
     }
   },
   data() {

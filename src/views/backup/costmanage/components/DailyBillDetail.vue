@@ -246,7 +246,7 @@ export default {
           align: 'center'
         },
         {
-          title: '储存写入量(GB)',
+          title: '存储写入量(GB)',
           key: 'writtenVolume',
           dataIndex: 'writtenVolume',
           align: 'center',

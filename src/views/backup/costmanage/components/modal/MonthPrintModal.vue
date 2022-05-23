@@ -32,7 +32,7 @@
       <div class='cost mt-20'>
         <a-row style='width: 100%'>
           <a-col :span='24'>
-            <div style='width: 100%;padding:30px 20px;background: #EDF2FC'>
+            <div style='width: 100%;padding:30px 0;background: #EDF2FC'>
               <ul>
                 <li>服务费：{{ detail.serveCost }}元</li>
                 <li class='grap'>|</li>
@@ -40,7 +40,9 @@
                 <li class='grap'>|</li>
                 <li>后端存储写入费用：{{ detail.backendCost }}元</li>
                 <li class='grap'>|</li>
-                <li>合计费用： <span style='color:#EF0D0D'> {{ detail.total }}元</span></li>
+                <li>
+                  <div>合计费用： <span style='color:#EF0D0D'> {{ detail.total }}元</span></div>
+                </li>
               </ul>
             </div>
           </a-col>
@@ -409,15 +411,22 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 10px;
     margin: 0;
 
     li {
+      width: calc(25% - 1px);
+      background: rgba(0.0 .0 .0, 0);
       height: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 10px 20px
+      font-size: 12px;
+    }
+
+    .grap {
+      width: 1px;
+      height: 100%;
     }
   }
 }
@@ -435,5 +444,12 @@ export default {
 @page {
   size: auto A4 landscape;
   margin: 3mm 10mm;
+  .cost {
+    ul {
+      li {
+        font-size: 10px !important;
+      }
+    }
+  }
 }
 </style>
