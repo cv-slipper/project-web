@@ -68,3 +68,14 @@ export function getStorageList(parameter) {
     method: 'get'
   })
 }
+
+/**
+ * 费用更新
+ * @param parameter
+ */
+export function updateChargingFee() {
+  return axios({
+    url: '/cvChargingSet/updateChargingFee',
+    method: 'post'
+  })
+}

@@ -15,6 +15,7 @@
         </a-col>
         <a-col :span='12'>
           <div class='fr'>
+            <a-button type='primary' class='fl' @click='updateChargingFee'> 费用更新</a-button>
             <a-button type='primary' class='fl ml-10' @click='openInfoModel("add")'>新增</a-button>
             <a-button type='default' class='fl ml-10' @click='exportExcel'>导出</a-button>
           </div>
@@ -68,10 +69,9 @@ import CvChargingSetModal from './modules/CvChargingSetModal'
 import JDictSelectTag from '@/components/dict/JDictSelectTag.vue'
 import { filterMultiDictText } from '@/components/dict/JDictSelectUtil'
 import BillingSetInfoModal from './components/BillingSetInfoModal'
-import { getChargingList, deleteCharging } from '@/api/modules/backupdata/CvChargingApi.js'
+import { getChargingList, deleteCharging, updateChargingFee } from '@/api/modules/backupdata/CvChargingApi.js'
 import { downloadCsv } from '@/utils/modules/download'
 import BranchSearch from '@/components/searchParms/BranchSearch.vue'
-import { downloadFile } from '@/api/manage'
 
 export default {
   name: 'CvChargingSetList',
@@ -229,6 +229,17 @@ export default {
     handleOk() {
       this.billingSetVisible = false
       this.getChargingList()
+    },
+    async updateChargingFee() {
+      try {
+        let res = await updateChargingFee()
+        if (res.code === 200) {
+          this.$message.success('更新成功')
+        }
+      } catch (e) {
+        this.$message.error('更新失败')
+      }
+
     }
   },
   created() {
