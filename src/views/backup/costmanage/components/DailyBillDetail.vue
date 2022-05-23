@@ -128,8 +128,9 @@ export default {
           title: '客户端数量(台)',
           key: 'num',
           align: 'center',
-          scopedSlots: {
-            customRender: 'num'
+          dataIndex: 'number',
+          customRender: (t, record, index) => {
+            return t == null ? '' : t
           }
 
         },
@@ -137,8 +138,9 @@ export default {
           title: '单价(元）',
           key: 'price',
           align: 'center',
-          scopedSlots: {
-            customRender: 'price'
+          dataIndex: 'price',
+          customRender: (t) => {
+            return t == null ? '' : t
           }
 
         },
@@ -146,8 +148,9 @@ export default {
           title: '合计(元）',
           key: 'total',
           align: 'center',
-          scopedSlots: {
-            customRender: 'total'
+          dataIndex: 'total',
+          customRender: (t) => {
+            return t == null ? '' : t
           }
         }
       ],
