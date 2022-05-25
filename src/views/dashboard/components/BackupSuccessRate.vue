@@ -2,7 +2,7 @@
   <div>
     <div class='flex-center ' style='justify-content: space-between'>
       <div>
-        <a-progress :width='100' type='circle' :percent='75' />
+        <a-progress :width='110' type='circle' :percent='75' />
       </div>
       <div class='flex-center'>
         <div class='fr'>

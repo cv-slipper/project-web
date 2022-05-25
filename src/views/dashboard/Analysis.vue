@@ -1,5 +1,5 @@
 <template>
-  <div style='height:100%'>
+  <div style='height:calc(100% + 253px)'>
     <div class='tabs'>
       <div class='tab-list'>
         <a-tabs class='my-tabs' default-active-key='1'>
@@ -13,89 +13,102 @@
       </div>
       <div class='reload mr-20' style='cursor:pointer'>
         <div class='flex-center'>
-          <img src='@/assets/reload.png' width='20px' height='20px' alt=''>
-          <span style='margin-left:5px'>同步正常</span>
+          <div class='flex-center'>
+            <img src='@/assets/reseterror.png' width='20px' height='20px' alt=''>
+            <span style='margin-left:5px'>同步异常</span>
+          </div>
+          <div class='flex-center ml-10 '>
+            <img src='@/assets/reload.png' width='20px' height='20px' alt=''>
+            <span style='margin-left:5px'>同步正常</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class='wrapper mt-20'>
-      <div style='display:flex;justify-content:space-between'>
+    <div class='wrapper mt-20' style='height:calc(100% - 60px)'>
+      <div style='display:flex;justify-content:space-between;height:100%'>
         <div style='width:20.83333%'>
-          <div>
-            <a-card :bordered='false' style='width: 100%'>
-              <div slot='title'>
-                <div class='flex-center' style='justify-content:space-between'>
-                  <div class='flex-center fl'>
-                    <img class='fl' style='width:20px;height:20px' src='@/assets/dailyWork.png' alt=''>
-                    <span class='ml-5 fl' style='font-size:14px'>当前作业</span>
-                    <div class='fl ml-5'>
-                      <span class='reset'>刷新</span>
+          <div style='height:100%'>
+            <div class='left-top'>
+              <div class='one'>
+                <a-card :bordered='false' style='width: 100%'>
+                  <div slot='title'>
+                    <div class='flex-center' style='justify-content:space-between'>
+                      <div class='flex-center fl'>
+                        <img class='fl' style='width:20px;height:20px' src='@/assets/dailyWork.png' alt=''>
+                        <span class='ml-5 fl' style='font-size:14px'>当前作业</span>
+                        <div class='fl ml-5'>
+                          <span class='reset'>刷新</span>
+                        </div>
+                      </div>
+                      <div class='fr'>
+                        <div class='work-control'>
+                          <img class='mr-5' src='@/assets/workCon.png' alt='' />
+                          作业控制器
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class='fr'>
-                    <div class='work-control'>
-                      <img class='mr-5' src='@/assets/workCon.png' alt='' />
-                      作业控制器
+                  <div>
+                    <div class='flex-box' style='margin:20px 0'>
+                      <div class='item'>
+                        <div class='content'>
+                          <div class='title'>运行</div>
+                          <div class='num'>9</div>
+                        </div>
+                      </div>
+                      <div class='item'>
+                        <div class='content'>
+                          <div class='title'>等待</div>
+                          <div class='num'>9</div>
+                        </div>
+                      </div>
+                      <div class='item mt-15'>
+                        <div class='content'>
+                          <div class='title'>暂停</div>
+                          <div class='num'>9</div>
+                        </div>
+                      </div>
+                      <div class='item mt-15'>
+                        <div class='content'>
+                          <div class='title'>未决</div>
+                          <div class='num'>9</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a-card>
               </div>
-              <div>
-                <div class='flex-box'>
-                  <div class='item'>
-                    <div class='content'>
-                      <div class='title'>运行</div>
-                      <div class='num'>9</div>
+              <div style='height:10px'></div>
+              <div class='two'>
+                <a-card :bordered='false'>
+                  <div slot='title'>
+                    <div class='flex-center'>
+                      <img src='@/assets/24h.png' style='width:20px;height:20px' alt=''>
+                      <span class='ml-5'>24小时作业</span>
                     </div>
                   </div>
-                  <div class='item'>
-                    <div class='content'>
-                      <div class='title'>等待</div>
-                      <div class='num'>9</div>
+                  <div style='height:100%'>
+                    <div class='flex-box tfh'>
+                      <div class='item'>
+                        <div class='content'>
+                          <div class='title' style='font-size:16px !important'>完成</div>
+                          <div class='num' style='font-size:25px'>9</div>
+                        </div>
+                      </div>
+                      <div class='item'>
+                        <div class='content'>
+                          <div class='title' style='font-size:16px !important'>失败</div>
+                          <div class='num' style='font-size:25px'>9</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class='item mt-10'>
-                    <div class='content'>
-                      <div class='title'>暂停</div>
-                      <div class='num'>9</div>
-                    </div>
-                  </div>
-                  <div class='item mt-10'>
-                    <div class='content'>
-                      <div class='title'>未决</div>
-                      <div class='num'>9</div>
-                    </div>
-                  </div>
-                </div>
+                </a-card>
               </div>
-            </a-card>
+
+            </div>
             <div style='height:10px'></div>
-            <a-card :bordered='false'>
-              <div slot='title'>
-                <div class='flex-center'>
-                  <img src='@/assets/24h.png' style='width:20px;height:20px' alt=''>
-                  <span class='ml-5'>24小时作业</span>
-                </div>
-              </div>
-              <div>
-                <div class='flex-box tfh'>
-                  <div class='item'>
-                    <div class='content'>
-                      <div class='title' style='font-size:16px !important'>完成</div>
-                      <div class='num' style='font-size:25px'>9</div>
-                    </div>
-                  </div>
-                  <div class='item'>
-                    <div class='content'>
-                      <div class='title' style='font-size:16px !important'>失败</div>
-                      <div class='num' style='font-size:25px'>9</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a-card>
-            <div style='height:10px'></div>
-            <a-card :bordered='false'>
+            <a-card :bordered='false' class='rate'>
               <div slot='title'>
                 <div class='flex-center'>
                   <div class='flex-center' style='width:100%'>
@@ -131,7 +144,8 @@
             </div>
           </div>
           <div class='center-content'>
-
+            <system-distribution v-if='!systemItem' @gotoSystemInfo='gotoSystemInfo'></system-distribution>
+            <system-info v-else @back='systemBack'></system-info>
           </div>
           <div style='height:10px'></div>
           <div class='table-box'>
@@ -143,19 +157,21 @@
                     <span class='ml-5'>未处理异常信息  <span style='color:#DC2929'> (8)</span></span>
                   </div>
                   <div>
-                    <a-icon style='font-size:16px;color:#999999;cursor:pointer' type='fullscreen' />
+                    <a-icon
+                      @click='openErrorMessageModal'
+                      style='font-size:16px;color:#999999;cursor:pointer'
+                      type='fullscreen' />
                   </div>
                 </div>
 
               </div>
-              <div>
+              <div style='height:100%;overflow-y:scroll' class='my-scroll'>
                 <a-table
                   :columns='columns'
                   :data-source='data'
                   :loading='loading'
                   :pagination='false'
-                  :scroll='{y:68}'
-
+                  :scroll='{y:true}'
                 >
 
                 </a-table>
@@ -163,7 +179,7 @@
             </a-card>
           </div>
         </div>
-        <div style='width:24.833333%'>
+        <div style='width:24.833333%' class='right-chart'>
           <a-card :bordered='false'>
             <div slot='title'>
               <div>
@@ -171,14 +187,41 @@
                 <span class='ml-5'>每日备份作业数</span>
               </div>
             </div>
-            <div>
-              <main-trend></main-trend>
+            <div style='width:100%;' class='chart'>
+              <main-trend id-name='first' type='one'></main-trend>
+            </div>
+          </a-card>
+          <div style='height:10px'></div>
+          <a-card :bordered='false'>
+            <div slot='title'>
+              <div>
+                <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
+                <span class='ml-5'>每日备份作业数</span>
+              </div>
+            </div>
+            <div style='width:100%;' class='chart'>
+              <main-trend id-name='second' type='two'></main-trend>
+            </div>
+          </a-card>
+          <div style='height:10px'></div>
+          <a-card :bordered='false'>
+            <div slot='title'>
+              <div>
+                <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
+                <span class='ml-5'>每日磁盘/云储存占用量</span>
+              </div>
+            </div>
+            <div style='width:100%;' class='chart'>
+              <main-trend id-name='third' type='third'></main-trend>
             </div>
           </a-card>
         </div>
+
+
       </div>
 
     </div>
+    <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'></error-message-modal>
   </div>
 
 </template>
@@ -190,6 +233,9 @@ import CurrentWork from './CurrentWork'
 import MainMap from '@views/dashboard/components/MainMap'
 import BackupSuccessRate from '@views/dashboard/components/BackupSuccessRate'
 import MainTrend from '@views/dashboard/components/MainTrend'
+import SystemDistribution from '@views/dashboard/components/SystemDistribution'
+import SystemInfo from '@views/dashboard/components/SystemInfo'
+import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageModal'
 
 export default {
   name: 'Analysis',
@@ -199,7 +245,10 @@ export default {
     CurrentWork,
     MainMap,
     BackupSuccessRate,
-    MainTrend
+    MainTrend,
+    SystemDistribution,
+    SystemInfo,
+    ErrorMessageModal
   },
   data() {
     return {
@@ -286,15 +335,28 @@ export default {
 
       ],
       data: [{}, {}, {}, {}],
-      loading: false
+      loading: false,
+      systemItem: null,
+      errorMessageVisible: false
     }
   },
+
   created() {
 
   },
   methods: {
+    openErrorMessageModal() {
+      console.log(123)
+      this.errorMessageVisible = true
+    },
+    gotoSystemInfo(item) {
+      this.systemItem = item
+    },
     handleDomainChange(domain) {
       this.domain = domain
+    },
+    systemBack() {
+      this.systemItem = null
     }
 
   }
@@ -376,7 +438,7 @@ export default {
 
   .item {
     width: calc(50% - 5px);
-    padding: 5px 0;
+    padding: 10px 0;
     background-size: 100% 100% !important;
 
     .content {
@@ -435,6 +497,9 @@ export default {
 }
 
 .tfh {
+  margin: 0;
+  height: 100%;
+
   .item {
     padding: 10px 0;
   }
@@ -505,13 +570,22 @@ export default {
 
 .center-content {
   width: 100%;
-  height: calc(100% - 261px);
+  height: calc(100% - 33% - 76px);
   background: white;
 }
 
 .table-box {
   width: 100%;
-  height: 185px;
+  height: calc(33% - 6.66px) !important;
+
+  .ant-card {
+    height: 100% !important;
+  }
+}
+
+/deep/ .table-box .ant-card-body {
+  height: calc(100% - 60px) !important;
+  padding: 30px 10px !important;
 }
 
 /deep/ .table-box table thead th {
@@ -521,16 +595,78 @@ export default {
   color: #3E3E3E !important;
 }
 
-/deep/ .table-box .ant-table-body::-webkit-scrollbar, .info::-webkit-scrollbar {
+/deep/ .my-scroll::-webkit-scrollbar, .info::-webkit-scrollbar {
   height: 9px;
   width: 5px;
   background-color: #4d64bd;
 }
 
 // 滚动条颜色
-/deep/ .table-box .ant-table-body::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
+/deep/ .my-scroll::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: #3475EF;
 }
+
+
+.right-chart {
+
+
+  .ant-card {
+    width: 100%;
+    height: calc(33% - 6.66px) !important;
+  }
+
+  .chart {
+    height: calc(100% - 30px)
+  }
+}
+
+/deep/ .right-chart .ant-card-body {
+  height: calc(100% - 30px) !important;
+}
+
+/deep/ .right-chart .ant-card-head {
+  height: 64px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.left-top {
+  height: calc(100% - 33% - 10px);
+
+  .one {
+    height: calc(58% - 5px);
+  }
+
+  .two {
+    height: calc(42% - 5px);
+
+    .tfh {
+
+    }
+
+    .item {
+      height: calc(100% - 10px);
+      cursor: pointer
+    }
+  }
+
+  .ant-card {
+    height: 100%;
+  }
+}
+
+/deep/ .two .ant-card-body {
+  height: calc(100% - 53px) !important;
+}
+
+.rate {
+  height: calc(33% - 6.66px)
+}
+
+/deep/ .rate .ant-card-body {
+  padding: 30px 10px !important;
+}
+
 
 </style>

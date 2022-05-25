@@ -65,7 +65,9 @@
 
       <!-- layout content -->
       <a-layout-content :style="{ height: '100%', paddingTop: fixedHeader ? '59px' : '0' ,marginLeft:'0px'}">
-        <slot></slot>
+        <div style='height:100%;'>
+          <slot></slot>
+        </div>
       </a-layout-content>
 
       <!-- layout footer -->

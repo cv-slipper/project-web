@@ -37,10 +37,18 @@ export default {
 }
 </script>
 <style>
+body, html {
+  height: 100%;
+}
+
 @import './assets/less/common.less';
 
 #app {
   height: 100%;
+}
+
+section {
+  height: 100%
 }
 
 </style>
