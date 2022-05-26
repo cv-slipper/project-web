@@ -1,5 +1,5 @@
 <template>
-  <div style='height:calc(100% + 253px)'>
+  <div style='height:calc(100% + 153px)'>
     <div class='tabs'>
       <div class='tab-list'>
         <a-tabs class='my-tabs' default-active-key='1'>
@@ -41,7 +41,7 @@
                         </div>
                       </div>
                       <div class='fr'>
-                        <div class='work-control'>
+                        <div class='work-control' @click='gotoWorkControl'>
                           <img class='mr-5' src='@/assets/workCon.png' alt='' />
                           作业控制器
                         </div>
@@ -53,25 +53,25 @@
                       <div class='item'>
                         <div class='content'>
                           <div class='title'>运行</div>
-                          <div class='num'>9</div>
+                          <div class='num'>{{ currentWorkDetail.runningNum }}</div>
                         </div>
                       </div>
                       <div class='item'>
                         <div class='content'>
                           <div class='title'>等待</div>
-                          <div class='num'>9</div>
+                          <div class='num'>{{ currentWorkDetail.waitingNum }}</div>
                         </div>
                       </div>
                       <div class='item mt-15'>
                         <div class='content'>
                           <div class='title'>暂停</div>
-                          <div class='num'>9</div>
+                          <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
                         </div>
                       </div>
                       <div class='item mt-15'>
                         <div class='content'>
                           <div class='title'>未决</div>
-                          <div class='num'>9</div>
+                          <div class='num'>{{ currentWorkDetail.suspendedNum }}</div>
                         </div>
                       </div>
                     </div>
@@ -92,13 +92,13 @@
                       <div class='item'>
                         <div class='content'>
                           <div class='title' style='font-size:16px !important'>完成</div>
-                          <div class='num' style='font-size:25px'>9</div>
+                          <div class='num' style='font-size:25px'>{{ dailyWorkDetail.completedNum }}</div>
                         </div>
                       </div>
                       <div class='item'>
                         <div class='content'>
                           <div class='title' style='font-size:16px !important'>失败</div>
-                          <div class='num' style='font-size:25px'>9</div>
+                          <div class='num' style='font-size:25px'>{{ dailyWorkDetail.failedNum }}</div>
                         </div>
                       </div>
                     </div>
@@ -117,10 +117,9 @@
 
                   </div>
                   <div class='fr'>
-                    <a-select style='min-width:100px'>
-                      <a-select-option value='1'>最近一周</a-select-option>
-                      <a-select-option value='2'>最近一月</a-select-option>
-                      <a-select-option value='3'>最近一年</a-select-option>
+                    <a-select style='min-width:100px' v-model='rateTime'>
+                      <a-select-option value='604800'>最近一周</a-select-option>
+                      <a-select-option value='2592000'>最近一月</a-select-option>
                     </a-select>
                   </div>
                 </div>
@@ -236,6 +235,7 @@ import MainTrend from '@views/dashboard/components/MainTrend'
 import SystemDistribution from '@views/dashboard/components/SystemDistribution'
 import SystemInfo from '@views/dashboard/components/SystemInfo'
 import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageModal'
+import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
 
 export default {
   name: 'Analysis',
@@ -254,6 +254,8 @@ export default {
     return {
       indexStyle: 1,
       domain: 'prod',
+      branchId: '',
+      rateTime: '604800',
       listData: [
         {
           title: '应用系统',
@@ -334,17 +336,99 @@ export default {
         }
 
       ],
-      data: [{}, {}, {}, {}],
+      data: [],
       loading: false,
       systemItem: null,
-      errorMessageVisible: false
+      errorMessageVisible: false,
+      currentWorkLoading: false,
+      currentWorkDetail: {
+        pendingNum: 0,
+        runningNum: 0,
+        waitingNum: 0,
+        suspendedNum: 0
+      },
+      dailyWorkDetail: {
+        completedNum: 0,
+        failedNum: 0
+      }
     }
   },
 
   created() {
-
+    this.init()
   },
   methods: {
+    /**
+     * 获取备份成功率
+     */
+    async getBackupSuccessRate() {
+      try {
+        let res = await getBackupSuccessRate({
+          domain: this.domain,
+          branchId: this.branchId,
+          searchTime: this.rateTime
+        })
+        if (res.code == 200) {
+          console.log(res)
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+
+      }
+    },
+    /**
+     * 获取24小时作业
+     */
+    async get24HoursWork() {
+      let params = {
+        domain: this.domain,
+        branchId: this.branchId
+      }
+      try {
+        let res = await get24HoursWork(params)
+        if (res.code == 200) {
+          this.dailyWorkDetail = res.result || {}
+        } else {
+          this.$message.error(res.message)
+        }
+      } finally {
+
+      }
+    },
+    /**
+     * 获取当前工作
+     */
+    async getCurrentWork(type = 1) {
+      this.currentWorkLoading = type === 1 ? true : false
+
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getCurrentWork(params)
+        if (res.code == 200) {
+          this.currentWorkDetail = res.result || {}
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+      } finally {
+        this.currentWorkLoading = false
+      }
+    },
+    init() {
+      this.getCurrentWork()
+      this.get24HoursWork()
+      this.getBackupSuccessRate()
+    },
+    gotoWorkControl() {
+      this.$router.push({
+        path: '/backup/workControl'
+      })
+    },
     openErrorMessageModal() {
       console.log(123)
       this.errorMessageVisible = true

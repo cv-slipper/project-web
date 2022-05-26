@@ -153,6 +153,9 @@ export default {
       this.option.series[0].data = data
       myChart.setOption(this.option)
       myChart.resize()
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
     }
   }
 }

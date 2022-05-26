@@ -4,7 +4,7 @@
       <div class='name'>应用系统D</div>
     </div>
     <div class='left-floor'>
-      
+
     </div>
     <div class='back-btn' @click='back'>
       <span class='mr-10'>返回</span>
@@ -21,6 +21,7 @@
           {{ item.name }}
         </div>
       </div>
+      <div style='clear:both'></div>
     </div>
   </div>
 </template>
@@ -31,14 +32,7 @@ export default {
   data() {
     return {
       systemList: [
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
+
         {
           name: '系统名称',
           status: 1
@@ -236,15 +230,16 @@ export default {
   background: url("../../../assets/system-bg.png") no-repeat;
   background-size: 100% 100%;
   overflow-y: auto;
+  padding-bottom: 20px
 }
 
 .system-list {
   width: 90%;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+
+  .item:nth-child(6n+1) {
+    margin-left: 0
+  }
 
   .item {
     margin-top: 20px;
@@ -254,6 +249,8 @@ export default {
     border-radius: 17px;
     width: calc(16.66666667% - 8.5px);
     font-size: 12px;
+    float: left;
+    margin-left: 10px;
 
     .item-name {
       padding-left: 15px;

@@ -38,7 +38,9 @@
             <img src='@/assets/systemNormal.png' v-if='item.status==1' alt='' />
             <img src='@/assets/systemWarning.gif' v-else alt='' />
           </div>
-          <div class='system-name'>{{ item.name }}</div>
+          <div class='system-name-box'>
+            <div class='system-name'>{{ item.name }}</div>
+          </div>
         </div>
         <div class='bottom'>
           <img src='@/assets/systemBottm.gif' alt='' />
@@ -168,6 +170,7 @@ export default {
         img {
           width: 100%;
           height: 100%;
+
         }
       }
 
@@ -180,13 +183,16 @@ export default {
         position: relative;
       }
 
+      .system-name-box {
+        transform: rotateY(47deg);
+      }
+
       .system-name {
         color: white;
         font-weight: bold;
         font-size: 12px;
         z-index: 999;
-        transform: scale(0.8);
-        transform: rotate(25deg);
+        transform: rotateZ(23deg);
       }
 
       .top-bg {
@@ -199,6 +205,7 @@ export default {
         img {
           width: 100%;
           height: 100%;
+          transform: rotateY(40deg);
         }
       }
     }
