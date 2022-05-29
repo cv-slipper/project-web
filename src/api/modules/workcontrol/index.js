@@ -76,11 +76,11 @@ export function stopWork(data) {
  * 获取作业详情
  * @param {number} id
  */
-export function getWorkDetail(id) {
+export function getWorkDetail(jobId) {
   return axios({
-    url: `/job/queryById`,
-    method: 'get',
-    params: { id }
+    url: '/job/details',
+    method: 'post',
+    data: { jobId }
   })
 }
 

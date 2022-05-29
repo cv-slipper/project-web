@@ -2,7 +2,7 @@
   <div style='height:100%;'>
     <div class='tip flex-center'>
       <span :class='{one:type=="one",two:type=="two",third:type=="third"}'>昨日：1689</span>
-      <span class='ml-10 info'>同期 +15%</span>
+      <span class='ml-10 info' v-if='type!="third"'>同期 +15%</span>
     </div>
     <div style='width:100%;height:calc(100% - 25px)'>
       <div :id='idName' style='width:100%;height:calc(100% )'></div>
@@ -23,9 +23,12 @@ export default {
       default: 'one'
     }
   },
+  // let month = params[0].axisValueLabel.substring(0, params[0].axisValueLabel.indexOf('/'))
+  // let day = params[0].axisValueLabel.substring(month.length + 1, params[0].axisValueLabel.length)
+  // let res = `<div> ${month}月 ${day} 日：${params[0].value} <span style='font-size:12px;color:#989696'>+15%</span></div>`
+  // return res
   data() {
     return {
-      color: '',
       option: {
         grid: {
           top: '20px',
@@ -34,17 +37,11 @@ export default {
           bottom: '40px'
         },
         tooltip: {
-          trigger: 'axis',
-          formatter: function(params) {
-            let month = params[0].axisValueLabel.substring(0, params[0].axisValueLabel.indexOf('/'))
-            let day = params[0].axisValueLabel.substring(month.length + 1, params[0].axisValueLabel.length)
-            let res = `<div> ${month}月 ${day} 日：${params[0].value} <span style='font-size:12px;color:#989696'>+15%</span></div>`
-            return res
-          }
+          trigger: 'axis'
         },
         xAxis: {
           type: 'category',
-          data: ['5/5', '5/6', '5/7', '5/8', '5/9', '5/10', '5/11', '5/12'],
+          data: [],
           splitLine: {
             show: true
           },
@@ -119,18 +116,37 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.init()
-    }, 20)
+    // setTimeout(() => {
+    //   this.init()
+    // }, 20)
 
   },
   methods: {
-    init(data = [820, 932, 901, 934, 1290, 1330, 1320, 1320]) {
+    init(xData = [], yData = [], formatter = () => {
+    }) {
       let type = this.type
       var myChart = this.$echarts.init(document.getElementById(this.idName))
-      data = data.map(item => ({ value: item, symbolSize: 6 }))
+      this.option.xAxis.data = xData
+      yData.forEach((item, index) => {
+        this.option.series[index] = {}
+        this.option.series[index].data = item.data
+        this.option.series[index].name = item.name
+        this.option.series[index].type = 'line'
+        this.option.series[index].smooth = true
+
+        this.option.series[index].itemStyle = item.itemStyle
+      })
       this.color = type == 'two' ? '#4DA1FF' : type == 'third' ? '#ff4d63' : '#39dee2'
       this.option.series[0].itemStyle.normal.color = type == 'two' ? '#4DA1FF' : type == 'third' ? '#ff4d63' : '#39dee2'
+      this.option.series[0].itemStyle.normal.areaStyle = {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1
+        }
+      }
       this.option.series[0].itemStyle.normal.areaStyle.color.colorStops = type == 'two' ? [{
         offset: 0, color: 'rgba(77, 161, 255, 0.3)' // 0% 处的颜色
       }, {
@@ -144,13 +160,27 @@ export default {
       }, {
         offset: 1, color: 'rgba(57, 222, 226, 0.001)' // 100% 处的颜色
       }]
-      data.forEach((item, index) => {
-        if (index == 0 || index % 3 == 0) {
-        } else {
-          item.symbol = 'none'
+      let index = this.option.series.findIndex(item => item.name == '上周')
+      if (index != -1) {
+        this.option.series[index].itemStyle = {
+          normal: {
+            color: '#ccc',
+            lineStyle: {
+              color: '#ccc',
+              type: 'dotted',
+              width: 2,
+              opacity: 0.5,
+              shadowColor: 'rgba(0, 0, 0, 0.3)',
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowOffsetY: 0
+
+            }
+
+          }
         }
-      })
-      this.option.series[0].data = data
+      }
+      this.option.tooltip.formatter = formatter
       myChart.setOption(this.option)
       myChart.resize()
       window.addEventListener('resize', () => {

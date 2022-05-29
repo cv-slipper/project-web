@@ -40,18 +40,47 @@
           <a-checkbox-group @change='jobTypeChange' :value='jobType' :options='workCheckOpt'></a-checkbox-group>
         </div>
         <div class='fr'>
-          <a-button class='ml-10 warning-btn' @click='pauseWork'>
-            <a-icon type='pause' style='font-size:14px' />
-            暂停
-          </a-button>
-          <a-button class='ml-10 success-btn' @click='playWork'>
-            <a-icon type='caret-right' />
-            继续
-          </a-button>
-          <a-button class='ml-10 error-btn' @click='stopWork'>
-            <a-icon type='stop' />
-            终止
-          </a-button>
+          <a-popconfirm
+            title='确认要暂停所选作业吗？'
+            :visible='pausedVisible'
+            ok-text='是的'
+            cancel-text='取消'
+            @visibleChange='handleVisibleChange($event,"pausedVisible")'
+            @confirm='pauseWork'
+          >
+            <a-button class='ml-10 warning-btn'>
+              <a-icon type='pause' style='font-size:14px' />
+              暂停
+            </a-button>
+          </a-popconfirm>
+
+          <a-popconfirm
+            title='确认要恢复所选作业吗？'
+            ok-text='是的'
+            :visible='playVisible'
+            @visibleChange='handleVisibleChange($event,"playVisible")'
+            cancel-text='取消'
+            @confirm='playWork'>
+            <a-button class='ml-10 success-btn'>
+              <a-icon type='caret-right' />
+              继续
+            </a-button>
+          </a-popconfirm>
+
+          <a-popconfirm
+            :visible='stopVisible'
+            @visibleChange='handleVisibleChange($event,"stopVisible")'
+            title='确认要终止所选作业吗？'
+            ok-text='是的'
+            cancel-text='取消'
+            @confirm='stopWork'
+          >
+            <a-button class='ml-10 error-btn'>
+              <a-icon type='stop' />
+              终止
+            </a-button>
+          </a-popconfirm>
+
 
         </div>
         <div style='clear:both'></div>
@@ -69,7 +98,9 @@
           @change='onPaginationChange'
         >
           <template #action='row'>
-            <a-button type='link' @click='openInfoModal(row)'>详情</a-button>
+            <div class='flex-center' style='justify-content: space-around'>
+              <a-button type='link' @click='openInfoModal(row)'>详情</a-button>
+            </div>
           </template>
         </a-table>
       </div>
@@ -92,6 +123,9 @@ export default {
   },
   data() {
     return {
+      pausedVisible: false,
+      playVisible: false,
+      stopVisible: false,
       workInfoVisible: false,
       rowId: '',
       labelList: [
@@ -146,10 +180,6 @@ export default {
         {
           label: '经过时长：',
           value: 'duration'
-        },
-        {
-          label: '介质服务器：',
-          value: 'mediaAgentName'
         },
         {
           label: '存储策略：',
@@ -274,6 +304,7 @@ export default {
           key: 'action',
           width: 80,
           align: 'center',
+          fixed: 'right',
           scopedSlots: {
             customRender: 'action'
           }
@@ -396,6 +427,13 @@ export default {
     }
   },
   created() {
+    if (Object.keys(this.$route.query).length == 0) {
+      this.domain = 'prod'
+      this.state = []
+    } else {
+      this.domain = this.$route.query.domain
+      this.state = this.$route.query.state == '' ? [] : [this.$route.query.state]
+    }
     this.getWorkList()
   },
   methods: {
@@ -548,6 +586,21 @@ export default {
       let second = date.getSeconds()
       return year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + ' ' + (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + ':' + (second < 10 ? '0' + second : second)
     },
+    handleVisibleChange(val, key) {
+      this.stopVisible = false
+      this.pausedVisible = false
+      this.playVisible = false
+      if (!val) {
+        this[key] = false
+      } else {
+        if (this.selectedRowKeys.length == 0) {
+          this.$message.warning('请选择作业')
+          this[key] = false
+        } else {
+          this[key] = true
+        }
+      }
+    },
     /**
      * 过滤分行
      */
@@ -589,4 +642,9 @@ export default {
   background: white;
 }
 
+/deep/ .table-box table thead th {
+  background: #EDF3FE !important;
+  font-size: 14px !important;
+  color: #3E3E3E !important;
+}
 </style>

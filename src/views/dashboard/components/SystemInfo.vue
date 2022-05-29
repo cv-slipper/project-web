@@ -1,7 +1,10 @@
 <template>
   <div style='width:100%;height:100%;position:relative' class='system-info'>
+    <div class='loading' v-if='systemLoading'>
+      <a-spin />
+    </div>
     <div class='info-title'>
-      <div class='name'>应用系统D</div>
+      <div class='name'>{{ systemItem.groupName }}</div>
     </div>
     <div class='left-floor'>
 
@@ -17,8 +20,11 @@
     </div>
     <div class='system-list'>
       <div class='item' v-for='(item,index) in systemList' :key='index'>
-        <div :class='["item-name",{normal:item.status==1,error:item.status!=1}]'>
-          {{ item.name }}
+        <div :class='["item-name",{normal:item.exceptionNum==0,error:item.exceptionNum!=0}]'>
+          {{ item.applicationSystem }}
+        </div>
+        <div class='error-num' v-if='item.exceptionNum!=0'>
+          {{ item.exceptionNum }}
         </div>
       </div>
       <div style='clear:both'></div>
@@ -27,197 +33,60 @@
 </template>
 
 <script>
+import { getSystemDetail } from '@api/modules/dashboard/analysis'
+
 export default {
   name: 'SystemInfo',
-  data() {
-    return {
-      systemList: [
-
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        }, {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        }, {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        }, {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        }, {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        },
-        {
-          name: '系统名称',
-          status: 1
-        }
-
-      ]
+  props: {
+    systemItem: {
+      type: Object | null,
+      default: function() {
+        return {}
+      }
     }
   },
+  data() {
+    return {
+      systemList: [],
+      timer: null,
+      systemLoading: false
+    }
+  },
+  created() {
+
+    if (this.systemItem != null && Object.keys(this.systemItem).length > 0) {
+
+      if (this.timer) {
+        clearInterval(this.timer)
+      } else {
+        this.getSystemDetail()
+        this.timer = setInterval(() => {
+          this.getSystemDetail()
+        }, 600000)
+      }
+    }
+
+  },
   methods: {
+    /**
+     * 获取系统列表
+     */
+    async getSystemDetail() {
+      this.systemLoading = true
+      try {
+        let res = await getSystemDetail({ groupName: this.systemItem.groupName })
+        if (res.code === 200) {
+          this.systemList = res.result
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+      } finally {
+        this.systemLoading = false
+      }
+
+    },
     back() {
       this.$emit('back')
     }
@@ -237,7 +106,7 @@ export default {
   width: 90%;
   margin: 0 auto;
 
-  .item:nth-child(6n+1) {
+  .item:nth-child(5n+1) {
     margin-left: 0
   }
 
@@ -247,10 +116,27 @@ export default {
     background: linear-gradient(0deg, #5E8FFA 0%, #608AF2 100%);
     box-shadow: 0px 4px 8px 0px rgba(58, 121, 240, 0.28);
     border-radius: 17px;
-    width: calc(16.66666667% - 8.5px);
+    width: calc(20% - 8.5px);
     font-size: 12px;
     float: left;
     margin-left: 10px;
+    position: relative;
+
+    .error-num {
+      width: 20px;
+      height: 20px;
+      background: #F54040;
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      font-size: 12px;
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #FFFFFF;
+    }
 
     .item-name {
       padding-left: 15px;
@@ -380,5 +266,19 @@ export default {
   left: 0;
   cursor: pointer;
   z-index: 9999;
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto
 }
 </style>

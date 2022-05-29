@@ -2,7 +2,11 @@
   <div>
     <div class='flex-center ' style='justify-content: space-between'>
       <div>
-        <a-progress :width='110' type='circle' :percent='75' />
+        <a-progress :width='110' type='circle' :percent='detail.successRatio'>
+          <template #format='percent'>
+            <span>{{ percent }}%</span>
+          </template>
+        </a-progress>
       </div>
       <div class='flex-center'>
         <div class='fr'>
@@ -12,9 +16,9 @@
             <div>总数：</div>
           </div>
           <div class='fr count' style='text-align:right'>
-            <div>75%</div>
-            <div>25%</div>
-            <div>100%</div>
+            <div>{{ detail.finishedNum }}</div>
+            <div>{{ detail.failedNum }}</div>
+            <div>{{ detail.totalNum }}</div>
           </div>
         </div>
       </div>
@@ -25,6 +29,14 @@
 <script>
 export default {
   name: 'BackupSuccessRate',
+  props: {
+    detail: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    }
+  },
   data() {
     return {}
   },

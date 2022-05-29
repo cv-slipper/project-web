@@ -13,18 +13,34 @@
             <span class='content'>{{ getValue(item.value) }} </span>
           </li>
         </ul>
+        <div class='dealwith mt-20'>
+          <ul>
+            <li>
+              <span class='label'>处理状态</span>
+              <span class='content'>123</span>
+            </li>
+            <li>
+              <span class='label'>处理人</span>
+              <span class='content'>123</span>
+            </li>
+            <li>
+              <span class='label'>处理时间</span>
+              <span class='content'>123</span>
+            </li>
+            <li>
+              <span class='label'>处理内容</span>
+              <span class='content'>123</span>
+            </li>
+          </ul>
+        </div>
         <div class='buttons mt-20'>
-          <a-button class='ml-10 warning-btn' @click='confirm("pause","暂停")'>
+          <a-button class='ml-10 warning-btn'>
             <a-icon type='pause' style='font-size:14px' />
-            暂停
+            处理
           </a-button>
-          <a-button class='ml-10 success-btn' @click='confirm("play","继续")'>
+          <a-button class='ml-10 success-btn'>
             <a-icon type='caret-right' />
-            继续
-          </a-button>
-          <a-button class='ml-10 error-btn' @click='confirm("stop","终止")'>
-            <a-icon type='stop' />
-            终止
+            忽略
           </a-button>
           <a-button type='link'>查看作业相关事件</a-button>
         </div>
@@ -33,7 +49,7 @@
   </div>
 </template>
 <script>
-import { getWorkDetail, pauseWork, playWork, stopWork } from '@/api/modules/workcontrol/index.js'
+import { getWorkDetail } from '@/api/modules/workcontrol/index.js'
 
 export default {
   props: {
@@ -44,6 +60,10 @@ export default {
     labelList: {
       type: Array,
       default: () => []
+    },
+    type: {
+      type: String,
+      default: ''
     },
     id: {
       type: String | Number,
@@ -67,40 +87,7 @@ export default {
     }
   },
   methods: {
-    /**
-     * 暂停作业
-     */
-    async pauseWork() {
-      try {
-        let params = {}
-        let res = await pauseWork(params)
-        if (res.code == 200) {
-          this.$message.success('暂停作业成功')
-          this.getWorkDetail()
-        } else {
-          this.$message.error(res.message)
-        }
-      } catch (e) {
 
-      }
-    },
-    /**
-     * 继续作业
-     */
-    async playWork() {
-      try {
-        let params = {}
-        let res = await playWork(params)
-        if (res.code == 200) {
-          this.$message.success('暂停作业成功')
-          this.getWorkDetail()
-        } else {
-          this.$message.error(res.message)
-        }
-      } catch (e) {
-
-      }
-    },
     /**
      * 获取作业详情
      */
@@ -122,55 +109,7 @@ export default {
         console.log(this.detailLoading, 'this.detailLoading')
       }
     },
-    /**
-     * 终止作业
-     */
-    async stopWork() {
-      try {
-        let params = {}
-        let res = await stopWork(params)
-        if (res.code == 200) {
-          this.$message.success('暂停作业成功')
-          this.getWorkDetail()
-        } else {
-          this.$message.error(res.message)
-        }
-      } catch (e) {
 
-      }
-    },
-    /**
-     * 确认方法
-     */
-    confirm(type, text) {
-      this.$confirm(
-        {
-          title: '提示',
-          content: '确认' + text + '作业?',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {
-        switch (type) {
-          case 'pause':
-            this.pauseWork()
-            break
-          case 'play':
-            this.playWork()
-            break
-          case 'stop':
-            this.stopWork()
-            break
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
-
-    },
     getValue(key) {
       let value = ''
       try {

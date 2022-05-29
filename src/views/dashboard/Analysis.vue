@@ -2,11 +2,11 @@
   <div style='height:calc(100% + 153px)'>
     <div class='tabs'>
       <div class='tab-list'>
-        <a-tabs class='my-tabs' default-active-key='1'>
-          <a-tab-pane key='1' tab='生产域'>
+        <a-tabs class='my-tabs' v-model='domain'>
+          <a-tab-pane key='prod' tab='生产域'>
 
           </a-tab-pane>
-          <a-tab-pane key='2' tab='分行域'>
+          <a-tab-pane key='branch' tab='分行域'>
 
           </a-tab-pane>
         </a-tabs>
@@ -41,7 +41,7 @@
                         </div>
                       </div>
                       <div class='fr'>
-                        <div class='work-control' @click='gotoWorkControl'>
+                        <div class='work-control' @click='gotoWorkControl("")'>
                           <img class='mr-5' src='@/assets/workCon.png' alt='' />
                           作业控制器
                         </div>
@@ -50,25 +50,25 @@
                   </div>
                   <div>
                     <div class='flex-box' style='margin:20px 0'>
-                      <div class='item'>
+                      <div class='item' @click='gotoWorkControl("Running")'>
                         <div class='content'>
                           <div class='title'>运行</div>
                           <div class='num'>{{ currentWorkDetail.runningNum }}</div>
                         </div>
                       </div>
-                      <div class='item'>
+                      <div class='item' @click='gotoWorkControl("Waiting")'>
                         <div class='content'>
                           <div class='title'>等待</div>
                           <div class='num'>{{ currentWorkDetail.waitingNum }}</div>
                         </div>
                       </div>
-                      <div class='item mt-15'>
+                      <div class='item mt-15' @click='gotoWorkControl("Suspend")'>
                         <div class='content'>
                           <div class='title'>暂停</div>
                           <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
                         </div>
                       </div>
-                      <div class='item mt-15'>
+                      <div class='item mt-15' @click='gotoWorkControl("Pending")'>
                         <div class='content'>
                           <div class='title'>未决</div>
                           <div class='num'>{{ currentWorkDetail.suspendedNum }}</div>
@@ -95,7 +95,7 @@
                           <div class='num' style='font-size:25px'>{{ dailyWorkDetail.completedNum }}</div>
                         </div>
                       </div>
-                      <div class='item'>
+                      <div class='item' @click='()=>{if(dailyWorkDetail.failedNum>0) failedWorkVisible = true}'>
                         <div class='content'>
                           <div class='title' style='font-size:16px !important'>失败</div>
                           <div class='num' style='font-size:25px'>{{ dailyWorkDetail.failedNum }}</div>
@@ -117,24 +117,31 @@
 
                   </div>
                   <div class='fr'>
-                    <a-select style='min-width:100px' v-model='rateTime'>
+                    <a-select style='min-width:100px' v-model='rateTime' @change='getBackupSuccessRate'>
                       <a-select-option value='604800'>最近一周</a-select-option>
                       <a-select-option value='2592000'>最近一月</a-select-option>
                     </a-select>
                   </div>
                 </div>
               </div>
-              <backup-success-rate></backup-success-rate>
+              <backup-success-rate :detail='workRate'></backup-success-rate>
             </a-card>
           </div>
         </div>
-        <div style='width:calc(54.36% - 20px)'>
+        <div style='width:calc(58.36% - 20px)'>
           <div class='content-top'>
             <div class='flex-between top-list'>
               <div class='item' v-for='(item,index) in listData' :key='index'>
                 <div>
                   <div class='title fs-12' style='color:#666666'>{{ item.title }}</div>
-                  <div class='num fs-12'>{{ item.num }}{{ item.unit }}</div>
+                  <div class='fs-12 '>
+                    <div class='num fl'> {{ item.num }}{{ item.unit }}</div>
+                    <div
+                      class='total fl'
+                      v-if='item.total!=null'>/{{ item.total
+                      }}{{ item.unit }}
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <img :src='item.src' alt='' />
@@ -143,8 +150,17 @@
             </div>
           </div>
           <div class='center-content'>
-            <system-distribution v-if='!systemItem' @gotoSystemInfo='gotoSystemInfo'></system-distribution>
-            <system-info v-else @back='systemBack'></system-info>
+            <div v-if='domain=="prod"' style='height:100%'>
+              <system-distribution
+                :system-list='systemList'
+                v-if='!systemItem'
+                :system-loading='systemLoading'
+                @gotoSystemInfo='gotoSystemInfo'></system-distribution>
+              <system-info v-else :system-item='systemItem' @back='systemBack'></system-info>
+            </div>
+            <div v-else style='height: 100%'>
+              <main-map></main-map>
+            </div>
           </div>
           <div style='height:10px'></div>
           <div class='table-box'>
@@ -178,7 +194,7 @@
             </a-card>
           </div>
         </div>
-        <div style='width:24.833333%' class='right-chart'>
+        <div style='width:20.833333%' class='right-chart'>
           <a-card :bordered='false'>
             <div slot='title'>
               <div>
@@ -187,7 +203,7 @@
               </div>
             </div>
             <div style='width:100%;' class='chart'>
-              <main-trend id-name='first' type='one'></main-trend>
+              <main-trend id-name='first' ref='worknum' type='one'></main-trend>
             </div>
           </a-card>
           <div style='height:10px'></div>
@@ -195,7 +211,7 @@
             <div slot='title'>
               <div>
                 <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日备份作业数</span>
+                <span class='ml-5'>每日备份数据量</span>
               </div>
             </div>
             <div style='width:100%;' class='chart'>
@@ -221,6 +237,8 @@
 
     </div>
     <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'></error-message-modal>
+    <failed-work-modal :visible='failedWorkVisible' @cancel='failedWorkVisible = false'></failed-work-modal>
+    <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
   </div>
 
 </template>
@@ -236,6 +254,9 @@ import SystemDistribution from '@views/dashboard/components/SystemDistribution'
 import SystemInfo from '@views/dashboard/components/SystemInfo'
 import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageModal'
 import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
+import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
+import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
+import { getDomainScale, getDomainTrend, getSystemList } from '@api/modules/dashboard/analysis.js'
 
 export default {
   name: 'Analysis',
@@ -248,10 +269,14 @@ export default {
     MainTrend,
     SystemDistribution,
     SystemInfo,
-    ErrorMessageModal
+    ErrorMessageModal,
+    FailedWorkModal,
+    DealWithModal
   },
   data() {
     return {
+      dealWithVisible: false,
+      failedWorkVisible: false,
       indexStyle: 1,
       domain: 'prod',
       branchId: '',
@@ -259,32 +284,34 @@ export default {
       listData: [
         {
           title: '应用系统',
-          num: '149',
+          num: '0',
           unit: '个',
           src: require('@/assets/app.png')
         },
         {
           title: '客户端',
-          num: '149',
+          num: '0',
           unit: '个',
           src: require('@/assets/client.png')
         },
         {
           title: '介质服务器',
-          num: '149',
+          num: '0',
           unit: '个',
           src: require('@/assets/server.png')
         },
         {
           title: '前端许可',
-          num: '149',
-          unit: '个',
+          num: '0',
+          total: '0',
+          unit: 'TB',
           src: require('@/assets/front.png')
         },
         {
           title: '磁盘存储／云存储',
-          num: '149',
-          unit: '个',
+          num: '0',
+          total: '0',
+          unit: 'TB',
           src: require('@/assets/storage.png')
 
         }
@@ -350,14 +377,150 @@ export default {
       dailyWorkDetail: {
         completedNum: 0,
         failedNum: 0
-      }
+      },
+      workRate: {
+        failedNum: 0,
+        finishedNum: 0,
+        successRatio: 0,
+        totalNum: 0
+      },
+      systemList: [],
+      timer: null,
+      systemLoading: false
     }
   },
 
   created() {
+    //十分钟刷新一次
     this.init()
+    if (this.timer) {
+      clearInterval(this.timer)
+    } else {
+      this.timer = setInterval(() => {
+        this.init()
+      }, 600000)
+    }
+
   },
   methods: {
+    /**
+     * 获取系统列表
+     */
+    async getSystemList() {
+      this.systemLoading = true
+      try {
+        let params = {
+          domain: this.domain
+        }
+        const res = await getSystemList(params)
+        if (res.code === 200) {
+          this.systemList = res.result
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取系统列表失败')
+
+      } finally {
+        this.systemLoading = false
+      }
+    },
+    /**
+     * 获取系统趋势图作业数
+     */
+    async getDomainTrend() {
+      try {
+        let params = {
+          domain: this.domain
+        }
+        const res = await getDomainTrend(params)
+        if (res.code == 200) {
+          if (res.result.metricsChartVos) {
+            let workData = res.result.metricsChartVos.filter(item => item.name == '每周备份作业数')[0]
+            let xDataTime = workData.itemList.filter(item => item.name == '本周')[0].label
+            let xData = xDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
+            let yData = workData.itemList.map((item) => {
+              return {
+                name: item.name,
+                data: item.name == '本周' ? item.value.map((ele, index) => ({
+                  value: ele,
+                  symbol: index % 3 == 0 ? null : 'none'
+                })) : item.value.map((ele, i) => ({ value: ele, symbol: 'none', text: item.label[i] })),
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      type: item.name == '上周' ? 'dotted' : 'solid'
+                    }
+                  }
+                }
+              }
+            })
+            let formatter = (params) => {
+
+              let month = params[0].axisValueLabel.substring(0, params[0].axisValueLabel.indexOf('/'))
+              let day = params[0].axisValueLabel.substring(month.length + 1, params[0].axisValueLabel.length)
+              let oldMonth = new Date(params[1].data.text * 1).getMonth() + 1
+              let oldDay = new Date(params[1].data.text * 1).getDate()
+              //获取增加或减少百分比
+              let percent = (params[0].value * 1 - params[1].value * 1) / (params[1].value * 1)
+              if (params[0].value * 1 - params[1].value * 1 == 0) {
+                percent = 0
+              }
+              if (params[1].value * 1 == 0) {
+                percent = params[0].value * 1
+              }
+              let percentStr = percent >= 0 ? '+' + (percent * 100).toFixed(2) + '%' : (percent * 100).toFixed(2) + '%'
+              let res = `<div>
+                <div style='color:#27AFF3'>
+                  ${month}月 ${day} 日：${params[0].value} <span style='font-size:12px;color:#989696'>${percentStr}</span>
+                </div>
+                <div>
+                  ${oldMonth}月 ${oldDay} 日：${params[1].value}
+                </div>
+              </div>`
+              return res
+
+            }
+            this.$nextTick(() => {
+              this.$refs.worknum.init(xData, yData, formatter)
+            })
+          }
+
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取系统趋势图失败')
+      }
+    },
+    /**
+     * 获取系统规模值
+     */
+    async getDomainScale() {
+      try {
+        let params = {
+          domain: this.domain
+        }
+
+        const res = await getDomainScale(params)
+        if (res.code == 200) {
+          this.listData[0].num = res.result.appSystemNum || 0
+          this.listData[1].num = res.result.clientNum || 0
+          this.listData[2].num = res.result.mediaAgentNum || 0
+          this.listData[3].num = res.result.foreLicenseUsed || 0
+          this.listData[3].total = res.result.foreLicenseTotal || 0
+          this.listData[4].num = res.result.diskStorageUsed || 0
+          this.listData[4].total = res.result.diskStorageTotal || 0
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+        this.$message.error('获取系统规模值失败')
+      }
+
+
+    },
     /**
      * 获取备份成功率
      */
@@ -369,12 +532,12 @@ export default {
           searchTime: this.rateTime
         })
         if (res.code == 200) {
-          console.log(res)
+          this.workRate = res.result
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
-
+        this.$message.error('获取备份成功率失败')
       }
     },
     /**
@@ -392,6 +555,8 @@ export default {
         } else {
           this.$message.error(res.message)
         }
+      } catch (e) {
+        this.$message.error('获取24小时作业失败')
       } finally {
 
       }
@@ -415,6 +580,7 @@ export default {
         }
       } catch (e) {
         console.log(e, 'e')
+        this.$message.error('获取当前工作失败')
       } finally {
         this.currentWorkLoading = false
       }
@@ -423,11 +589,21 @@ export default {
       this.getCurrentWork()
       this.get24HoursWork()
       this.getBackupSuccessRate()
+      this.getDomainScale()
+      this.getDomainTrend()
+      this.getSystemList()
     },
-    gotoWorkControl() {
+    gotoWorkControl(state = '') {
       this.$router.push({
-        path: '/backup/workControl'
+        path: '/backup/workControl',
+        query: {
+          state: state,
+          domain: this.domain
+        }
       })
+    },
+    dealWithOk(reason) {
+      console.log(reason)
     },
     openErrorMessageModal() {
       console.log(123)
@@ -611,7 +787,7 @@ export default {
   width: 100%;
 
   .item:nth-child(2) {
-    width: calc(17% - 8px);
+    width: calc(16% - 8px);
   }
 
   .item:first-child {
@@ -622,8 +798,12 @@ export default {
     width: calc(19% - 8px);
   }
 
+  .item:nth-child(4) {
+    width: calc(23% - 8px);
+  }
+
   .item:last-child {
-    width: calc(28% - 8px);
+    width: calc(25% - 8px);
   }
 
   .item {
@@ -642,7 +822,17 @@ export default {
     }
 
     .num {
+      transform: scale(0.9);
+      font-weight: bold;
+      color: #333333;
+
+
+    }
+
+    .total {
+      font-weight: 100;
       transform: scale(0.8);
+      font-weight: 400;
     }
 
     img {

@@ -1,5 +1,9 @@
 <template>
   <div style='width:100%;height:100%;position:relative' class='system'>
+    <div class='loading' v-if='systemLoading'>
+      <a-spin />
+    </div>
+
     <div class='system-title'>
       <div class='title-logo'>
         <img src='@/assets/system-logo.png' alt='' />
@@ -26,7 +30,9 @@
     <div class='wang'>
       <img src='@/assets/wang.png' alt='' />
     </div>
+
     <div class='system-group'>
+
       <div
         class='item'
         v-for='(item,index) in systemList'
@@ -35,11 +41,11 @@
         @click='gotoSystemInfo(item)'>
         <div class='top'>
           <div class='top-bg'>
-            <img src='@/assets/systemNormal.png' v-if='item.status==1' alt='' />
+            <img src='@/assets/systemNormal.png' v-if='item.state==1' alt='' />
             <img src='@/assets/systemWarning.gif' v-else alt='' />
           </div>
           <div class='system-name-box'>
-            <div class='system-name'>{{ item.name }}</div>
+            <div class='system-name'>{{ item.groupName }}</div>
           </div>
         </div>
         <div class='bottom'>
@@ -55,49 +61,21 @@
 <script>
 export default {
   name: 'SystemDistribution',
-  data() {
-    return {
-      systemList: [
-        {
-          name: '应用组A',
-          status: 1
-        },
-        {
-          name: '应用组B',
-          status: 2
-        },
-        {
-          name: '应用组C',
-          status: 1
-        },
-        {
-          name: '应用组D',
-          status: 1
-        },
-        {
-          name: '应用组E',
-          status: 1
-        },
-        {
-          name: '应用组F',
-          status: 1
-        },
-        {
-          name: '应用组G',
-          status: 1
-        },
-        {
-          name: '应用组H',
-          status: 1
-        },
-        {
-          name: '应用组I',
-          status: 1
-        }
+  props: {
 
-      ]
-
+    systemLoading: {
+      type: Boolean,
+      default: true
+    },
+    systemList: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
+  },
+  data() {
+    return {}
   },
   methods: {
     gotoSystemInfo(item) {
@@ -115,15 +93,15 @@ export default {
         style.top = 10 + 14 * index + '%'
       }
       if (index >= 3 && index < 6) {
-        style.left = 25 + 15 * (index - 3) + '%'
+        style.left = 30 + 15 * (index - 3) + '%'
         style.top = 20 + 14 * (index - 3) + '%'
       }
       if (index >= 6 && index < 8) {
-        style.left = 20 + 15 * (index - 6) + '%'
-        style.top = 40 + 14 * (index - 6) + '%'
+        style.left = 25 + 15 * (index - 6) + '%'
+        style.top = 40 + 10 * (index - 6) + '%'
       }
       if (index == 8) {
-        style.left = 17 + 15 * (index - 8) + '%'
+        style.left = 20 + 15 * (index - 8) + '%'
         style.top = 57 + 14 * (index - 8) + '%'
       }
       return style
@@ -137,6 +115,7 @@ export default {
   background: url("../../../assets/system-bg.png") no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
+  position: relative;
 
   .service {
     width: 180px;
@@ -323,5 +302,19 @@ export default {
     color: #333333;
     font-size: 12px;
   }
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto
 }
 </style>
