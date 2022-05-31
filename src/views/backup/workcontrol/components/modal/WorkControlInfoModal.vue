@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal width='40%' :visible='visible' :footer='false' @cancel='cancel'>
+    <a-modal width='50%' :visible='visible' :footer='false' @cancel='cancel'>
       <div slot='title' style='display: flex;align-items: center'>
         <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
         <span class='ml-10'>作业详情</span>
@@ -27,6 +27,8 @@
             终止
           </a-button>
           <a-button type='link'>查看作业相关事件</a-button>
+          <a-button type='link'>查看作业日志</a-button>
+          <a-button type='link'>查看RMAN日志</a-button>
         </div>
       </div>
     </a-modal>
@@ -47,6 +49,10 @@ export default {
     },
     id: {
       type: String | Number,
+      default: ''
+    },
+    domain: {
+      type: String,
       default: ''
     }
   },
@@ -107,7 +113,7 @@ export default {
     async getWorkDetail() {
       this.detailLoading = true
       try {
-        let res = await getWorkDetail(this.id)
+        let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
           this.detail = res.result
         } else {
@@ -115,7 +121,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch {
-
+        this.$message.error('获取作业详情失败')
       } finally {
         this.detailLoading = false
         this.$forceUpdate()
@@ -229,7 +235,7 @@ ul {
 }
 
 .buttons {
-  width: 80%;
+  width: 95%;
   margin: 20px auto;
   margin-top: 40px;
   display: flex;

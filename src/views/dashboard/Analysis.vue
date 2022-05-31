@@ -36,7 +36,7 @@
                       <div class='flex-center fl'>
                         <img class='fl' style='width:20px;height:20px' src='@/assets/dailyWork.png' alt=''>
                         <span class='ml-5 fl' style='font-size:14px'>当前作业</span>
-                        <div class='fl ml-5'>
+                        <div class='fl ml-5' @click='getCurrentWork()'>
                           <span class='reset'>刷新</span>
                         </div>
                       </div>
@@ -56,13 +56,13 @@
                           <div class='num'>{{ currentWorkDetail.runningNum }}</div>
                         </div>
                       </div>
-                      <div class='item' @click='gotoWorkControl("Waiting")'>
+                      <div class='item' @click='gotoWorkControl("Waiting,Queued")'>
                         <div class='content'>
                           <div class='title'>等待</div>
                           <div class='num'>{{ currentWorkDetail.waitingNum }}</div>
                         </div>
                       </div>
-                      <div class='item mt-15' @click='gotoWorkControl("Suspend")'>
+                      <div class='item mt-15' @click='gotoWorkControl("Suspend,Suspended")'>
                         <div class='content'>
                           <div class='title'>暂停</div>
                           <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
@@ -272,6 +272,29 @@ export default {
     ErrorMessageModal,
     FailedWorkModal,
     DealWithModal
+  },
+  watch: {
+    domain: {
+      handler: function(val) {
+        this.init()
+        if (val == 'prod') {
+          this.listData[0] = {
+            title: '应用系统',
+            num: '0',
+            unit: '个',
+            src: require('@/assets/app.png')
+          }
+        } else {
+          this.listData[0] = {
+            title: '分行',
+            num: '0',
+            unit: '个',
+            src: require('@/assets/branch-logo.png')
+          }
+        }
+      },
+      immediate: true
+    }
   },
   data() {
     return {
@@ -595,12 +618,20 @@ export default {
     },
     gotoWorkControl(state = '') {
       this.$router.push({
-        path: '/backup/workControl',
-        query: {
-          state: state,
-          domain: this.domain
+        name: 'backup-workControl',
+        params: {
+          domain: this.domain,
+          branchId: this.branchId,
+          state: state
         }
       })
+      // this.$router.push({
+      //   path: '/backup/workControl',
+      //   query: {
+      //     state: state,
+      //     domain: this.domain
+      //   }
+      // })
     },
     dealWithOk(reason) {
       console.log(reason)

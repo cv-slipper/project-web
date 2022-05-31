@@ -1,7 +1,8 @@
+Ï
 <template>
-  <a-breadcrumb class="breadcrumb">
-    <a-breadcrumb-item v-for="(item, index) in breadList" :key="index">
-      <router-link v-if="item.name != name" :to="{ path: item.path }">
+  <a-breadcrumb class='breadcrumb'>
+    <a-breadcrumb-item v-for='(item, index) in breadList' :key='index'>
+      <router-link v-if='item.name != name' :to='{ path: item.path }'>
         {{ item.meta.title }}
       </router-link>
       <span v-else>{{ item.meta.title }}</span>
@@ -11,13 +12,13 @@
 
 <script>
 export default {
-    data() {
-      return {
-        name: '',
-        breadList: [],
-      }
-    },
-  created () {
+  data() {
+    return {
+      name: '',
+      breadList: []
+    }
+  },
+  created() {
     this.getBreadcrumb()
   },
   methods: {
@@ -31,7 +32,7 @@ export default {
       this.name = this.$route.name
       this.$route.matched.forEach((item) => {
         // item.meta.name === 'dashboard' ? item.path = '/dashboard' : this.$route.path === item.path
-          this.breadList.push(item)
+        this.breadList.push(item)
       })
     }
   },

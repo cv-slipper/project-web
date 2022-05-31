@@ -40,7 +40,12 @@
           <a-checkbox-group @change='jobTypeChange' :value='jobType' :options='workCheckOpt'></a-checkbox-group>
         </div>
         <div class='fr'>
+          <a-button v-if='judgeStatus("pausedStatusList")' class='ml-10' disabled>
+            <a-icon type='pause' style='font-size:14px' />
+            暂停
+          </a-button>
           <a-popconfirm
+            v-else
             title='确认要暂停所选作业吗？'
             :visible='pausedVisible'
             ok-text='是的'
@@ -53,8 +58,12 @@
               暂停
             </a-button>
           </a-popconfirm>
-
+          <a-button v-if='judgeStatus("playStatusList")' class='ml-10' disabled>
+            <a-icon type='caret-right' />
+            继续
+          </a-button>
           <a-popconfirm
+            v-else
             title='确认要恢复所选作业吗？'
             ok-text='是的'
             :visible='playVisible'
@@ -66,8 +75,12 @@
               继续
             </a-button>
           </a-popconfirm>
-
+          <a-button v-if='judgeStatus("stopStatusList")' class='ml-10 ' disabled>
+            <a-icon type='stop' />
+            终止
+          </a-button>
           <a-popconfirm
+            v-else
             :visible='stopVisible'
             @visibleChange='handleVisibleChange($event,"stopVisible")'
             title='确认要终止所选作业吗？'
@@ -102,11 +115,36 @@
               <a-button type='link' @click='openInfoModal(row)'>详情</a-button>
             </div>
           </template>
+          <template #rate='row'>
+            <a-progress v-if='row' type='circle' :percent='row' :width='50' />
+          </template>
+          <template #client='row'>
+            <div class='text-ellipsis'>
+              <a-tooltip :title='row' arrowPointAtCenter>
+                <div class='text-ellipsis'>
+                  {{ row }}
+                </div>
+              </a-tooltip>
+            </div>
+
+          </template>
+          <template #applicationSystem='row'>
+            <div class='text-ellipsis'>
+              <a-tooltip :title='row' arrowPointAtCenter>
+                <div class='text-ellipsis'>{{ row }}</div>
+              </a-tooltip>
+
+            </div>
+          </template>
         </a-table>
       </div>
     </div>
-    <work-control-info-modal @cancel='workInfoVisible = false' :visible='workInfoVisible' :id='rowId'
-                             :label-list='labelList'></work-control-info-modal>
+    <work-control-info-modal
+      @cancel='workInfoVisible = false'
+      :visible='workInfoVisible'
+      :id='rowId'
+      :domain='rowDomain'
+      :label-list='labelList'></work-control-info-modal>
   </div>
 </template>
 
@@ -123,11 +161,15 @@ export default {
   },
   data() {
     return {
+      pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
+      playStatusList: ['Suspended'],
+      stopStatusList: ['Running', 'Waiting', 'Queued', 'Pending', 'Suspended', 'Suspend'],
       pausedVisible: false,
       playVisible: false,
       stopVisible: false,
       workInfoVisible: false,
       rowId: '',
+      rowDomain: '',
       labelList: [
         {
           label: '作业ID：',
@@ -194,6 +236,10 @@ export default {
           value: 'dataWritten'
         },
         {
+          label: '介质服务器：',
+          value: 'mediaAgent'
+        },
+        {
           label: '状态：',
           value: 'state'
         },
@@ -240,20 +286,26 @@ export default {
           key: 'applicationSystem',
           dataIndex: 'applicationSystem',
           width: 150,
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'applicationSystem'
+          }
         },
         {
           title: '客户端',
           key: 'client',
           dataIndex: 'client',
           width: 100,
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'client'
+          }
         },
         {
           title: '代理类型',
           key: 'agentType',
           dataIndex: 'agentType',
-          width: 100,
+          width: 150,
           align: 'center'
         },
         {
@@ -278,13 +330,6 @@ export default {
           align: 'center'
         },
         {
-          title: '介质服务器',
-          key: 'mediaAgent',
-          dataIndex: 'mediaAgent',
-          width: 150,
-          align: 'center'
-        },
-        {
           title: '状态',
           key: 'state',
           dataIndex: 'state',
@@ -296,7 +341,10 @@ export default {
           key: 'rate',
           dataIndex: 'rate',
           width: 100,
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'rate'
+          }
 
         },
         {
@@ -341,77 +389,27 @@ export default {
       statusList: [
         {
           id: 'Running',
-          name: 'Running'
+          name: '运行'
         },
         {
-          id: 'Waiting',
-          name: 'Waiting'
+          id: 'Waiting,Queued',
+          name: '等待'
         },
         {
           id: 'Pending',
-          name: 'Pending'
+          name: '未决'
         },
         {
-          id: 'Suspend',
-          name: 'Suspend'
+          id: 'Suspend,Suspended',
+          name: '暂停'
         },
         {
-          id: 'Kill Pending',
-          name: 'Kill Pending'
+          id: 'Completed,Completed w/ one or more errors,Completed w/ one or more warnings',
+          name: '完成'
         },
-        {
-          id: 'Interrupt Pending',
-          name: 'Interrupt Pending'
-        },
-        {
-          id: 'Interrupted',
-          name: 'Interrupted'
-        },
-        {
-          id: 'Queued',
-          name: 'Queued'
-        },
-        {
-          id: 'Running (cannot be verified)',
-          name: 'Running (cannot be verified)'
-        },
-        {
-          id: 'Abnormal Terminated Cleanup',
-          name: 'Abnormal Terminated Cleanup'
-        },
-
-        {
-          id: 'Suspended',
-          name: 'Suspended'
-        },
-        {
-          id: 'Completed',
-          name: 'Completed'
-        },
-        {
-          id: 'Completed w/ one or more errors',
-          name: 'Completed w/ one or more errors'
-        },
-        {
-          id: 'Completed w/ one or more warnings',
-          name: 'Completed w/ one or more warnings'
-        },
-        {
-          id: 'Committed',
-          name: 'Committed'
-        },
-
         {
           id: 'Failed',
-          name: 'Failed'
-        },
-        {
-          id: 'Failed to Start',
-          name: 'Failed to Start'
-        },
-        {
-          id: 'Killed',
-          name: 'Killed'
+          name: '失败'
         }
       ],
       pagination: {
@@ -423,16 +421,32 @@ export default {
       jobType: [],
       branchId: [],
       state: [],
-      updateTime: ''
+      updateTime: '',
+      selectedRows: []
     }
   },
+  /**
+   * 监听路由变化
+   */
+  watch: {
+    '$route'(to, from) {
+      if (Object.keys(this.$route.params).length == 0) {
+        this.domain = 'prod'
+        this.state = []
+      } else {
+        this.domain = this.$route.params.domain
+        this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
+      }
+    }
+
+  },
   created() {
-    if (Object.keys(this.$route.query).length == 0) {
+    if (Object.keys(this.$route.params).length == 0) {
       this.domain = 'prod'
       this.state = []
     } else {
-      this.domain = this.$route.query.domain
-      this.state = this.$route.query.state == '' ? [] : [this.$route.query.state]
+      this.domain = this.$route.params.domain
+      this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
     }
     this.getWorkList()
   },
@@ -443,6 +457,7 @@ export default {
     async getWorkList() {
       this.loading = true
       this.selectedRowKeys = []
+      this.selectedRows = []
       try {
         let params = {
           current: this.pagination.current,
@@ -487,6 +502,8 @@ export default {
           } else {
             this.$message.error(res.message)
           }
+        } catch (e) {
+          this.$message.error('请求失败')
         } finally {
         }
       }
@@ -510,6 +527,8 @@ export default {
           } else {
             this.$message.error(res.message)
           }
+        } catch (e) {
+          this.$message.error('请求失败')
         } finally {
 
         }
@@ -535,15 +554,29 @@ export default {
           } else {
             this.$message.error(res.message)
           }
+        } catch (e) {
+          this.$message.error('请求失败')
         } finally {
 
         }
       }
     },
     /**
+     *  判断按钮状态
+     */
+    judgeStatus(key) {
+      let isDisabled = true
+      if (this.selectedRows.length > 0) {
+        let nowStatusList = this.selectedRows.map(item => item.state)
+        isDisabled = !nowStatusList.every(item => this[key].findIndex(ele => ele == item) != -1)
+      }
+      return isDisabled
+    },
+    /**
      * 打开详情弹窗
      */
     openInfoModal(row) {
+      this.rowDomain = row.domain
       this.rowId = row.jobId
       this.workInfoVisible = true
     },
@@ -551,8 +584,10 @@ export default {
       this.jobType = val
       this.getWorkList()
     },
-    onSelectChange(selectedRowKeys) {
+    onSelectChange(selectedRowKeys, selectedRows) {
+
       this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
     },
     /**
      * 搜索
