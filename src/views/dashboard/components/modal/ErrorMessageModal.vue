@@ -55,6 +55,9 @@
         :data-source='data'
         :loading='loading'
         :bordered='true'
+        :scroll='{x:"100%"}'
+        :pagination='pagination'
+        @change='tableChange'
       >
         <template #action='row'>
           <div class='flex-between'>
@@ -63,18 +66,42 @@
             <a-button type='link'>忽略</a-button>
           </div>
         </template>
+        <template #tooltip='data'>
+          <a-tooltip :title='data'>
+            <div class='text-ellipsis'>
+              {{ data }}
+            </div>
+          </a-tooltip>
+        </template>
       </a-table>
     </div>
   </a-modal>
 </template>
 
 <script>
+import { getExceptionList } from '@api/modules/dashboard/analysis.js'
+
 export default {
   name: 'ErrorMessageModal',
   props: {
     visible: {
       type: Boolean,
       default: false
+    },
+    id: {
+      type: String,
+      default: ''
+    },
+    domain: {
+      type: String,
+      default: 'prod'
+    }
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.getExceptionList()
+      }
     }
   },
   data() {
@@ -84,54 +111,74 @@ export default {
           title: '异常ID',
           key: 'id',
           dataIndex: 'id',
-          align: 'center'
+          align: 'center',
+          width: 80,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '严重程度',
-          key: 'level',
-          dataIndex: 'level',
-          align: 'center'
+          key: 'severity',
+          dataIndex: 'severity',
+          align: 'center',
+          width: 100
+
         },
         {
           title: '备份域',
-          key: 'backupDomain',
-          dataIndex: 'backupDomain',
+          key: 'domain',
+          dataIndex: 'domain',
+          width: 80,
           align: 'center'
         },
         {
           title: '应用系统/分行',
-          key: 'appName',
-          dataIndex: 'appName',
-          align: 'center'
+          key: 'appSystemName',
+          dataIndex: 'appSystemName',
+          align: 'center',
+          width: 100,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '发生时间',
-          key: 'createTime',
-          dataIndex: 'createTime',
-          align: 'center'
+          key: 'occurrenceTime',
+          dataIndex: 'occurrenceTime',
+          align: 'center',
+          width: 80,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
 
         },
         {
           title: '异常类型',
-          key: 'type',
-          dataIndex: 'type',
-          align: 'center'
+          key: 'exceptionType',
+          dataIndex: 'exceptionType',
+          align: 'center',
+          width: 100
         }, {
           title: '描述',
           key: 'description',
+          width: 120,
           dataIndex: 'description',
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         }, {
           title: '操作',
           key: 'action',
           align: 'center',
-          width: 200,
+          width: 160,
           scopedSlots: {
             customRender: 'action'
           }
         }
       ],
-      data: [{}],
+      data: [],
       searchParams: {
         type: []
       },
@@ -139,23 +186,60 @@ export default {
       types: [],
       levels: [],
       appSystems: [],
-      loading: false
+      loading: false,
+      pagination: {
+        pageSize: 10,
+        current: 1,
+        showTotal: total => `共 ${total} 条`
+      }
     }
   },
   methods: {
+    /**
+     * 获取异常信息列表
+     */
+    async getExceptionList() {
+      try {
+        this.loading = true
+        const res = await getExceptionList({
+          current: this.pagination.current,
+          pageSize: this.pagination.pageSize,
+          domain: this.domain,
+          id: this.id,
+          ...this.searchParams
+        })
+        if (res.code == 200) {
+          this.data = res.result || []
+        } else {
+          this.$message.error(res.message)
+        }
+
+      } catch (e) {
+        this.$message.error('获取失败')
+      } finally {
+        this.loading = false
+      }
+    },
     cancel() {
       this.$emit('cancel')
+    },
+    tableChange(pagination) {
+      this.pagination.current = pagination.current
+      this.getExceptionList()
     }
   }
 }
 </script>
 
 <style scoped>
-.table-box {
-  padding: 0 20px;
-}
-
 .label {
   font-size: 12px !important;
+}
+
+/deep/ .table-box table thead th {
+  padding: 10px 0 !important;
+  background: #EDF3FE !important;
+  font-size: 14px !important;
+  color: #3E3E3E !important;
 }
 </style>

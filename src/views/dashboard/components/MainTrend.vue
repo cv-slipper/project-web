@@ -1,8 +1,9 @@
 <template>
   <div style='height:100%;'>
     <div class='tip flex-center'>
-      <span :class='{one:type=="one",two:type=="two",third:type=="third"}'>昨日：1689</span>
-      <span class='ml-10 info' v-if='type!="third"'>同期 +15%</span>
+      <span
+        :class='{one:type=="one",two:type=="two",third:type=="third"}'>{{ getYestDayData() }}</span>
+      <span class='ml-10 info' v-if='type!="third"'>同期 {{ getPercent() }}</span>
     </div>
     <div style='width:100%;height:calc(100% - 25px)'>
       <div :id='idName' style='width:100%;height:calc(100% )'></div>
@@ -23,10 +24,7 @@ export default {
       default: 'one'
     }
   },
-  // let month = params[0].axisValueLabel.substring(0, params[0].axisValueLabel.indexOf('/'))
-  // let day = params[0].axisValueLabel.substring(month.length + 1, params[0].axisValueLabel.length)
-  // let res = `<div> ${month}月 ${day} 日：${params[0].value} <span style='font-size:12px;color:#989696'>+15%</span></div>`
-  // return res
+
   data() {
     return {
       option: {
@@ -113,6 +111,7 @@ export default {
           }
         ]
       }
+
     }
   },
   mounted() {
@@ -122,8 +121,32 @@ export default {
 
   },
   methods: {
-    init(xData = [], yData = [], formatter = () => {
-    }) {
+    getYestDayData() {
+      return this.option.series[0].data.length > 0 ? this.option.series[0].data[this.option.series[0].data.length - 1].value : 0
+    },
+    getPercent() {
+      let percentStr = '0'
+      //获取增加或减少百分比
+      if (this.option.series[0].data.length > 0 && this.type != 'third') {
+        let percent = (this.option.series[0].data[this.option.series[0].data.length - 1].value * 1 - this.option.series[1].data[this.option.series[1].data.length - 1].value * 1) / (this.option.series[1].data[this.option.series[1].data.length - 1].value * 1)
+        if (this.option.series[0].data[this.option.series[0].data.length - 1].value * 1 - this.option.series[1].data[this.option.series[1].data.length - 1].value * 1 == 0) {
+          percent = 0
+        }
+        if (this.option.series[1].data[this.option.series[1].data.length - 1].value * 1 == 0) {
+          percent = this.option.series[0].data[this.option.series[0].data.length - 1].value * 1
+        }
+        percentStr = percent >= 0 ? '+' + (percent * 100).toFixed(2) + '%' : (percent * 100).toFixed(2) + '%'
+      }
+
+      return percentStr
+    },
+    formatter(params) {
+      let month = params[0].axisValueLabel.substring(0, params[0].axisValueLabel.indexOf('/'))
+      let day = params[0].axisValueLabel.substring(month.length + 1, params[0].axisValueLabel.length)
+      let res = `<div> ${month}月 ${day} 日：${params[0].value} </div>`
+      return res
+    },
+    init(xData = [], yData = [], formatter = this.formatter) {
       let type = this.type
       var myChart = this.$echarts.init(document.getElementById(this.idName))
       this.option.xAxis.data = xData
@@ -181,6 +204,7 @@ export default {
         }
       }
       this.option.tooltip.formatter = formatter
+      this.type == 'third' && this.option.series.splice(1, 1)
       myChart.setOption(this.option)
       myChart.resize()
       window.addEventListener('resize', () => {

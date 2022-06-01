@@ -97,6 +97,7 @@ export default {
   },
   watch: {
     '$route': function(newRoute) {
+      console.log(newRoute, 'newRoute')
       //console.log("新的路由",newRoute)
 
       this.activePage = newRoute.fullPath

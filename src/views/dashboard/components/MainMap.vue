@@ -65,7 +65,7 @@ export default {
       } else {
         let zoom = this.map.getZoom()
         if (zoom == 3.6) {
-          this.map.setZoomAndCenter(3.6, [116.46, 39.92])
+          this.map.setZoomAndCenter(3.59, [116.46, 39.92])
         } else {
           this.map.setZoomAndCenter(3.6, [116.46, 39.92])
         }
@@ -80,7 +80,7 @@ export default {
       this.map = new AMap.Map('container', {
         zoom: 3.6,//级别
         resizeEnable: true,
-        center: [110.177087, 35.313861],//中心点坐标
+        center: [116.46, 39.92],//中心点坐标
         features: ['bg', 'road', 'building']//显示样式
       })
       this.bigAreaMarkers = this.initAreaMarker()
@@ -105,8 +105,8 @@ export default {
     },
     initAreaMarker() {
       let markers = []
-      let normal = '<img style="width:50px;height:50px" src=' + require('@/assets/normal.png') + ' />'
-      let warning = '<img style="width:50px;height:50px" src=' + require('@/assets/warning.png') + ' />'
+      let normal = '<img style="width:65px;height:65px" src=' + require('@/assets/normal.png') + ' />'
+      let warning = '<img style="width:65px;height:65px" src=' + require('@/assets/warning.png') + ' />'
       for (let i = 0; i < this.areaPoints.length; i++) {
         var marker = new AMap.Marker({
           position: this.areaPoints[i].center,
@@ -122,7 +122,7 @@ export default {
 
         marker.on('click', (e) => {
           this.litttleAreaPoints = this.areaPoints[i].children
-          this.map.setZoomAndCenter(5.5, this.areaPoints[i].center)
+          this.map.setZoomAndCenter(6.59, this.areaPoints[i].center)
         })
         markers.push(marker)
       }

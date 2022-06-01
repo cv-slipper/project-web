@@ -19,7 +19,7 @@
       <div class='right-border'></div>
     </div>
     <div class='system-list'>
-      <div class='item' v-for='(item,index) in systemList' :key='index'>
+      <div class='item' v-for='(item,index) in systemList' :key='index' @cilck='updateDataByapp(item)'>
         <div :class='["item-name",{normal:item.exceptionNum==0,error:item.exceptionNum!=0}]'>
           {{ item.applicationSystem }}
         </div>
@@ -29,14 +29,19 @@
       </div>
       <div style='clear:both'></div>
     </div>
+    <error-message-modal :visible='errorVisible' :id='id'></error-message-modal>
   </div>
 </template>
 
 <script>
 import { getSystemDetail } from '@api/modules/dashboard/analysis'
+import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageModal'
 
 export default {
   name: 'SystemInfo',
+  components: {
+    ErrorMessageModal
+  },
   props: {
     systemItem: {
       type: Object | null,
@@ -49,7 +54,9 @@ export default {
     return {
       systemList: [],
       timer: null,
-      systemLoading: false
+      systemLoading: false,
+      id: '',
+      errorVisible: false
     }
   },
   created() {
@@ -86,6 +93,15 @@ export default {
         this.systemLoading = false
       }
 
+    },
+    /**
+     * 获取当前系统异常信息列表
+     */
+    updateDataByapp(item) {
+      if (item.exceptionNum != 0) {
+        this.id = item.id
+        this.errorVisible = true
+      }
     },
     back() {
       this.$emit('back')
@@ -265,7 +281,7 @@ export default {
   top: 20px;
   left: 0;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 99;
 }
 
 .loading {

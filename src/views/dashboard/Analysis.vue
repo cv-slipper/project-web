@@ -13,11 +13,11 @@
       </div>
       <div class='reload mr-20' style='cursor:pointer'>
         <div class='flex-center'>
-          <div class='flex-center'>
-            <img src='@/assets/reseterror.png' width='20px' height='20px' alt=''>
-            <span style='margin-left:5px'>同步异常</span>
-          </div>
-          <div class='flex-center ml-10 '>
+          <!--          <div class='flex-center'>-->
+          <!--            <img src='@/assets/reseterror.png' width='20px' height='20px' alt=''>-->
+          <!--            <span style='margin-left:5px'>同步异常</span>-->
+          <!--          </div>-->
+          <div class='flex-center ml-10 ' @click='init()'>
             <img src='@/assets/reload.png' width='20px' height='20px' alt=''>
             <span style='margin-left:5px'>同步正常</span>
           </div>
@@ -135,7 +135,12 @@
                 <div>
                   <div class='title fs-12' style='color:#666666'>{{ item.title }}</div>
                   <div class='fs-12 '>
-                    <div class='num fl'> {{ item.num }}{{ item.unit }}</div>
+                    <div class='num fl'> {{ item.num }}{{ item.unit }}
+                      <div class='increase-num fl'
+                           v-if='item.increaseNum'>+{{ item.increaseNum
+                        }}
+                      </div>
+                    </div>
                     <div
                       class='total fl'
                       v-if='item.total!=null'>/{{ item.total
@@ -169,7 +174,10 @@
                 <div class='flex-center flex-between' style='height:32px'>
                   <div>
                     <img src='@/assets/abnormal.png' style='width:20px;height:20px' alt=''>
-                    <span class='ml-5'>未处理异常信息  <span style='color:#DC2929'> (8)</span></span>
+                    <span class='ml-5'> {{ errorMessageTotal > 0 ? '未处理异常信息' : '无未处理异常信息' }}   <span
+                      v-if='errorMessageTotal'
+                      style='color:#DC2929'>  （{{ errorMessageTotal
+                      }}）</span></span>
                   </div>
                   <div>
                     <a-icon
@@ -181,14 +189,39 @@
 
               </div>
               <div style='height:100%;overflow-y:scroll' class='my-scroll'>
+                <div class='no-error-message' v-if='errorMessageTotal==0'>
+                  <div class='success-text'>
+                    <div>
+                      <img src='@/assets/error-message-success-logo.png' alt='' />
+                      <span>当前无处理异常信息</span>
+                    </div>
+                  </div>
+                  <div class='info-text mt-20'>如有未处理的异常信息，将会在此处进行提示，管理员需及时处理新增异常信息以保证系统正常运行。</div>
+                  <div class='mt-20'>
+                    <a-button type='primary' @click='gotoDealwith'>查看处理记录</a-button>
+                  </div>
+                </div>
                 <a-table
+                  v-else
                   :columns='columns'
                   :data-source='data'
                   :loading='loading'
                   :pagination='false'
                   :scroll='{y:true}'
                 >
-
+                  <template #tooltip='data'>
+                    <a-tooltip :title='data' arrowPointAtCenter>
+                      <div class='text-ellipsis'>{{ data }}</div>
+                    </a-tooltip>
+                  </template>
+                  <template #action='row'>
+                    <div class='error-action'>
+                      <div>
+                        <span class='fl'>详情</span>
+                        <span class='fl ml-5' @click='dealWith(row)'>处理</span>
+                      </div>
+                    </div>
+                  </template>
                 </a-table>
               </div>
             </a-card>
@@ -215,7 +248,7 @@
               </div>
             </div>
             <div style='width:100%;' class='chart'>
-              <main-trend id-name='second' type='two'></main-trend>
+              <main-trend id-name='second' ref='datanum' type='two'></main-trend>
             </div>
           </a-card>
           <div style='height:10px'></div>
@@ -227,7 +260,7 @@
               </div>
             </div>
             <div style='width:100%;' class='chart'>
-              <main-trend id-name='third' type='third'></main-trend>
+              <main-trend ref='disknum' id-name='third' type='third'></main-trend>
             </div>
           </a-card>
         </div>
@@ -237,8 +270,10 @@
 
     </div>
     <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'></error-message-modal>
-    <failed-work-modal :visible='failedWorkVisible' @cancel='failedWorkVisible = false'></failed-work-modal>
+    <failed-work-modal :domain='domain' :visible='failedWorkVisible'
+                       @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
+
   </div>
 
 </template>
@@ -256,7 +291,7 @@ import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageMod
 import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
 import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
-import { getDomainScale, getDomainTrend, getSystemList } from '@api/modules/dashboard/analysis.js'
+import { getDomainScale, getDomainTrend, getSystemList, getExceptionList } from '@api/modules/dashboard/analysis.js'
 
 export default {
   name: 'Analysis',
@@ -298,6 +333,8 @@ export default {
   },
   data() {
     return {
+
+      errorMessageTotal: 0,
       dealWithVisible: false,
       failedWorkVisible: false,
       indexStyle: 1,
@@ -343,43 +380,55 @@ export default {
         {
           title: '异常ID',
           key: 'id',
-          width: 100,
+          width: 80,
           align: 'center',
-          dataIndex: 'id'
+          dataIndex: 'id',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '应用系统',
-          key: 'app',
+          key: 'appSystemName',
           width: 100,
           align: 'center',
-          dataIndex: 'app'
+          dataIndex: 'appSystemName',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '发生时间',
-          key: 'time',
-          width: 140,
+          key: 'occurrenceTime',
+          width: 120,
           align: 'center',
-          dataIndex: 'time'
+          dataIndex: 'occurrenceTime',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '异常类型',
-          key: 'type',
-          width: 120,
+          key: 'exceptionType',
+          width: 100,
           align: 'center',
-          dataIndex: 'type'
+          dataIndex: 'exceptionType'
         },
         {
           title: '描述',
-          key: 'desc',
+          key: 'description',
+          width: 80,
           align: 'center',
-          dataIndex: 'desc'
+          dataIndex: 'description',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '操作',
           key: 'action',
-          width: 100,
+          width: 120,
           align: 'center',
-          dataIndex: 'action',
           scopedSlots: {
             customRender: 'action'
           }
@@ -427,6 +476,29 @@ export default {
   },
   methods: {
     /**
+     * 获取异常信息列表
+     * @param {Number} page
+     */
+    async getExceptionList() {
+      this.loading = true
+      try {
+        let params = {
+          domain: this.domain
+        }
+        let res = await getExceptionList(params)
+        if (res.code == 200) {
+          this.data = res.result || []
+          this.errorMessageTotal = res.result.length || 0
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('请求失败')
+      } finally {
+        this.loading = false
+      }
+    },
+    /**
      * 获取系统列表
      */
     async getSystemList() {
@@ -459,9 +531,15 @@ export default {
         const res = await getDomainTrend(params)
         if (res.code == 200) {
           if (res.result.metricsChartVos) {
-            let workData = res.result.metricsChartVos.filter(item => item.name == '每周备份作业数')[0]
+            let workData = res.result.metricsChartVos.filter(item => item.name == '每日备份作业数')[0]
+            let dataData = res.result.metricsChartVos.filter(item => item.name == '每日备份数据量')[0]
+            let diskData = res.result.metricsChartVos.filter(item => item.name == '每日磁盘/云储存占用量')[0]
+            let xdataDataTime = dataData.itemList.filter(item => item.name == '本周')[0].label
+            let xdiskDataTime = diskData.itemList.filter(item => item.name == '本周')[0].label
             let xDataTime = workData.itemList.filter(item => item.name == '本周')[0].label
             let xData = xDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
+            let xdataData = xdataDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
+            let xdiskData = xdiskDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
             let yData = workData.itemList.map((item) => {
               return {
                 name: item.name,
@@ -474,6 +552,36 @@ export default {
                     lineStyle: {
                       type: item.name == '上周' ? 'dotted' : 'solid'
                     }
+                  }
+                }
+              }
+            })
+            let ydataData = dataData.itemList.map((item) => {
+              return {
+                name: item.name,
+                data: item.name == '本周' ? item.value.map((ele, index) => ({
+                  value: ele,
+                  symbol: index % 3 == 0 ? null : 'none'
+                })) : item.value.map((ele, i) => ({ value: ele, symbol: 'none', text: item.label[i] })),
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      type: item.name == '上周' ? 'dotted' : 'solid'
+                    }
+                  }
+                }
+              }
+            })
+            let ydiskData = diskData.itemList.map((item) => {
+              if (item.name == '本周') {
+                return {
+                  name: item.name,
+                  data: item.value.map((ele, index) => ({
+                    value: ele,
+                    symbol: index % 3 == 0 ? null : 'none'
+                  })),
+                  itemStyle: {
+                    normal: {}
                   }
                 }
               }
@@ -506,6 +614,8 @@ export default {
             }
             this.$nextTick(() => {
               this.$refs.worknum.init(xData, yData, formatter)
+              this.$refs.datanum.init(xdataData, ydataData, formatter)
+              this.$refs.disknum.init(xdiskData, ydiskData.filter(item => item))
             })
           }
 
@@ -513,6 +623,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch (e) {
+        console.log(e, 'e')
         this.$message.error('获取系统趋势图失败')
       }
     },
@@ -530,10 +641,12 @@ export default {
           this.listData[0].num = res.result.appSystemNum || 0
           this.listData[1].num = res.result.clientNum || 0
           this.listData[2].num = res.result.mediaAgentNum || 0
-          this.listData[3].num = res.result.foreLicenseUsed || 0
-          this.listData[3].total = res.result.foreLicenseTotal || 0
-          this.listData[4].num = res.result.diskStorageUsed || 0
-          this.listData[4].total = res.result.diskStorageTotal || 0
+          this.listData[3].num = (res.result.foreLicenseUsed / 1024).toFixed(2) || 0
+          this.listData[3].total = (res.result.foreLicenseTotal / 1024).toFixed(2) || 0
+          this.listData[4].num = (res.result.diskStorageUsed / 1024).toFixed(2) || 0
+          this.listData[4].total = (res.result.diskStorageTotal / 1024).toFixed(2) || 0
+          this.listData[1].increaseNum = res.result.increaseClient || 0
+          this.listData[4].increaseNum = (res.result.increaseDisk / 1024).toFixed(2) || 0
         } else {
           this.$message.error(res.message)
         }
@@ -608,6 +721,9 @@ export default {
         this.currentWorkLoading = false
       }
     },
+    /**
+     * 页面初始化
+     */
     init() {
       this.getCurrentWork()
       this.get24HoursWork()
@@ -615,6 +731,16 @@ export default {
       this.getDomainScale()
       this.getDomainTrend()
       this.getSystemList()
+      this.getExceptionList()
+    },
+    /**
+     * 查看处理记录
+     */
+
+    gotoDealwith() {
+      this.$router.push({
+        name: 'backup-exception-ProcessHistoryList'
+      })
     },
     gotoWorkControl(state = '') {
       this.$router.push({
@@ -632,6 +758,14 @@ export default {
       //     domain: this.domain
       //   }
       // })
+    },
+    /**
+     * 处理
+     * @param row
+     */
+    dealWith(row) {
+      this.dealWithRow = row
+      this.dealWithVisible = true
     },
     dealWithOk(reason) {
       console.log(reason)
@@ -818,33 +952,43 @@ export default {
   width: 100%;
 
   .item:nth-child(2) {
-    width: calc(16% - 8px);
+    width: calc(18% - 5px);
+
+    .increase-num {
+      top: 0;
+      transform: scale(0.9);
+    }
   }
 
   .item:first-child {
-    width: calc(17% - 8px);
+    width: calc(15% - 5px);
   }
 
   .item:nth-child(3) {
-    width: calc(19% - 8px);
+    width: calc(17% - 5px);
   }
 
   .item:nth-child(4) {
-    width: calc(23% - 8px);
+    width: calc(22% - 5px);
   }
 
   .item:last-child {
-    width: calc(25% - 8px);
+    width: calc(27% - 5px);
+
+    .increase-num {
+      color: #1ABA71;
+    }
   }
 
   .item {
-    width: calc(19% - 8px);
+    width: calc(19% - 5px);
+    overflow-x: hidden;
     height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
-    padding: 10px;
+    padding: 10px 5px;
     border-radius: 5px;
     margin-bottom: 10px;
 
@@ -856,8 +1000,16 @@ export default {
       transform: scale(0.9);
       font-weight: bold;
       color: #333333;
+      position: relative;
 
+    }
 
+    .increase-num {
+      position: absolute;
+      top: 10px;
+      right: -20px;
+      color: #FF8C00;
+      transform: scale(0.7);
     }
 
     .total {
@@ -871,6 +1023,8 @@ export default {
       object-fit: cover;
     }
   }
+
+
 }
 
 .center-content {
@@ -973,5 +1127,32 @@ export default {
   padding: 30px 10px !important;
 }
 
+.error-action {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
 
+.no-error-message {
+  text-align: center;
+
+  .success-text {
+    font-size: 16px;
+    color: #1ABA71;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    div {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .info-text {
+    font-size: 12px;
+    color: rgba(173, 173, 173, 1)
+  }
+}
 </style>

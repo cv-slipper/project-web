@@ -9,28 +9,67 @@
         :columns='columns'
         :data-source='dataSource'
         :loading='loading'
+        :pagination='pagination'
+        @change='tableChange'
+        :scroll='{x:"100%"}'
       >
         <template #action='row'>
           <div>
             <a-button type='link' @click='failedDetail(row)'>详情</a-button>
           </div>
         </template>
+        <template #tooltip='data'>
+          <a-tooltip :title='data'>
+            <div class='text-ellipsis'>
+              {{ data }}
+            </div>
+          </a-tooltip>
+        </template>
       </a-table>
     </div>
+    <work-control-info-modal
+      @cancel='workInfoVisible = false'
+      :visible='workInfoVisible'
+      :id='rowId'
+      :domain='rowDomain'
+    ></work-control-info-modal>
   </a-modal>
 </template>
 
 <script>
+import { getWorkList } from '@api/modules/workcontrol/index'
+import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
+
 export default {
   name: 'FailedWorkModal',
+  components: {
+    WorkControlInfoModal
+  },
   props: {
     visible: {
       type: Boolean,
       default: false
+    },
+    domain: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    visible: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.getWorkList()
+        }
+      }
     }
   },
   data() {
     return {
+      workInfoVisible: false,
+      rowId: '',
+      rowDomain: '',
       loading: false,
       dataSource: [],
       columns: [
@@ -77,7 +116,10 @@ export default {
           key: 'client',
           dataIndex: 'client',
           width: 100,
-          align: 'center'
+          align: 'center',
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '代理类型',
@@ -131,11 +173,48 @@ export default {
 
         }
 
-      ]
+      ],
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+        showTotal: total => `共 ${total} 条`
+      }
     }
   },
   methods: {
+    /**
+     * 获取失败列表
+     */
+    async getWorkList() {
+      try {
+        this.loading = true
+        let res = await getWorkList({
+          current: this.pagination.current,
+          pageSize: this.pagination.pageSize,
+          state: 'Failed',
+          domain: this.domain
+        })
+        if (res.code == 200) {
+          this.dataSource = res.result.list
+          this.pagination.total = res.result.total
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取失败列表失败')
+      } finally {
+        this.loading = false
+      }
+    },
+    tableChange(pagination) {
+      this.pagination.current = pagination.current
+      this.getWorkList()
+    },
     failedDetail(row) {
+      this.rowId = row.jobId
+      this.rowDomain = row.domain
+      this.workInfoVisible = true
       this.$emit('failedDetail', row)
     },
     cancel() {

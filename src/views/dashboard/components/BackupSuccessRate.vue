@@ -2,9 +2,10 @@
   <div>
     <div class='flex-center ' style='justify-content: space-between'>
       <div>
-        <a-progress :width='110' type='circle' :percent='detail.successRatio'>
+        <a-progress :width='110' type='circle' :percent='detail.successRatio'
+                    :strokeColor='{"0%":"#0055FF", "100%":"#59ABFF"}'>
           <template #format='percent'>
-            <span>{{ percent }}%</span>
+            <span style='color:black;font-weight:bold'>{{ percent }}%</span>
           </template>
         </a-progress>
       </div>

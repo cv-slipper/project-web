@@ -10,19 +10,38 @@
         <ul>
           <li v-for='(item,index) in labelList' :key='index'>
             <span class='label'>{{ item.label }}</span>
-            <span class='content'>{{ getValue(item.value) }} </span>
+            <span class='content'>{{ getValue(item.value) }}</span>
+          </li>
+          <li style='display:block'>
+            <div>失败原因/等待原因：</div>
+            <div>
+              <a-input type='textarea' :auto-size='{minRows:4,maxRows:5}' disabled></a-input>
+            </div>
           </li>
         </ul>
         <div class='buttons mt-20'>
-          <a-button class='ml-10 warning-btn' @click='confirm("pause","暂停")'>
+
+          <a-button class='ml-10' disabled v-if='judgeBtnPermission("pausedStatusList")'>
             <a-icon type='pause' style='font-size:14px' />
             暂停
           </a-button>
-          <a-button class='ml-10 success-btn' @click='confirm("play","继续")'>
+          <a-button v-else class='ml-10 warning-btn' @click='confirm("pause","暂停")'>
+            <a-icon type='pause' style='font-size:14px' />
+            暂停
+          </a-button>
+          <a-button class='ml-10 ' disabled v-if='judgeBtnPermission("playStatusList")'>
             <a-icon type='caret-right' />
             继续
           </a-button>
-          <a-button class='ml-10 error-btn' @click='confirm("stop","终止")'>
+          <a-button v-else class='ml-10 success-btn' @click='confirm("play","继续")'>
+            <a-icon type='caret-right' />
+            继续
+          </a-button>
+          <a-button class='ml-10' disabled v-if='judgeBtnPermission("stopStatusList")'>
+            <a-icon type='stop' />
+            终止
+          </a-button>
+          <a-button v-else class='ml-10 error-btn' @click='confirm("stop","终止")'>
             <a-icon type='stop' />
             终止
           </a-button>
@@ -45,7 +64,80 @@ export default {
     },
     labelList: {
       type: Array,
-      default: () => []
+      default: () => [
+        {
+          label: '作业ID：',
+          value: 'jobId'
+        },
+        {
+          label: '操作类型：',
+          value: 'type'
+        },
+        {
+          label: '备份域：',
+          value: 'domain'
+        },
+        {
+          label: '相关应用系统/分行：',
+          value: 'applicationSystem'
+        },
+        {
+          label: '客户端：',
+          value: 'client'
+        },
+        {
+          label: '代理类型：',
+          value: 'agentType'
+        },
+        {
+          label: '备份集：',
+          value: 'none'
+        },
+        {
+          label: '子客户端：',
+          value: 'subclientName'
+        },
+        {
+          label: 'Instance：',
+          value: 'instanceName'
+        },
+        {
+          label: '作业类型：',
+          value: 'jobType'
+        },
+        {
+          label: '阶段：',
+          value: 'currentPhaseName'
+        },
+        {
+          label: '开始时间：',
+          value: 'jobStartTime'
+        },
+        {
+          label: '经过时长：',
+          value: 'duration'
+        },
+        {
+          label: '存储策略：',
+          value: 'storagePolicyName'
+        },
+        {
+          label: '应用程序大小：',
+          value: 'sizeOfApplication'
+        },
+        {
+          label: '数据写入量：',
+          value: 'dataWritten'
+        },
+        {
+          label: '介质服务器：',
+          value: 'mediaAgent'
+        },
+        {
+          label: '状态：',
+          value: 'state'
+        }
+      ]
     },
     id: {
       type: String | Number,
@@ -69,7 +161,10 @@ export default {
   data() {
     return {
       detail: {},
-      detailLoading: false
+      detailLoading: false,
+      pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
+      playStatusList: ['Suspended'],
+      stopStatusList: ['Running', 'Waiting', 'Queued', 'Pending', 'Suspended', 'Suspend']
     }
   },
   methods: {
@@ -78,7 +173,10 @@ export default {
      */
     async pauseWork() {
       try {
-        let params = {}
+        let params = {
+          domain: this.domain,
+          jobIds: this.id
+        }
         let res = await pauseWork(params)
         if (res.code == 200) {
           this.$message.success('暂停作业成功')
@@ -87,7 +185,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch (e) {
-
+        this.$message.error('暂停作业失败')
       }
     },
     /**
@@ -95,16 +193,19 @@ export default {
      */
     async playWork() {
       try {
-        let params = {}
+        let params = {
+          domain: this.domain,
+          jobIds: this.id
+        }
         let res = await playWork(params)
         if (res.code == 200) {
-          this.$message.success('暂停作业成功')
+          this.$message.success('恢复作业成功')
           this.getWorkDetail()
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
-
+        this.$message.error('恢复作业失败')
       }
     },
     /**
@@ -133,17 +234,30 @@ export default {
      */
     async stopWork() {
       try {
-        let params = {}
+        let params = {
+          domain: this.domain,
+          jobIds: this.id
+        }
         let res = await stopWork(params)
         if (res.code == 200) {
-          this.$message.success('暂停作业成功')
+          this.$message.success('终止作业成功')
           this.getWorkDetail()
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
-
+        this.$message.error('终止作业失败')
       }
+    },
+    /**
+     * 判断按钮权限
+     */
+    judgeBtnPermission(key) {
+      let isTrue = true
+      if (Object.keys(this.detail).length > 0) {
+        isTrue = !this[key].includes(this.detail.state)
+      }
+      return isTrue
     },
     /**
      * 确认方法
@@ -205,8 +319,15 @@ ul {
   margin: 0 auto;
 
   li {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
     span {
-      width: 50%
+      width: 50%;
+      display: block;
+      float: left;
+      text-align: left;
     }
 
     .content {

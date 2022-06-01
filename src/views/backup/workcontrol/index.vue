@@ -242,10 +242,6 @@ export default {
         {
           label: '状态：',
           value: 'state'
-        },
-        {
-          label: '失败原因/等待原因：',
-          value: 'none'
         }
       ],
       selectedRowKeys: [],

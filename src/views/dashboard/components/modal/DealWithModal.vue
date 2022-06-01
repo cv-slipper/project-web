@@ -5,7 +5,10 @@
       <span class='ml-10'>处理作业</span>
     </div>
     <div>
-      <a-input type='area' v-model='reason'></a-input>
+      <div class='label'>处理描述：</div>
+    </div>
+    <div class='mt-10'>
+      <a-input type='textarea' :auto-size='{minRows:4,maxRows:6}' v-model='reason'></a-input>
     </div>
   </a-modal>
 </template>
