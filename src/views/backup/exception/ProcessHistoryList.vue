@@ -1,216 +1,266 @@
 <template>
-  <a-card :bordered="false">
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline" @keyup.enter.native="searchQuery">
-        <a-row :gutter="24">
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="关键字">
-              <a-input placeholder="请输入关键字" v-model="queryParam.content"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="处理人">
-              <j-select-user-by-dep placeholder="请选择处理人" v-model="queryParam.createBy"/>
-            </a-form-item>
-          </a-col>
-          <a-col :xl="10" :lg="11" :md="12" :sm="24">
-            <a-form-item label="处理日期">
-              <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间" class="query-group-cust" v-model="queryParam.createTime_begin"></j-date>
-              <span class="query-group-split-cust"></span>
-              <j-date :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" class="query-group-cust" v-model="queryParam.createTime_end"></j-date>
-            </a-form-item>
-          </a-col>
-          <template v-if="toggleSearchStatus">
+  <div>
 
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <!--              <a @click="handleToggleSearch" style="margin-left: 8px">-->
-              <!--                {{ toggleSearchStatus ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>-->
-              <!--              </a>-->
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 查询区域-END -->
-
-    <!-- 操作按钮区域 -->
-    <div class="table-operator">
-      <!--      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
-      <a-button type="primary" icon="download" @click="handleExportXls('处理历史')">导出</a-button>
-      <!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">-->
-      <!--        <a-button type="primary" icon="import">导入</a-button>-->
-      <!--      </a-upload>-->
-      <!--      <a-dropdown v-if="selectedRowKeys.length > 0">-->
-      <!--        <a-menu slot="overlay">-->
-      <!--          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>-->
-      <!--        </a-menu>-->
-      <!--        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>-->
-      <!--      </a-dropdown>-->
-    </div>
-
-    <!-- table区域-begin -->
-    <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+    <div class='searchParams'>
+      <div class='form-item'>
+        <div class='label ml-5'>异常类型：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in exceptionTypeList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>严重程度：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in severityList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>备份域：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in domainList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>应用系统／分行：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in branchList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>处理状态：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in processStatusList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>处理人：</div>
+        <div class='content ml-5'>
+          <a-select style='width:100px'>
+            <a-select-option v-for='item in processUserList' :value='item.value' :key='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
       </div>
-
+    </div>
+    <div class='searchParams'>
+      <div class='form-item'>
+        <div class='label'>异常发生时间：</div>
+        <div class='content'>
+          <a-range-picker></a-range-picker>
+        </div>
+        <div class='label ml-10'>处理时间：</div>
+        <div class='content'>
+          <a-range-picker></a-range-picker>
+        </div>
+        <a-button type='primary ml-10'>查询</a-button>
+      </div>
+    </div>
+    <div class='searchParams'>
+      <div class='form-item'>
+        <div class='label'>
+          <a-button type='primary'>导出</a-button>
+        </div>
+      </div>
+    </div>
+    <div class='table-box' style='padding:0px 20px'>
       <a-table
-        ref="table"
-        size="middle"
-        bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        class="j-table-force-nowrap"
-        @change="handleTableChange">
-
-        <span slot="contentSlot" slot-scope="text">
-          <j-ellipsis :length="60" :value="text"/>
-        </span>
-        <span slot="reasonSlot" slot-scope="text">
-          <j-ellipsis :length="50" :value="text"/>
-        </span>
-        <template slot="htmlSlot" slot-scope="text">
-          <div v-html="text"></div>
+        :data-source='tableData'
+        :columns='columns'
+        :loading='loading'
+        :pagination='pagination'
+        :scroll='{x:"100%"}'
+      >
+        <template #action='row'>
+          <div>
+            <a-button type='link'>详情</a-button>
+          </div>
         </template>
-        <template slot="imgSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
-          <img v-else :src="getImgView(text)" height="25px" alt="" style="max-width:80px;font-size: 12px;font-style: italic;"/>
-        </template>
-        <template slot="fileSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
-          <a-button
-            v-else
-            :ghost="true"
-            type="primary"
-            icon="download"
-            size="small"
-            @click="uploadFile(text)">
-            下载
-          </a-button>
-        </template>
-
-        <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
-
-          <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </span>
-
       </a-table>
     </div>
-
-    <processHistory-modal ref="modalForm" @ok="modalFormOk"></processHistory-modal>
-  </a-card>
+  </div>
 </template>
-
 <script>
-
-  import '@/assets/less/TableExpand.less'
-  import { mixinDevice } from '@/utils/mixin'
-  import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import ProcessHistoryModal from './modules/ProcessHistoryModal'
-  import JDate from '@/components/jeecg/JDate.vue'
-  import JSelectUserByDep from '@/components/jeecgbiz/JSelectUserByDep'
-  import JEllipsis from '@/components/jeecg/JEllipsis'
-
-  export default {
-    name: "ProcessHistoryList",
-    mixins:[JeecgListMixin, mixinDevice],
-    components: {
-      JEllipsis,
-      JDate,
-      ProcessHistoryModal,
-      JSelectUserByDep
-    },
-    data () {
-      return {
-        description: '处理历史管理页面',
-        // 表头
-        columns: [
-          {
-            title: '序号',
-            dataIndex: '',
-            key:'rowIndex',
-            width:60,
-            align:"center",
-            customRender:function (t,r,index) {
-              return parseInt(index)+1;
-            }
-          },
-          {
-            title:'处理内容',
-            align:"left",
-            width:650,
-            dataIndex: 'content',
-            scopedSlots: {customRender:'contentSlot'}
-          },
-          {
-            title:'处理原因',
-            align:"center",
-            width: 450,
-            dataIndex: 'reason',
-            scopedSlots: {customRender:'reasonSlot'}
-          },
-          {
-            title:'处理人',
-            align:"center",
-            dataIndex: 'createBy_dictText'
-          },
-          {
-            title:'处理日期',
-            align:"center",
-            dataIndex: 'createTime'
-          },
-          // {
-          //   title: '操作',
-          //   dataIndex: 'action',
-          //   align:"center",
-          //   // fixed:"right",
-          //   width:147,
-          //   scopedSlots: { customRender: 'action' }
-          // }
-        ],
-        url: {
-          list: "/processhistory/list",
-          delete: "/processhistory/delete",
-          deleteBatch: "/processhistory/deleteBatch",
-          exportXlsUrl: "/processhistory/exportXls",
-          importExcelUrl: "processhistory/importExcel",
+export default {
+  data() {
+    return {
+      processUserList: [],
+      exceptionTypeList: [
+        {
+          value: '',
+          label: '全部'
         },
-        dictOptions:{},
-      }
-    },
-    computed: {
-      importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
-      },
-    },
-    methods: {
-      initDictConfig(){
+        {
+          value: '1',
+          label: '系统异常'
+        },
+        {
+          value: '2',
+          label: '业务异常'
+        }
+      ],
+      severityList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '1',
+          label: '一般'
+        },
+        {
+          value: '2',
+          label: '严重'
+        }
+      ],
+      domainList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '1',
+          label: '系统'
+        },
+        {
+          value: '2',
+          label: '业务'
+        }
+      ],
+      branchList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '1',
+          label: '系统'
+        },
+        {
+          value: '2',
+          label: '业务'
+        }
+      ],
+      processStatusList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '1',
+          label: '未处理'
+        },
+        {
+          value: '2',
+          label: '已处理'
+        }
+      ],
+      columns: [
+        {
+          title: '序号',
+          type: 'index',
+          width: 80,
+          align: 'center',
+          customRender: (text, row, index) => {
+            return index + 1
+          }
+        },
+        {
+          title: '异常ID',
+          key: 'exceptionId',
+          dataIndex: 'exceptionId',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '严重程度',
+          key: 'severity',
+          dataIndex: 'severity',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '备份域',
+          key: 'domain',
+          dataIndex: 'domain',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '应用系统／分行',
+          key: 'branch',
+          dataIndex: 'branch',
+          align: 'center',
+          width: 200
+        },
+        {
+          title: '发生时间',
+          key: 'occurTime',
+          dataIndex: 'occurTime',
+          align: 'center',
+          width: 200
+        },
+        {
+          title: '异常类型',
+          key: 'exceptionType',
+          dataIndex: 'exceptionType',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '描述',
+          key: 'description',
+          dataIndex: 'description',
+          align: 'center',
+          width: 200
+        },
+        {
+          title: '处理状态',
+          key: 'processStatus',
+          dataIndex: 'processStatus',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '处理人',
+          key: 'processUser',
+          dataIndex: 'processUser',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '处理内容',
+          key: 'processContent',
+          dataIndex: 'processContent',
+          align: 'center',
+          width: 200
+        },
+        {
+          title: '操作',
+          key: 'action',
+          align: 'center',
+          width: 200,
+          scopedSlots: {
+            customRender: 'action'
+          }
+        }
+
+      ],
+      tableData: [{}],
+      loading: false,
+      pagination: {
+        pageSize: 10,
+        current: 1,
+        total: 0,
+        showTotal: total => {
+          return `共 ${total} 条`
+        }
       }
     }
   }
+}
 </script>
-<style scoped>
-  @import '~@assets/less/common.less';
-</style>

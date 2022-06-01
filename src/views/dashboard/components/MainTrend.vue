@@ -2,8 +2,8 @@
   <div style='height:100%;'>
     <div class='tip flex-center'>
       <span
-        :class='{one:type=="one",two:type=="two",third:type=="third"}'>{{ getYestDayData() }}</span>
-      <span class='ml-10 info' v-if='type!="third"'>同期 {{ getPercent() }}</span>
+        :class='{one:type=="one",two:type=="two",third:type=="third"}'>{{ yestDayNum }}</span>
+      <span class='ml-10 info' v-if='type!="third"'>同期 {{ yestPercent }}</span>
     </div>
     <div style='width:100%;height:calc(100% - 25px)'>
       <div :id='idName' style='width:100%;height:calc(100% )'></div>
@@ -27,6 +27,8 @@ export default {
 
   data() {
     return {
+      yestDayNum: 0,
+      yestPercent: '+0%',
       option: {
         grid: {
           top: '20px',
@@ -205,6 +207,8 @@ export default {
       }
       this.option.tooltip.formatter = formatter
       this.type == 'third' && this.option.series.splice(1, 1)
+      this.yestDayNum = this.getYestDayData()
+      this.yestPercent = this.getPercent()
       myChart.setOption(this.option)
       myChart.resize()
       window.addEventListener('resize', () => {

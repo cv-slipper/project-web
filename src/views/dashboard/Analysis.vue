@@ -291,7 +291,13 @@ import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageMod
 import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
 import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
-import { getDomainScale, getDomainTrend, getSystemList, getExceptionList } from '@api/modules/dashboard/analysis.js'
+import {
+  getDomainScale,
+  getDomainTrend,
+  getSystemList,
+  getExceptionList,
+  handleException
+} from '@api/modules/dashboard/analysis.js'
 
 export default {
   name: 'Analysis',
@@ -458,7 +464,8 @@ export default {
       },
       systemList: [],
       timer: null,
-      systemLoading: false
+      systemLoading: false,
+      dealWithRow: {}
     }
   },
 
@@ -475,6 +482,25 @@ export default {
 
   },
   methods: {
+    /**
+     * 处理异常
+     */
+    async handleException(params) {
+      
+      try {
+        const res = await handleException(params)
+        if (res.code == 200) {
+          this.$message.success('处理成功')
+          this.getExceptionList()
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('处理失败')
+      } finally {
+        this.dealWithVisible = false
+      }
+    },
     /**
      * 获取异常信息列表
      * @param {Number} page
@@ -768,7 +794,12 @@ export default {
       this.dealWithVisible = true
     },
     dealWithOk(reason) {
-      console.log(reason)
+      let params = {
+        ids: this.dealWithRow.id,
+        type: 1,
+        handledDesc: reason
+      }
+      this.handleException(params)
     },
     openErrorMessageModal() {
       console.log(123)

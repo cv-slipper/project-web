@@ -59,3 +59,15 @@ export function getExceptionList(data) {
     data
   })
 }
+
+/**
+ * 处理异常信息
+ * @param {Object} data
+ */
+export function handleException(params) {
+  return axios({
+    url: '/job/handled',
+    method: 'get',
+    params
+  })
+}

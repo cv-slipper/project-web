@@ -19,6 +19,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    require: {
+      type: Boolean,
+      default: true
     }
   },
   name: 'DealWithModal',
@@ -29,6 +33,10 @@ export default {
   },
   methods: {
     handleOk() {
+      if (this.require && !this.reason) {
+        this.$message.warning('请填写处理描述')
+        return
+      }
       this.$emit('ok', this.reason)
     },
     handleCancel() {

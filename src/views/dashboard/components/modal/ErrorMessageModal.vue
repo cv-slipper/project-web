@@ -22,9 +22,13 @@
         </div>
         <div class='label ml-10'>备份域：</div>
         <div class='content'>
-          <a-select v-model='searchParams.backupDomain' style='width:200px'>
-            <a-select-option v-for='item in backupDomains' :key='item.value' :value='item.value'
-                             :label='item.label'></a-select-option>
+          <a-select v-model='searchParams.domain' style='width:200px'>
+            <a-select-option
+              v-for='(item,index) in backupDomains'
+              :key='index'
+              :value='item.id'
+            >{{ item.name }}
+            </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>应用系统／分行：</div>
@@ -45,8 +49,8 @@
     <div class='searchParams flex-between'>
       <div></div>
       <div>
-        <a-button type='link'>批量处理</a-button>
-        <a-button type='link'>批量忽略</a-button>
+        <a-button type='link' @click='dealWith("1")'>批量处理</a-button>
+        <a-button type='link' @click='dealWith("2")'>批量忽略</a-button>
       </div>
     </div>
     <div class='table-box'>
@@ -56,14 +60,16 @@
         :loading='loading'
         :bordered='true'
         :scroll='{x:"100%"}'
+        rowKey='id'
         :pagination='pagination'
         @change='tableChange'
-      >
+        :row-selection='{selectedRowKeys,onChange:rowSelectionChange}'>
+        >
         <template #action='row'>
           <div class='flex-between'>
             <a-button type='link'>详情</a-button>
-            <a-button type='link'>处理</a-button>
-            <a-button type='link'>忽略</a-button>
+            <a-button type='link' @click='rowDealWith(1,row)'>处理</a-button>
+            <a-button type='link' @click='rowDealWith(2,row)'>忽略</a-button>
           </div>
         </template>
         <template #tooltip='data'>
@@ -74,15 +80,20 @@
           </a-tooltip>
         </template>
       </a-table>
+      <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='handleOk'></deal-with-modal>
     </div>
   </a-modal>
 </template>
 
 <script>
-import { getExceptionList } from '@api/modules/dashboard/analysis.js'
+import { getExceptionList, handleException } from '@api/modules/dashboard/analysis.js'
+import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 
 export default {
   name: 'ErrorMessageModal',
+  components: {
+    DealWithModal
+  },
   props: {
     visible: {
       type: Boolean,
@@ -102,10 +113,18 @@ export default {
       if (val) {
         this.getExceptionList()
       }
+    },
+    domain: {
+      immediate: true,
+      handler(val) {
+        this.searchParams.domain = val
+      }
     }
   },
   data() {
     return {
+      dealWithVisible: false,
+      selectedRowKeys: [],
       columns: [
         {
           title: '异常ID',
@@ -180,11 +199,23 @@ export default {
       ],
       data: [],
       searchParams: {
-        type: []
+        type: [],
+        domain: ''
       },
-      backupDomains: [],
+      type: '',
+      backupDomains: [
+        {
+          id: 'prod',
+          name: '生产域'
+        },
+        {
+          id: 'branch',
+          name: '分行域'
+        }
+      ],
       types: [],
       levels: [],
+      ids: [],
       appSystems: [],
       loading: false,
       pagination: {
@@ -195,6 +226,26 @@ export default {
     }
   },
   methods: {
+    /**
+     * 处理异常
+     */
+    async handleException(params) {
+      this.loading = true
+      try {
+        const res = await handleException(params)
+        if (res.code == 200) {
+          this.$message.success('处理成功')
+          this.getExceptionList()
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('处理失败')
+      } finally {
+        this.loading = false
+        this.dealWithVisible = false
+      }
+    },
     /**
      * 获取异常信息列表
      */
@@ -220,12 +271,78 @@ export default {
         this.loading = false
       }
     },
+    handleOk(reason) {
+      try {
+        let params = {
+          ids: this.ids.join(','),
+          type: this.type,
+          handledDesc: reason
+        }
+        this.handleException(params)
+      } catch (e) {
+
+      }
+    },
+    dealWith(type) {
+      this.type = type
+      if (this.selectedRowKeys.length == 0) {
+        this.$message.warning('请选择需要处理的异常信息')
+        return
+      } else {
+        if (type == 1) {
+          this.ids = this.selectedRowKeys
+          this.dealWithVisible = true
+        } else {
+          this.$confirm(
+            {
+              content: '确定要忽略选中的异常信息吗？',
+              title: '提示',
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+              onOk: () => {
+                let params = {
+                  ids: this.selectedRowKeys.join(','),
+                  type: type
+                }
+                this.handleException(params)
+              }
+            })
+        }
+      }
+    },
+    rowDealWith(type) {
+      this.type = type
+      if (type == 1) {
+        this.ids = [this.row.id]
+        this.dealWithVisible = true
+      } else {
+        this.$confirm(
+          {
+            content: '确定要忽略该异常信息吗？',
+            title: '提示',
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            onOk: () => {
+              let params = {
+                ids: this.row.id,
+                type: type
+              }
+              this.handleException(params)
+            }
+          })
+      }
+    },
     cancel() {
       this.$emit('cancel')
     },
     tableChange(pagination) {
       this.pagination.current = pagination.current
       this.getExceptionList()
+    },
+    rowSelectionChange(selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
     }
   }
 }
