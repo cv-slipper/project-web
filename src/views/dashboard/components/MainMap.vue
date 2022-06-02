@@ -54,20 +54,21 @@ export default {
   },
   mounted() {
     this.initMap()
-
-
   },
   methods: {
     checkBranch(item) {
       this.branchItem = item
       if (item) {
         this.map.setZoomAndCenter(7, item.center)
+        this.map.remove(this.allMarkers)
+        this.allMarkers = this.initAllMarker()
+        this.map.add(this.allMarkers)
       } else {
         let zoom = this.map.getZoom()
-        if (zoom == 3.6) {
-          this.map.setZoomAndCenter(3.59, [116.46, 39.92])
+        if (zoom == 3.8) {
+          this.map.setZoomAndCenter(3.79, [108.316721, 37.38724])
         } else {
-          this.map.setZoomAndCenter(3.6, [116.46, 39.92])
+          this.map.setZoomAndCenter(3.8, [108.316721, 37.38724])
         }
 
       }
@@ -76,31 +77,52 @@ export default {
     openBranchModal() {
       this.mapListVisible = true
     },
+    // 防抖函数
+    debounce(fn, ms) {
+      let timer = null
+      return function() {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          fn()
+        }, ms)
+      }
+    },
+    dealWithMarkers() {
+      this.map.remove(this.bigAreaMarkers)
+      this.map.remove(this.allMarkers)
+      this.allMarkers = this.initAllMarker()
+      let zoom = this.map.getZoom()
+      if (zoom >= 4.5) {
+        this.map.remove(this.bigAreaMarkers)
+        this.map.remove(this.allMarkers)
+        this.map.add(this.allMarkers)
+      } else {
+        this.map.remove(this.allMarkers)
+        this.map.remove(this.bigAreaMarkers)
+        this.map.add(this.bigAreaMarkers)
+
+      }
+    },
     initMap() {
       this.map = new AMap.Map('container', {
-        zoom: 3.6,//级别
+        zoom: 3.8,//级别
         resizeEnable: true,
-        center: [116.46, 39.92],//中心点坐标
-        features: ['bg', 'road', 'building']//显示样式
+        center: [108.316721, 37.38724],//中心点坐标
+        features: ['bg', 'road', 'building'],//显示样式
+        zooms: [3.8, 15]
+
       })
       this.bigAreaMarkers = this.initAreaMarker()
       this.allMarkers = this.initAllMarker()
       this.map.add(this.bigAreaMarkers)
-      this.map.on('zoomchange', (e) => {
-        this.map.remove(this.bigAreaMarkers)
-        this.map.remove(this.allMarkers)
-        this.allMarkers = this.initAllMarker()
-        let zoom = this.map.getZoom()
-        if (zoom >= 4.8) {
-          this.map.remove(this.bigAreaMarkers)
-          this.map.remove(this.allMarkers)
-          this.map.add(this.allMarkers)
-        } else {
-          this.map.remove(this.allMarkers)
-          this.map.remove(this.bigAreaMarkers)
-          this.map.add(this.bigAreaMarkers)
 
-        }
+      this.map.on('zoomend', (e) => {
+        this.debounce(this.dealWithMarkers, 10)()
+      })
+      this.map.on('zoomchange', () => {
+        console.log(this.map.getZoom())
       })
     },
     initAreaMarker() {
@@ -111,7 +133,9 @@ export default {
         var marker = new AMap.Marker({
           position: this.areaPoints[i].center,
           content: normal,
-          visible: true
+          visible: true,
+          offset: new AMap.Pixel(-32, -32)
+
         })
         marker.setLabel(
           {
@@ -122,7 +146,7 @@ export default {
 
         marker.on('click', (e) => {
           this.litttleAreaPoints = this.areaPoints[i].children
-          this.map.setZoomAndCenter(6.59, this.areaPoints[i].center)
+          this.map.setZoomAndCenter(6, this.areaPoints[i].center)
         })
         markers.push(marker)
       }
@@ -136,7 +160,8 @@ export default {
         let marker = new AMap.Marker({
           position: this[key][i].center,
           content: normal,
-          visible: true
+          visible: true,
+          offset: new AMap.Pixel(-25, -25)
         })
         let isActive = this[key][i].name == (this.branchItem ? this.branchItem.name : 'null') ? 'active-label' : ''
         marker.setLabel(

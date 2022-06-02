@@ -2,7 +2,7 @@
   <div style='height:100%;'>
     <div class='tip flex-center'>
       <span
-        :class='{one:type=="one",two:type=="two",third:type=="third"}'>{{ yestDayNum }}</span>
+        :class='{one:type=="one",two:type=="two",third:type=="third"}'>昨日：{{ yestDayNum }}</span>
       <span class='ml-10 info' v-if='type!="third"'>同期 {{ yestPercent }}</span>
     </div>
     <div style='width:100%;height:calc(100% - 25px)'>

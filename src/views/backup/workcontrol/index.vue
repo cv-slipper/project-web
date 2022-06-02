@@ -414,7 +414,7 @@ export default {
         total: 0
       },
       domain: 'prod',
-      jobType: [],
+      jobType: ['Backup', 'Restore', 'Others'],
       branchId: [],
       state: [],
       updateTime: '',

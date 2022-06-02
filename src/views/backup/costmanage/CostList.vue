@@ -13,7 +13,8 @@
           </div>
           <div class='flex-center fl ml-20'>
             <div class='label fl mr-10'>日期:</div>
-            <a-date-picker class='fl ml-10' v-model='searchParms.startTime' value-format='YYYY-MM-DD' />
+            <a-date-picker :disabled-date='disabledTime' class='fl ml-10' v-model='searchParms.startTime'
+                           value-format='YYYY-MM-DD' />
           </div>
           <a-button type='primary' class='ml-40' @click='search'>查询</a-button>
         </a-col>
@@ -35,6 +36,7 @@
 
 import BranchSearch from '@comp/searchParms/BranchSearch'
 import DailyBillDetail from '@views/backup/costmanage/components/DailyBillDetail'
+import moment from 'moment'
 
 export default {
   name: 'CostList',
@@ -54,6 +56,9 @@ export default {
 
   },
   methods: {
+    disabledTime(date) {
+      return date && date >= moment().endOf('day')
+    },
     /**
      * 查询
      */

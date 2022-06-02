@@ -98,11 +98,11 @@ export default {
       }
       if (index >= 6 && index < 8) {
         style.left = 25 + 15 * (index - 6) + '%'
-        style.top = 40 + 10 * (index - 6) + '%'
+        style.top = 35 + 15 * (index - 6) + '%'
       }
       if (index == 8) {
-        style.left = 20 + 15 * (index - 8) + '%'
-        style.top = 57 + 14 * (index - 8) + '%'
+        style.left = 22 + 15 * (index - 8) + '%'
+        style.top = 54 + 14 * (index - 8) + '%'
       }
       return style
     }

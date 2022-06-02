@@ -8,16 +8,18 @@
       <div class='form-item'>
         <div class='label'>异常类型：</div>
         <div class='content'>
-          <a-select mode='multiple' v-model='searchParams.type' style='width:200px'>
+          <a-select mode='multiple' v-model='exceptionTypes' style='width:200px'>
             <a-select-option v-for='item in types' :key='item.value' :value='item.value'
-                             :label='item.label'></a-select-option>
+            >{{ item.label }}
+            </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>严重程度：</div>
         <div class='content'>
-          <a-select mode='multiple' v-model='searchParams.level' style='width:200px'>
+          <a-select mode='multiple' v-model='severities' style='width:200px'>
             <a-select-option v-for='item in levels' :key='item.value' :value='item.value'
-                             :label='item.label'></a-select-option>
+            >{{ item.label }}
+            </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>备份域：</div>
@@ -33,16 +35,17 @@
         </div>
         <div class='label ml-10'>应用系统／分行：</div>
         <div class='content'>
-          <a-select v-model='searchParams.appSystem' style='width:200px'>
+          <a-select v-model='searchParams.system' style='width:200px'>
             <a-select-option
-              v-for='item in appSystems'
-              :key='item.value'
-              :value='item.value'
-              :label='item.label'></a-select-option>
+              v-for='(item,index) in systems'
+              :key='index'
+              :value='item.id'
+            >{{ item.name }}
+            </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10 '>
-          <a-button type='primary'>查询</a-button>
+          <a-button type='primary' @click='search'>查询</a-button>
         </div>
       </div>
     </div>
@@ -63,13 +66,13 @@
         rowKey='id'
         :pagination='pagination'
         @change='tableChange'
-        :row-selection='{selectedRowKeys,onChange:rowSelectionChange}'>
+        :row-selection='{selectedRowKeys,onChange:rowSelectionChange,columnWidth:30}'>
         >
         <template #action='row'>
-          <div class='flex-between'>
-            <a-button type='link'>详情</a-button>
-            <a-button type='link' @click='rowDealWith(1,row)'>处理</a-button>
-            <a-button type='link' @click='rowDealWith(2,row)'>忽略</a-button>
+          <div class=''>
+            <span style='color:#1890FF;cursor:pointer' class='fl' type='link'>详情</span>
+            <span style='color:#1890FF;cursor:pointer' class='fl ml-5' type='link' @click='rowDealWith(1,row)'>处理</span>
+            <span style='color:#1890FF;cursor:pointer' class='fl ml-5' type='link' @click='rowDealWith(2,row)'>忽略</span>
           </div>
         </template>
         <template #tooltip='data'>
@@ -88,11 +91,13 @@
 <script>
 import { getExceptionList, handleException } from '@api/modules/dashboard/analysis.js'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
+import BranchSearch from '@comp/searchParms/BranchSearch'
 
 export default {
   name: 'ErrorMessageModal',
   components: {
-    DealWithModal
+    DealWithModal,
+    BranchSearch
   },
   props: {
     visible: {
@@ -123,7 +128,10 @@ export default {
   },
   data() {
     return {
+      severities: [],
+      systems: [],
       dealWithVisible: false,
+      exceptionTypes: [],
       selectedRowKeys: [],
       columns: [
         {
@@ -131,7 +139,7 @@ export default {
           key: 'id',
           dataIndex: 'id',
           align: 'center',
-          width: 80,
+          width: 60,
           scopedSlots: {
             customRender: 'tooltip'
           }
@@ -141,14 +149,14 @@ export default {
           key: 'severity',
           dataIndex: 'severity',
           align: 'center',
-          width: 100
+          width: 60
 
         },
         {
           title: '备份域',
           key: 'domain',
           dataIndex: 'domain',
-          width: 80,
+          width: 50,
           align: 'center'
         },
         {
@@ -166,7 +174,7 @@ export default {
           key: 'occurrenceTime',
           dataIndex: 'occurrenceTime',
           align: 'center',
-          width: 80,
+          width: 110,
           scopedSlots: {
             customRender: 'tooltip'
           }
@@ -177,11 +185,11 @@ export default {
           key: 'exceptionType',
           dataIndex: 'exceptionType',
           align: 'center',
-          width: 100
+          width: 60
         }, {
           title: '描述',
           key: 'description',
-          width: 120,
+          width: 180,
           dataIndex: 'description',
           align: 'center',
           scopedSlots: {
@@ -191,7 +199,7 @@ export default {
           title: '操作',
           key: 'action',
           align: 'center',
-          width: 160,
+          width: 80,
           scopedSlots: {
             customRender: 'action'
           }
@@ -213,8 +221,31 @@ export default {
           name: '分行域'
         }
       ],
-      types: [],
-      levels: [],
+      branchIds: [],
+      types: [
+        {
+          value: '异常作业',
+          label: '异常作业'
+        },
+        {
+          value: '异常事件',
+          label: '异常事件'
+        }
+      ],
+      levels: [
+        {
+          value: 'Failed',
+          label: '关键'
+        },
+        {
+          value: 'Complete with error/Pending',
+          label: '重要'
+        },
+        {
+          value: 'Complete with waring',
+          label: '一般'
+        }
+      ],
       ids: [],
       appSystems: [],
       loading: false,
@@ -257,7 +288,9 @@ export default {
           pageSize: this.pagination.pageSize,
           domain: this.domain,
           id: this.id,
-          ...this.searchParams
+          branchId: this.branchIds.map(item => item.id).join(','),
+          exceptionType: this.exceptionTypes.join(','),
+          state: this.severities.join(',')
         })
         if (res.code == 200) {
           this.data = res.result || []
@@ -311,10 +344,10 @@ export default {
         }
       }
     },
-    rowDealWith(type) {
+    rowDealWith(type, row) {
       this.type = type
       if (type == 1) {
-        this.ids = [this.row.id]
+        this.ids = [row.id]
         this.dealWithVisible = true
       } else {
         this.$confirm(
@@ -326,13 +359,18 @@ export default {
             type: 'warning',
             onOk: () => {
               let params = {
-                ids: this.row.id,
+                ids: row.id,
                 type: type
               }
               this.handleException(params)
             }
           })
       }
+    },
+    search() {
+      this.pagination.current = 1
+      this.selectedRowKeys = []
+      this.getExceptionList()
     },
     cancel() {
       this.$emit('cancel')

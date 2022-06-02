@@ -31,6 +31,13 @@ export default {
       reason: ''
     }
   },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.reason = ''
+      }
+    }
+  },
   methods: {
     handleOk() {
       if (this.require && !this.reason) {

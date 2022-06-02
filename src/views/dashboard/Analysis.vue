@@ -1,5 +1,5 @@
 <template>
-  <div style='height:calc(100% + 153px)'>
+  <div class='main'>
     <div class='tabs'>
       <div class='tab-list'>
         <a-tabs class='my-tabs' v-model='domain'>
@@ -168,8 +168,24 @@
             </div>
           </div>
           <div style='height:10px'></div>
-          <div class='table-box'>
-            <a-card :bordered='false'>
+          <div class='table-box' style='background:white;position:relative'>
+            <img
+              v-if='errorMessageTotal==0'
+              class='error-message-success'
+              src='@/assets/error-message-success-right.png' alt=''>
+            <div class='no-error-message ' style='padding-top:20px' v-if='errorMessageTotal==0'>
+              <div class='success-text'>
+                <div>
+                  <img src='@/assets/error-message-success-logo.png' alt='' />
+                  <span>当前无处理异常信息</span>
+                </div>
+              </div>
+              <div class='info-text mt-20'>如有未处理的异常信息，将会在此处进行提示，管理员需及时处理新增异常信息以保证系统正常运行。</div>
+              <div class='mt-20'>
+                <a-button type='primary' @click='gotoDealwith'>查看处理记录</a-button>
+              </div>
+            </div>
+            <a-card :bordered='false' v-else>
               <div slot='title'>
                 <div class='flex-center flex-between' style='height:32px'>
                   <div>
@@ -189,20 +205,8 @@
 
               </div>
               <div style='height:100%;overflow-y:scroll' class='my-scroll'>
-                <div class='no-error-message' v-if='errorMessageTotal==0'>
-                  <div class='success-text'>
-                    <div>
-                      <img src='@/assets/error-message-success-logo.png' alt='' />
-                      <span>当前无处理异常信息</span>
-                    </div>
-                  </div>
-                  <div class='info-text mt-20'>如有未处理的异常信息，将会在此处进行提示，管理员需及时处理新增异常信息以保证系统正常运行。</div>
-                  <div class='mt-20'>
-                    <a-button type='primary' @click='gotoDealwith'>查看处理记录</a-button>
-                  </div>
-                </div>
+
                 <a-table
-                  v-else
                   :columns='columns'
                   :data-source='data'
                   :loading='loading'
@@ -244,7 +248,7 @@
             <div slot='title'>
               <div>
                 <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日备份数据量</span>
+                <span class='ml-5'>每日备份数据量（TB）</span>
               </div>
             </div>
             <div style='width:100%;' class='chart'>
@@ -256,7 +260,7 @@
             <div slot='title'>
               <div>
                 <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日磁盘/云储存占用量</span>
+                <span class='ml-5'>每日磁盘/云储存占用量（TB）</span>
               </div>
             </div>
             <div style='width:100%;' class='chart'>
@@ -335,6 +339,11 @@ export default {
         }
       },
       immediate: true
+    },
+    '$route': {
+      handler: function(val) {
+        this.getDomainTrend()
+      }
     }
   },
   data() {
@@ -486,7 +495,7 @@ export default {
      * 处理异常
      */
     async handleException(params) {
-      
+
       try {
         const res = await handleException(params)
         if (res.code == 200) {
@@ -1185,5 +1194,22 @@ export default {
     font-size: 12px;
     color: rgba(173, 173, 173, 1)
   }
+}
+
+// 判断分辨率是否低于1920
+.main {
+  height: calc(100% - 40px);
+}
+
+@media screen and(max-width: 1440px) {
+  .main {
+    height: calc(100% + 193px);
+  }
+}
+
+.error-message-success {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 </style>

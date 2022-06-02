@@ -13,6 +13,7 @@
               placeholder='请选择月份'
               class='fl ml-10'
               v-model='searchParms.startTime'
+              :disabled-date='disabledDate'
               value-format='YYYY-MM' />
           </div>
           <a-button type='primary' class='ml-40' @click='search'>查询</a-button>
@@ -75,6 +76,7 @@ import { getCostMonthList } from '@/api/modules/backup/costManage/costMonth.js'
 import MonthPrintModal from '@views/backup/costmanage/components/modal/MonthPrintModal'
 import MonthBillDetail from '@views/backup/costmanage/components/MonthBillDetail'
 import { downloadFile } from '@/api/manage'
+import moment from 'moment'
 
 export default {
   name: 'CostList',
@@ -252,6 +254,9 @@ export default {
         }
 
       }
+    },
+    disabledDate(date) {
+      return date && date >= moment().endOf('month')
     },
     downloadAll() {
 

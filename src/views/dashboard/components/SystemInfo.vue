@@ -3,6 +3,12 @@
     <div class='loading' v-if='systemLoading'>
       <a-spin />
     </div>
+    <div class='floor'>
+      <img src='@/assets/floor.png' alt='' />
+    </div>
+    <div class='right-floor'>
+      <img src='@/assets/right-floor.png' alt='' />
+    </div>
     <div class='info-title'>
       <div class='name'>{{ systemItem.groupName }}</div>
     </div>
@@ -19,9 +25,14 @@
       <div class='right-border'></div>
     </div>
     <div class='system-list'>
-      <div class='item' v-for='(item,index) in systemList' :key='index' @cilck='updateDataByapp(item)'>
+      <div class='item' v-for='(item,index) in systemList' :key='index' @click='updateDataByapp(item)'>
         <div :class='["item-name",{normal:item.exceptionNum==0,error:item.exceptionNum!=0}]'>
-          {{ item.applicationSystem }}
+          <a-tooltip :title='item.applicationSystem'>
+            <div class='text-ellipsis'>
+              {{ item.applicationSystem }}
+            </div>
+          </a-tooltip>
+
         </div>
         <div class='error-num' v-if='item.exceptionNum!=0'>
           {{ item.exceptionNum }}
@@ -29,7 +40,7 @@
       </div>
       <div style='clear:both'></div>
     </div>
-    <error-message-modal :visible='errorVisible' :id='id'></error-message-modal>
+    <error-message-modal :visible='errorVisible' :id='id' @cancel='errorVisible = false'></error-message-modal>
   </div>
 </template>
 
@@ -296,5 +307,31 @@ export default {
   left: 0;
   right: 0;
   margin: auto
+}
+
+.right-floor {
+  width: 160px;
+  height: 130px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.floor {
+  width: 100px;
+  height: 80px;
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
