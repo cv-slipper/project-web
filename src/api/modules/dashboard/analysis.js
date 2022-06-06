@@ -54,7 +54,7 @@ export function getSystemDetail(param) {
  */
 export function getExceptionList(data) {
   return axios({
-    url: '/cvException/list',
+    url: '/cvException/page',
     method: 'post',
     data
   })
@@ -66,8 +66,8 @@ export function getExceptionList(data) {
  */
 export function handleException(params) {
   return axios({
-    url: '/job/handled',
-    method: 'get',
-    params
+    url: '/cvException/handle',
+    method: 'post',
+    data: params
   })
 }

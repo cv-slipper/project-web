@@ -169,6 +169,9 @@ export default {
         this.selectedKeys = obj.selectedKeys
         this.$emit('select', obj)
       },
+      click: obj => {
+        this.$emit('click', obj)
+      },
       openChange: this.onOpenChange
     }
 

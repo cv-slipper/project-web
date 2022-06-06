@@ -160,8 +160,8 @@
                 :system-list='systemList'
                 v-if='!systemItem'
                 :system-loading='systemLoading'
-                @gotoSystemInfo='gotoSystemInfo'></system-distribution>
-              <system-info v-else :system-item='systemItem' @back='systemBack'></system-info>
+                @gotoSystemInfo='gotoSystemInfo' ref='main'></system-distribution>
+              <system-info v-else :system-item='systemItem' @back='systemBack' ref='appInfo'></system-info>
             </div>
             <div v-else style='height: 100%'>
               <main-map></main-map>
@@ -273,7 +273,8 @@
       </div>
 
     </div>
-    <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'></error-message-modal>
+    <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'
+                         @dealWithSuccess='dealWithSuccess'></error-message-modal>
     <failed-work-modal :domain='domain' :visible='failedWorkVisible'
                        @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
@@ -501,6 +502,7 @@ export default {
         if (res.code == 200) {
           this.$message.success('处理成功')
           this.getExceptionList()
+          this.dealWithSuccess()
         } else {
           this.$message.error(res.message)
         }
@@ -801,6 +803,15 @@ export default {
     dealWith(row) {
       this.dealWithRow = row
       this.dealWithVisible = true
+    },
+    dealWithSuccess() {
+      if (this.systemItem) {
+        this.getSystemList()
+      } else {
+        this.$nextTick(() => {
+          this.$refs.mainInfo.getSystemDetail()
+        })
+      }
     },
     dealWithOk(reason) {
       let params = {

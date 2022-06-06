@@ -40,7 +40,8 @@
       </div>
       <div style='clear:both'></div>
     </div>
-    <error-message-modal :visible='errorVisible' :id='id' @cancel='errorVisible = false'></error-message-modal>
+    <error-message-modal :visible='errorVisible' :id='id' @cancel='errorVisible = false'
+                         @dealWidthSuccess='dealWithSuccess'></error-message-modal>
   </div>
 </template>
 
@@ -116,6 +117,9 @@ export default {
     },
     back() {
       this.$emit('back')
+    },
+    dealWithSuccess() {
+      this.getSystemDetail()
     }
   }
 }

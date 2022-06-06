@@ -177,6 +177,7 @@ export default {
     },
     // update_begin author:sunjianlei date:20191230 for: 解决外部链接打开失败的问题
     searchMethods(value) {
+      console.log(value, 'value')
       let route = this.searchMenuOptions.filter(item => item.id === value)[0]
       if (route.meta.internalOrExternal === true || route.component.includes('layouts/IframePageView')) {
         window.open(route.meta.url, '_blank')

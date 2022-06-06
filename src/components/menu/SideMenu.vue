@@ -12,6 +12,7 @@
         :menu='menus'
         :theme='theme'
         @select='onSelect'
+        @click='onClick'
         :mode='mode'
         :style='smenuStyle'>
       </s-menu>
@@ -70,6 +71,14 @@ export default {
   methods: {
     onSelect(obj) {
       this.$emit('menuSelect', obj)
+    },
+    onClick(obj) {
+      let linkList = ['/backup/reportCenter']
+      if (linkList.includes(obj.key)) {
+        window.open(obj.key)
+        this.$router.go(-1)
+      }
+
     }
   }
 }

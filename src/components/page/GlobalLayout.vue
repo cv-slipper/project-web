@@ -29,6 +29,7 @@
         :theme='navTheme'
         :collapsed='collapsed'
         :collapsible='true'></side-menu>
+
     </template>
     <!-- 下次优化这些代码 -->
     <template v-else>
@@ -48,8 +49,11 @@
           :theme='navTheme'
           :collapsed='false'
           :collapsible='true'></side-menu>
+
       </a-drawer>
+
     </template>
+
     <a-layout
       :class='[layoutMode, `content-width-${contentWidth}`]'
       :style="{ paddingLeft: fixSiderbar && isDesktop() ? `${sidebarOpened ? 200 : 80}px` : '0' }">
@@ -153,6 +157,7 @@ export default {
     },
     //update-begin-author:taoyan date:20190430 for:动态路由title显示配置的菜单title而不是其对应路由的title
     myMenuSelect(value) {
+      console.log(value, 'value')
       //此处触发动态路由被点击事件
       this.findMenuBykey(this.menus, value.key)
       this.$emit('dynamicRouterShow', value.key, this.activeMenu.meta.title)

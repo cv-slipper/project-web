@@ -267,10 +267,12 @@ export default {
         if (res.code == 200) {
           this.$message.success('处理成功')
           this.getExceptionList()
+          this.$emit('dealWithSuccess')
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
+        console.log(e)
         this.$message.error('处理失败')
       } finally {
         this.loading = false
@@ -293,7 +295,7 @@ export default {
           state: this.severities.join(',')
         })
         if (res.code == 200) {
-          this.data = res.result || []
+          this.data = res.result.list || []
         } else {
           this.$message.error(res.message)
         }
