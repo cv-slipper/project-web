@@ -162,7 +162,7 @@ export default {
   data() {
     return {
       pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
-      playStatusList: ['Suspended'],
+      playStatusList: ['Suspended', 'Pending'],
       stopStatusList: ['Running', 'Waiting', 'Queued', 'Pending', 'Suspended', 'Suspend'],
       pausedVisible: false,
       playVisible: false,

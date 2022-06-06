@@ -163,7 +163,7 @@ export default {
       detail: {},
       detailLoading: false,
       pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
-      playStatusList: ['Suspended'],
+      playStatusList: ['Suspended', 'Pending'],
       stopStatusList: ['Running', 'Waiting', 'Queued', 'Pending', 'Suspended', 'Suspend']
     }
   },

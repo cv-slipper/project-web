@@ -287,7 +287,7 @@ export default {
           current: this.pagination.current,
           pageSize: this.pagination.pageSize,
           domain: this.domain,
-          id: this.id,
+          appSystemId: this.id,
           branchId: this.branchIds.map(item => item.id).join(','),
           exceptionType: this.exceptionTypes.join(','),
           state: this.severities.join(',')
