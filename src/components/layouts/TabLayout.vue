@@ -18,7 +18,7 @@
         <span slot='tab' :pagekey='page.fullPath'>{{ page.meta.title }}</span>
       </a-tab-pane>
     </a-tabs>
-    <div style='margin: 20px 20px 0;margin-top:0;height:calc(100% - 40px)'>
+    <div class='boxMain' style='margin: 20px 20px 0;margin-top:0;height:calc(100% - 40px)'>
       <transition name='page-toggle'>
         <keep-alive v-if='multipage'>
           <router-view v-if='reloadFlag' />
@@ -414,5 +414,8 @@ export default {
   }
 }
 
+::v-deep .boxMain main {
+  height: 100% !important;
+}
 
 </style>

@@ -52,9 +52,21 @@ export function getSystemDetail(param) {
  * 获取异常信息列表
  * @param {Object} data
  */
-export function getExceptionList(data) {
+export function getExceptionPage(data) {
   return axios({
     url: '/cvException/page',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 获取异常信息列表
+ * @param {Object} data
+ */
+export function getExceptionList(data) {
+  return axios({
+    url: '/cvException/list',
     method: 'post',
     data
   })

@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { getExceptionList, handleException } from '@api/modules/dashboard/analysis.js'
+import { getExceptionPage, handleException } from '@api/modules/dashboard/analysis.js'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import BranchSearch from '@comp/searchParms/BranchSearch'
 
@@ -116,7 +116,7 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-        this.getExceptionList()
+        this.getExceptionPage()
       }
     },
     domain: {
@@ -266,7 +266,7 @@ export default {
         const res = await handleException(params)
         if (res.code == 200) {
           this.$message.success('处理成功')
-          this.getExceptionList()
+          this.getExceptionPage()
           this.$emit('dealWithSuccess')
         } else {
           this.$message.error(res.message)
@@ -282,10 +282,11 @@ export default {
     /**
      * 获取异常信息列表
      */
-    async getExceptionList() {
+    async getExceptionPage() {
+      console.log(getExceptionPage, 'get')
       try {
         this.loading = true
-        const res = await getExceptionList({
+        const res = await getExceptionPage({
           current: this.pagination.current,
           pageSize: this.pagination.pageSize,
           domain: this.domain,
@@ -372,14 +373,14 @@ export default {
     search() {
       this.pagination.current = 1
       this.selectedRowKeys = []
-      this.getExceptionList()
+      this.getExceptionPage()
     },
     cancel() {
       this.$emit('cancel')
     },
     tableChange(pagination) {
       this.pagination.current = pagination.current
-      this.getExceptionList()
+      this.getExceptionPage()
     },
     rowSelectionChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
