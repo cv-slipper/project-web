@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-import { getWorkDetail } from '@/api/modules/workcontrol/index.js'
+import { getWorkDetail, getExceptionDetail } from '@/api/modules/workcontrol/index.js'
 
 export default {
   props: {

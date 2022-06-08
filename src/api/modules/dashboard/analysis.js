@@ -105,5 +105,16 @@ export function getSystemListByBranch() {
   })
 }
 
+/**
+ * 获取异常详情
+ * @param {Object} data
+ */
+export function getExceptionDetail(data) {
+  return axios({
+    url: '/Event/details',
+    method: 'post',
+    data
+  })
+}
 
 

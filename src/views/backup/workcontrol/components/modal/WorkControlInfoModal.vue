@@ -135,7 +135,7 @@ export default {
         },
         {
           label: '介质服务器：',
-          value: 'mediaAgent'
+          value: 'mediaAgentName'
         },
         {
           label: '状态：',
