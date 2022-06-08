@@ -104,7 +104,7 @@
           :columns='columns'
           :data-source='dataSource'
           :loading='loading'
-          row-key='id'
+          row-key='jobId'
           :row-selection='{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }'
           :pagination='pagination'
           :scroll='{x:"100%"}'
@@ -197,7 +197,7 @@ export default {
         },
         {
           label: '备份集：',
-          value: 'none'
+          value: 'backupSetName'
         },
         {
           label: '子客户端：',
@@ -237,7 +237,7 @@ export default {
         },
         {
           label: '介质服务器：',
-          value: 'mediaAgent'
+          value: 'mediaAgentName'
         },
         {
           label: '状态：',
@@ -411,7 +411,8 @@ export default {
       pagination: {
         current: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        showTotal: (total, range) => `共 ${total} 条`
       },
       domain: 'prod',
       jobType: ['Backup', 'Restore', 'Others'],
@@ -433,6 +434,7 @@ export default {
         this.domain = this.$route.params.domain
         this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
       }
+      this.getWorkList()
     }
 
   },

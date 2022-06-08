@@ -8,6 +8,7 @@
       <a-spin v-if='detailLoading' />
       <div v-else>
         <ul>
+
           <li v-for='(item,index) in labelList' :key='index'>
             <span class='label'>{{ item.label }}</span>
             <span class='content'>{{ getValue(item.value) }}</span>
@@ -15,11 +16,7 @@
           <li style='display:block'>
             <div>失败原因/等待原因：</div>
             <div>
-              <a-input
-                :value='getValue("reason")'
-                type='textarea'
-                auto-size
-                disabled></a-input>
+             {{getValue('reason')}}</a-input>
             </div>
           </li>
         </ul>
@@ -273,26 +270,22 @@ export default {
           content: '确认' + text + '作业?',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          onOk: () => {
+            switch (type) {
+              case 'pause':
+                this.pauseWork()
+                break
+              case 'play':
+                this.playWork()
+                break
+              case 'stop':
+                this.stopWork()
+                break
+            }
+          }
         }
-      ).then(() => {
-        switch (type) {
-          case 'pause':
-            this.pauseWork()
-            break
-          case 'play':
-            this.playWork()
-            break
-          case 'stop':
-            this.stopWork()
-            break
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
+      )
 
     },
     getValue(key) {

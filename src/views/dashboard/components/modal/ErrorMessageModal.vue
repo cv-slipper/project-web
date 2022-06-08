@@ -33,7 +33,7 @@
             </a-select-option>
           </a-select>
         </div>
-        <div class='label ml-10'>{{ searchParams.domain == 'prod' ? '应用系统' : '分行：' }}</div>
+        <div class='label ml-10'>{{ searchParams.domain == 'prod' ? '应用系统：' : '分行：' }}</div>
         <div class='content'>
           <a-select mode='multiple' :filter-option='filterOption' v-model='searchParams.system' style='width:200px'>
             <a-select-option
@@ -136,6 +136,13 @@ export default {
           this.searchParams.system = this.id ? [this.id] : []
         } else {
           this.searchParams.domain = this.domain
+        }
+        if (this.searchParams.domain == 'prod') {
+          this.columns[3].title = '应用系统'
+          this.getSystemListByBranch()
+        } else {
+          this.columns[3].title = '分行'
+          this.getBranchList()
         }
         this.getExceptionPage()
       }
@@ -269,17 +276,18 @@ export default {
           label: '异常事件'
         }
       ],
+      dealWithType: '',
       levels: [
         {
-          value: 'Failed',
+          value: '关键',
           label: '关键'
         },
         {
-          value: 'Complete with error/Pending',
+          value: '重要',
           label: '重要'
         },
         {
-          value: 'Complete with waring',
+          value: '一般',
           label: '一般'
         }
       ],
@@ -360,12 +368,12 @@ export default {
         const res = await getExceptionPage({
           current: this.pagination.current,
           pageSize: this.pagination.pageSize,
-          domain: this.domain,
-          appSystemId: this.domain == 'prod' ? this.searchParams.system.join(',') : '',
-          branchId: this.domain == 'branch' ? this.searchParams.system.join(',') : '',
+          domain: this.searchParams.domain,
+          appSystemId: this.searchParams.domain == 'prod' ? this.searchParams.system.join(',') : '',
+          branchId: this.searchParams.domain == 'branch' ? this.searchParams.system.join(',') : '',
           exceptionType: this.exceptionTypes.join(','),
-          state: this.severities.join(','),
-          handle: 0
+          severity: this.severities.join(','),
+          handled: 0
         })
         if (res.code == 200) {
           this.data = res.result.list || []
@@ -392,7 +400,7 @@ export default {
       try {
         let params = {
           ids: this.ids.join(','),
-          type: this.type,
+          type: this.dealWithType,
           handledDesc: reason
         }
         this.handleException(params)
@@ -404,7 +412,7 @@ export default {
       this.searchParams.system = []
     },
     dealWith(type) {
-      this.type = type
+      this.dealWithType = type
       if (this.selectedRowKeys.length == 0) {
         this.$message.warning('请选择需要处理的异常信息')
         return

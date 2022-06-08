@@ -86,7 +86,10 @@ export default {
     visible: {
       handler(val) {
         if (val) {
-          this.getWorkDetail()
+          if (this.type == '异常作业') {
+            this.getWorkDetail()
+          }
+
         }
       },
       immediate: true
@@ -96,11 +99,106 @@ export default {
     return {
       detail: {},
       detailLoading: false,
-      labelList: []
+      labelList: [],
+      exceptionWorkList: [
+        {
+          label: '作业ID：',
+          value: 'jobId'
+        },
+        {
+          label: '操作类型：',
+          value: 'type'
+        },
+        {
+          label: '备份域：',
+          value: 'domain'
+        },
+        {
+          label: '相关应用系统/分行：',
+          value: 'applicationSystem'
+        },
+        {
+          label: '客户端：',
+          value: 'client'
+        },
+        {
+          label: '代理类型：',
+          value: 'agentType'
+        },
+        {
+          label: '备份集：',
+          value: 'backupSetName'
+        },
+        {
+          label: '子客户端：',
+          value: 'subclientName'
+        },
+        {
+          label: 'Instance：',
+          value: 'instanceName'
+        },
+        {
+          label: '作业类型：',
+          value: 'jobType'
+        },
+        {
+          label: '阶段：',
+          value: 'currentPhaseName'
+        },
+        {
+          label: '开始时间：',
+          value: 'jobStartTime'
+        },
+        {
+          label: '经过时长：',
+          value: 'duration'
+        },
+        {
+          label: '存储策略：',
+          value: 'storagePolicyName'
+        },
+        {
+          label: '应用程序大小：',
+          value: 'sizeOfApplication'
+        },
+        {
+          label: '数据写入量：',
+          value: 'dataWritten'
+        },
+        {
+          label: '介质服务器：',
+          value: 'mediaAgentName'
+        },
+        {
+          label: '状态：',
+          value: 'state'
+        }
+      ]
     }
   },
   methods: {
+    /**
+     * 获取异常详情
+     */
+    async getExceptionDetail() {
+      this.detailLoading = true
+      try {
+        let res = await getExceptionDetail({ jobId: this.id, domain: this.domain })
+        if (res.code == 200) {
+          console.log(res.result, 'res.result')
+          this.detail = res.result
+        } else {
+          this.detail = {}
+          this.$message.error(res.message)
+        }
+      } catch {
 
+      } finally {
+        this.detailLoading = false
+        this.$forceUpdate()
+        console.log(this.detailLoading, 'this.detailLoading')
+      }
+    },
     /**
      * 获取作业详情
      */

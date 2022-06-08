@@ -1,5 +1,5 @@
 <template>
-  <div class='main'>
+  <div class='main-analysis'>
     <div class='tabs'>
       <div class='tab-list'>
         <a-tabs class='my-tabs' v-model='domain'>
@@ -65,13 +65,13 @@
                       <div class='item mt-15' @click='gotoWorkControl("Suspend,Suspended")'>
                         <div class='content'>
                           <div class='title'>暂停</div>
-                          <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
+                          <div class='num'>{{ currentWorkDetail.suspendedNum }}</div>
                         </div>
                       </div>
                       <div class='item mt-15' @click='gotoWorkControl("Pending")'>
                         <div class='content'>
                           <div class='title'>未决</div>
-                          <div class='num'>{{ currentWorkDetail.suspendedNum }}</div>
+                          <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
                         </div>
                       </div>
                     </div>
@@ -161,7 +161,7 @@
                 v-if='!systemItem'
                 :system-loading='systemLoading'
                 @gotoSystemInfo='gotoSystemInfo' ref='main'></system-distribution>
-              <system-info v-else :system-item='systemItem' @back='systemBack' ref='appInfo'></system-info>
+              <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
             </div>
             <div v-else style='height: 100%'>
               <main-map></main-map>
@@ -278,8 +278,12 @@
     <failed-work-modal :domain='domain' :visible='failedWorkVisible'
                        @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
-    <exception-info-modal :domain='domain' :id='exceptionId' :visible='exceptionVisible'
-                          @cancel='exceptionVisible = false'></exception-info-modal>
+    <exception-info-modal
+      :type='exceptionType'
+      :domain='domain'
+      :id='exceptionId'
+      :visible='exceptionVisible'
+      @cancel='exceptionVisible = false'></exception-info-modal>
   </div>
 
 </template>
@@ -480,7 +484,8 @@ export default {
       systemList: [],
       timer: null,
       systemLoading: false,
-      dealWithRow: {}
+      dealWithRow: {},
+      exceptionType: ''
     }
   },
 
@@ -802,7 +807,8 @@ export default {
       // })
     },
     exceptionInfo(row) {
-      this.exceptionId = row.eventId
+      this.exceptionType = row.exceptionType
+      this.exceptionId = row.exceptionType == '异常作业' ? row.jobId : row.eventId
       this.exceptionVisible = true
     },
     /**
@@ -814,7 +820,7 @@ export default {
       this.dealWithVisible = true
     },
     dealWithSuccess() {
-      if (this.systemItem) {
+      if (!this.systemItem) {
         this.getSystemList()
       } else {
         this.$nextTick(() => {
@@ -925,6 +931,7 @@ export default {
     width: calc(50% - 5px);
     padding: 10px 0;
     background-size: 100% 100% !important;
+    cursor: pointer;
 
     .content {
       margin-left: 20%;
@@ -1021,7 +1028,7 @@ export default {
   }
 
   .item:first-child {
-    width: calc(15% - 5px);
+    width: calc(16% - 5px);
   }
 
   .item:nth-child(3) {
@@ -1041,7 +1048,7 @@ export default {
   }
 
   .item {
-    width: calc(19% - 5px);
+    width: calc(20% - 5px);
     overflow-x: hidden;
     height: 56px;
     display: flex;
@@ -1217,12 +1224,12 @@ export default {
 }
 
 // 判断分辨率是否低于1920
-.main {
+.main-analysis {
   height: calc(100% - 40px);
 }
 
 @media screen and(max-width: 1440px) {
-  .main {
+  .main-analysis {
     height: calc(100% + 193px);
   }
 }

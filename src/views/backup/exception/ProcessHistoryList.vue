@@ -1,46 +1,45 @@
 <template>
   <div>
-
     <div class='searchParams'>
       <div class='form-item'>
         <div class='label ml-5'>异常类型：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
+          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in exceptionTypeList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>严重程度：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
+          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in severityList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>备份域：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
+          <a-select style='width:90px' v-model='domain'>
             <a-select-option v-for='item in domainList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
         </div>
-        <div class='label ml-10'>应用系统／分行：</div>
+        <div class='label ml-10'>{{ domain == 'prod' ? '应用系统：' : '分行：' }}</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
-            <a-select-option v-for='item in branchList' :value='item.value' :key='item.value'>{{ item.label }}
+          <a-select style='width:140px' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='item in branchList' :value='item.id' :key='item.id'>{{ item.abbreviation }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>处理状态：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
+          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in processStatusList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>处理人：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px'>
+          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in processUserList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
@@ -51,11 +50,15 @@
       <div class='form-item'>
         <div class='label'>异常发生时间：</div>
         <div class='content'>
-          <a-range-picker></a-range-picker>
+          <a-range-picker
+            :show-time="{ format: 'HH:mm',defaultValue: [moment('00:00', 'HH:mm'), moment('23:59', 'HH:mm')] }"
+            format='YYYY-MM-DD HH:mm'></a-range-picker>
         </div>
         <div class='label ml-10'>处理时间：</div>
         <div class='content'>
-          <a-range-picker></a-range-picker>
+          <a-range-picker
+            :show-time="{ format: 'HH:mm',defaultValue: [moment('00:00', 'HH:mm'), moment('23:59', 'HH:mm')] }"
+            format='YYYY-MM-DD HH:mm'></a-range-picker>
         </div>
         <a-button type='primary ml-10' @click='search'>查询</a-button>
       </div>
@@ -74,11 +77,19 @@
         :loading='loading'
         :pagination='pagination'
         :scroll='{x:"100%"}'
+        @change='tableChange'
       >
         <template #action='row'>
           <div>
             <a-button type='link'>详情</a-button>
           </div>
+        </template>
+        <template #tooltip='data'>
+          <a-tooltip :title='data'>
+            <div class='text-ellipsis'>
+              {{ data }}
+            </div>
+          </a-tooltip>
         </template>
       </a-table>
     </div>
@@ -90,10 +101,12 @@ import {
   getSystemListByBranch,
   getBranchList
 } from '@api/modules/dashboard/analysis.js'
+import moment from 'moment'
 
 export default {
   data() {
     return {
+      moment,
       processUserList: [],
       exceptionTypeList: [
         {
@@ -121,16 +134,12 @@ export default {
       ],
       domainList: [
         {
-          value: '',
-          label: '全部'
+          value: 'prod',
+          label: '生产域'
         },
         {
-          value: '1',
-          label: '系统'
-        },
-        {
-          value: '2',
-          label: '业务'
+          value: 'branch',
+          label: '分行域'
         }
       ],
       branchList: [
@@ -173,10 +182,13 @@ export default {
         },
         {
           title: '异常ID',
-          key: 'exceptionId',
-          dataIndex: 'exceptionId',
+          key: 'id',
+          dataIndex: 'id',
           align: 'center',
-          width: 100
+          width: 100,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '严重程度',
@@ -194,17 +206,23 @@ export default {
         },
         {
           title: '应用系统／分行',
-          key: 'branch',
-          dataIndex: 'branch',
+          key: 'appSystemName',
+          dataIndex: 'appSystemName',
           align: 'center',
-          width: 200
+          width: 200,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '发生时间',
-          key: 'occurTime',
-          dataIndex: 'occurTime',
+          key: 'occurrenceTime',
+          dataIndex: 'occurrenceTime',
           align: 'center',
-          width: 200
+          width: 200,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '异常类型',
@@ -218,7 +236,10 @@ export default {
           key: 'description',
           dataIndex: 'description',
           align: 'center',
-          width: 200
+          width: 200,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '处理状态',
@@ -229,32 +250,36 @@ export default {
         },
         {
           title: '处理人',
-          key: 'processUser',
-          dataIndex: 'processUser',
+          key: 'handledUser',
+          dataIndex: 'handledUser',
           align: 'center',
           width: 100
         },
         {
           title: '处理内容',
-          key: 'processContent',
-          dataIndex: 'processContent',
+          key: 'handledDesc',
+          dataIndex: 'handledDesc',
           align: 'center',
-          width: 200
+          width: 200,
+          scopedSlots: {
+            customRender: 'tooltip'
+          }
         },
         {
           title: '操作',
           key: 'action',
           align: 'center',
-          width: 200,
+          width: 100,
+          fixed: 'right',
           scopedSlots: {
             customRender: 'action'
           }
         }
 
       ],
-      tableData: [{}],
+      tableData: [],
       loading: false,
-      domain: '',
+      domain: 'prod',
       systemIds: [],
       exceptionTypes: [],
       severities: [],
@@ -268,10 +293,56 @@ export default {
       }
     }
   },
+  watch: {
+    domain: {
+      immediate: true,
+      handler(val) {
+        if (val == 'prod') {
+          this.getSystemListByBranch()
+          this.columns[3].title = '应用系统'
+        } else {
+          this.getBranchList()
+          this.columns[3].title = '分行'
+        }
+      }
+    }
+  },
   created() {
     this.getExceptionPage()
   },
   methods: {
+    /**
+     * 获取系统列表
+     */
+    async getSystemListByBranch() {
+      try {
+        const res = await getSystemListByBranch()
+        if (res.code == 200) {
+          this.branchList = res.result
+        } else {
+          this.$message.error(res.message)
+          this.branchList = []
+        }
+      } catch (e) {
+        this.branchList = []
+      }
+    },
+    /**
+     * 获取分行列表
+     */
+    async getBranchList() {
+      try {
+        const res = await getBranchList()
+        if (res.code == 200) {
+          this.branchList = res.result
+        } else {
+          this.$message.error(res.message)
+          this.branchList = []
+        }
+      } catch (e) {
+        this.branchList = []
+      }
+    },
     /**
      * 获取异常信息列表
      */
@@ -282,8 +353,8 @@ export default {
           current: this.pagination.current,
           pageSize: this.pagination.pageSize,
           domain: this.domain,
-          appSystemId: this.domain == 'prod' ? systemIds.join(',') : '',
-          branchId: this.domain == 'branch' ? systemIds.join(',') : '',
+          appSystemId: this.domain == 'prod' ? this.systemIds.join(',') : '',
+          branchId: this.domain == 'branch' ? this.systemIds.join(',') : '',
           exceptionType: this.exceptionTypes.join(','),
           state: this.severities.join(','),
           handle: 1
@@ -296,10 +367,15 @@ export default {
         }
 
       } catch (e) {
+        console.log(e)
         this.$message.error('获取失败')
       } finally {
         this.loading = false
       }
+    },
+    tableChange(page) {
+      this.pagination.current = page.current
+      this.getExceptionPage()
     },
     /**
      *搜索
@@ -307,6 +383,14 @@ export default {
     search() {
       this.pagination.current = 1
       this.getExceptionPage()
+    },
+    /**
+     * 过滤分行
+     */
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input) >= 0
+      )
     }
   }
 }
