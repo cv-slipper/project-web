@@ -299,16 +299,21 @@ export default {
       handler(val) {
         if (val == 'prod') {
           this.getSystemListByBranch()
-          this.columns[3].title = '应用系统'
+
         } else {
           this.getBranchList()
-          this.columns[3].title = '分行'
+
         }
       }
     }
   },
   created() {
     this.getExceptionPage()
+    if (this.domain == 'prod') {
+      this.columns[4].title = '应用系统'
+    } else {
+      this.columns[4].title = '分行'
+    }
   },
   methods: {
     /**
@@ -381,6 +386,11 @@ export default {
      *搜索
      */
     search() {
+      if (this.domain == 'prod') {
+        this.columns[4].title = '应用系统'
+      } else {
+        this.columns[4].title = '分行'
+      }
       this.pagination.current = 1
       this.getExceptionPage()
     },
