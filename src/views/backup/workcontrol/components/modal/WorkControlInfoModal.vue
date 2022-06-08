@@ -15,7 +15,11 @@
           <li style='display:block'>
             <div>失败原因/等待原因：</div>
             <div>
-              <a-input type='textarea' :auto-size='{minRows:4,maxRows:5}' disabled></a-input>
+              <a-input
+                :value='getValue("reason")'
+                type='textarea'
+                auto-size
+                disabled></a-input>
             </div>
           </li>
         </ul>
@@ -91,7 +95,7 @@ export default {
         },
         {
           label: '备份集：',
-          value: 'none'
+          value: 'backupSetName'
         },
         {
           label: '子客户端：',

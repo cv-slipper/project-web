@@ -83,3 +83,27 @@ export function handleException(params) {
     data: params
   })
 }
+
+/**
+ * 获取分行列表
+ * @param {Object} data
+ */
+export function getBranchList() {
+  return axios({
+    url: '/prodDomain/branchList',
+    method: 'get'
+  })
+}
+
+/**
+ * 获取系统列表
+ */
+export function getSystemListByBranch() {
+  return axios({
+    url: '/prodDomain/appSystemInfoList',
+    method: 'get'
+  })
+}
+
+
+

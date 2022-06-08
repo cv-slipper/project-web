@@ -8,10 +8,22 @@
       <a-spin v-if='detailLoading' />
       <div v-else>
         <ul>
-          <li v-for='(item,index) in labelList' :key='index'>
-            <span class='label'>{{ item.label }}</span>
-            <span class='content'>{{ getValue(item.value) }} </span>
-          </li>
+          <template v-for='(item,index) in labelList'>
+            <li :key='index'>
+              <span class='label'>{{ item.label }}</span>
+              <span class='content'>{{ getValue(item.value) }} </span>
+            </li>
+            <li style='display:block' :key='index+-1' v-if='item.type=="textarea"'>
+              <div>{{ item.label }}</div>
+              <div>
+                <a-input
+                  :value='getValue(item.value)'
+                  type='textarea'
+                  auto-size
+                  disabled></a-input>
+              </div>
+            </li>
+          </template>
         </ul>
         <div class='dealwith mt-20'>
           <ul>
@@ -57,10 +69,6 @@ export default {
       type: Boolean,
       default: false
     },
-    labelList: {
-      type: Array,
-      default: () => []
-    },
     type: {
       type: String,
       default: ''
@@ -68,6 +76,10 @@ export default {
     id: {
       type: String | Number,
       default: ''
+    },
+    domain: {
+      type: String,
+      default: 'prod'
     }
   },
   watch: {
@@ -83,7 +95,8 @@ export default {
   data() {
     return {
       detail: {},
-      detailLoading: false
+      detailLoading: false,
+      labelList: []
     }
   },
   methods: {
@@ -94,8 +107,9 @@ export default {
     async getWorkDetail() {
       this.detailLoading = true
       try {
-        let res = await getWorkDetail(this.id)
+        let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
+          console.log(res.result, 'res.result')
           this.detail = res.result
         } else {
           this.detail = {}

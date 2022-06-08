@@ -24,7 +24,7 @@
         </div>
         <div class='label ml-10'>备份域：</div>
         <div class='content'>
-          <a-select v-model='searchParams.domain' style='width:200px'>
+          <a-select v-model='searchParams.domain' style='width:200px' @change='domainChange'>
             <a-select-option
               v-for='(item,index) in backupDomains'
               :key='index'
@@ -33,14 +33,14 @@
             </a-select-option>
           </a-select>
         </div>
-        <div class='label ml-10'>应用系统／分行：</div>
+        <div class='label ml-10'>{{ searchParams.domain == 'prod' ? '应用系统' : '分行：' }}</div>
         <div class='content'>
-          <a-select v-model='searchParams.system' style='width:200px'>
+          <a-select mode='multiple' :filter-option='filterOption' v-model='searchParams.system' style='width:200px'>
             <a-select-option
               v-for='(item,index) in systems'
               :key='index'
               :value='item.id'
-            >{{ item.name }}
+            >{{ item.abbreviation }}
             </a-select-option>
           </a-select>
         </div>
@@ -89,7 +89,12 @@
 </template>
 
 <script>
-import { getExceptionPage, handleException } from '@api/modules/dashboard/analysis.js'
+import {
+  getExceptionPage,
+  handleException,
+  getSystemListByBranch,
+  getBranchList
+} from '@api/modules/dashboard/analysis.js'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import BranchSearch from '@comp/searchParms/BranchSearch'
 
@@ -98,6 +103,11 @@ export default {
   components: {
     DealWithModal,
     BranchSearch
+  },
+  computed: {
+    getDomain() {
+      return this.searchParams.domain
+    }
   },
   props: {
     visible: {
@@ -111,18 +121,45 @@ export default {
     domain: {
       type: String,
       default: 'prod'
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   watch: {
     visible(val) {
       if (val) {
+
+        if (this.type) {
+          this.searchParams.domain = this.type
+          this.searchParams.system = this.id ? [this.id] : []
+        } else {
+          this.searchParams.domain = this.domain
+        }
         this.getExceptionPage()
       }
     },
     domain: {
       immediate: true,
       handler(val) {
-        this.searchParams.domain = val
+        if (this.searchParams.domain == 'prod') {
+          this.columns[3].title = '应用系统'
+          this.getSystemListByBranch()
+        } else {
+          this.columns[3].title = '分行'
+          this.getBranchList()
+        }
+      }
+    },
+    getDomain: {
+      immediate: false,
+      handler(val) {
+        if (val == 'prod') {
+          this.getSystemListByBranch()
+        } else {
+          this.getBranchList()
+        }
       }
     }
   },
@@ -208,9 +245,9 @@ export default {
       data: [],
       searchParams: {
         type: [],
-        domain: ''
+        domain: '',
+        system: []
       },
-      type: '',
       backupDomains: [
         {
           id: 'prod',
@@ -252,11 +289,46 @@ export default {
       pagination: {
         pageSize: 10,
         current: 1,
+        total: 0,
         showTotal: total => `共 ${total} 条`
       }
     }
   },
   methods: {
+    /**
+     * 获取系统列表
+     */
+    async getSystemListByBranch() {
+      try {
+        const res = await getSystemListByBranch()
+        if (res.code == 200) {
+          this.systems = res.result
+        } else {
+          this.$message.error(res.message)
+          this.systems = []
+        }
+      } catch (e) {
+        this.$message.error('获取系统列表失败')
+        this.systems = []
+      }
+    },
+    /**
+     * 获取分行列表
+     */
+    async getBranchList() {
+      try {
+        const res = await getBranchList()
+        if (res.code == 200) {
+          this.systems = res.result
+        } else {
+          this.$message.error(res.message)
+          this.systems = []
+        }
+      } catch (e) {
+        this.$message.error('获取分行列表失败')
+        this.systems = []
+      }
+    },
     /**
      * 处理异常
      */
@@ -283,20 +355,21 @@ export default {
      * 获取异常信息列表
      */
     async getExceptionPage() {
-      console.log(getExceptionPage, 'get')
       try {
         this.loading = true
         const res = await getExceptionPage({
           current: this.pagination.current,
           pageSize: this.pagination.pageSize,
           domain: this.domain,
-          appSystemId: this.id,
-          branchId: this.branchIds.map(item => item.id).join(','),
+          appSystemId: this.domain == 'prod' ? this.searchParams.system.join(',') : '',
+          branchId: this.domain == 'branch' ? this.searchParams.system.join(',') : '',
           exceptionType: this.exceptionTypes.join(','),
-          state: this.severities.join(',')
+          state: this.severities.join(','),
+          handle: 0
         })
         if (res.code == 200) {
           this.data = res.result.list || []
+          this.pagination.total = res.result.totalSize
         } else {
           this.$message.error(res.message)
         }
@@ -306,6 +379,14 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    /**
+     * 过滤分行
+     */
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input) >= 0
+      )
     },
     handleOk(reason) {
       try {
@@ -318,6 +399,9 @@ export default {
       } catch (e) {
 
       }
+    },
+    domainChange(val) {
+      this.searchParams.system = []
     },
     dealWith(type) {
       this.type = type
@@ -371,6 +455,11 @@ export default {
       }
     },
     search() {
+      if (this.searchParams.domain == 'prod') {
+        this.columns[3].title = '应用系统'
+      } else {
+        this.columns[3].title = '分行'
+      }
       this.pagination.current = 1
       this.selectedRowKeys = []
       this.getExceptionPage()

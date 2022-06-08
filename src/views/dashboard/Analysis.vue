@@ -221,7 +221,7 @@
                   <template #action='row'>
                     <div class='error-action'>
                       <div>
-                        <span class='fl'>详情</span>
+                        <span class='fl' @click='exceptionInfo(row)'>详情</span>
                         <span class='fl ml-5' @click='dealWith(row)'>处理</span>
                       </div>
                     </div>
@@ -278,7 +278,8 @@
     <failed-work-modal :domain='domain' :visible='failedWorkVisible'
                        @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
-
+    <exception-info-modal :domain='domain' :id='exceptionId' :visible='exceptionVisible'
+                          @cancel='exceptionVisible = false'></exception-info-modal>
   </div>
 
 </template>
@@ -296,6 +297,7 @@ import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageMod
 import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
 import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
+import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
 import {
   getDomainScale,
   getDomainTrend,
@@ -317,7 +319,8 @@ export default {
     SystemInfo,
     ErrorMessageModal,
     FailedWorkModal,
-    DealWithModal
+    DealWithModal,
+    ExceptionInfoModal
   },
   watch: {
     domain: {
@@ -357,6 +360,8 @@ export default {
       domain: 'prod',
       branchId: '',
       rateTime: '604800',
+      exceptionVisible: false,
+      exceptionId: '',
       listData: [
         {
           title: '应用系统',
@@ -795,6 +800,10 @@ export default {
       //     domain: this.domain
       //   }
       // })
+    },
+    exceptionInfo(row) {
+      this.exceptionId = row.eventId
+      this.exceptionVisible = true
     },
     /**
      * 处理

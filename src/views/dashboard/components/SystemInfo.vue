@@ -40,8 +40,13 @@
       </div>
       <div style='clear:both'></div>
     </div>
-    <error-message-modal :visible='errorVisible' :id='id' @cancel='errorVisible = false'
-                         @dealWidthSuccess='dealWithSuccess'></error-message-modal>
+    <error-message-modal
+      :domain='domain'
+      :visible='errorVisible'
+      :id='id'
+      @cancel='errorVisible = false'
+      type='prod'
+      @dealWidthSuccess='dealWithSuccess'></error-message-modal>
   </div>
 </template>
 
@@ -64,6 +69,7 @@ export default {
   },
   data() {
     return {
+      domain: 'prod',
       systemList: [],
       timer: null,
       systemLoading: false,

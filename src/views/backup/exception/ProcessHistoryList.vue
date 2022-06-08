@@ -57,7 +57,7 @@
         <div class='content'>
           <a-range-picker></a-range-picker>
         </div>
-        <a-button type='primary ml-10'>查询</a-button>
+        <a-button type='primary ml-10' @click='search'>查询</a-button>
       </div>
     </div>
     <div class='searchParams'>
@@ -85,36 +85,38 @@
   </div>
 </template>
 <script>
+import {
+  getExceptionPage,
+  getSystemListByBranch,
+  getBranchList
+} from '@api/modules/dashboard/analysis.js'
+
 export default {
   data() {
     return {
       processUserList: [],
       exceptionTypeList: [
         {
-          value: '',
-          label: '全部'
+          value: '异常作业',
+          label: '异常作业'
         },
         {
-          value: '1',
-          label: '系统异常'
-        },
-        {
-          value: '2',
-          label: '业务异常'
+          value: '异常事件',
+          label: '异常事件'
         }
       ],
       severityList: [
         {
-          value: '',
-          label: '全部'
+          value: 'Failed',
+          label: '关键'
         },
         {
-          value: '1',
+          value: 'Complete with error/Pending',
+          label: '重要'
+        },
+        {
+          value: 'Complete with waring',
           label: '一般'
-        },
-        {
-          value: '2',
-          label: '严重'
         }
       ],
       domainList: [
@@ -252,6 +254,10 @@ export default {
       ],
       tableData: [{}],
       loading: false,
+      domain: '',
+      systemIds: [],
+      exceptionTypes: [],
+      severities: [],
       pagination: {
         pageSize: 10,
         current: 1,
@@ -261,6 +267,52 @@ export default {
         }
       }
     }
+  },
+  created() {
+    this.getExceptionPage()
+  },
+  methods: {
+    /**
+     * 获取异常信息列表
+     */
+    async getExceptionPage() {
+      try {
+        this.loading = true
+        const res = await getExceptionPage({
+          current: this.pagination.current,
+          pageSize: this.pagination.pageSize,
+          domain: this.domain,
+          appSystemId: this.domain == 'prod' ? systemIds.join(',') : '',
+          branchId: this.domain == 'branch' ? systemIds.join(',') : '',
+          exceptionType: this.exceptionTypes.join(','),
+          state: this.severities.join(','),
+          handle: 1
+        })
+        if (res.code == 200) {
+          this.tableData = res.result.list || []
+          this.pagination.total = res.result.totalSize
+        } else {
+          this.$message.error(res.message)
+        }
+
+      } catch (e) {
+        this.$message.error('获取失败')
+      } finally {
+        this.loading = false
+      }
+    },
+    /**
+     *搜索
+     */
+    search() {
+      this.pagination.current = 1
+      this.getExceptionPage()
+    }
   }
 }
 </script>
+<style scoped lang='less'>
+.table-box {
+  background: white;
+}
+</style>
