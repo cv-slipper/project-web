@@ -440,7 +440,7 @@ export default {
       }
     },
     rowDealWith(type, row) {
-      this.type = type
+      this.dealWithType = type
       if (type == 1) {
         this.ids = [row.id]
         this.dealWithVisible = true

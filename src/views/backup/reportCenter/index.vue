@@ -25,7 +25,9 @@
         <div class='item'>
           <front-end-capacity></front-end-capacity>
         </div>
-        <div class='item'></div>
+        <div class='item'>
+          <pie-chart></pie-chart>
+        </div>
       </div>
     </div>
   </div>
@@ -34,12 +36,14 @@
 <script>
 import TrendChart from '@views/backup/reportCenter/components/TrendChart'
 import FrontEndCapacity from '@views/backup/reportCenter/components/FrontEndCapacity'
+import PieChart from '@views/backup/reportCenter/components/PieChart'
 
 export default {
   name: 'index',
   components: {
     TrendChart,
-    FrontEndCapacity
+    FrontEndCapacity,
+    PieChart
   },
   data() {
     return {

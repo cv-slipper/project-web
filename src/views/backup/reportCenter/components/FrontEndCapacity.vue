@@ -2,7 +2,7 @@
   <div class='front-end-capacity'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-客户端数量
+        数据类型分布-前端容量
       </div>
       <div class='info-text'>当前：全域</div>
       <div class='little-title'></div>
@@ -18,21 +18,24 @@ export default {
 
   data() {
     return {
+      colorIndex: 0,
+      color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
       option: {
         polar: {
-          radius: [50, '80%'],
-          center: ['30%', 'center']
+          radius: [30, '70%'],
+          center: ['26%', 'center']
         },
         grid: {
-          left: '10%'
+          left: '0'
         },
 
         angleAxis: {
           show: false,
-          max: 50,
+          max: 1500,
           startAngle: 90,
 
           clockwise: false
+
         },
         radiusAxis: {
           type: 'category',
@@ -49,7 +52,7 @@ export default {
         tooltip: {},
         series: [{
           type: 'bar',
-          name: 'a',
+          name: 'a数据类型',
           data: [10],
           coordinateSystem: 'polar',
           roundCap: true,
@@ -61,7 +64,7 @@ export default {
 
           {
             type: 'bar',
-            name: 'b',
+            name: 'b数据类型',
             data: [20],
             coordinateSystem: 'polar',
             roundCap: true,
@@ -72,7 +75,7 @@ export default {
           },
           {
             type: 'bar',
-            name: 'c',
+            name: 'c数据类型',
             data: [15],
             coordinateSystem: 'polar',
             roundCap: true,
@@ -83,8 +86,30 @@ export default {
           },
           {
             type: 'bar',
-            name: 'd',
+            name: 'd数据类型',
             data: [40],
+            coordinateSystem: 'polar',
+            roundCap: true,
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          },
+          {
+            type: 'bar',
+            name: 'e数据类型',
+            data: [1000],
+            coordinateSystem: 'polar',
+            roundCap: true,
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          },
+          {
+            type: 'bar',
+            name: '其他数据类型',
+            data: [1000],
             coordinateSystem: 'polar',
             roundCap: true,
             showBackground: true,
@@ -95,15 +120,133 @@ export default {
         ],
         legend: {
           orient: 'vertical',
-          right: 10,
-          top: 20,
-          bottom: 20,
+          right: 0,
+          top: 'middle',
           icon: 'circle',
-          data: ['a', 'b', 'c', 'd']
+          itemWidth: 10,
+          itemHeight: 10,
+          tooltip: {
+            show: true,
+            formatter: (params) => {
+              let item = this.option.series.find(item => item.name == params.name)
+              return item.name + ': ' + item.data[0]
+            }
+          },
+          formatter: name => {
+            this.colorIndex++
+            if (this.colorIndex > 6) {
+              this.colorIndex = 1
+            }
+            return this.getRichArr(this.option.series[this.colorIndex - 1], this.colorIndex - 1, name).join('')
+          },
+          textStyle: {
+            height: 15,
+            lineHeight: 15,
+            rich: {
+              a: {
+                align: 'left',
+                padding: [0, 20, 0, 0],
+                width: 70,
+                fontSize: 12
+              },
+              b0: {
+                align: 'right',
+                color: '#CAC9CA'
+              },
+              b1: {
+                align: 'right',
+                color: '#24D4A6'
+              },
+
+              b2: {
+                align: 'right',
+                color: '#00B7EE'
+              },
+              b3: {
+                align: 'right',
+                color: '#6E69F9'
+              },
+              b4: {
+                align: 'right',
+                color: '#1E67F2'
+              },
+              b5: {
+                align: 'right',
+                color: '#21E5E8'
+              },
+              c: {
+                width: 120,
+                height: 0.5,
+                borderColor: '#CAC9CA',
+                borderWidth: 0.5,
+                borderType: 'dashed'
+              }
+            }
+
+          },
+
+          data: [
+            {
+              name: 'a数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              },
+              lineStyle: {
+                type: 'dashed',
+                dashOffset: 30
+              }
+            },
+            {
+              name: 'b数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'c数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'd数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'e数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              }
+            },
+            {
+              name: '其他数据类型',
+              itemStyle: {
+                color: 'white',
+                borderColor: 'red',
+                borderWidth: 3
+              }
+            }
+          ]
+
         }
       },
       myChart: null
     }
+  },
+  created() {
+
   },
   mounted() {
     this.initChart()
@@ -111,10 +254,64 @@ export default {
   methods: {
     initChart() {
       this.myChart = this.$echarts.init(document.getElementById('front-chart'))
+      this.option.series.forEach((item, index) => {
+        item.color = this.color[index]
+      })
+      this.option.legend.data.forEach((item, index) => {
+        item.itemStyle.borderColor = this.color[index]
+      })
+      console.log(this.option)
       this.myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         this.myChart.resize()
       })
+    },
+    getRichArr(item, index, name) {
+      let arr = []
+      switch (index) {
+        case 0:
+          arr = [
+            '{a|' + name + '}',
+            '{b0|' + item.data[0] + '}\n'
+          ]
+          break
+        case 1:
+          arr = [
+            '{a|' + name + '}',
+            '{b1|' + item.data[0] + '}\n'
+          ]
+          break
+        case 2:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b2|' + item.data[0] + '}\n'
+            ]
+          break
+        case 3:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b3|' + item.data[0] + '}\n'
+            ]
+          break
+        case 4:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b4|' + item.data[0] + '}\n'
+            ]
+          break
+        case 5:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b5|' + item.data[0] + '} \n'
+            ]
+          break
+      }
+      index != 5 && arr.push('{c|}')
+      return arr
     }
   }
 }
