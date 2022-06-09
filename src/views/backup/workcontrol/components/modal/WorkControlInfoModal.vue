@@ -47,8 +47,8 @@
             终止
           </a-button>
           <a-button type='link'>查看作业相关事件</a-button>
-          <a-button type='link'>查看作业日志</a-button>
-          <a-button type='link'>查看RMAN日志</a-button>
+<!--          <a-button type='link'>查看作业日志</a-button>-->
+<!--          <a-button type='link'>查看RMAN日志</a-button>-->
         </div>
       </div>
     </a-modal>

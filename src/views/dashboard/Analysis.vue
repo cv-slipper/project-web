@@ -273,10 +273,15 @@
       </div>
 
     </div>
-    <error-message-modal :visible='errorMessageVisible' @cancel='errorMessageVisible = false'
-                         @dealWithSuccess='dealWithSuccess'></error-message-modal>
-    <failed-work-modal :domain='domain' :visible='failedWorkVisible'
-                       @cancel='failedWorkVisible = false'></failed-work-modal>
+    <error-message-modal
+      :domain='domain'
+      :visible='errorMessageVisible'
+      @cancel='errorMessageVisible = false'
+      @dealWithSuccess='dealWithSuccess'></error-message-modal>
+    <failed-work-modal
+      :domain='domain'
+      :visible='failedWorkVisible'
+      @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
     <exception-info-modal
       :type='exceptionType'

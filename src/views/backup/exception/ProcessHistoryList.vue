@@ -4,14 +4,14 @@
       <div class='form-item'>
         <div class='label ml-5'>异常类型：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
+          <a-select v-model='exceptionTypes' style='width:100px' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in exceptionTypeList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>严重程度：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
+          <a-select style='width:100px' v-model='severity' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in severityList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
@@ -25,14 +25,14 @@
         </div>
         <div class='label ml-10'>{{ domain == 'prod' ? '应用系统：' : '分行：' }}</div>
         <div class='content ml-5'>
-          <a-select style='width:140px' mode='multiple' :filter-option='filterOption'>
+          <a-select style='width:140px' v-model='systemIds' mode='multiple' :filter-option='filterOption'>
             <a-select-option v-for='item in branchList' :value='item.id' :key='item.id'>{{ item.abbreviation }}
             </a-select-option>
           </a-select>
         </div>
         <div class='label ml-10'>处理状态：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
+          <a-select style='width:100px' v-model='state'>
             <a-select-option v-for='item in processStatusList' :value='item.value' :key='item.value'>{{ item.label }}
             </a-select-option>
           </a-select>
@@ -51,12 +51,17 @@
         <div class='label'>异常发生时间：</div>
         <div class='content'>
           <a-range-picker
+            v-model='exceptionTime'
             :show-time="{ format: 'HH:mm',defaultValue: [moment('00:00', 'HH:mm'), moment('23:59', 'HH:mm')] }"
-            format='YYYY-MM-DD HH:mm'></a-range-picker>
+            format='YYYY-MM-DD HH:mm'
+            @change='exceptionTimeChange'
+            @ok='exceptionTimeOk'
+          ></a-range-picker>
         </div>
         <div class='label ml-10'>处理时间：</div>
         <div class='content'>
           <a-range-picker
+            v-model='dealWithTime'
             :show-time="{ format: 'HH:mm',defaultValue: [moment('00:00', 'HH:mm'), moment('23:59', 'HH:mm')] }"
             format='YYYY-MM-DD HH:mm'></a-range-picker>
         </div>
@@ -66,7 +71,7 @@
     <div class='searchParams'>
       <div class='form-item'>
         <div class='label'>
-          <a-button type='primary'>导出</a-button>
+          <a-button type='primary' @click='exportCsv'>导出</a-button>
         </div>
       </div>
     </div>
@@ -102,6 +107,8 @@ import {
   getBranchList
 } from '@api/modules/dashboard/analysis.js'
 import moment from 'moment'
+import { downloadCsv } from '@/utils/modules/download'
+import { getChargingList } from '@api/modules/backupdata/CvChargingApi'
 
 export default {
   data() {
@@ -118,17 +125,20 @@ export default {
           label: '异常事件'
         }
       ],
+      severity: [],
+      exceptionTime: [],
+      dealWithTime: [],
       severityList: [
         {
-          value: 'Failed',
+          value: '关键',
           label: '关键'
         },
         {
-          value: 'Complete with error/Pending',
+          value: '重要',
           label: '重要'
         },
         {
-          value: 'Complete with waring',
+          value: '一般',
           label: '一般'
         }
       ],
@@ -142,31 +152,18 @@ export default {
           label: '分行域'
         }
       ],
-      branchList: [
-        {
-          value: '',
-          label: '全部'
-        },
-        {
-          value: '1',
-          label: '系统'
-        },
-        {
-          value: '2',
-          label: '业务'
-        }
-      ],
+      branchList: [],
       processStatusList: [
         {
           value: '',
           label: '全部'
         },
         {
-          value: '1',
+          value: '0',
           label: '未处理'
         },
         {
-          value: '2',
+          value: '1',
           label: '已处理'
         }
       ],
@@ -243,8 +240,8 @@ export default {
         },
         {
           title: '处理状态',
-          key: 'processStatus',
-          dataIndex: 'processStatus',
+          key: 'handled',
+          dataIndex: 'handled',
           align: 'center',
           width: 100
         },
@@ -254,6 +251,13 @@ export default {
           dataIndex: 'handledUser',
           align: 'center',
           width: 100
+        },
+        {
+          title: '处理时间',
+          key: 'handledTime',
+          dataIndex: 'handledTime',
+          align: 'center',
+          width: 200
         },
         {
           title: '处理内容',
@@ -277,6 +281,7 @@ export default {
         }
 
       ],
+      state: '',
       tableData: [],
       loading: false,
       domain: 'prod',
@@ -361,8 +366,12 @@ export default {
           appSystemId: this.domain == 'prod' ? this.systemIds.join(',') : '',
           branchId: this.domain == 'branch' ? this.systemIds.join(',') : '',
           exceptionType: this.exceptionTypes.join(','),
-          state: this.severities.join(','),
-          handle: 1
+          handled: this.state,
+          severity: this.severity.join(','),
+          occurrenceStartTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[0]['_d'].getTime(),
+          occurrenceEndTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[1]['_d'].getTime(),
+          handledStartTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[0]['_d'].getTime(),
+          handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime()
         })
         if (res.code == 200) {
           this.tableData = res.result.list || []
@@ -381,6 +390,30 @@ export default {
     tableChange(page) {
       this.pagination.current = page.current
       this.getExceptionPage()
+    },
+    async exportCsv() {
+      let params = {
+        current: 1,
+        pageSize: -1,
+        domain: this.domain,
+        appSystemId: this.domain == 'prod' ? this.systemIds.join(',') : '',
+        branchId: this.domain == 'branch' ? this.systemIds.join(',') : '',
+        exceptionType: this.exceptionTypes.join(','),
+        handled: this.state,
+        severity: this.severity.join(','),
+        occurrenceStartTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[0]['_d'].getTime(),
+        occurrenceEndTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[1]['_d'].getTime(),
+        handledStartTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[0]['_d'].getTime(),
+        handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime()
+      }
+      try {
+        const res = await getExceptionPage(params)
+        if (res.code == 200) {
+          downloadCsv(this.columns, res.result.list, '处理记录导出结果.csv')
+        }
+      } catch (e) {
+        this.$message.warning('导出失败')
+      }
     },
     /**
      *搜索
@@ -401,6 +434,12 @@ export default {
       return (
         option.componentOptions.children[0].text.indexOf(input) >= 0
       )
+    },
+    exceptionTimeChange(val) {
+
+    },
+    exceptionTimeOk(val) {
+
     }
   }
 }
