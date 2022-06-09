@@ -11,3 +11,13 @@ export function getBranchList(params) {
     data: params
   })
 }
+
+/**
+ * 获取用户列表
+ */
+export function getUserList() {
+  return axios({
+    url: '/sys/user/list',
+    method: 'get'
+  })
+}

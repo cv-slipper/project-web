@@ -39,8 +39,9 @@
         </div>
         <div class='label ml-10'>处理人：</div>
         <div class='content ml-5'>
-          <a-select style='width:100px' mode='multiple' :filter-option='filterOption'>
-            <a-select-option v-for='item in processUserList' :value='item.value' :key='item.value'>{{ item.label }}
+          <a-select v-model='handledUser' style='width:100px' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='item in processUserList' :value='item.username' :key='item.username'>
+              {{ item.username }}
             </a-select-option>
           </a-select>
         </div>
@@ -109,6 +110,7 @@ import {
 import moment from 'moment'
 import { downloadCsv } from '@/utils/modules/download'
 import { getChargingList } from '@api/modules/backupdata/CvChargingApi'
+import { getUserList } from '@api/modules/common'
 
 export default {
   data() {
@@ -288,6 +290,7 @@ export default {
       systemIds: [],
       exceptionTypes: [],
       severities: [],
+      handledUser: [],
       pagination: {
         pageSize: 10,
         current: 1,
@@ -319,8 +322,25 @@ export default {
     } else {
       this.columns[4].title = '分行'
     }
+    this.getUserList()
   },
   methods: {
+    /**
+     * 获取用户列表
+     */
+    async getUserList() {
+      try {
+        const res = await getUserList()
+        if (res.code == 0) {
+          this.processUserList = res.result.records || []
+        } else {
+          this.$message.error(res.message)
+          this.processUserList = []
+        }
+      } catch (e) {
+        this.processUserList = []
+      }
+    },
     /**
      * 获取系统列表
      */
@@ -371,7 +391,8 @@ export default {
           occurrenceStartTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[0]['_d'].getTime(),
           occurrenceEndTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[1]['_d'].getTime(),
           handledStartTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[0]['_d'].getTime(),
-          handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime()
+          handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime(),
+          handledUser: this.handledUser.join(',')
         })
         if (res.code == 200) {
           this.tableData = res.result.list || []
