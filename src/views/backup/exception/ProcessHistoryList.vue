@@ -87,7 +87,7 @@
       >
         <template #action='row'>
           <div>
-            <a-button type='link'>详情</a-button>
+            <a-button @click='goToExceptionInfo(row)' type='link'>详情</a-button>
           </div>
         </template>
         <template #tooltip='data'>
@@ -99,6 +99,8 @@
         </template>
       </a-table>
     </div>
+    <exception-info-modal :visible='exceptionVisible' :detail-item='exceptionItem'
+                          @cancel='exceptionVisible=false'></exception-info-modal>
   </div>
 </template>
 <script>
@@ -111,10 +113,13 @@ import moment from 'moment'
 import { downloadCsv } from '@/utils/modules/download'
 import { getChargingList } from '@api/modules/backupdata/CvChargingApi'
 import { getUserList } from '@api/modules/common'
+import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
 
 export default {
   data() {
     return {
+      exceptionItem: {},
+      exceptionVisible: false,
       moment,
       processUserList: [],
       exceptionTypeList: [
@@ -301,6 +306,9 @@ export default {
       }
     }
   },
+  components: {
+    ExceptionInfoModal
+  },
   watch: {
     domain: {
       immediate: true,
@@ -407,6 +415,10 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    goToExceptionInfo(row) {
+      this.exceptionItem = row
+      this.exceptionVisible = true
     },
     tableChange(page) {
       this.pagination.current = page.current

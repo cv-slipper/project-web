@@ -9,87 +9,61 @@
       <div v-else>
         <ul>
           <template v-for='(item,index) in labelList'>
-            <li :key='index'>
-              <span class='label'>{{ item.label }}</span>
-              <span class='content'>{{ getValue(item.value) }} </span>
-            </li>
             <li style='display:block' :key='index+-1' v-if='item.type=="textarea"'>
               <div>{{ item.label }}</div>
               <div>
-                <a-input
-                  :value='getValue(item.value)'
-                  type='textarea'
-                  auto-size
-                  disabled></a-input>
+                {{ getValue(item.value) }}
               </div>
             </li>
+            <li :key='index' v-else>
+              <span class='label'>{{ item.label }}</span>
+              <span class='content'>{{ getValue(item.value) }} </span>
+            </li>
+
           </template>
         </ul>
-        <div class='dealwith mt-20'>
-          <ul>
-            <li>
-              <span class='label'>处理状态</span>
-              <span class='content'>123</span>
-            </li>
-            <li>
-              <span class='label'>处理人</span>
-              <span class='content'>123</span>
-            </li>
-            <li>
-              <span class='label'>处理时间</span>
-              <span class='content'>123</span>
-            </li>
-            <li>
-              <span class='label'>处理内容</span>
-              <span class='content'>123</span>
-            </li>
-          </ul>
-        </div>
         <div class='buttons mt-20'>
-          <a-button class='ml-10 warning-btn'>
+          <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>
             <a-icon type='pause' style='font-size:14px' />
             处理
           </a-button>
-          <a-button class='ml-10 success-btn'>
+          <a-button class='ml-10 success-btn' @click='neglect'>
             <a-icon type='caret-right' />
             忽略
           </a-button>
           <a-button type='link'>查看作业相关事件</a-button>
         </div>
+        <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible=false' @ok='handleOk'></deal-with-modal>
       </div>
     </a-modal>
   </div>
 </template>
 <script>
-import { getWorkDetail, getExceptionDetail } from '@/api/modules/workcontrol/index.js'
+import { getExceptionDetail, handleException } from '@/api/modules/dashboard/analysis'
+import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 
 export default {
+  components: {
+    DealWithModal
+  },
   props: {
     visible: {
       type: Boolean,
       default: false
     },
-    type: {
-      type: String,
-      default: ''
-    },
-    id: {
-      type: String | Number,
-      default: ''
-    },
-    domain: {
-      type: String,
-      default: 'prod'
+    detailItem: {
+      type: Object,
+      default: () => ({})
     }
   },
   watch: {
     visible: {
       handler(val) {
         if (val) {
-          if (this.type == '异常作业') {
-            this.getWorkDetail()
+          this.getExceptionDetail()
+          if (this.typeList.find(item => item.label == this.detailItem.exceptionType).value == 1) {
+            this.labelList = this.exceptionWorkList.concat(this.allLabel)
           }
-
         }
       },
       immediate: true
@@ -97,9 +71,20 @@ export default {
   },
   data() {
     return {
+      dealWithVisible: false,
       detail: {},
       detailLoading: false,
       labelList: [],
+      typeList: [
+        {
+          value: 1,
+          label: '异常作业'
+        },
+        {
+          value: 2,
+          label: '异常事件'
+        }
+      ],
       exceptionWorkList: [
         {
           label: '作业ID：',
@@ -172,18 +157,67 @@ export default {
         {
           label: '状态：',
           value: 'state'
+        },
+        {
+          label: '失败原因',
+          value: 'reason',
+          type: 'textarea'
+        }
+      ],
+      allLabel: [
+        {
+          label: '处理状态：',
+          value: 'handled'
+        },
+        {
+          label: '处理人：',
+          value: 'handledUser'
+        },
+        {
+          label: '处理时间：',
+          value: 'handledTime'
+        },
+        {
+          label: '处理内容：',
+          value: 'handledDesc',
+          type: 'textarea'
         }
       ]
     }
   },
   methods: {
     /**
+     * 处理异常
+     */
+    async handleException(params) {
+
+      try {
+        const res = await handleException(params)
+        if (res.code == 200) {
+          this.$message.success('处理成功')
+          this.getExceptionDetail()
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('处理失败')
+      } finally {
+        this.dealWithVisible = false
+      }
+    },
+    /**
      * 获取异常详情
      */
     async getExceptionDetail() {
       this.detailLoading = true
       try {
-        let res = await getExceptionDetail({ jobId: this.id, domain: this.domain })
+        let params = {
+          jobId: this.detailItem.jobId,
+          id: this.detailItem.id,
+          domain: this.detailItem.domain,
+          type: this.typeList.find(item => item.label == this.detailItem.exceptionType).value
+        }
+        let res = await getExceptionDetail(params)
         if (res.code == 200) {
           console.log(res.result, 'res.result')
           this.detail = res.result
@@ -199,29 +233,6 @@ export default {
         console.log(this.detailLoading, 'this.detailLoading')
       }
     },
-    /**
-     * 获取作业详情
-     */
-    async getWorkDetail() {
-      this.detailLoading = true
-      try {
-        let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
-        if (res.code == 200) {
-          console.log(res.result, 'res.result')
-          this.detail = res.result
-        } else {
-          this.detail = {}
-          this.$message.error(res.message)
-        }
-      } catch {
-
-      } finally {
-        this.detailLoading = false
-        this.$forceUpdate()
-        console.log(this.detailLoading, 'this.detailLoading')
-      }
-    },
-
     getValue(key) {
       let value = ''
       try {
@@ -237,6 +248,32 @@ export default {
     },
     cancel() {
       this.$emit('cancel')
+    },
+    neglect() {
+      this.$confirm(
+        {
+          content: '确定要忽略当前异常信息吗？',
+          title: '提示',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          onOk: () => {
+            let params = {
+              ids: this.detailItem.id,
+              type: 2
+            }
+            this.handleException(params)
+          }
+        })
+
+    },
+    handleOk(reason) {
+      let params = {
+        ids: this.detailItem.id,
+        type: 1,
+        handledDesc: reason
+      }
+      this.handleException(params)
     }
   }
 }
@@ -250,8 +287,15 @@ ul {
   margin: 0 auto;
 
   li {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
     span {
-      width: 50%
+      width: 50%;
+      display: block;
+      float: left;
+      text-align: left;
     }
 
     .content {
@@ -280,7 +324,7 @@ ul {
 }
 
 .buttons {
-  width: 80%;
+  width: 95%;
   margin: 20px auto;
   margin-top: 40px;
   display: flex;

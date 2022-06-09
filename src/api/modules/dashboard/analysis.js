@@ -111,7 +111,7 @@ export function getSystemListByBranch() {
  */
 export function getExceptionDetail(data) {
   return axios({
-    url: '/Event/details',
+    url: '/cvException/details',
     method: 'post',
     data
   })

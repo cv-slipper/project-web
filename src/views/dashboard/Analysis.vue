@@ -284,9 +284,7 @@
       @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
     <exception-info-modal
-      :type='exceptionType'
-      :domain='domain'
-      :id='exceptionId'
+      :detail-item='exceptionItem'
       :visible='exceptionVisible'
       @cancel='exceptionVisible = false'></exception-info-modal>
   </div>
@@ -362,6 +360,7 @@ export default {
   data() {
     return {
 
+      exceptionItem: {},
       errorMessageTotal: 0,
       dealWithVisible: false,
       failedWorkVisible: false,
@@ -831,8 +830,7 @@ export default {
       // })
     },
     exceptionInfo(row) {
-      this.exceptionType = row.exceptionType
-      this.exceptionId = row.exceptionType == '异常作业' ? row.jobId : row.eventId
+      this.exceptionItem = row
       this.exceptionVisible = true
     },
     /**
