@@ -29,6 +29,10 @@
           <pie-chart></pie-chart>
         </div>
       </div>
+      <div class='main-center'>
+        <div class='main-center-top'></div>
+        <div class='main-center-bottom'></div>
+      </div>
     </div>
   </div>
 </template>
@@ -185,14 +189,38 @@ export default {
   width: 25%;
   height: calc(100% - 20px);
   margin-top: 20px;
+  float: left;
 
   .item {
     height: 33%;
+    margin-top: 10px;
+  }
+
+  .item:first-child {
+    margin-top: 0;
   }
 }
 
 .center-inner {
   height: 100%;
+}
+
+.main-center {
+  width: 60%;
+  height: calc(100% - 10px);
+  float: left;
+
+  .main-center-top {
+    height: calc(66%);
+    background: url("../../../assets/data-center.png") no-repeat;
+    background-size: 100% 100%;
+  }
+
+  .main-center-bottom {
+    height: calc(34%);
+    margin-top: 10px;
+  }
+
 }
 
 @media screen and (max-width: 1440px) {

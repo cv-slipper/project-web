@@ -249,7 +249,9 @@ export default {
 
   },
   mounted() {
-    this.initChart()
+    this.$nextTick(() => {
+      this.initChart()
+    })
   },
   methods: {
     initChart() {

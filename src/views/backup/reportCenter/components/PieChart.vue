@@ -12,10 +12,14 @@
 </template>
 
 <script>
+let useColor = ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8']
 export default {
   name: 'PieChart',
   data() {
     return {
+      colorIndex: 0,
+      color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
+      myChart: null,
       option: {
         tooltip: {
           trigger: 'item'
@@ -23,29 +27,124 @@ export default {
         legend: {
           right: 0,
           top: 'center',
-          orient: 'vertical'
+          orient: 'vertical',
+          icon: 'circle',
+          itemWidth: 10,
+          itemHeight: 10,
+          formatter: name => {
+            this.colorIndex++
+            if (this.colorIndex > 6) {
+              this.colorIndex = 1
+            }
+            return this.getRichArr(this.option.series[0].data, this.colorIndex - 1, name).join('')
+          },
+          data: [
+            {
+              name: 'Search Engine',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[0],
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'Direct',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[1],
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'Email',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[2],
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'Union Ads',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[3],
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'Video Ads',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[4],
+                borderWidth: 3
+              }
+            }
+          ],
+          textStyle: {
+            height: 15,
+            lineHeight: 15,
+            rich: {
+              a: {
+                align: 'left',
+                padding: [0, 20, 0, 0],
+                width: 70,
+                fontSize: 12
+              },
+              b0: {
+                align: 'right',
+                color: '#CAC9CA'
+              },
+              b1: {
+                align: 'right',
+                color: '#24D4A6'
+              },
+
+              b2: {
+                align: 'right',
+                color: '#00B7EE'
+              },
+              b3: {
+                align: 'right',
+                color: '#6E69F9'
+              },
+              b4: {
+                align: 'right',
+                color: '#1E67F2'
+              },
+              b5: {
+                align: 'right',
+                color: '#21E5E8'
+              },
+              c: {
+                width: 120,
+                height: 0.5,
+                borderColor: '#CAC9CA',
+                borderWidth: 0.5,
+                borderType: 'dashed'
+              }
+            }
+          }
         },
         series: [
           {
             name: '',
             type: 'pie',
-            radius: ['40%', '70%'],
-            center: ['26%', 'center'],
+            color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
+            radius: ['50%', '70%'],
+            center: ['27%', 'center'],
             avoidLabelOverlap: false,
-            itemStyle: {
-              borderRadius: 0,
-              borderColor: '#fff',
-              borderWidth: 2
-            },
+            clockwise: false,
             label: {
               show: false,
               position: 'center'
             },
+
             emphasis: {
               label: {
                 show: true,
-                fontSize: '40',
-                fontWeight: 'bold'
+                fontSize: '16',
+                fontWeight: 'bold',
+                formatter: '{d}%\n{b}'
               }
             },
             labelLine: {
@@ -64,12 +163,65 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
+    this.$nextTick(() => {
+      this.initChart()
+    })
   },
   methods: {
     initChart() {
-      let myChart = this.$echarts.init(document.getElementById('pieChart'))
-      myChart.setOption(this.option)
+
+      this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+      this.myChart.setOption(this.option)
+      window.addEventListener('resize', () => {
+        this.myChart.resize()
+      })
+    },
+    getRichArr(item, index, name) {
+      let arr = []
+      switch (index) {
+        case 0:
+          arr = [
+            '{a|' + name + '}',
+            '{b0|' + item[index].value + '}\n'
+          ]
+          break
+        case 1:
+          arr = [
+            '{a|' + name + '}',
+            '{b1|' + item[index].value + '}\n'
+          ]
+          break
+        case 2:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b2|' + item[index].value + '}\n'
+            ]
+          break
+        case 3:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b3|' + item[index].value + '}\n'
+            ]
+          break
+        case 4:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b4|' + item[index].value + '}\n'
+            ]
+          break
+        case 5:
+          arr =
+            [
+              '{a|' + name + '}',
+              '{b5|' + item[index] + '} \n'
+            ]
+          break
+      }
+      index != 5 && arr.push('{c|}')
+      return arr
     }
   }
 }

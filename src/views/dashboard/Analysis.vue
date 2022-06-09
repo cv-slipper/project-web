@@ -36,7 +36,7 @@
                       <div class='flex-center fl'>
                         <img class='fl' style='width:20px;height:20px' src='@/assets/dailyWork.png' alt=''>
                         <span class='ml-5 fl' style='font-size:14px'>当前作业</span>
-                        <div class='fl ml-5' @click='getCurrentWork()'>
+                        <div class='fl ml-5' @click='refreshWork()'>
                           <span class='reset'>刷新</span>
                         </div>
                       </div>
@@ -135,16 +135,16 @@
                 <div>
                   <div class='title fs-12' style='color:#666666'>{{ item.title }}</div>
                   <div class='fs-12 '>
-                    <div class='num fl'> {{ item.num }}{{ item.unit }}
+                    <div class='num fl'> {{ item.num }}
                       <div class='increase-num fl'
-                           v-if='item.increaseNum'>+{{ item.increaseNum
+                           v-if='item.increaseNum!=null'>+{{ item.increaseNum
                         }}
                       </div>
                     </div>
                     <div
                       class='total fl'
                       v-if='item.total!=null'>/{{ item.total
-                      }}{{ item.unit }}
+                      }}
                     </div>
                   </div>
                 </div>
@@ -303,7 +303,7 @@ import MainTrend from '@views/dashboard/components/MainTrend'
 import SystemDistribution from '@views/dashboard/components/SystemDistribution'
 import SystemInfo from '@views/dashboard/components/SystemInfo'
 import ErrorMessageModal from '@views/dashboard/components/modal/ErrorMessageModal'
-import { getCurrentWork, get24HoursWork, getBackupSuccessRate } from '@/api/modules/workcontrol/index.js'
+import { getCurrentWork, get24HoursWork, getBackupSuccessRate, refreshWork } from '@/api/modules/workcontrol/index.js'
 import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
@@ -508,6 +508,25 @@ export default {
   },
   methods: {
     /**
+     * 刷新作业
+     */
+    async refreshWork() {
+      try {
+        const res = await refreshWork({ domain: this.domain })
+        if (res.code === 200) {
+          console.log(res, 'res')
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+
+      } finally {
+        setTimeout(() => {
+          this.getCurrentWork()
+        }, 3000)
+      }
+    },
+    /**
      * 处理异常
      */
     async handleException(params) {
@@ -693,12 +712,12 @@ export default {
           this.listData[0].num = res.result.appSystemNum || 0
           this.listData[1].num = res.result.clientNum || 0
           this.listData[2].num = res.result.mediaAgentNum || 0
-          this.listData[3].num = (res.result.foreLicenseUsed / 1024).toFixed(2) || 0
-          this.listData[3].total = (res.result.foreLicenseTotal / 1024).toFixed(2) || 0
-          this.listData[4].num = (res.result.diskStorageUsed / 1024).toFixed(2) || 0
-          this.listData[4].total = (res.result.diskStorageTotal / 1024).toFixed(2) || 0
+          this.listData[3].num = res.result.foreLicenseUsed || 0
+          this.listData[3].total = res.result.foreLicenseTotal || 0
+          this.listData[4].num = res.result.diskStorageUsed || 0
+          this.listData[4].total = res.result.diskStorageTotal || 0
           this.listData[1].increaseNum = res.result.increaseClient || 0
-          this.listData[4].increaseNum = (res.result.increaseDisk / 1024).toFixed(2) || 0
+          this.listData[4].increaseNum = res.result.increaseDisk || 0
         } else {
           this.$message.error(res.message)
         }
@@ -1024,7 +1043,7 @@ export default {
   width: 100%;
 
   .item:nth-child(2) {
-    width: calc(18% - 5px);
+    width: calc(16% - 5px);
 
     .increase-num {
       top: 0;
@@ -1033,15 +1052,15 @@ export default {
   }
 
   .item:first-child {
-    width: calc(16% - 5px);
+    width: calc(14% - 5px);
   }
 
   .item:nth-child(3) {
-    width: calc(17% - 5px);
+    width: calc(16% - 5px);
   }
 
   .item:nth-child(4) {
-    width: calc(22% - 5px);
+    width: calc(27% - 5px);
   }
 
   .item:last-child {
@@ -1063,6 +1082,7 @@ export default {
     padding: 10px 5px;
     border-radius: 5px;
     margin-bottom: 10px;
+    text-align: left;
 
     .title {
       transform: scale(0.8);

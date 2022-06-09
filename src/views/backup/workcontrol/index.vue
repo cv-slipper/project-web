@@ -27,7 +27,7 @@
       </div>
       <div class='update-time'>
         <span>更新时间：{{ updateTime }}</span>
-        <a-button class='ml-10' @click='getWorkList' type='primary'>
+        <a-button class='ml-10' @click='refreshWork' type='primary'>
           <a-icon type='undo' />
           刷新
         </a-button>
@@ -150,7 +150,7 @@
 
 <script>
 import BranchSearch from '@comp/searchParms/BranchSearch'
-import { getWorkList, pauseWork, playWork, stopWork } from '@api/modules/workcontrol/index'
+import { getWorkList, pauseWork, playWork, refreshWork, stopWork } from '@api/modules/workcontrol/index'
 import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
 
 export default {
@@ -449,6 +449,25 @@ export default {
     this.getWorkList()
   },
   methods: {
+    /**
+     * 刷新作业
+     */
+    async refreshWork() {
+      try {
+        const res = await refreshWork({ domain: this.domain })
+        if (res.code === 200) {
+          console.log(res, 'res')
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+
+      } finally {
+        setTimeout(() => {
+          this.getWorkList()
+        }, 3000)
+      }
+    },
     /**
      * 获取列表数据
      */

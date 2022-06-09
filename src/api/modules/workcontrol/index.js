@@ -96,3 +96,13 @@ export function getBackupSuccessRate(data) {
   })
 }
 
+/**
+ * 刷新作业
+ */
+export function refreshWork(data) {
+  return axios({
+    url: '/job/refresh',
+    method: 'post',
+    data
+  })
+}
