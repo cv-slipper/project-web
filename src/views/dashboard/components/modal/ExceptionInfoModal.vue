@@ -9,7 +9,7 @@
       <div v-else>
         <ul>
           <template v-for='(item,index) in labelList'>
-            <li style='display:block' :key='index+-1' v-if='item.type=="textarea"'>
+            <li style='display:block' :key='index+new Date().getTime()' v-if='item.type=="textarea"'>
               <div>{{ item.label }}</div>
               <div>
                 {{ getValue(item.value) }}
@@ -31,9 +31,14 @@
             <a-icon type='caret-right' />
             忽略
           </a-button>
-          <a-button type='link'>查看作业相关事件</a-button>
+          <a-button type='link' @click='openEventListModal'>查看作业相关事件</a-button>
         </div>
         <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible=false' @ok='handleOk'></deal-with-modal>
+        <work-event-list-modal
+          :visible='eventVisible'
+          :detail-item='detailItem'
+          @cancel='eventVisible=false'
+        ></work-event-list-modal>
       </div>
     </a-modal>
   </div>
@@ -41,10 +46,12 @@
 <script>
 import { getExceptionDetail, handleException } from '@/api/modules/dashboard/analysis'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
+import WorkEventListModal from '@views/backup/workcontrol/components/modal/WorkEventListModal'
 
 export default {
   components: {
-    DealWithModal
+    DealWithModal,
+    WorkEventListModal
   },
   props: {
     visible: {
@@ -71,6 +78,8 @@ export default {
   },
   data() {
     return {
+      eventDetailItem: {},
+      eventVisible: false,
       dealWithVisible: false,
       detail: {},
       detailLoading: false,
@@ -225,12 +234,11 @@ export default {
           this.detail = {}
           this.$message.error(res.message)
         }
-      } catch {
-
+      } catch (e) {
+        console.log(e, 'e')
       } finally {
         this.detailLoading = false
         this.$forceUpdate()
-        console.log(this.detailLoading, 'this.detailLoading')
       }
     },
     getValue(key) {
@@ -274,6 +282,10 @@ export default {
         handledDesc: reason
       }
       this.handleException(params)
+    },
+    openEventListModal(row) {
+      this.eventDetailItem = row
+      this.eventVisible = true
     }
   }
 }

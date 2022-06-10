@@ -31,7 +31,7 @@
       <img src='@/assets/wang.png' alt='' />
     </div>
 
-    <div class='system-group'>
+    <div class='system-group' v-if='!systemLoading'>
 
       <div
         class='item'

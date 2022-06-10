@@ -70,7 +70,7 @@
         >
         <template #action='row'>
           <div class=''>
-            <span style='color:#1890FF;cursor:pointer' class='fl' type='link'>详情</span>
+            <span style='color:#1890FF;cursor:pointer' class='fl' type='link' @click='goToInfo(row)'>详情</span>
             <span style='color:#1890FF;cursor:pointer' class='fl ml-5' type='link' @click='rowDealWith(1,row)'>处理</span>
             <span style='color:#1890FF;cursor:pointer' class='fl ml-5' type='link' @click='rowDealWith(2,row)'>忽略</span>
           </div>
@@ -84,6 +84,10 @@
         </template>
       </a-table>
       <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='handleOk'></deal-with-modal>
+      <exception-info-modal
+        :visible='exceptionInfoVisible'
+        @cancel='exceptionInfoVisible=false'
+        :detail-item='detailItem'></exception-info-modal>
     </div>
   </a-modal>
 </template>
@@ -97,12 +101,14 @@ import {
 } from '@api/modules/dashboard/analysis.js'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import BranchSearch from '@comp/searchParms/BranchSearch'
+import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
 
 export default {
   name: 'ErrorMessageModal',
   components: {
     DealWithModal,
-    BranchSearch
+    BranchSearch,
+    ExceptionInfoModal
   },
   computed: {
     getDomain() {
@@ -172,6 +178,8 @@ export default {
   },
   data() {
     return {
+      exceptionInfoVisible: false,
+      detailItem: {},
       severities: [],
       systems: [],
       dealWithVisible: false,
@@ -387,6 +395,10 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    goToInfo(row) {
+      this.detailItem = row
+      this.exceptionInfoVisible = true
     },
     /**
      * 过滤分行

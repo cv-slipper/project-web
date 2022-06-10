@@ -14,6 +14,7 @@ import '@/permission' // permission control
 import '@/utils/filter' // base filter
 import Print from 'vue-print-nb-jeecg'
 
+import VueAMap from 'vue-amap'
 
 /*import '@babel/polyfill'*/
 import preview from 'vue-photo-preview'
@@ -59,7 +60,15 @@ Vue.use(preview)
 Vue.use(vueBus)
 Vue.use(JeecgComponents)
 Vue.use(VueAreaLinkage)
+Vue.use(VueAMap)
+VueAMap.initAMapApiLoader({
+  // 高德key
+  key: 'f5ada6176c6a7f1a9ae57985b2f9e1a1', // 自己到官网申请，我随便写的
+  // 插件集合 （插件按需引入）
+  v: '1.4.15', // 我也不知道为什么要写这个，不写项目会报错，而且我随便写的，跟我下载的版本对应不了
+  uiVersion: '1.0.11' // ui版本号，也是需要写，不配置不加载,
 
+})
 new Vue({
   router,
   store,

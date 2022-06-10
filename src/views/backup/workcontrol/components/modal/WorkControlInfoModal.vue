@@ -46,18 +46,25 @@
             <a-icon type='stop' />
             终止
           </a-button>
-          <a-button type='link'>查看作业相关事件</a-button>
+          <a-button type='link' @click='lookEvent'>查看作业相关事件</a-button>
 <!--          <a-button type='link'>查看作业日志</a-button>-->
 <!--          <a-button type='link'>查看RMAN日志</a-button>-->
         </div>
+        <work-event-list-modal
+          :visible='eventListVisible'
+          @cancel='eventListVisible=false'
+          :detail-item='detail'></work-event-list-modal>
       </div>
     </a-modal>
   </div>
 </template>
 <script>
 import { getWorkDetail, pauseWork, playWork, stopWork } from '@/api/modules/workcontrol/index.js'
-
+import WorkEventListModal from '@views/backup/workcontrol/components/modal/WorkEventListModal'
 export default {
+  components: {
+    WorkEventListModal
+  },
   props: {
     visible: {
       type: Boolean,
@@ -161,6 +168,8 @@ export default {
   },
   data() {
     return {
+      eventListVisible: false,
+      detailItem: {},
       detail: {},
       detailLoading: false,
       pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
@@ -303,6 +312,9 @@ export default {
     },
     cancel() {
       this.$emit('cancel')
+    },
+    lookEvent() {
+      this.eventListVisible = true
     }
   }
 }

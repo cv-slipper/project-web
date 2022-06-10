@@ -145,6 +145,7 @@
       :id='rowId'
       :domain='rowDomain'
       :label-list='labelList'></work-control-info-modal>
+
   </div>
 </template>
 
@@ -152,6 +153,7 @@
 import BranchSearch from '@comp/searchParms/BranchSearch'
 import { getWorkList, pauseWork, playWork, refreshWork, stopWork } from '@api/modules/workcontrol/index'
 import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
+
 
 export default {
   name: 'index',
@@ -161,6 +163,7 @@ export default {
   },
   data() {
     return {
+
       pausedStatusList: ['Running', 'Waiting', 'Queued', 'Pending'],
       playStatusList: ['Suspended', 'Pending'],
       stopStatusList: ['Running', 'Waiting', 'Queued', 'Pending', 'Suspended', 'Suspend'],

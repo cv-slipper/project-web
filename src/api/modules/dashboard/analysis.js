@@ -117,4 +117,25 @@ export function getExceptionDetail(data) {
   })
 }
 
+/**
+ * 获取相关事件实时列表
+ */
+export function getEventList(data) {
+  return axios({
+    url: '/Event/realList',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ *获取错误列表
+ */
+export function getErrorList(data) {
+  return axios({
+    url: '/job/errorList',
+    method: 'post',
+    data
+  })
+}
 

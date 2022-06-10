@@ -45,7 +45,8 @@ export default {
       allMarkers: [],
       bigAreaMarkers: [],
       areaMarkers: [],
-      litttleAreaPoints: []
+      litttleAreaPoints: [],
+      infoWindows: []
 
     }
   },
@@ -54,6 +55,7 @@ export default {
   },
   mounted() {
     this.initMap()
+    this.setInfoWindow()
   },
   methods: {
     checkBranch(item) {
@@ -76,6 +78,14 @@ export default {
     },
     openBranchModal() {
       this.mapListVisible = true
+    },
+    clearInfoWindow() {
+      let zoom = this.map.getZoom()
+      if (this.infoWindows.length > 0 && zoom >= 4.5) {
+        this.infoWindows.forEach(item => {
+          item.close()
+        })
+      }
     },
     // 防抖函数
     debounce(fn, ms) {
@@ -105,6 +115,13 @@ export default {
 
       }
     },
+    setInfoWindow() {
+      console.log(this.bigAreaMarkers, 'bigAreaMarkers')
+      this.bigAreaMarkers.forEach(item => {
+        console.log(item, 'item')
+      })
+
+    },
     initMap() {
       this.map = new AMap.Map('container', {
         zoom: 3.8,//级别
@@ -120,6 +137,8 @@ export default {
 
       this.map.on('zoomend', (e) => {
         this.debounce(this.dealWithMarkers, 10)()
+        this.debounce(this.clearInfoWindow, 10)()
+        this.debounce(this.setInfoWindow, 10)()
       })
       this.map.on('zoomchange', () => {
         console.log(this.map.getZoom())
@@ -127,7 +146,9 @@ export default {
     },
     initAreaMarker() {
       let markers = []
-      let normal = '<img style="width:65px;height:65px" src=' + require('@/assets/normal.png') + ' />'
+      let normal = `<div style='position: relative'>
+                        <img style='width:65px;height:65px' src='${require('@/assets/normal.png')}' />
+                     </div>`
       let warning = '<img style="width:65px;height:65px" src=' + require('@/assets/warning.png') + ' />'
       for (let i = 0; i < this.areaPoints.length; i++) {
         var marker = new AMap.Marker({

@@ -9,7 +9,7 @@
         :columns='columns'
         :data-source='dataSource'
         :loading='loading'
-        :pagination='pagination'
+        :pagination='false'
         @change='tableChange'
         :scroll='{x:"100%"}'
       >
@@ -27,23 +27,22 @@
         </template>
       </a-table>
     </div>
-    <work-control-info-modal
-      @cancel='workInfoVisible = false'
-      :visible='workInfoVisible'
-      :id='rowId'
-      :domain='rowDomain'
-    ></work-control-info-modal>
+    <exception-info-modal
+      :visible='exceptionInfoVisible'
+      :detail-item='detailItem'
+      @cancel='exceptionInfoVisible=false'
+    ></exception-info-modal>
   </a-modal>
 </template>
 
 <script>
-import { getWorkList } from '@api/modules/workcontrol/index'
-import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
+import { getErrorList } from '@api/modules/dashboard/analysis'
+import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
 
 export default {
   name: 'FailedWorkModal',
   components: {
-    WorkControlInfoModal
+    ExceptionInfoModal
   },
   props: {
     visible: {
@@ -67,6 +66,8 @@ export default {
   },
   data() {
     return {
+      exceptionInfoVisible: false,
+      detailItem: {},
       workInfoVisible: false,
       rowId: '',
       rowDomain: '',
@@ -189,15 +190,11 @@ export default {
     async getWorkList() {
       try {
         this.loading = true
-        let res = await getWorkList({
-          current: this.pagination.current,
-          pageSize: this.pagination.pageSize,
-          state: 'Failed',
+        let res = await getErrorList({
           domain: this.domain
         })
         if (res.code == 200) {
-          this.dataSource = res.result.list
-          this.pagination.total = res.result.total
+          this.dataSource = res.result || []
         } else {
           this.$message.error(res.message)
         }
@@ -212,10 +209,10 @@ export default {
       this.getWorkList()
     },
     failedDetail(row) {
-      this.rowId = row.jobId
-      this.rowDomain = row.domain
-      this.workInfoVisible = true
-      this.$emit('failedDetail', row)
+      row.exceptionType = '异常作业'
+      
+      this.exceptionInfoVisible = true
+      this.detailItem = row
     },
     cancel() {
       this.$emit('cancel')
