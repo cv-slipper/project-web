@@ -67,10 +67,10 @@ export default {
         this.map.add(this.allMarkers)
       } else {
         let zoom = this.map.getZoom()
-        if (zoom == 3.8) {
-          this.map.setZoomAndCenter(3.79, [108.316721, 37.38724])
+        if (zoom == 4) {
+          this.map.setZoomAndCenter(4.95, [108.316721, 37.38724])
         } else {
-          this.map.setZoomAndCenter(3.8, [108.316721, 37.38724])
+          this.map.setZoomAndCenter(4, [108.316721, 37.38724])
         }
 
       }
@@ -104,6 +104,7 @@ export default {
       this.map.remove(this.allMarkers)
       this.allMarkers = this.initAllMarker()
       let zoom = this.map.getZoom()
+
       if (zoom >= 4.5) {
         this.map.remove(this.bigAreaMarkers)
         this.map.remove(this.allMarkers)
@@ -112,11 +113,9 @@ export default {
         this.map.remove(this.allMarkers)
         this.map.remove(this.bigAreaMarkers)
         this.map.add(this.bigAreaMarkers)
-
       }
     },
     setInfoWindow() {
-      console.log(this.bigAreaMarkers, 'bigAreaMarkers')
       this.bigAreaMarkers.forEach(item => {
         console.log(item, 'item')
       })
@@ -124,11 +123,11 @@ export default {
     },
     initMap() {
       this.map = new AMap.Map('container', {
-        zoom: 3.8,//级别
+        zoom: 4,//级别
         resizeEnable: true,
         center: [108.316721, 37.38724],//中心点坐标
         features: ['bg', 'road', 'building'],//显示样式
-        zooms: [3.8, 15]
+        zooms: [4, 15]
 
       })
       this.bigAreaMarkers = this.initAreaMarker()
@@ -136,12 +135,12 @@ export default {
       this.map.add(this.bigAreaMarkers)
 
       this.map.on('zoomend', (e) => {
-        this.debounce(this.dealWithMarkers, 10)()
-        this.debounce(this.clearInfoWindow, 10)()
-        this.debounce(this.setInfoWindow, 10)()
+        // this.debounce(this.dealWithMarkers, 10)()
       })
       this.map.on('zoomchange', () => {
-        console.log(this.map.getZoom())
+        let zoom = this.map.getZoom()
+        console.log(zoom, 'zoom')
+        this.debounce(this.dealWithMarkers, 10)()
       })
     },
     initAreaMarker() {

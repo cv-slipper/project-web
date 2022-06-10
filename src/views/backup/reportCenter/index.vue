@@ -18,20 +18,48 @@
           {{ getDate() }}
         </div>
       </div>
-      <div class='main-left'>
-        <div class='item'>
-          <trend-chart></trend-chart>
+      <div style='display: flex;height:100%;position: relative'>
+        <div class='main-left'>
+          <div class='item'>
+            <trend-chart></trend-chart>
+          </div>
+          <div class='item'>
+            <front-end-capacity></front-end-capacity>
+          </div>
+          <div class='item'>
+            <pie-chart></pie-chart>
+          </div>
         </div>
-        <div class='item'>
-          <front-end-capacity></front-end-capacity>
+        <div class='main-center'>
+
+          <div class='main-center-top'>
+            <div class='center-ele'>
+              <img src='@/assets/data-center-ele.png' alt='' />
+            </div>
+            <div class='group'>
+              <div class='item' v-for='(item,index) in itemList' :key='index'>
+
+                <div>
+                  <div class='num'>{{ item.num }}</div>
+                  <div class='name'>{{ item.name }}</div>
+                </div>
+                <div class='year'>
+                  <template v-if='item.type==1'>
+                    <div>环比上月 <span
+                      :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{ item.month
+                      }}</span></div>
+                    <div>环比去年 <span
+                      :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{ item.year
+                      }}</span></div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='main-center-bottom'>
+            <repository-usage></repository-usage>
+          </div>
         </div>
-        <div class='item'>
-          <pie-chart></pie-chart>
-        </div>
-      </div>
-      <div class='main-center'>
-        <div class='main-center-top'></div>
-        <div class='main-center-bottom'></div>
       </div>
     </div>
   </div>
@@ -41,17 +69,60 @@
 import TrendChart from '@views/backup/reportCenter/components/TrendChart'
 import FrontEndCapacity from '@views/backup/reportCenter/components/FrontEndCapacity'
 import PieChart from '@views/backup/reportCenter/components/PieChart'
+import RepositoryUsage from '@views/backup/reportCenter/components/RepositoryUsage'
 
 export default {
   name: 'index',
   components: {
     TrendChart,
     FrontEndCapacity,
-    PieChart
+    PieChart,
+    RepositoryUsage
   },
   data() {
     return {
-      domain: 'prod'
+      domain: 'prod',
+      itemList: [
+        {
+          num: 141,
+          name: '应用系统数量'
+        },
+        {
+          num: 1090,
+          name: '客户端数量',
+          type: 1,
+          month: '+16.8%',
+          year: '+16.8%'
+        },
+        {
+          num: '140TB',
+          name: '许可使用量',
+          type: 1,
+          month: '+16.8%',
+          year: '-16.8%'
+        },
+        {
+          num: '150TB',
+          name: '存储用量',
+          type: 1,
+          month: '+16.8%',
+          year: '+16.8%'
+        },
+        {
+          num: 1963,
+          name: '日均备份作业量',
+          type: 1,
+          month: '+16.8%',
+          year: '+16.8%'
+        },
+        {
+          num: 1963,
+          name: '日均备份数据量',
+          type: 1,
+          month: '+16.8%',
+          year: '+16.8%'
+        }
+      ]
     }
   },
   methods: {
@@ -189,11 +260,10 @@ export default {
   width: 25%;
   height: calc(100% - 20px);
   margin-top: 20px;
-  float: left;
 
   .item {
-    height: 33%;
-    margin-top: 10px;
+    height: calc(33% - 4px);
+    margin-top: 6px;
   }
 
   .item:first-child {
@@ -206,24 +276,107 @@ export default {
 }
 
 .main-center {
-  width: 60%;
-  height: calc(100% - 10px);
-  float: left;
+  width: 50%;
+  height: calc(100% - 20px);
+  margin-top: 20px;
 
   .main-center-top {
-    height: calc(66%);
-    background: url("../../../assets/data-center.png") no-repeat;
+    height: calc(66% - 2px);
+    background: url("../../../assets/data-center-bg.png") no-repeat;
     background-size: 100% 100%;
+    position: relative;
+
+    .center-ele {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      text-align: center;
+
+      img {
+        width: 80%;
+        object-fit: fill;
+      }
+    }
   }
 
   .main-center-bottom {
-    height: calc(34%);
-    margin-top: 10px;
+    height: calc(33% - 4px);
+    margin-top: 6px;
   }
 
 }
 
+.group {
+  padding: 20px;
+  padding-top: 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .item {
+    width: calc(25% - 5px);
+    box-shadow: 0px 5px 24px 0px rgba(21, 57, 148, 0.13);
+    opacity: 0.8;
+    border-radius: 5px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 10px;
+
+    .num {
+      color: #3C6BE3;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .name {
+      font-size: 12px;
+      font-weight: bold;
+      color: black
+    }
+
+    .year {
+      font-size: 12px;
+      font-family: Source Han Sans CN;
+      font-weight: 400;
+      color: #666666;
+    }
+  }
+
+  .item:nth-child(n+5) {
+    margin-top: 10px;
+  }
+}
+
+.success {
+  color: #1BC78B;
+  font-weight: bold;
+}
+
+.error {
+  color: #FF5252;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 1440px) {
+  .group {
+    .item {
+      width: calc(33% - 10px);
+
+      .year {
+        transform: scale(0.9);
+        line-height: 20px;
+      }
+    }
+
+    .item:nth-child(n+4) {
+      margin-top: 10px;
+    }
+  }
+
   .reportCenter {
     overflow-y: auto;
 

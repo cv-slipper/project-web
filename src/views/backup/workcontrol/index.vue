@@ -136,6 +136,9 @@
 
             </div>
           </template>
+          <template #rate='data'>
+            <a-progress type='circle' :percent='data' :width='40' />
+          </template>
         </a-table>
       </div>
     </div>
@@ -422,7 +425,8 @@ export default {
       branchId: [],
       state: [],
       updateTime: '',
-      selectedRows: []
+      selectedRows: [],
+      timer: null
     }
   },
   /**
@@ -449,7 +453,14 @@ export default {
       this.domain = this.$route.params.domain
       this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
     }
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
     this.getWorkList()
+    this.timer = setInterval(() => {
+      this.refreshWork()
+    }, 60000)
+
   },
   methods: {
     /**
