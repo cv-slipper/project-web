@@ -31,7 +31,12 @@
             <a-icon type='caret-right' />
             忽略
           </a-button>
-          <a-button type='link' @click='openEventListModal'>查看作业相关事件</a-button>
+          <a-button
+            v-if='Object.keys(detailItem).length>0?detailItem.exceptionType!="异常事件":false'
+            type='link'
+            class='ml-10'
+            @click='openEventListModal'>查看作业相关事件
+          </a-button>
         </div>
         <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible=false' @ok='handleOk'></deal-with-modal>
         <work-event-list-modal
@@ -70,6 +75,8 @@ export default {
           this.getExceptionDetail()
           if (this.typeList.find(item => item.label == this.detailItem.exceptionType).value == 1) {
             this.labelList = this.exceptionWorkList.concat(this.allLabel)
+          } else if (this.typeList.find(item => item.label == this.detailItem.exceptionType).value == 2) {
+            this.labelList = this.exceptionEventList.concat(this.allLabel)
           }
         }
       },
@@ -172,6 +179,63 @@ export default {
           value: 'reason',
           type: 'textarea'
         }
+      ],
+      exceptionEventList: [
+        {
+          label: '异常ID：',
+          value: 'exceptionId'
+        },
+        {
+          label: '严重程度：',
+          value: 'severity'
+        },
+        {
+          label: '异常发现时间：',
+          value: 'occurrenceTime'
+        },
+        {
+          label: '备份域：',
+          value: 'domain'
+        },
+        {
+          label: '相关应用系统／分行：',
+          value: 'applicationSystem'
+        },
+        {
+          label: '事件ID：',
+          value: 'eventId'
+        },
+        {
+          label: '事件严重程度：',
+          value: 'eventSeverity'
+        },
+        {
+          label: '事件发生时间：',
+          value: 'eventTime'
+        },
+        {
+          label: '事件代码：',
+          value: 'eventCode'
+        },
+        {
+          label: '服务器：',
+          value: 'client'
+
+        },
+        {
+          label: '作业ID：',
+          value: 'jobId'
+        },
+        {
+          label: '程序：',
+          value: 'subsystem'
+        },
+        {
+          label: '事件描述：',
+          value: 'eventDesc',
+          type: 'textarea'
+        }
+
       ],
       allLabel: [
         {
@@ -340,6 +404,5 @@ ul {
   margin: 20px auto;
   margin-top: 40px;
   display: flex;
-  justify-content: space-between;
 }
 </style>

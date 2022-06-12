@@ -16,7 +16,7 @@ module.exports = {
   productionSourceMap: false,
 
   //打包app时放开该配置
-  // publicPath: '/',
+  // publicPath: './',
   configureWebpack: config => {
     //生产环境取消 console.log
     if (process.env.NODE_ENV === 'production') {

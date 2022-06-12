@@ -170,7 +170,7 @@ export const branchPoints = [
 
   {
     name: '西北区域',
-    center: [106.278179, 38.46637],
+    center: [101.778916, 36.623178],
     children: [
       {
         name: '乌鲁木齐分行',

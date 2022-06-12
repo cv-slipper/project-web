@@ -46,7 +46,7 @@
       :id='id'
       @cancel='errorVisible = false'
       type='prod'
-      @dealWidthSuccess='dealWithSuccess'></error-message-modal>
+      @dealWithSuccess='dealWithSuccess'></error-message-modal>
   </div>
 </template>
 
