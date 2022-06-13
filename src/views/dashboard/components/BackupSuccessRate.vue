@@ -1,22 +1,22 @@
 <template>
   <div>
-    <div class='flex-center ' style='justify-content: space-between'>
+    <div class='flex-center ' style=''>
       <div>
-        <a-progress :width='110' type='circle' :percent='detail.successRatio'
+        <a-progress :width='width' type='circle' :percent='detail.successRatio'
                     :strokeColor='{"0%":"#0055FF", "100%":"#59ABFF"}'>
           <template #format='percent'>
             <span style='color:black;font-weight:bold'>{{ percent }}%</span>
           </template>
         </a-progress>
       </div>
-      <div class='flex-center'>
+      <div class='flex-center label ml-30'>
         <div class='fr'>
           <div class='fl'>
             <div>完成：</div>
             <div>失败：</div>
             <div>总数：</div>
           </div>
-          <div class='fr count' style='text-align:right'>
+          <div class='fl ml-10 count' style='text-align:right'>
             <div>{{ detail.finishedNum }}</div>
             <div>{{ detail.failedNum }}</div>
             <div>{{ detail.totalNum }}</div>
@@ -39,18 +39,34 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      width: 110
+    }
   },
   mounted() {
-
+    if (window.screen.width == 1920) {
+      this.width = 160
+    }
   },
   methods: {}
 }
 </script>
 
 <style scoped>
+.label {
+  color: #333333;
+  font-size: 18px;
+}
+
 .count {
   color: #666666;
 
 }
+
+@media (max-width: 1440px) {
+  .label {
+    font-size: 14px;
+  }
+}
+
 </style>

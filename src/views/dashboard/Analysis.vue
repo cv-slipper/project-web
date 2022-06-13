@@ -48,8 +48,8 @@
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <div class='flex-box' style='margin:20px 0'>
+                  <div style='height: 100%'>
+                    <div class='flex-box ' style='margin:0;height:100%'>
                       <div class='item' @click='gotoWorkControl("Running")'>
                         <div class='content'>
                           <div class='title'>运行</div>
@@ -62,13 +62,13 @@
                           <div class='num'>{{ currentWorkDetail.waitingNum }}</div>
                         </div>
                       </div>
-                      <div class='item mt-15' @click='gotoWorkControl("Suspend,Suspended")'>
+                      <div class='item ' @click='gotoWorkControl("Suspend,Suspended")'>
                         <div class='content'>
                           <div class='title'>暂停</div>
                           <div class='num'>{{ currentWorkDetail.suspendedNum }}</div>
                         </div>
                       </div>
-                      <div class='item mt-15' @click='gotoWorkControl("Pending")'>
+                      <div class='item ' @click='gotoWorkControl("Pending")'>
                         <div class='content'>
                           <div class='title'>未决</div>
                           <div class='num'>{{ currentWorkDetail.pendingNum }}</div>
@@ -148,9 +148,9 @@
                     </div>
                   </div>
                 </div>
-                <div>
-                  <img :src='item.src' alt='' />
-                </div>
+
+                <img :src='item.src' alt='' />
+
               </div>
             </div>
           </div>
@@ -503,7 +503,9 @@ export default {
         this.init()
       }, 600000)
     }
-
+    if (window.screen.width == 1920) {
+      this.indexStyle = 2
+    }
   },
   methods: {
     /**
@@ -936,12 +938,12 @@ export default {
 }
 
 /deep/ .wrapper .ant-card-head {
-  padding: 0 10px !important;
+  padding: 0 15px !important;
   font-size: 14px !important
 }
 
 /deep/ .wrapper .ant-card-body {
-  padding: 10px !important
+  padding: 15px !important
 }
 
 .flex-box {
@@ -954,6 +956,7 @@ export default {
     padding: 10px 0;
     background-size: 100% 100% !important;
     cursor: pointer;
+    float: left;
 
     .content {
       margin-left: 20%;
@@ -966,6 +969,7 @@ export default {
       }
 
       .num {
+        margin-top: 10px;
         font-size: 20px;
       }
 
@@ -1041,7 +1045,7 @@ export default {
   width: 100%;
 
   .item:nth-child(2) {
-    width: calc(16% - 5px);
+    width: calc(16% - 10px);
 
     .increase-num {
       top: 0;
@@ -1050,47 +1054,50 @@ export default {
   }
 
   .item:first-child {
-    width: calc(14% - 5px);
+    width: calc(16% - 10px);
   }
 
   .item:nth-child(3) {
-    width: calc(16% - 5px);
+    width: calc(16% - 10px);
   }
 
   .item:nth-child(4) {
-    width: calc(27% - 5px);
+    width: calc(25% - 10px);
   }
 
   .item:last-child {
-    width: calc(27% - 5px);
+    width: calc(27% - 10px);
 
     .increase-num {
       color: #1ABA71;
+      top: 15px
     }
   }
 
   .item {
-    width: calc(20% - 5px);
+    width: calc(20% - 10px);
     overflow-x: hidden;
-    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
-    padding: 10px 5px;
+    padding: 20px 15px;
     border-radius: 5px;
     margin-bottom: 10px;
     text-align: left;
+    line-height: 20px;
 
     .title {
-      transform: scale(0.8);
+
     }
 
     .num {
-      transform: scale(0.9);
+
       font-weight: bold;
       color: #333333;
       position: relative;
+      font-size: 14px;
+      margin-top: 10px;
 
     }
 
@@ -1099,27 +1106,26 @@ export default {
       top: 10px;
       right: -20px;
       color: #FF8C00;
-      transform: scale(0.7);
+      font-size: 12px;
+
     }
 
     .total {
-      font-weight: 100;
-      transform: scale(0.8);
+
       font-weight: 400;
+      margin-top: 10px;
     }
 
     img {
-      width: 30px;
+      width: 45px;
       object-fit: cover;
     }
   }
-
-
 }
 
 .center-content {
   width: 100%;
-  height: calc(100% - 33% - 76px);
+  height: calc(100% - 33% - 110px);
   background: white;
 }
 
@@ -1180,11 +1186,23 @@ export default {
   align-items: center !important;
 }
 
+/deep/ .one .ant-card .ant-card-body {
+  height: calc(100% - 53px) !important;
+  padding: 15px !important;
+  line-height: 1 !important;
+}
+
 .left-top {
   height: calc(100% - 33% - 10px);
 
   .one {
     height: calc(58% - 5px);
+
+    .item {
+      width: calc(50% - 7.5px);
+      height: calc(50% - 7.5px);
+      line-height: 20px;
+    }
   }
 
   .two {
@@ -1214,7 +1232,7 @@ export default {
 }
 
 /deep/ .rate .ant-card-body {
-  padding: 30px 10px !important;
+  padding: 30px 15px !important;
 }
 
 .error-action {
@@ -1254,6 +1272,80 @@ export default {
 @media screen and(max-width: 1440px) {
   .main-analysis {
     height: calc(100% + 193px);
+
+    .center-content {
+      height: calc(100% - 33% - 72px);
+    }
+
+    .top-list {
+      font-size: 12px;
+
+      .item:first-child {
+        width: calc(14% - 5px);
+      }
+
+      .item:nth-child(2) {
+        .increase-num {
+          top: 0;
+        }
+      }
+
+      .item:nth-child(3) {
+        width: calc(16% - 5px);
+      }
+
+      .item:nth-child(4) {
+        width: calc(27% - 5px);
+      }
+
+      .item:last-child {
+        width: calc(27% - 5px);
+
+        .increase-num {
+          color: #1ABA71;
+        }
+      }
+
+      .item {
+        width: calc(16% - 5px);
+        padding: 10px 5px;
+        line-height: 1;
+
+        .title {
+          transform: scale(0.8);
+        }
+
+        .num {
+          transform: scale(0.9);
+          font-weight: bold;
+          color: #333333;
+          position: relative;
+          margin: 0;
+          font-size: 12px;
+
+        }
+
+        .increase-num {
+          position: absolute;
+          top: 10px;
+          right: -20px;
+          color: #FF8C00;
+          transform: scale(0.7);
+        }
+
+        .total {
+          font-weight: 100;
+          transform: scale(0.8);
+          font-weight: 400;
+          margin: 0;
+        }
+
+        img {
+          width: 30px;
+          object-fit: cover;
+        }
+      }
+    }
   }
 }
 

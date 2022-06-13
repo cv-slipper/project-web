@@ -57,7 +57,9 @@
             </div>
           </div>
           <div class='main-center-bottom'>
-            <repository-usage></repository-usage>
+            <div class='useage-box'>
+              <repository-usage></repository-usage>
+            </div>
           </div>
         </div>
       </div>
@@ -386,5 +388,10 @@ export default {
   }
 
 
+}
+
+.useage-box {
+  width: 90%;
+  margin: 0 auto;
 }
 </style>

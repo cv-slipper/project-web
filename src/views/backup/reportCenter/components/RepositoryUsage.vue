@@ -7,12 +7,53 @@
       <div class='info-text'></div>
       <div class='little-title'></div>
     </div>
+    <div class='useage-table'>
+      <a-table
+        :columns='columns'
+        :data-source='tableData'
+        :pagination='false'
+      ></a-table>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'RepositoryUsageTable'
+  name: 'RepositoryUsageTable',
+  data() {
+    return {
+      columns: [
+        {
+          title: '序号',
+          customRender: (text, record, index) => {
+            return index + 1
+          },
+          width: 80
+        },
+        {
+          title: '存储库',
+          dataIndex: 'name'
+        },
+        {
+          title: '使用量',
+          dataIndex: 'num'
+        },
+        {
+          title: '环比上月',
+          dataIndex: 'month'
+        },
+        {
+          title: '总容量',
+          dataIndex: 'total'
+        },
+        {
+          title: '预计扩容日期',
+          dataIndex: 'expandDate'
+        }
+      ],
+      tableData: []
+    }
+  }
 }
 </script>
 
@@ -44,5 +85,27 @@ export default {
       bottom: 0;
     }
   }
+}
+
+/deep/ .useage-table .ant-table-thead > tr > th {
+  background: rgba(0, 0, 0, 0) !important;
+  border-bottom: none
+}
+
+/deep/ .useage-table table {
+  border: none !important;
+}
+
+/deep/ .useage-table .ant-table-placeholder {
+  border: none !important;
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+/deep/ .useage-table .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
+
+/deep/ .useage-table .ant-table-tbody > tr:nth-child(2n) {
+  background: rgba(10, 51, 126, 0.09) !important;
 }
 </style>
