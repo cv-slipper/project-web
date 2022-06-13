@@ -1,4 +1,5 @@
 <template>
+
   <div class='main-analysis'>
     <div class='tabs'>
       <div class='tab-list'>
@@ -26,7 +27,7 @@
     </div>
     <div class='wrapper mt-20' style='height:calc(100% - 60px)'>
       <div style='display:flex;justify-content:space-between;height:100%'>
-        <div style='width:20.83333%'>
+        <div style='width:20.83333%;height: 100%'>
           <div style='height:100%'>
             <div class='left-top'>
               <div class='one'>
@@ -232,41 +233,48 @@
           </div>
         </div>
         <div style='width:20.833333%' class='right-chart'>
-          <a-card :bordered='false'>
-            <div slot='title'>
-              <div>
-                <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日备份作业数</span>
+          <div class='item'>
+            <a-card :bordered='false'>
+              <div slot='title'>
+                <div>
+                  <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
+                  <span class='ml-5'>每日备份作业数</span>
+                </div>
               </div>
-            </div>
-            <div style='width:100%;' class='chart'>
-              <main-trend id-name='first' ref='worknum' type='one'></main-trend>
-            </div>
-          </a-card>
+              <div style='width:100%;' class='chart'>
+                <main-trend id-name='first' ref='worknum' type='one'></main-trend>
+              </div>
+            </a-card>
+          </div>
           <div style='height:10px'></div>
-          <a-card :bordered='false'>
-            <div slot='title'>
-              <div>
-                <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日备份数据量（TB）</span>
+          <div class='item'>
+            <a-card :bordered='false'>
+              <div slot='title'>
+                <div>
+                  <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
+                  <span class='ml-5'>每日备份数据量（TB）</span>
+                </div>
               </div>
-            </div>
-            <div style='width:100%;' class='chart'>
-              <main-trend id-name='second' ref='datanum' type='two'></main-trend>
-            </div>
-          </a-card>
+              <div style='width:100%;' class='chart'>
+                <main-trend id-name='second' ref='datanum' type='two'></main-trend>
+              </div>
+            </a-card>
+          </div>
+
           <div style='height:10px'></div>
-          <a-card :bordered='false'>
-            <div slot='title'>
-              <div>
-                <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
-                <span class='ml-5'>每日磁盘/云储存占用量（TB）</span>
+          <div class='item'>
+            <a-card :bordered='false'>
+              <div slot='title'>
+                <div>
+                  <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
+                  <span class='ml-5'>每日磁盘/云储存占用量（TB）</span>
+                </div>
               </div>
-            </div>
-            <div style='width:100%;' class='chart'>
-              <main-trend ref='disknum' id-name='third' type='third'></main-trend>
-            </div>
-          </a-card>
+              <div style='width:100%;' class='chart'>
+                <main-trend ref='disknum' id-name='third' type='third'></main-trend>
+              </div>
+            </a-card>
+          </div>
         </div>
 
 
@@ -1164,24 +1172,28 @@ export default {
 
 
 .right-chart {
+  height: 100%;
 
+  .item {
+    height: calc(33% - 6px);
+  }
 
   .ant-card {
     width: 100%;
-    height: calc(33% - 6.66px) !important;
+    height: 100% !important;
   }
 
   .chart {
-    height: calc(100% - 30px)
+    height: 100%
   }
 }
 
 /deep/ .right-chart .ant-card-body {
-  height: calc(100% - 30px) !important;
+  height: calc(100% - 53px) !important;
 }
 
 /deep/ .right-chart .ant-card-head {
-  height: 64px !important;
+
   display: flex !important;
   align-items: center !important;
 }
@@ -1266,10 +1278,10 @@ export default {
 
 // 判断分辨率是否低于1920
 .main-analysis {
-  height: calc(100% - 40px);
+  height: 100%;
 }
 
-@media screen and(max-width: 1440px) {
+@media screen and(max-width: 1700px) {
   .main-analysis {
     height: calc(100% + 193px);
 

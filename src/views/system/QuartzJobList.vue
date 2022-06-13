@@ -121,7 +121,7 @@
 
 <script>
 import QuartzJobModal from './modules/QuartzJobModal'
-import { getAction } from '@/api/manage'
+import { postAction } from '@/api/manage'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import JEllipsis from '@/components/jeecg/JEllipsis'
 
@@ -185,7 +185,9 @@ export default {
         {
           title: '任务组',
           align: 'center',
-          dataIndex: 'jobGroup'
+          dataIndex: 'jobGroup',
+          width: 130,
+          scopedSlots: { customRender: 'description' }
         },
 
         {
@@ -247,7 +249,7 @@ export default {
         title: '确认暂停',
         content: '是否暂停选中任务?',
         onOk: function() {
-          getAction(that.url.pause, { jobClassName: record.jobClassName }).then((res) => {
+          postAction(that.url.pause, { jobClassName: record.jobClassName, jobGroup: record.jobGroup }).then((res) => {
             if (res.success) {
               that.$message.success(res.message)
               that.loadData()
@@ -267,7 +269,7 @@ export default {
         title: '确认启动',
         content: '是否启动选中任务?',
         onOk: function() {
-          getAction(that.url.resume, { jobClassName: record.jobClassName }).then((res) => {
+          postAction(that.url.resume, { jobClassName: record.jobClassName, jobGroup: record.jobGroup }).then((res) => {
             if (res.success) {
               that.$message.success(res.message)
               that.loadData()
