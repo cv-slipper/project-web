@@ -18,7 +18,7 @@ export function getSystemList(param) {
  */
 export function getDomainScale(param) {
   return axios({
-    url: '/prodDomain/prodScale',
+    url: '/domain/scale',
     method: 'post',
     data: param
   })
@@ -30,7 +30,7 @@ export function getDomainScale(param) {
  */
 export function getDomainTrend(param) {
   return axios({
-    url: '/prodDomain/prodCharts',
+    url: '/domain/charts',
     method: 'post',
     data: param
   })
@@ -90,7 +90,7 @@ export function handleException(params) {
  */
 export function getBranchList() {
   return axios({
-    url: '/prodDomain/branchList',
+    url: '/domain/branchList',
     method: 'get'
   })
 }
@@ -100,7 +100,7 @@ export function getBranchList() {
  */
 export function getSystemListByBranch() {
   return axios({
-    url: '/prodDomain/appSystemInfoList',
+    url: '/domain/appSystemInfoList',
     method: 'get'
   })
 }

@@ -459,7 +459,7 @@ export default {
     this.getWorkList()
     this.timer = setInterval(() => {
       this.refreshWork()
-    }, 60000)
+    }, 600000)
 
   },
   methods: {

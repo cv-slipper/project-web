@@ -47,6 +47,13 @@ export default {
     if (window.screen.width == 1920) {
       this.width = 160
     }
+    window.addEventListener('resize', () => {
+      if (window.screen.width == 1920) {
+        this.width = 160
+      } else {
+        this.width = 110
+      }
+    })
   },
   methods: {}
 }

@@ -34,7 +34,7 @@ export default {
           top: '20px',
           left: '20px',
           right: '20px',
-          bottom: '40px'
+          bottom: '20px'
         },
         tooltip: {
           trigger: 'axis'

@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class='right'>
-          {{ getDate() }}
+          {{ dateNow }}
         </div>
       </div>
       <div style='display: flex;height:100%;position: relative'>
@@ -62,6 +62,13 @@
             </div>
           </div>
         </div>
+        <div class='main-left'>
+          <div class='item'>
+            <client-ranking></client-ranking>
+          </div>
+          <div class='item'></div>
+          <div class='item'></div>
+        </div>
       </div>
     </div>
   </div>
@@ -72,6 +79,7 @@ import TrendChart from '@views/backup/reportCenter/components/TrendChart'
 import FrontEndCapacity from '@views/backup/reportCenter/components/FrontEndCapacity'
 import PieChart from '@views/backup/reportCenter/components/PieChart'
 import RepositoryUsage from '@views/backup/reportCenter/components/RepositoryUsage'
+import ClientRanking from '@views/backup/reportCenter/components/ClientRanking'
 
 export default {
   name: 'index',
@@ -79,7 +87,8 @@ export default {
     TrendChart,
     FrontEndCapacity,
     PieChart,
-    RepositoryUsage
+    RepositoryUsage,
+    ClientRanking
   },
   data() {
     return {
@@ -124,8 +133,16 @@ export default {
           month: '+16.8%',
           year: '+16.8%'
         }
-      ]
+      ],
+      dateNow: ''
+
     }
+  },
+  created() {
+    this.getDate()
+    setInterval(() => {
+      this.getDate()
+    }, 1000)
   },
   methods: {
     /**
@@ -157,7 +174,7 @@ export default {
       minute = minute < 10 ? '0' + minute : minute
       second = second < 10 ? '0' + second : second
 
-      return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second
+      this.dateNow = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second
     }
   }
 }
@@ -175,7 +192,7 @@ export default {
   background-color: rgba(255, 255, 255, 1);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: 20px 40px;
+  padding: 20px 30px;
 
   .title {
     display: flex;
@@ -192,7 +209,7 @@ export default {
       font-family: Source Han Sans CN;
       font-weight: 400;
       color: #666666;
-      width: calc(25% + 50px);
+      width: 25%;
     }
 
     .right {
@@ -201,6 +218,7 @@ export default {
       font-family: Source Han Sans CN;
       font-weight: 400;
       color: #666666;
+      width: 25%;
     }
 
     .center {
@@ -274,6 +292,7 @@ export default {
 }
 
 .center-inner {
+  width: 100%;
   height: 100%;
 }
 

@@ -86,8 +86,6 @@ export const branchPoints = [
       }
     ]
   },
-
-
   {
     name: '华南区域',
     center: [113.280637, 23.125178],
@@ -114,8 +112,6 @@ export const branchPoints = [
       }
     ]
   },
-
-
   {
     name: '华中区域',
     center: [114.298572, 30.584355],
@@ -134,8 +130,6 @@ export const branchPoints = [
       }
     ]
   },
-
-
   {
     name: '华北区域',
     center: [117.210813, 39.14393],
@@ -166,8 +160,6 @@ export const branchPoints = [
       }
     ]
   },
-
-
   {
     name: '西北区域',
     center: [101.778916, 36.623178],

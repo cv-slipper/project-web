@@ -92,14 +92,14 @@
                     <div class='flex-box tfh'>
                       <div class='item'>
                         <div class='content'>
-                          <div class='title' style='font-size:16px !important'>完成</div>
-                          <div class='num' style='font-size:25px'>{{ dailyWorkDetail.completedNum }}</div>
+                          <div class='title'>完成</div>
+                          <div class='num'>{{ dailyWorkDetail.completedNum }}</div>
                         </div>
                       </div>
                       <div class='item' @click='()=>{if(dailyWorkDetail.failedNum>0) failedWorkVisible = true}'>
                         <div class='content'>
-                          <div class='title' style='font-size:16px !important'>失败</div>
-                          <div class='num' style='font-size:25px'>{{ dailyWorkDetail.failedNum }}</div>
+                          <div class='title'>失败</div>
+                          <div class='num'>{{ dailyWorkDetail.failedNum }}</div>
                         </div>
                       </div>
                     </div>
@@ -174,7 +174,7 @@
               v-if='errorMessageTotal==0'
               class='error-message-success'
               src='@/assets/error-message-success-right.png' alt=''>
-            <div class='no-error-message ' style='padding-top:20px' v-if='errorMessageTotal==0'>
+            <div class='no-error-message ' style='padding-top:68px' v-if='errorMessageTotal==0'>
               <div class='success-text'>
                 <div>
                   <img src='@/assets/error-message-success-logo.png' alt='' />
@@ -510,9 +510,6 @@ export default {
       this.timer = setInterval(() => {
         this.init()
       }, 600000)
-    }
-    if (window.screen.width == 1920) {
-      this.indexStyle = 2
     }
   },
   methods: {
@@ -972,13 +969,15 @@ export default {
       display: inline-block;
 
       .title {
+        margin-top: 10px;
         font-weight: 400;
         color: #333333;
+        font-size: 18px;
       }
 
       .num {
-        margin-top: 10px;
-        font-size: 20px;
+        margin-top: 20px;
+        font-size: 36px;
       }
 
 
@@ -1212,7 +1211,7 @@ export default {
 
     .item {
       width: calc(50% - 7.5px);
-      height: calc(50% - 7.5px);
+      height: calc(50% - 10px);
       line-height: 20px;
     }
   }
@@ -1284,6 +1283,22 @@ export default {
 @media screen and(max-width: 1700px) {
   .main-analysis {
     height: calc(100% + 193px);
+
+    .flex-box {
+      .item {
+        .title {
+          margin-top: 5px;
+          font-size: 14px;
+        }
+
+        .content {
+          .num {
+            font-size: 25px;
+          }
+        }
+      }
+
+    }
 
     .center-content {
       height: calc(100% - 33% - 72px);

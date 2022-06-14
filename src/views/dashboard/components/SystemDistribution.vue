@@ -45,7 +45,11 @@
             <img src='@/assets/systemWarning.gif' v-else alt='' />
           </div>
           <div class='system-name-box'>
-            <div class='system-name'>{{ item.groupName }}</div>
+            <div class='system-name'>
+              <div class='system-name-inner'>
+                {{ item.groupName }}
+              </div>
+            </div>
           </div>
         </div>
         <div class='bottom'>
@@ -111,6 +115,8 @@ export default {
 </script>
 
 <style scoped lang='less'>
+
+
 .system {
   background: url("../../../assets/system-bg.png") no-repeat;
   background-size: 100% 100%;
@@ -118,8 +124,8 @@ export default {
   position: relative;
 
   .service {
-    width: 180px;
-    height: 100px;
+    width: 280px;
+    height: 160px;
     position: absolute;
     right: 50px;
     top: 50px;
@@ -132,14 +138,14 @@ export default {
 
   .system-group {
     .item {
-      width: 80px;
-      height: 100px;
+      width: 120px;
+      height: 130px;
       position: relative;
       cursor: pointer;
 
       .bottom {
-        width: 60px;
-        height: 45px;
+        width: 80px;
+        height: 60px;
         position: absolute;
         left: 0;
         right: 0;
@@ -155,15 +161,16 @@ export default {
 
       .top {
         width: 100%;
-        height: 55px;
+        height: 70px;
         display: flex;
         justify-content: space-around;
         align-items: center;
         position: relative;
+        transform: rotateX(20deg);
       }
 
       .system-name-box {
-        transform: rotateY(47deg);
+        transform: rotateY(55deg);
       }
 
       .system-name {
@@ -171,7 +178,11 @@ export default {
         font-weight: bold;
         font-size: 12px;
         z-index: 999;
-        transform: rotateZ(23deg);
+        transform: rotateZ(22deg);
+
+        .system-name-inner {
+          transform: rotateX(35deg);
+        }
       }
 
       .top-bg {
@@ -184,7 +195,7 @@ export default {
         img {
           width: 100%;
           height: 100%;
-          transform: rotateY(40deg);
+          transform: rotateY(55deg);
         }
       }
     }
@@ -209,7 +220,7 @@ export default {
   height: 40px;
   position: absolute;
   top: 20px;
-  right: 220px;
+  right: 300px;
 
   img {
     width: 100%;
@@ -316,5 +327,50 @@ export default {
   left: 0;
   right: 0;
   margin: auto
+}
+
+@media screen and(max-width: 1700px) {
+  .system {
+    .service {
+      width: 180px;
+      height: 100px;
+    }
+
+    .right-clound {
+      right: 220px;
+    }
+
+    .system-group {
+      .item {
+        width: 80px;
+        height: 100px;
+
+        .top {
+          height: 55px;
+
+          .top-bg {
+            img {
+              transform: rotateY(50deg);
+            }
+          }
+        }
+
+        .system-name-box {
+          transform: rotateY(50deg);
+
+          .system-name {
+            transform: rotateZ(25deg);
+          }
+        }
+
+        .bottom {
+          width: 60px;
+          height: 45px;
+        }
+
+      }
+
+    }
+  }
 }
 </style>
