@@ -9,6 +9,7 @@
     </div>
     <div class='useage-table'>
       <a-table
+        style='height: 100%'
         :columns='columns'
         :data-source='tableData'
         :pagination='false'
@@ -32,23 +33,28 @@ export default {
         },
         {
           title: '存储库',
-          dataIndex: 'name'
+          dataIndex: 'name',
+          align: 'center'
         },
         {
           title: '使用量',
-          dataIndex: 'num'
+          dataIndex: 'num',
+          align: 'center'
         },
         {
           title: '环比上月',
-          dataIndex: 'month'
+          dataIndex: 'month',
+          align: 'center'
         },
         {
           title: '总容量',
-          dataIndex: 'total'
+          dataIndex: 'total',
+          align: 'center'
         },
         {
           title: '预计扩容日期',
-          dataIndex: 'expandDate'
+          dataIndex: 'expandDate',
+          align: 'center'
         }
       ],
       tableData: []
@@ -59,6 +65,8 @@ export default {
 
 <style scoped lang='less'>
 .repository-usage {
+  height: 100%;
+
   .trend-chart-title {
     font-size: 16px;
     font-weight: bold;
@@ -87,6 +95,23 @@ export default {
   }
 }
 
+.useage-table {
+  height: calc(100% - 35px);
+  overflow-y: auto;
+}
+
+/deep/ .useage-table::-webkit-scrollbar, .info::-webkit-scrollbar {
+  height: 9px;
+  width: 5px;
+  background-color: #4d64bd;
+}
+
+// 滚动条颜色
+/deep/ .useage-table::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #3475EF;
+}
+
 /deep/ .useage-table .ant-table-thead > tr > th {
   background: rgba(0, 0, 0, 0) !important;
   border-bottom: none
@@ -105,7 +130,12 @@ export default {
   border-bottom: none !important;
 }
 
-/deep/ .useage-table .ant-table-tbody > tr:nth-child(2n) {
+/deep/ .useage-table .ant-table-tbody > tr {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+/deep/ .useage-table .ant-table-tbody > tr:nth-child(2n-1) {
   background: rgba(10, 51, 126, 0.09) !important;
 }
+
 </style>

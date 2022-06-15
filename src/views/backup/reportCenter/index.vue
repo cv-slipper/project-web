@@ -66,8 +66,12 @@
           <div class='item'>
             <client-ranking></client-ranking>
           </div>
-          <div class='item'></div>
-          <div class='item'></div>
+          <div class='item'>
+            <app-ranking></app-ranking>
+          </div>
+          <div class='item'>
+            <capacity-ratio></capacity-ratio>
+          </div>
         </div>
       </div>
     </div>
@@ -80,6 +84,8 @@ import FrontEndCapacity from '@views/backup/reportCenter/components/FrontEndCapa
 import PieChart from '@views/backup/reportCenter/components/PieChart'
 import RepositoryUsage from '@views/backup/reportCenter/components/RepositoryUsage'
 import ClientRanking from '@views/backup/reportCenter/components/ClientRanking'
+import AppRanking from '@views/backup/reportCenter/components/AppRanking'
+import CapacityRatio from '@views/backup/reportCenter/components/CapacityRatio'
 
 export default {
   name: 'index',
@@ -88,7 +94,9 @@ export default {
     FrontEndCapacity,
     PieChart,
     RepositoryUsage,
-    ClientRanking
+    ClientRanking,
+    AppRanking,
+    CapacityRatio
   },
   data() {
     return {
@@ -187,12 +195,13 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99999;
+  z-index: 99;
   background-image: url("../../../assets/report-bg.png");
   background-color: rgba(255, 255, 255, 1);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: 20px 30px;
+  padding: 20px 20px;
+
 
   .title {
     display: flex;
@@ -382,7 +391,7 @@ export default {
   font-weight: bold;
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1700px) {
   .group {
     .item {
       width: calc(33% - 10px);
@@ -411,6 +420,13 @@ export default {
 
 .useage-box {
   width: 90%;
+  height: 100%;
+  padding-bottom: 20px;
   margin: 0 auto;
 }
+
+/deep/ .reportCenter .ant-select-dropdown {
+  z-index: 999999999 !important;
+}
+
 </style>

@@ -95,6 +95,10 @@ export const branchPoints = [
         center: [108.297234, 22.806493]
       },
       {
+        name: '深圳分行',
+        center: [114.057868, 22.543099]
+      },
+      {
         name: '广州分行',
         center: [113.30765, 23.120049]
       },

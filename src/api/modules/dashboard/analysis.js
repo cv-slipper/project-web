@@ -139,3 +139,13 @@ export function getErrorList(data) {
   })
 }
 
+/**
+ * 获取分行地图数据
+ */
+export function getBranchMapList() {
+  return axios({
+    url: '/domain/branchMap',
+    method: 'post',
+    data: {}
+  })
+}

@@ -165,16 +165,12 @@
               <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
             </div>
             <div v-else style='height: 100%'>
-              <main-map></main-map>
+              <main-map @checkBranch='checkBranch'></main-map>
             </div>
           </div>
           <div style='height:10px'></div>
-          <div class='table-box' style='background:white;position:relative'>
-            <img
-              v-if='errorMessageTotal==0'
-              class='error-message-success'
-              src='@/assets/error-message-success-right.png' alt=''>
-            <div class='no-error-message ' style='padding-top:68px' v-if='errorMessageTotal==0'>
+          <div class='table-box' style='position:relative'>
+            <div class='no-error-message ' style='padding-top:48px' v-if='errorMessageTotal==0'>
               <div class='success-text'>
                 <div>
                   <img src='@/assets/error-message-success-logo.png' alt='' />
@@ -411,6 +407,40 @@ export default {
           unit: 'TB',
           src: require('@/assets/storage.png')
 
+        }
+      ],
+      branchListData: [
+        {
+          title: '',
+          src: require('@/assets/app.png')
+        },
+        {
+          title: '客户端',
+          num: '0',
+          unit: '个',
+          src: require('@/assets/client.png')
+        },
+
+        {
+          title: '前端许可',
+          num: '0',
+          total: '0',
+          unit: 'TB',
+          src: require('@/assets/front.png')
+        },
+        {
+          title: '总行存储',
+          num: '0',
+          total: '-',
+          unit: 'TB',
+          src: require('@/assets/storage.png')
+        },
+        {
+          title: '分行存储',
+          num: '0',
+          total: '0',
+          unit: 'TB',
+          src: require('@/assets/storage.png')
         }
       ],
       columns: [
@@ -799,6 +829,52 @@ export default {
       }
     },
     /**
+     * 获取分行
+     * @param item
+     */
+    checkBranch(item) {
+      if (item) {
+        this.listData = this.branchListData
+        this.listData[0].title = item.name
+      } else {
+        this.listData = [
+          {
+            title: '分行',
+            num: '0',
+            unit: '个',
+            src: require('@/assets/branch-logo.png')
+          },
+          {
+            title: '客户端',
+            num: '0',
+            unit: '个',
+            src: require('@/assets/client.png')
+          },
+          {
+            title: '介质服务器',
+            num: '0',
+            unit: '个',
+            src: require('@/assets/server.png')
+          },
+          {
+            title: '前端许可',
+            num: '0',
+            total: '0',
+            unit: 'TB',
+            src: require('@/assets/front.png')
+          },
+          {
+            title: '磁盘存储／云存储',
+            num: '0',
+            total: '0',
+            unit: 'TB',
+            src: require('@/assets/storage.png')
+
+          }
+        ]
+      }
+    },
+    /**
      * 页面初始化
      */
     init() {
@@ -1139,6 +1215,8 @@ export default {
 .table-box {
   width: 100%;
   height: calc(33% - 6.66px) !important;
+  background: url("../../assets/error-message-success-right.png") no-repeat white;
+  background-position: right bottom;
 
   .ant-card {
     height: 100% !important;

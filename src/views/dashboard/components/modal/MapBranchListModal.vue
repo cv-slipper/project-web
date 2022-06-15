@@ -7,17 +7,17 @@
     <div>
       <div class='card-group'>
         <div class='item' v-for='(item,index) in branchPoints' :key='index'>
-          <a-card :title='item.name'>
+          <a-card :title='item.regionName+"区域"'>
             <div class='branch-group'>
               <div
-                :class='["branch-item",{success:ele.excptionNum==0 || !ele.excptionNum,error:ele.excptionNum>=0,active: currentBranch &&  currentBranch.name==ele.name}]'
+                :class='["branch-item",{success:ele.exceptionNum==0 || !ele.exceptionNum,error:ele.exceptionNum>0,active: currentBranch &&  currentBranch.branchName==ele.branchName}]'
                 v-for='(ele,i) in item.children'
                 :key='i'
                 @click='checkBranch(ele)'
               >
-                {{ ele.name }}
-                <span v-if='ele.excptionNum' class='error-num'>
-                  ({{ ele.excptionNum }})
+                <span>
+                  {{ ele.branchName }}
+                  <span class='error-num' v-if='ele.exceptionNum>0'>({{ ele.exceptionNum }})</span>
                 </span>
               </div>
             </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { branchPoints } from '@views/dashboard/components/china'
+import { getBranchMapList } from '@api/modules/dashboard/analysis'
 
 export default {
   name: 'MapBranchListModal',
@@ -46,17 +46,45 @@ export default {
       }
     }
   },
+  watch: {
+    visible: {
+      handler(val) {
+        if (val) {
+          this.getBranchMapList()
+        }
+      },
+      immediate: true
+    }
+  },
   data() {
     return {
-      branchPoints
+      branchPoints: []
     }
   },
   methods: {
+    /**
+     * 获取分行列表
+     */
+    async getBranchMapList() {
+      try {
+        const res = await getBranchMapList()
+        if (res.code == 200) {
+          this.branchPoints = res.result
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取分行列表失败')
+      }
+    },
     cancel() {
       this.$emit('cancel')
     },
     checkBranch(ele) {
-      this.$emit('checkBranch', ele)
+      let element = JSON.parse(JSON.stringify(ele))
+      element.center = JSON.parse(element.coordinate)
+      element.name = element.branchName
+      this.$emit('checkBranch', element)
     }
 
   }

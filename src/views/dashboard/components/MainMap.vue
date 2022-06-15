@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { branchPoints } from './china'
 import MapBranchListModal from '@views/dashboard/components/modal/MapBranchListModal'
+import { getBranchMapList } from '@api/modules/dashboard/analysis'
 
 export default {
   name: 'MainMap',
@@ -40,7 +40,7 @@ export default {
       branchItem: null,
       markers: [],
       cluster: null,
-      areaPoints: branchPoints,
+      areaPoints: [],
       allPoints: [],
       allMarkers: [],
       bigAreaMarkers: [],
@@ -51,13 +51,52 @@ export default {
     }
   },
   created() {
-    this.allPoints = branchPoints.map(item => item.children).flat(2)
   },
   mounted() {
-    this.initMap()
-    this.setInfoWindow()
+    this.getBranchMapList()
+
+    // this.setInfoWindow()
   },
   methods: {
+    /**
+     * 获取分行地图数据
+     */
+    async getBranchMapList() {
+      try {
+        const res = await getBranchMapList()
+        if (res.code === 200) {
+          res.result.forEach(item => {
+            if (item.regionName == '华北') {
+              item.exceptionNum = 1
+            }
+          })
+          res.result = this.recursive(res.result)
+          this.areaPoints = res.result || []
+          this.allPoints = res.result.map(item => item.children).flat(2) || []
+          this.initMap()
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取分行数据失败')
+      }
+
+    },
+    /**
+     * 递归处理数据
+     * @param {*} data 数据
+     */
+    recursive(data) {
+      let arr = data
+      data.forEach(item => {
+        item.center = JSON.parse(item.coordinate)
+        item.name = item.regionName || item.branchName
+        if (item.children) {
+          this.recursive(item.children)
+        }
+      })
+      return arr
+    },
     checkBranch(item) {
       this.branchItem = item
       if (item) {
@@ -67,13 +106,14 @@ export default {
         this.map.add(this.allMarkers)
       } else {
         let zoom = this.map.getZoom()
+
         if (zoom == 4) {
-          this.map.setZoomAndCenter(4.95, [108.316721, 37.38724])
+          this.map.setZoomAndCenter(3.5, [108.316721, 37.38724])
         } else {
           this.map.setZoomAndCenter(4, [108.316721, 37.38724])
         }
-
       }
+      this.$emit('checkBranch', item)
       this.mapListVisible = false
     },
     openBranchModal() {
@@ -87,6 +127,7 @@ export default {
         })
       }
     },
+
     // 防抖函数
     debounce(fn, ms) {
       let timer = null
@@ -121,13 +162,37 @@ export default {
       })
 
     },
+    /**
+     * 获取异常区域模版字符串
+     */
+    getInfoWindowTemplate(item) {
+      console.log(item, 'item')
+      let content = ``
+      if (item.exceptionNum > 0) {
+        content = this.getExecptionContent(item)
+      }
+      return content
+    },
+    getExecptionContent(item) {
+      let arr = ``
+      item.children.forEach(ele => {
+        if (ele.exceptionNum > 0) {
+          arr += (`<div class='exception-content'>
+          <div class='execption-name'>${ele.branchName}</div>
+          <div class='excrption-num'>（${ele.exceptionNum}）</div>
+          <div>
+          <img class='map-warning' src='${require('@/assets/map-warning.png')}' alt='' /></div>
+            </div>`)
+        }
+      })
+      return arr
+    },
     initMap() {
       this.map = new AMap.Map('container', {
-        zoom: 4,//级别
+        zoom: 4.1,//级别
         resizeEnable: true,
         center: [108.316721, 37.38724],//中心点坐标
-        features: ['bg', 'road', 'building'],//显示样式
-        zooms: [4, 15]
+        features: ['bg', 'road', 'building']//显示样式
 
       })
       this.bigAreaMarkers = this.initAreaMarker()
@@ -148,19 +213,24 @@ export default {
       let normal = `<div style='position: relative'>
                         <img style='width:65px;height:65px' src='${require('@/assets/normal.png')}' />
                      </div>`
-      let warning = '<img style="width:65px;height:65px" src=' + require('@/assets/warning.png') + ' />'
+      let warning = `<img style='width:65px;height:65px' src='${require('@/assets/warning.png')}' />`
+
+
       for (let i = 0; i < this.areaPoints.length; i++) {
+        let content = this.areaPoints[i].exceptionNum == 0 ? normal : warning
+        let infoWindow = this.getInfoWindowTemplate(this.areaPoints[i])
         var marker = new AMap.Marker({
           position: this.areaPoints[i].center,
-          content: normal,
+          content: `<div class='execption-box' style='position: relative'>${content}${infoWindow}</div>`,
           visible: true,
           offset: new AMap.Pixel(-32, -32)
 
         })
+        let position = this.areaPoints[i].exceptionNum == 0 ? 'top' : 'bottom'
         marker.setLabel(
           {
-            content: '<div class="area-label">' + this.areaPoints[i].name + '</div>',
-            direction: 'top'
+            content: '<div class="area-label">' + this.areaPoints[i].name + '区域</div>',
+            direction: position
           }
         )
 
@@ -177,9 +247,10 @@ export default {
       let normal = '<img style="width:50px;height:50px" src=' + require('@/assets/normal.png') + ' />'
       let warning = '<img style="width:50px;height:50px" src=' + require('@/assets/warning.png') + ' />'
       for (let i = 0; i < this[key].length; i++) {
+        let content = this[key][i].exceptionNum == 0 ? normal : warning
         let marker = new AMap.Marker({
           position: this[key][i].center,
-          content: normal,
+          content,
           visible: true,
           offset: new AMap.Pixel(-25, -25)
         })
@@ -197,9 +268,8 @@ export default {
           this.allMarkers = this.initAllMarker()
           this.map.add(this.allMarkers)
 
-          this.$emit('chooseCity', this[key][i])
+          this.$emit('checkBranch', this[key][i])
         })
-
         markers.push(marker)
       }
       return markers
@@ -276,5 +346,70 @@ export default {
 /deep/ .amap-copyright {
   opacity: 0 !important;
   display: none !important;
+}
+
+/deep/ .exception-content {
+  width: 155px;
+  background: white;
+  position: absolute;
+  bottom: 100%;
+  right: -45px;
+  margin: auto;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  padding-right: 10px;
+
+  .excrption-num {
+    color: #FA5D18
+  }
+
+
+}
+
+/deep/ .execption-name {
+  display: inline-block;
+  position: relative;
+  padding-left: 10px;
+}
+
+/deep/ .execption-name::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 100%;
+  background: #126CF8;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/deep/ .exception-content::before {
+  content: '▼';
+  text-align: center;
+  color: white;
+  position: absolute;
+  font-size: 14px;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 99;
+}
+
+/deep/ .map-warning {
+  width: 25px;
+  object-fit: fill;
+  display: block;
+}
+
+@media screen and(max-width: 1700px) {
+  /deep/ .exception-content {
+    font-size: 12px;
+  }
 }
 </style>
