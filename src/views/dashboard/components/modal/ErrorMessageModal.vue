@@ -142,6 +142,7 @@ export default {
           this.searchParams.system = this.id ? [this.id] : []
         } else {
           this.searchParams.domain = this.domain
+          this.searchParams.system = this.id ? [this.id] : []
         }
         if (this.searchParams.domain == 'prod') {
           this.columns[3].title = '应用系统'

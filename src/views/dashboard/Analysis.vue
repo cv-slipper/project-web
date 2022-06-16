@@ -3,7 +3,7 @@
   <div class='main-analysis'>
     <div class='tabs'>
       <div class='tab-list'>
-        <a-tabs class='my-tabs' v-model='domain'>
+        <a-tabs class='my-tabs' v-model='domain' @change='branchId=""'>
           <a-tab-pane key='prod' tab='生产域'>
 
           </a-tab-pane>
@@ -134,7 +134,9 @@
             <div class='flex-between top-list'>
               <div class='item' v-for='(item,index) in listData' :key='index'>
                 <div>
+
                   <div class='title fs-12' style='color:#666666'>{{ item.title }}</div>
+                  <div style='clear:both'></div>
                   <div class='fs-12 '>
                     <div class='num fl'> {{ item.num }}
                       <div class='increase-num fl'
@@ -147,6 +149,7 @@
                       v-if='item.total!=null'>/{{ item.total
                       }}
                     </div>
+                    <div style='clear:both'></div>
                   </div>
                 </div>
 
@@ -165,7 +168,7 @@
               <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
             </div>
             <div v-else style='height: 100%'>
-              <main-map @checkBranch='checkBranch'></main-map>
+              <main-map @checkBranch='checkBranch' ref='mainMap'></main-map>
             </div>
           </div>
           <div style='height:10px'></div>
@@ -280,6 +283,7 @@
     <error-message-modal
       :domain='domain'
       :visible='errorMessageVisible'
+      :id='branchId'
       @cancel='errorMessageVisible = false'
       @dealWithSuccess='dealWithSuccess'></error-message-modal>
     <failed-work-modal
@@ -338,13 +342,43 @@ export default {
       handler: function(val) {
         this.init()
         if (val == 'prod') {
-          this.listData[0] = {
-            title: '应用系统',
-            num: '0',
-            unit: '个',
-            src: require('@/assets/app.png')
-          }
+          this.listData = [
+            {
+              title: '应用系统',
+              num: '0',
+              unit: '个',
+              src: require('@/assets/app.png')
+            },
+            {
+              title: '客户端',
+              num: '0',
+              unit: '个',
+              src: require('@/assets/client.png')
+            },
+            {
+              title: '介质服务器',
+              num: '0',
+              unit: '个',
+              src: require('@/assets/server.png')
+            },
+            {
+              title: '前端许可',
+              num: '0',
+              total: '0',
+              unit: 'TB',
+              src: require('@/assets/front.png')
+            },
+            {
+              title: '磁盘存储／云存储',
+              num: '0',
+              total: '0',
+              unit: 'TB',
+              src: require('@/assets/storage.png')
+
+            }
+          ]
         } else {
+
           this.listData[0] = {
             title: '分行',
             num: '0',
@@ -590,7 +624,8 @@ export default {
       this.loading = true
       try {
         let params = {
-          domain: this.domain
+          domain: this.domain,
+          branchId: this.branchId
         }
         let res = await getExceptionList(params)
         if (res.code == 200) {
@@ -720,9 +755,12 @@ export default {
 
             }
             this.$nextTick(() => {
-              this.$refs.worknum.init(xData, yData, formatter)
-              this.$refs.datanum.init(xdataData, ydataData, formatter)
-              this.$refs.disknum.init(xdiskData, ydiskData.filter(item => item))
+              setTimeout(() => {
+                this.$refs.worknum.init(xData, yData, formatter)
+                this.$refs.datanum.init(xdataData, ydataData, formatter)
+                this.$refs.disknum.init(xdiskData, ydiskData.filter(item => item))
+              }, 100)
+
             })
           }
 
@@ -740,7 +778,8 @@ export default {
     async getDomainScale() {
       try {
         let params = {
-          domain: this.domain
+          domain: this.domain,
+          branchId: this.branchId
         }
 
         const res = await getDomainScale(params)
@@ -754,6 +793,31 @@ export default {
           this.listData[4].total = res.result.diskStorageTotal || 0
           this.listData[1].increaseNum = res.result.increaseClient || 0
           this.listData[4].increaseNum = res.result.increaseDisk || 0
+          if (this.domain == 'prod') {
+
+          } else {
+            if (!this.branchId) {
+              this.listData[0].num = res.result.branchNum || 0
+              this.listData[1].num = res.result.clientNum || 0
+              this.listData[2].num = res.result.mediaAgentNum || 0
+              this.listData[3].num = res.result.foreLicenseUsed || 0
+              this.listData[3].total = res.result.foreLicenseTotal || 0
+              this.listData[4].num = res.result.diskStorageUsed || 0
+              this.listData[4].total = res.result.diskStorageTotal || 0
+              this.listData[1].increaseNum = res.result.increaseClient || 0
+              this.listData[4].increaseNum = res.result.increaseDisk || 0
+            } else {
+              this.listData[0].num = ''
+              this.listData[4].num = res.result.branchStorageUsed || 0
+              this.listData[4].total = res.result.branchStorageTotal || 0
+              this.listData[4].increaseNum = res.result.branchStorageInc || 0
+              this.listData[3].num = res.result.headStorage || 0
+              this.listData[3].increaseNum = res.result.headStorageInc || 0
+              this.listData[3].total = '-'
+            }
+
+          }
+
         } else {
           this.$message.error(res.message)
         }
@@ -833,9 +897,11 @@ export default {
      * @param item
      */
     checkBranch(item) {
+
       if (item) {
         this.listData = this.branchListData
         this.listData[0].title = item.name
+        this.branchId = item.branchId
       } else {
         this.listData = [
           {
@@ -872,7 +938,9 @@ export default {
 
           }
         ]
+        this.branchId = ''
       }
+      this.init()
     },
     /**
      * 页面初始化
@@ -925,13 +993,20 @@ export default {
       this.dealWithVisible = true
     },
     dealWithSuccess() {
-      if (!this.systemItem) {
-        this.getSystemList()
+      if (this.domain == 'prod') {
+        if (!this.systemItem) {
+          this.getSystemList()
+        } else {
+          this.$nextTick(() => {
+            this.$refs.mainInfo.getSystemDetail()
+          })
+        }
       } else {
         this.$nextTick(() => {
-          this.$refs.mainInfo.getSystemDetail()
+          this.$refs.mainMap.getBranchMapList()
         })
       }
+
     },
     dealWithOk(reason) {
       let params = {
@@ -1128,7 +1203,7 @@ export default {
   width: 100%;
 
   .item:nth-child(2) {
-    width: calc(16% - 10px);
+    width: calc(16% - 5px);
 
     .increase-num {
       top: 0;
@@ -1137,7 +1212,7 @@ export default {
   }
 
   .item:first-child {
-    width: calc(16% - 10px);
+    width: calc(17% - 5px);
   }
 
   .item:nth-child(3) {
@@ -1145,7 +1220,7 @@ export default {
   }
 
   .item:nth-child(4) {
-    width: calc(25% - 10px);
+    width: calc(24% - 10px);
   }
 
   .item:last-child {
@@ -1414,6 +1489,7 @@ export default {
       .item {
         width: calc(16% - 5px);
         padding: 10px 5px;
+        height: 60px;
         line-height: 1;
 
         .title {

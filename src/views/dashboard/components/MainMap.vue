@@ -47,7 +47,6 @@ export default {
       areaMarkers: [],
       litttleAreaPoints: [],
       infoWindows: []
-
     }
   },
   created() {
@@ -65,11 +64,6 @@ export default {
       try {
         const res = await getBranchMapList()
         if (res.code === 200) {
-          res.result.forEach(item => {
-            if (item.regionName == '华北') {
-              item.exceptionNum = 1
-            }
-          })
           res.result = this.recursive(res.result)
           this.areaPoints = res.result || []
           this.allPoints = res.result.map(item => item.children).flat(2) || []
@@ -192,8 +186,8 @@ export default {
         zoom: 4.1,//级别
         resizeEnable: true,
         center: [108.316721, 37.38724],//中心点坐标
-        features: ['bg', 'road', 'building']//显示样式
-
+        features: ['bg', 'road', 'building'],//显示样式
+        zooms: [4, 15]
       })
       this.bigAreaMarkers = this.initAreaMarker()
       this.allMarkers = this.initAllMarker()

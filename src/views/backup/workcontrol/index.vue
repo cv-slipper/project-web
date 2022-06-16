@@ -440,6 +440,7 @@ export default {
       } else {
         this.domain = this.$route.params.domain
         this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
+        this.branchId = this.$route.params.branchId == '' ? [] : [this.$route.params.branchId]
       }
       this.getWorkList()
     }
@@ -452,6 +453,7 @@ export default {
     } else {
       this.domain = this.$route.params.domain
       this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
+      this.branchId = this.$route.params.branchId == '' ? [] : [this.$route.params.branchId]
     }
     if (this.timer) {
       clearInterval(this.timer)
