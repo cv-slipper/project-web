@@ -808,6 +808,8 @@ export default {
               this.listData[1].increaseNum = res.result.increaseClient || 0
               this.listData[4].increaseNum = res.result.increaseDisk || 0
             } else {
+              this.listData[2].num = res.result.foreLicenseUsed
+              this.listData[2].total = res.result.foreLicenseTotal
               this.listData[0].num = ''
               this.listData[4].num = res.result.branchStorageUsed || 0
               this.listData[4].total = res.result.branchStorageTotal || 0

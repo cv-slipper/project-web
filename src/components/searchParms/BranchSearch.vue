@@ -11,7 +11,7 @@
         :placeholder='placeholder'
         :mode='model'>
         <a-select-option v-for='item in branchList' :value='item[keys]' :key='item[keys]'>
-          {{ item.name }}
+          {{ item.abbreviation }}
         </a-select-option>
       </a-select>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getBranchList } from '@api/modules/common'
+import { getBranchList } from '@api/modules/dashboard/analysis'
 
 export default {
   name: 'BranchSearch',
@@ -89,11 +89,11 @@ export default {
   methods: {
     /**
      * 获取分行列表
-     * @param {String} [searchContent] 分行名称
      */
-    async getBranchList(searchContent) {
-      const res = await getBranchList({ searchContent })
+    async getBranchList() {
+      const res = await getBranchList()
       if (res.code == 200) {
+        console.log(res, 'res')
         this.branchList = res.result || []
       } else {
         this.$message.error(res.message)
