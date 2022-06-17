@@ -668,7 +668,8 @@ export default {
     async getDomainTrend() {
       try {
         let params = {
-          domain: this.domain
+          domain: this.domain,
+          branchId: this.branchId
         }
         const res = await getDomainTrend(params)
         if (res.code == 200) {
