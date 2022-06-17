@@ -52,6 +52,10 @@ export default {
     domain: {
       type: String,
       default: ''
+    },
+    branchId: {
+      type: String,
+      default: ''
     }
   },
   watch: {
@@ -191,7 +195,8 @@ export default {
       try {
         this.loading = true
         let res = await getErrorList({
-          domain: this.domain
+          domain: this.domain,
+          branchId: this.branchId
         })
         if (res.code == 200) {
           this.dataSource = res.result || []
@@ -210,7 +215,7 @@ export default {
     },
     failedDetail(row) {
       row.exceptionType = '异常作业'
-      
+
       this.exceptionInfoVisible = true
       this.detailItem = row
     },

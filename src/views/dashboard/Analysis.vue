@@ -288,6 +288,7 @@
       @dealWithSuccess='dealWithSuccess'></error-message-modal>
     <failed-work-modal
       :domain='domain'
+      :branchId='branchId'
       :visible='failedWorkVisible'
       @cancel='failedWorkVisible = false'></failed-work-modal>
     <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='dealWithOk'></deal-with-modal>
