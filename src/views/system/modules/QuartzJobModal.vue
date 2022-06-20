@@ -120,7 +120,7 @@ export default {
       console.log(this.model)
       this.visible = true
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.model, 'jobClassName', 'cronExpression', 'parameter', 'description', 'status'))
+        this.form.setFieldsValue(pick(this.model, 'jobClassName', 'cronExpression', 'parameter', 'description', 'status', 'jobGroup'))
       })
 
     },
