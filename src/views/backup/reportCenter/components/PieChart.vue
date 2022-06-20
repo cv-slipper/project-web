@@ -12,13 +12,13 @@
 </template>
 
 <script>
-let useColor = ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8']
+let useColor = ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE']
 export default {
   name: 'PieChart',
   data() {
     return {
       colorIndex: 0,
-      color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
+      color: ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE'],
       myChart: null,
       option: {
         tooltip: {
@@ -33,10 +33,10 @@ export default {
           itemHeight: 10,
           formatter: name => {
             this.colorIndex++
-            if (this.colorIndex > 6) {
+            if (this.colorIndex > 7) {
               this.colorIndex = 1
             }
-            return this.getRichArr(this.option.series[0].data, this.colorIndex - 1, name).join('')
+            return this.getRichArr(this.option.series[0].data, name).join('')
           },
           data: [
             {
@@ -76,6 +76,14 @@ export default {
               itemStyle: {
                 color: 'white',
                 borderColor: useColor[4],
+                borderWidth: 3
+              }
+            },
+            {
+              name: 'other',
+              itemStyle: {
+                color: 'white',
+                borderColor: useColor[5],
                 borderWidth: 3
               }
             }
@@ -129,7 +137,7 @@ export default {
           {
             name: '',
             type: 'pie',
-            color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
+            color: ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE'],
             radius: ['50%', '70%'],
             center: ['27%', 'center'],
             avoidLabelOverlap: false,
@@ -155,7 +163,8 @@ export default {
               { value: 735, name: 'Direct' },
               { value: 580, name: 'Email' },
               { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
+              { value: 300, name: 'Video Ads' },
+              { value: 400, name: 'other' }
             ]
           }
         ]
@@ -176,8 +185,10 @@ export default {
         this.myChart.resize()
       })
     },
-    getRichArr(item, index, name) {
+    getRichArr(item, name) {
       let arr = []
+      let index = item.findIndex(ele => ele.name == name)
+      console.log(index)
       switch (index) {
         case 0:
           arr = [
@@ -216,7 +227,7 @@ export default {
           arr =
             [
               '{a|' + name + '}',
-              '{b5|' + item[index] + '} \n'
+              '{b5|' + item[index].value + '} \n'
             ]
           break
       }

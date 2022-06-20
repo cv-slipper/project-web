@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Title</title>
+</head>
+<body>
+<div style='width:100px'>
+  <div></div>
+</div>
+<script>
+  function fn1() {
+    var n = 1
+    return function biBao() {
+      n++
+      console.log(n)
+    }
+    console.log(n)
+  }
+
+  // var fn = fn1() // 用变量去接收fn1返回的函数 bibao
+  // biBao()// 直接执行fn1局部变量：报错 未定义
+  fn1()()// 1
+  //
+  // fn()
+  // fn()
+
+</script>
+</body>
+</html>

@@ -378,6 +378,9 @@ export default {
 
             }
           ]
+          this.columns[1].title = '应用系统'
+          this.columns[1].key = 'appSystemName'
+          this.columns[1].dataIndex = 'appSystemName'
         } else {
 
           this.listData[0] = {
@@ -386,6 +389,9 @@ export default {
             unit: '个',
             src: require('@/assets/branch-logo.png')
           }
+          this.columns[1].title = '分行'
+          this.columns[1].key = 'branchName'
+          this.columns[1].dataIndex = 'branchName'
         }
       },
       immediate: true
@@ -1458,7 +1464,7 @@ export default {
     }
 
     .center-content {
-      height: calc(100% - 33% - 72px);
+      height: calc(100% - 33% - 80px);
     }
 
     .top-list {

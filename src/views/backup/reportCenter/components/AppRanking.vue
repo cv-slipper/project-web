@@ -13,11 +13,13 @@
       <div class='little-title'></div>
     </div>
     <div class='app-content'>
-      <ul v-if='appRankList.length>0'>
+      <ul v-if='appRankList.length>0' class='cs'>
         <li v-for='(item,index) in appRankList' :key='index'>
           <div class='ranking-img'>
+            <span class='rank-num'>{{ index + 1 }}</span>
             <img class='ranking-bg' v-if='index<3' :src="require('@/assets/top'+(index+1) +'.png')" alt=''>
             <img class='ranking-bg' v-else src='@/assets/top4.png' alt=''>
+
           </div>
           <div class='ranking-name'>
             {{ item.name }}
@@ -46,7 +48,7 @@ export default {
   data() {
     return {
       value: 1,
-      appRankList: [],
+      appRankList: [{}, {}, {}],
       dataList: [
         {
           value: 1,
@@ -105,7 +107,7 @@ export default {
 }
 
 .app-content {
-  width: 80%;
+  width: 100%;
   margin: 20px auto;
   height: calc(100% - 55px);
   overflow-y: auto;
@@ -136,5 +138,52 @@ export default {
 
 /deep/ .select .ant-select-selection-selected-value {
   line-height: 25px !important;
+}
+
+.ranking-img {
+  width: 24px;
+  height: 20px;
+  position: relative;
+
+  .ranking-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.cs {
+  list-style: none;
+  padding: 0;
+
+
+  li {
+    display: flex;
+    align-items: center;
+
+    .ranking-rate {
+      width: 45%;
+      height: 7px;
+    }
+
+    div {
+      .rank-num {
+        width: 20px;
+        z-index: 9999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        margin: auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: white;
+      }
+    }
+  }
 }
 </style>
