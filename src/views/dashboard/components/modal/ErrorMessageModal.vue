@@ -136,7 +136,6 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-
         if (this.type) {
           this.searchParams.domain = this.type
           this.searchParams.system = this.id ? [this.id] : []
@@ -146,9 +145,13 @@ export default {
         }
         if (this.searchParams.domain == 'prod') {
           this.columns[3].title = '应用系统'
+          this.columns[3].dataIndex = 'appSystemName'
+          this.columns[3].key = 'appSystemName'
           this.getSystemListByBranch()
         } else {
           this.columns[3].title = '分行'
+          this.columns[3].dataIndex = 'branchName'
+          this.columns[3].key = 'branchName'
           this.getBranchList()
         }
         this.getExceptionPage()

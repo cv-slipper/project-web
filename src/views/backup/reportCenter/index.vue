@@ -3,7 +3,14 @@
     <div class='center-inner'>
       <div class='title'>
         <div class='left'>
+          <span v-if='domain=="prod"'>
           {{ getWeekDay() }}
+            </span>
+          <a-select v-else>
+            <a-select-option v-for='item in dataList' :value='item.value' :key='item.value'>
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
         </div>
         <div class='center'>
           <div class='center_inner'>
@@ -142,6 +149,7 @@ export default {
           year: '+16.8%'
         }
       ],
+      dataList: [],
       dateNow: ''
 
     }

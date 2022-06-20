@@ -23,14 +23,14 @@
           </template>
         </ul>
         <div class='buttons mt-20'>
-          <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>
-            <a-icon type='pause' style='font-size:14px' />
-            处理
-          </a-button>
-          <a-button class='ml-10 success-btn' @click='neglect'>
-            <a-icon type='caret-right' />
-            忽略
-          </a-button>
+          <!--          <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>-->
+          <!--            <a-icon type='pause' style='font-size:14px' />-->
+          <!--            处理-->
+          <!--          </a-button>-->
+          <!--          <a-button class='ml-10 success-btn' @click='neglect'>-->
+          <!--            <a-icon type='caret-right' />-->
+          <!--            忽略-->
+          <!--          </a-button>-->
           <a-button
             v-if='Object.keys(detailItem).length>0?detailItem.exceptionType!="异常事件":false'
             type='link'
@@ -115,7 +115,7 @@ export default {
           value: 'domain'
         },
         {
-          label: '相关应用系统/分行：',
+          label: '应用系统：',
           value: 'applicationSystem'
         },
         {
@@ -198,7 +198,7 @@ export default {
           value: 'domain'
         },
         {
-          label: '相关应用系统／分行：',
+          label: '应用系统：',
           value: 'applicationSystem'
         },
         {
@@ -292,8 +292,11 @@ export default {
         }
         let res = await getExceptionDetail(params)
         if (res.code == 200) {
-          console.log(res.result, 'res.result')
           this.detail = res.result
+          let index = this.labelList.findIndex(ele => ele.label.indexOf('应用系统') != -1)
+          this.labelList[index].label = this.detail.domain == 'prod' ? '应用系统' : '分行'
+          this.labelList[index].value = this.detail.domain == 'prod' ? 'applicationSystem' : 'branchName'
+          console.log(this.labelList, 'labelList')
         } else {
           this.detail = {}
           this.$message.error(res.message)

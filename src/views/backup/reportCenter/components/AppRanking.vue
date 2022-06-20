@@ -24,9 +24,8 @@
           <div class='ranking-name'>
             {{ item.name }}
           </div>
-          <div class='ranking-rate'>
-            <a-progress :percent='30' />
-          </div>
+
+          <a-progress :percent='30' class='ranking-rate' stroke-color='#3C6BE3' :show-info='false' />
           <div class='ranking-num'>
             {{ item.num }}
           </div>
@@ -159,14 +158,22 @@ export default {
   list-style: none;
   padding: 0;
 
+  li:first-child {
+    margin-top: 0;
+  }
 
   li {
     display: flex;
-    align-items: center;
+    margin-top: 20px;
 
     .ranking-rate {
       width: 45%;
       height: 7px;
+      margin: 0 15px;
+    }
+
+    .ranking-num {
+      margin-right: 10px
     }
 
     div {

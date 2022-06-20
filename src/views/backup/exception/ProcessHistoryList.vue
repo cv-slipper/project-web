@@ -315,10 +315,8 @@ export default {
       handler(val) {
         if (val == 'prod') {
           this.getSystemListByBranch()
-
         } else {
           this.getBranchList()
-
         }
       }
     }
@@ -327,8 +325,12 @@ export default {
     this.getExceptionPage()
     if (this.domain == 'prod') {
       this.columns[4].title = '应用系统'
+      this.columns[4].key = 'appSystemName'
+      this.columns[4].dataIndex = 'appSystemName'
     } else {
       this.columns[4].title = '分行'
+      this.columns[4].key = 'branchName'
+      this.columns[4].dataIndex = 'branchName'
     }
     this.getUserList()
   },
@@ -403,6 +405,7 @@ export default {
           handledUser: this.handledUser.join(',')
         })
         if (res.code == 200) {
+          console.log(this.columns[4], 'this.columns[4]')
           this.tableData = res.result.list || []
           this.pagination.total = res.result.totalSize
         } else {
@@ -454,8 +457,12 @@ export default {
     search() {
       if (this.domain == 'prod') {
         this.columns[4].title = '应用系统'
+        this.columns[4].key = 'appSystemName'
+        this.columns[4].dataIndex = 'appSystemName'
       } else {
         this.columns[4].title = '分行'
+        this.columns[4].key = 'branchName'
+        this.columns[4].dataIndex = 'branchName'
       }
       this.pagination.current = 1
       this.getExceptionPage()
