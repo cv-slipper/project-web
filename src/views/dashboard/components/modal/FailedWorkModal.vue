@@ -11,12 +11,12 @@
         :loading='loading'
         :pagination='false'
         @change='tableChange'
-        :scroll='{x:"100%"}'
+        :scroll='{x:"100%",y:false}'
       >
         <template #action='row'>
-          <div>
-            <a-button type='link' @click='failedDetail(row)'>详情</a-button>
-          </div>
+
+          <a-button type='link' @click='failedDetail(row)'>详情</a-button>
+
         </template>
         <template #tooltip='data'>
           <a-tooltip :title='data'>
@@ -130,7 +130,7 @@ export default {
           title: '代理类型',
           key: 'agentType',
           dataIndex: 'agentType',
-          width: 100,
+          width: 150,
           align: 'center'
         },
         {

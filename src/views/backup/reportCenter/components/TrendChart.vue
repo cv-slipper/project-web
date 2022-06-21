@@ -4,7 +4,7 @@
       <div>
         备份域前端/后端/客户端趋势
       </div>
-      <div class='info-text'>当前：全域</div>
+      <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
     <div id='trend-chart'>
@@ -16,6 +16,12 @@
 <script>
 export default {
   name: 'TrendChart',
+  props: {
+    branchName: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       option: {

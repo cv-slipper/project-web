@@ -72,6 +72,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch (e) {
+        console.log(e, 'error')
         this.$message.error('获取分行数据失败')
       }
 
@@ -94,7 +95,7 @@ export default {
     checkBranch(item) {
       this.branchItem = item
       if (item) {
-        this.map.setZoomAndCenter(7, item.center)
+        this.map.setZoomAndCenter(10, item.center)
         this.map.remove(this.allMarkers)
         this.allMarkers = this.initAllMarker()
         this.map.add(this.allMarkers)
@@ -140,7 +141,7 @@ export default {
       this.allMarkers = this.initAllMarker()
       let zoom = this.map.getZoom()
 
-      if (zoom >= 4.5) {
+      if (zoom >= 6) {
         this.map.remove(this.bigAreaMarkers)
         this.map.remove(this.allMarkers)
         this.map.add(this.allMarkers)
@@ -160,7 +161,6 @@ export default {
      * 获取异常区域模版字符串
      */
     getInfoWindowTemplate(item) {
-      console.log(item, 'item')
       let content = ``
       if (item.exceptionNum > 0) {
         content = this.getExecptionContent(item)
@@ -168,26 +168,93 @@ export default {
       return content
     },
     getExecptionContent(item) {
-      let arr = ``
+      let arr = `<div class='exception-content'>`
       item.children.forEach(ele => {
         if (ele.exceptionNum > 0) {
-          arr += (`<div class='exception-content'>
+          arr += (`
+            <div class='exception-content_center'>
           <div class='execption-name'>${ele.branchName}</div>
           <div class='excrption-num'>（${ele.exceptionNum}）</div>
           <div>
-          <img class='map-warning' src='${require('@/assets/map-warning.png')}' alt='' /></div>
-            </div>`)
+          <img class='map-warning' src='${require('@/assets/map-warning.png')}' alt='' />
+            </div></div>`)
         }
       })
       return arr
     },
     initMap() {
+      var GDPSpeed = {
+        '520000': 10,//贵州
+        '540000': 10,//西藏
+        '530000': 8.5,//云南
+        '500000': 8.5,//重庆
+        '360000': 8.5,//江西
+        '340000': 8.0,//安徽
+        '510000': 7.5,//四川
+        '350000': 8.5,//福建
+        '430000': 8.0,//湖南
+        '420000': 7.5, //湖北
+        '410000': 7.5,//河南
+        '330000': 7.0,//浙江
+        '640000': 7.5,//宁夏
+        '650000': 7.0,//新疆
+        '440000': 7.0,//广东
+        '370000': 7.0,//山东
+        '450000': 7.3,//广西
+        '630000': 7.0,//青海
+        '320000': 7.0,//江苏
+        '140000': 6.5,//山西
+        '460000': 7,// 海南
+        '310000': 6.5,//上海
+        '110000': 6.5, // 北京
+        '130000': 6.5, // 河北
+        '230000': 6, // 黑龙江
+        '220000': 6,// 吉林
+        '210000': 6.5, //辽宁
+        '150000': 6.5,//内蒙古
+        '120000': 5,// 天津
+        '620000': 6,// 甘肃
+        '610000': 8.5,// 甘肃
+        '710000': 2.64, //台湾
+        '810000': 3.0, //香港
+        '820000': 4.7 //澳门
+
+      }
+      let color = {}
+      var getColorByDGP = function(adcode) {
+        if (!colors[adcode]) {
+          var gdp = GDPSpeed[adcode]
+          if (!gdp) {
+            colors[adcode] = 'rgb(227,227,227)'
+          } else {
+            var rg = 255 - Math.floor((gdp - 5) / 5 * 255)
+            colors[adcode] = 'rgb(' + rg + ',' + rg + ',255)'
+          }
+        }
+        return colors[adcode]
+      }
+
+      const disCountry = new AMap.DistrictLayer.Country({
+        zIndex: 10,
+        depth: 1,
+        SOC: 'CHN',
+        styles: {
+          'fill': '#ffffcc'
+        }
+
+      })
       this.map = new AMap.Map('container', {
         zoom: 4.1,//级别
         resizeEnable: true,
         center: [108.316721, 37.38724],//中心点坐标
-        features: ['bg', 'road', 'building'],//显示样式
-        zooms: [4, 15]
+        features: [],
+        layers: [disCountry],
+        zooms: [4, 8],
+        isHotspot: false,
+        defaultCursor: 'pointer',
+        touchZoomCenter: 1,
+        pitch: 0,
+        showIndoorMap: false
       })
       this.bigAreaMarkers = this.initAreaMarker()
       this.allMarkers = this.initAllMarker()
@@ -197,8 +264,6 @@ export default {
         // this.debounce(this.dealWithMarkers, 10)()
       })
       this.map.on('zoomchange', () => {
-        let zoom = this.map.getZoom()
-        console.log(zoom, 'zoom')
         this.debounce(this.dealWithMarkers, 10)()
       })
     },
@@ -350,9 +415,6 @@ export default {
   right: -45px;
   margin: auto;
   font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 12px 0;
   padding-right: 10px;
 
@@ -393,6 +455,16 @@ export default {
   right: 0;
   margin: auto;
   z-index: 99;
+}
+
+/deep/ .exception-content_center {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+/deep/ .exception-content_center:first-child {
+  margin-top: 0px;
 }
 
 /deep/ .map-warning {

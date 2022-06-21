@@ -5,55 +5,46 @@
     </div>
 
     <div class='system-title'>
-      <div class='title-logo'>
-        <img src='@/assets/system-logo.png' alt='' />
+      <div class='title-wrapper'>
+        <div class='title-logo'>
+          <img src='@/assets/system-logo.png' alt='' />
+        </div>
+        <div class='ml-10 title-text'>
+          <span>{{ view }}备份运行状态</span>
+        </div>
       </div>
-      <div class='ml-10'>
-        <span>应用系统备份运行状态</span>
+      <div class='check-view'>
+        <span class='view-button' @click='checkView'>切换</span>
+        <span>{{ view }}视图</span>
       </div>
-    </div>
-    <div class='service'>
-      <img src='@/assets/systemServer.png' alt=''>
     </div>
     <div class='left-colund'>
-      <img src='@/assets/clound1.png' alt='' />
-    </div>
-    <div class='right-clound'>
       <img src='@/assets/clound2.png' alt='' />
     </div>
-    <div class='floor'>
-      <img src='@/assets/floor.png' alt='' />
+    <div class='right-clound'>
+      <img src='@/assets/clound1.png' alt='' />
     </div>
-    <div class='right-floor'>
-      <img src='@/assets/right-floor.png' alt='' />
+    <div class='star'>
+      <img src='@/assets/star.png' alt='' />
     </div>
-    <div class='wang'>
-      <img src='@/assets/wang.png' alt='' />
+    <div class='connect-line'>
+      <img src='@/assets/connect-line.gif' alt='' />
     </div>
-
+    <div class='data-center'>
+      <img src='@/assets/data-center.gif' alt='' />
+    </div>
     <div class='system-group' v-if='!systemLoading'>
-
-      <div
-        class='item'
-        v-for='(item,index) in systemList'
-        :key='index'
-        :style='getStyle(index)'
-        @click='gotoSystemInfo(item)'>
-        <div class='top'>
-          <div class='top-bg'>
-            <img src='@/assets/systemNormal.png' v-if='item.state==1' alt='' />
-            <img src='@/assets/systemWarning.gif' v-else alt='' />
+      <div class='item-box'>
+        <img class='person' src='@/assets/person.png' alt='' />
+        <div class='item' v-for='(item,index) in systemList' :key='index' @click='gotoSystemInfo(item)'>
+          <div class='system-top'>
+            <img class='system-top_bg' v-if='item.state==1' src='@/assets/normal-message.png' alt='' />
+            <img class='system-top_bg' v-else src='@/assets/warning-message.gif' alt='' />
+            <div class='system-name'>{{ item.groupName }}</div>
           </div>
-          <div class='system-name-box'>
-            <div class='system-name'>
-              <div class='system-name-inner'>
-                {{ item.groupName }}
-              </div>
-            </div>
+          <div class='system-bottom'>
+            <img src='@/assets/monitor.gif' />
           </div>
-        </div>
-        <div class='bottom'>
-          <img src='@/assets/systemBottm.gif' alt='' />
         </div>
       </div>
     </div>
@@ -79,9 +70,14 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      view: '应用系统'
+    }
   },
   methods: {
+    checkView() {
+      this.view = this.view == '应用系统' ? '数据中心' : '应用系统'
+    },
     gotoSystemInfo(item) {
       this.$emit('gotoSystemInfo', item)
     },
@@ -137,65 +133,67 @@ export default {
   }
 
   .system-group {
-    .item {
-      width: 120px;
-      height: 130px;
-      position: relative;
-      cursor: pointer;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    margin: auto;
+    height: 55%;
+    background: url("../../../assets/main-bottom.png") no-repeat;
+    background-size: 100% 100%;
 
-      .bottom {
-        width: 80px;
-        height: 60px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
+    .item-box {
+      width: 65%;
+      height: 63%;
+      position: absolute;
+      left: 0;
+      bottom: 15%;
+      right: 0;
+      margin: auto;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
 
-        img {
-          width: 100%;
-          height: 100%;
-
-        }
-      }
-
-      .top {
-        width: 100%;
-        height: 70px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+      .item {
+        width: calc(20% - 16px);
         position: relative;
-        transform: rotateX(20deg);
-      }
+        cursor: pointer;
 
-      .system-name-box {
-        transform: rotateY(55deg);
-      }
-
-      .system-name {
-        color: white;
-        font-weight: bold;
-        font-size: 12px;
-        z-index: 999;
-        transform: rotateZ(22deg);
-
-        .system-name-inner {
-          transform: rotateX(35deg);
-        }
-      }
-
-      .top-bg {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        img {
+        .system-top {
           width: 100%;
-          height: 100%;
-          transform: rotateY(55deg);
+          position: absolute;
+          top: -50%;
+          left: 0;
+          cursor: pointer;
+
+          .system-name {
+            height: 80%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            color: white;
+            display: flex;
+            justify-content: center;
+          }
+
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .system-bottom {
+          width: 90%;
+          transform: rotateX(30deg);
+
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
         }
       }
     }
@@ -206,7 +204,7 @@ export default {
   width: 48px;
   height: 40px;
   position: absolute;
-  top: 20%;
+  top: 30%;
   left: 10%;
 
   img {
@@ -219,12 +217,58 @@ export default {
   width: 48px;
   height: 40px;
   position: absolute;
-  top: 20px;
-  right: 300px;
+  top: 20%;
+  right: 10%;
 
   img {
     width: 100%;
     height: 100%;
+  }
+}
+
+.star {
+  width: 140px;
+  object-fit: contain;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.connect-line {
+  width: 45%;
+  height: 20%;
+  position: absolute;
+  top: 25%;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+  }
+}
+
+.data-center {
+  width: 110px;
+  position: absolute;
+  top: calc(25% - 80px);
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+
+  img {
+    width: 100%;
+    object-fit: contain;
+    position: relative;
+    right: 4px;
   }
 }
 
@@ -254,6 +298,12 @@ export default {
   }
 }
 
+.person {
+  position: absolute;
+  bottom: 18%;
+  left: -5%;
+}
+
 .right-floor {
   width: 160px;
   height: 130px;
@@ -266,6 +316,7 @@ export default {
     height: 100%;
   }
 }
+
 
 /deep/ .system::-webkit-scrollbar, .info::-webkit-scrollbar {
   height: 9px;
@@ -283,14 +334,39 @@ export default {
   position: absolute;
   top: 10px;
   left: 0;
-  padding: 10px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 8px 0px rgba(193, 199, 211, 0.4);
-  opacity: 0.65;
-  border-radius: 0px 7px 7px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+  .check-view {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0);
+    font-size: 12px;
+    color: #868686;
+
+    .view-button {
+      padding: 2px 5px;
+      border: 1px solid #6F9EF5;
+      border-radius: 10px;
+      color: #6F9EF5;
+      font-weight: bold;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .title-wrapper {
+    padding: 10px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0px 7px 7px 0px;
+    box-shadow: 0px 4px 8px 0px rgba(193, 199, 211, 0.4);
+
+    .title-text {
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+    }
+  }
 
   .title-logo {
     width: 20px;
@@ -306,12 +382,6 @@ export default {
       width: 10px;
       height: 10px;
     }
-  }
-
-  span {
-    font-weight: 500;
-    color: #333333;
-    font-size: 12px;
   }
 }
 
@@ -330,6 +400,10 @@ export default {
 }
 
 @media screen and(max-width: 1700px) {
+  .person {
+    bottom: 25%
+  }
+
   .system {
     .service {
       width: 180px;
@@ -337,38 +411,28 @@ export default {
     }
 
     .right-clound {
-      right: 220px;
+      right: 10%;
     }
 
     .system-group {
-      .item {
-        width: 80px;
-        height: 100px;
+      .item-box {
+        bottom: 10%;
 
-        .top {
-          height: 55px;
+        .item {
+          width: calc(20% - 12px);
 
-          .top-bg {
-            img {
-              transform: rotateY(50deg);
+          .system-top {
+
+            top: -40%;
+
+            .system-name {
+              height: 110%;
+              transform: scale(0.8);
             }
           }
         }
-
-        .system-name-box {
-          transform: rotateY(50deg);
-
-          .system-name {
-            transform: rotateZ(25deg);
-          }
-        }
-
-        .bottom {
-          width: 60px;
-          height: 45px;
-        }
-
       }
+
 
     }
   }

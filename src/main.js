@@ -66,8 +66,8 @@ VueAMap.initAMapApiLoader({
   key: 'f5ada6176c6a7f1a9ae57985b2f9e1a1', // 自己到官网申请，我随便写的
   // 插件集合 （插件按需引入）
   v: '1.4.15', // 我也不知道为什么要写这个，不写项目会报错，而且我随便写的，跟我下载的版本对应不了
-  uiVersion: '1.0.11' // ui版本号，也是需要写，不配置不加载,
-
+  uiVersion: '1.0.11', // ui版本号，也是需要写，不配置不加载,
+  plugin: ['AMap.DistrictLayer']
 })
 new Vue({
   router,

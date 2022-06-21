@@ -4,7 +4,7 @@
       <div>
         数据类型分布-前端容量
       </div>
-      <div class='info-text'>当前：全域</div>
+      <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
     <div id='front-chart'>
@@ -15,7 +15,12 @@
 
 <script>
 export default {
-
+  props: {
+    branchName: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       colorIndex: 0,

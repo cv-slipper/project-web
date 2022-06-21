@@ -4,7 +4,7 @@
       <div>
         数据类型分布-客户端数量
       </div>
-      <div class='info-text'>当前：全域</div>
+      <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
     <div id='pieChart'></div>
@@ -15,6 +15,12 @@
 let useColor = ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE']
 export default {
   name: 'PieChart',
+  props: {
+    branchName: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       colorIndex: 0,

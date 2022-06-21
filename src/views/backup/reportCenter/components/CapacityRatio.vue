@@ -21,6 +21,8 @@ export default {
   name: 'CapacityRatio',
   data() {
     return {
+      value: '',
+      dataList: [],
       option: {
         xAxis: {
           type: 'category',

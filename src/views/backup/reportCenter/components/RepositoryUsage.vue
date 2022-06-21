@@ -4,7 +4,7 @@
       <div>
         存储库使用量信息
       </div>
-      <div class='info-text'></div>
+      <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
     <div class='useage-table'>
@@ -21,6 +21,12 @@
 <script>
 export default {
   name: 'RepositoryUsageTable',
+  props: {
+    branchName: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       columns: [

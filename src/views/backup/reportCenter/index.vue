@@ -6,9 +6,9 @@
           <span v-if='domain=="prod"'>
           {{ getWeekDay() }}
             </span>
-          <a-select v-else>
-            <a-select-option v-for='item in dataList' :value='item.value' :key='item.value'>
-              {{ item.label }}
+          <a-select v-else style='width:150px' v-model='branchId'>
+            <a-select-option v-for='item in branchList' :value='item.id' :key='item.id'>
+              {{ item.abbreviation }}
             </a-select-option>
           </a-select>
         </div>
@@ -17,8 +17,8 @@
             备份运维平台报告看板
           </div>
           <div class='domain'>
-            <div :class='{active:domain=="prod"}'>生产域</div>
-            <div :class='{active:domain !="prod"}'>分行域</div>
+            <div @click='domainClick("prod")' :class='{active:domain=="prod"}'>生产域</div>
+            <div @click='domainClick("branch")' :class='{active:domain !="prod"}'>分行域</div>
           </div>
         </div>
         <div class='right'>
@@ -28,13 +28,13 @@
       <div style='display: flex;height:100%;position: relative'>
         <div class='main-left'>
           <div class='item'>
-            <trend-chart></trend-chart>
+            <trend-chart :branch-name='branchName'></trend-chart>
           </div>
           <div class='item'>
-            <front-end-capacity></front-end-capacity>
+            <front-end-capacity :branch-name='branchName'></front-end-capacity>
           </div>
           <div class='item'>
-            <pie-chart></pie-chart>
+            <pie-chart v-if='!branchId' :branch-name='branchName'></pie-chart>
           </div>
         </div>
         <div class='main-center'>
@@ -45,39 +45,47 @@
             </div>
             <div class='group'>
               <div class='item' v-for='(item,index) in itemList' :key='index'>
+                <template v-if='index==0 && branchId && domain=="branch"'>
+                  <div class='branch-name'>{{ branchName }}</div>
+                </template>
+                <template v-else>
+                  <div>
+                    <div class='num'>{{ item.num }}</div>
+                    <div class='name'>{{ item.name }}</div>
+                  </div>
+                  <div class='year'>
+                    <template v-if='item.type==1'>
+                      <div>环比上月 <span
+                        :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{ item.month
+                        }}</span></div>
+                      <div>环比去年 <span
+                        :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{ item.year
+                        }}</span></div>
+                    </template>
+                  </div>
+                </template>
 
-                <div>
-                  <div class='num'>{{ item.num }}</div>
-                  <div class='name'>{{ item.name }}</div>
-                </div>
-                <div class='year'>
-                  <template v-if='item.type==1'>
-                    <div>环比上月 <span
-                      :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{ item.month
-                      }}</span></div>
-                    <div>环比去年 <span
-                      :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{ item.year
-                      }}</span></div>
-                  </template>
-                </div>
               </div>
             </div>
           </div>
           <div class='main-center-bottom'>
-            <div class='useage-box'>
-              <repository-usage></repository-usage>
+            <div :class='["useage-box",{branchActive:branchId}]'>
+              <repository-usage :branch-name='branchName'></repository-usage>
             </div>
           </div>
         </div>
         <div class='main-left'>
           <div class='item'>
-            <client-ranking></client-ranking>
+            <client-ranking :branch-name='branchName'></client-ranking>
           </div>
           <div class='item'>
-            <app-ranking></app-ranking>
+            <app-ranking v-if='!branchId'></app-ranking>
+            <pie-chart v-if='branchId && domain=="branch"' :branch-name='branchName'></pie-chart>
           </div>
           <div class='item'>
-            <capacity-ratio></capacity-ratio>
+            <capacity-ratio v-if='!branchId'></capacity-ratio>
+            <stack-chart class='stack-chart' v-if='branchId && domain=="branch"'
+                         :branch-name='branchName'></stack-chart>
           </div>
         </div>
       </div>
@@ -93,6 +101,8 @@ import RepositoryUsage from '@views/backup/reportCenter/components/RepositoryUsa
 import ClientRanking from '@views/backup/reportCenter/components/ClientRanking'
 import AppRanking from '@views/backup/reportCenter/components/AppRanking'
 import CapacityRatio from '@views/backup/reportCenter/components/CapacityRatio'
+import StackChart from '@views/backup/reportCenter/components/StackChart'
+import { getBranchList } from '@api/modules/dashboard/analysis'
 
 export default {
   name: 'index',
@@ -103,7 +113,8 @@ export default {
     RepositoryUsage,
     ClientRanking,
     AppRanking,
-    CapacityRatio
+    CapacityRatio,
+    StackChart
   },
   data() {
     return {
@@ -149,7 +160,9 @@ export default {
           year: '+16.8%'
         }
       ],
-      dataList: [],
+      branchList: [],
+      branchId: '',
+      branchName: '',
       dateNow: ''
 
     }
@@ -160,7 +173,62 @@ export default {
       this.getDate()
     }, 1000)
   },
+  watch: {
+    domain: {
+      handler(val) {
+        if (val == 'branch') {
+          this.getBranchList()
+        }
+        this.getBranchName()
+      },
+      immediate: true
+    },
+    branchId: {
+      handler(val) {
+        this.getBranchName()
+      },
+      immediate: true
+    }
+  },
   methods: {
+    /**
+     * 获取分行列表
+     */
+    async getBranchList() {
+      try {
+        const res = await getBranchList()
+        if (res.code == 200) {
+          this.branchList = res.result || []
+          this.branchList.unshift({
+            id: '',
+            abbreviation: '全域'
+          })
+          console.log(this.branchList, 'this.branchList')
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.branchList = []
+      }
+    },
+
+
+    /**
+     * 获取分行名称
+     */
+    getBranchName() {
+      if (this.branchId) {
+        const branch = this.branchList.find(item => item.id == this.branchId)
+        if (branch && this.domain == 'branch') {
+          this.branchName = branch.abbreviation
+        } else {
+          this.branchName = '全域'
+        }
+      } else {
+        this.branchName = '全域'
+      }
+
+    },
     /**
      * 获取今天星期几中文
      * @returns {string}
@@ -170,6 +238,13 @@ export default {
       let date = new Date()
       let day = date.getDay()
       return '星期' + weekDay[day]
+    },
+    /**
+     * 切换域
+     * @param {string} domain
+     */
+    domainClick(domain) {
+      this.domain = domain
     },
     /**
      * 获取当前日期精确到秒
@@ -437,4 +512,28 @@ export default {
   z-index: 999999999 !important;
 }
 
+.branchActive {
+  width: calc(100% - 20px);
+  position: relative;
+  right: calc(50% + 20px);
+  top: 0;
+}
+
+.stack-chart {
+  width: calc(200% - 20px);
+  position: relative;
+  right: 100%;
+}
+
+.branch-name {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24px;
+  font-family: Noto Sans S Chinese;
+  font-weight: 900;
+  color: #3C6BE3;
+}
 </style>

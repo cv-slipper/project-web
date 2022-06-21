@@ -5,6 +5,7 @@
         客户端前端容量排名
       </div>
       <div class='info-text'>
+        当前：{{ branchName }}
       </div>
       <div class='little-title'></div>
     </div>
@@ -30,6 +31,12 @@
 <script>
 export default {
   name: 'ClientRanking',
+  props: {
+    branchName: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       value: '',

@@ -90,7 +90,7 @@
                   </div>
                   <div style='height:100%'>
                     <div class='flex-box tfh'>
-                      <div class='item'>
+                      <div class='item' style='cursor:default'>
                         <div class='content'>
                           <div class='title'>完成</div>
                           <div class='num'>{{ dailyWorkDetail.completedNum }}</div>
@@ -222,7 +222,7 @@
                     <div class='error-action'>
                       <div>
                         <span class='fl' @click='exceptionInfo(row)'>详情</span>
-                        <span class='fl ml-5' @click='dealWith(row)'>处理</span>
+                        <!--                        <span class='fl ml-5' @click='dealWith(row)'>处理</span>-->
                       </div>
                     </div>
                   </template>
