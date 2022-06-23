@@ -2,7 +2,7 @@
   <div class='client-ranking'>
     <div class='trend-chart-title'>
       <div>
-        客户端前端容量排名
+        客户端前端许可用量排名
       </div>
       <div class='info-text'>
         当前：{{ branchName }}
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: 'ClientRanking',
+  name: 'clientRanking',
   props: {
     branchName: {
       type: String,
@@ -49,35 +49,33 @@ export default {
         },
         {
           title: '客户端名称',
-          dataIndex: 'name'
+          dataIndex: 'clientName'
 
         },
         {
           title: '分行名称',
-          dataIndex: 'branchName'
+          dataIndex: 'belongName'
 
         },
         {
           title: '前端容量',
-          dataIndex: 'capacity'
+          dataIndex: 'foreSize'
         },
         {
           title: '环比上月',
-          dataIndex: 'month'
+          dataIndex: 'ratio'
         }
       ],
       tableData: []
     }
   },
-  created() {
-    for (let i = 0; i < 5; i++) {
-      this.tableData.push({
-        name: '客户端' + i,
-        branchName: '分行' + i,
-        capacity: '100G',
-        month: '10%',
-        index: i
+  methods: {
+    initTableData(data) {
+      data.forEach((item, index) => {
+        item.index = index
+        item.ratio = item.ratio < 0 ? item.ratio + '%' : '+' + item.ratio + '%'
       })
+      this.tableData = data
     }
   }
 }
@@ -181,18 +179,18 @@ export default {
 
 @media screen and(max-width: 1700px) {
   /deep/ .table-box table thead tr th {
-    padding: 15px 10px !important;
+    padding: 15px 5px !important;
     font-size: 12px !important;
   }
 
   /deep/ .table-box table tbody tr td {
-    padding: 15px 10px !important;
+    padding: 15px 5px !important;
     font-size: 12px !important;
   }
 
   /deep/ .table-box .ant-table-tbody > tr > td {
     border-bottom: none !important;
-    padding: 15px 10px !important;
+    padding: 15px 5px !important;
   }
 }
 

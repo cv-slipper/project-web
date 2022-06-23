@@ -2,7 +2,7 @@
   <div class='repository-usage'>
     <div class='trend-chart-title'>
       <div>
-        存储库使用量信息
+        存储库使用信息
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>

@@ -14,8 +14,8 @@
         </div>
       </div>
       <div class='check-view'>
-        <span class='view-button' @click='checkView'>切换</span>
-        <span>{{ view }}视图</span>
+        <span class='view-button' @click='checkView'>切换至</span>
+        <span>{{ view == '应用系统' ? '数据中心' : '应用系统' }}视图</span>
       </div>
     </div>
     <div class='left-colund'>
@@ -36,11 +36,11 @@
     <div class='system-group' v-if='!systemLoading'>
       <div class='item-box'>
         <img class='person' src='@/assets/person.png' alt='' />
-        <div class='item' v-for='(item,index) in systemList' :key='index' @click='gotoSystemInfo(item)'>
+        <div class='item' v-for='(item,index) in dataList' :key='index' @click='gotoSystemInfo(item)'>
           <div class='system-top'>
             <img class='system-top_bg' v-if='item.state==1' src='@/assets/normal-message.png' alt='' />
             <img class='system-top_bg' v-else src='@/assets/warning-message.gif' alt='' />
-            <div class='system-name'>{{ item.groupName }}</div>
+            <div class='system-name text-ellipsis'>{{ item.groupName }}</div>
           </div>
           <div class='system-bottom'>
             <img src='@/assets/monitor.gif' />
@@ -69,9 +69,19 @@ export default {
       }
     }
   },
+  watch: {
+    systemList: {
+      handler(val) {
+        this.dataList = val
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   data() {
     return {
-      view: '应用系统'
+      view: '应用系统',
+      dataList: []
     }
   },
   methods: {
@@ -156,7 +166,7 @@ export default {
       flex-wrap: wrap;
 
       .item {
-        width: calc(20% - 16px);
+        width: calc(20% - 10px);
         position: relative;
         cursor: pointer;
 
@@ -168,6 +178,7 @@ export default {
           cursor: pointer;
 
           .system-name {
+            width: 100%;
             height: 80%;
             position: absolute;
             top: 0;
@@ -178,6 +189,7 @@ export default {
             color: white;
             display: flex;
             justify-content: center;
+            font-size: 12px;
           }
 
           img {

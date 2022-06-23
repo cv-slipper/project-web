@@ -2,7 +2,7 @@
   <div class='trend-chart'>
     <div class='trend-chart-title'>
       <div>
-        备份域前端/后端/客户端趋势
+        容量及客户端数量趋势区
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -29,7 +29,7 @@ export default {
         legend: {
           itemHeight: 10,
           itemWidth: 10,
-          data: [{ name: '前端', icon: 'rect' }, { name: '后端', icon: 'rect' }, { name: '客户端', icon: 'rect' }],
+          data: [{ name: '前端许可用量', icon: 'rect' }, { name: '后端存储用量', icon: 'rect' }, { name: '客户端数量', icon: 'rect' }],
           top: '10%'
         },
         xAxis: [
@@ -59,7 +59,7 @@ export default {
         ],
         series: [
           {
-            name: '前端',
+            name: '前端许可用量',
             type: 'bar',
 
             data: [
@@ -67,7 +67,7 @@ export default {
             ]
           },
           {
-            name: '后端',
+            name: '后端存储用量',
             type: 'bar',
             yAxisIndex: 1,
             data: [
@@ -75,7 +75,7 @@ export default {
             ]
           },
           {
-            name: '客户端',
+            name: '客户端数量',
             type: 'line',
             showSymbol: false,
             smooth: true,
@@ -128,7 +128,6 @@ export default {
       var y_max = option.yAxis[0].max()
 
       for (var n = 0; n < arr_data.length; n++) {
-        console.log(arr_data[n], y_min, y_max)
         if (arr_data[n] > y_max)
 
           y_max = arr_data[n]
@@ -150,7 +149,6 @@ export default {
       option.yAxis[1].min = y_min
 
       option.yAxis[1].max = y_max
-      console.log(option, 'option')
       this.$nextTick(() => {
         this.myChart.setOption(option)
       })

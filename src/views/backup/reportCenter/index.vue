@@ -31,10 +31,11 @@
             <trend-chart :branch-name='branchName'></trend-chart>
           </div>
           <div class='item'>
-            <front-end-capacity :branch-name='branchName'></front-end-capacity>
+            <!--            数据类型分布-客户端数量区-->
+            <front-end-capacity ref='clientTrend' :data='clientNumData' :branch-name='branchName'></front-end-capacity>
           </div>
           <div class='item'>
-            <pie-chart v-if='!branchId' :branch-name='branchName'></pie-chart>
+            <pie-chart ref='frontPie' v-if='!branchId || domain=="prod"' :branch-name='branchName'></pie-chart>
           </div>
         </div>
         <div class='main-center'>
@@ -69,23 +70,24 @@
             </div>
           </div>
           <div class='main-center-bottom'>
-            <div :class='["useage-box",{branchActive:branchId}]'>
+            <div :class='["useage-box",{branchActive:branchId && domain=="branch"}]'>
               <repository-usage :branch-name='branchName'></repository-usage>
             </div>
           </div>
         </div>
         <div class='main-left'>
           <div class='item'>
-            <client-ranking :branch-name='branchName'></client-ranking>
+            <client-ranking ref='clientRanking' :branch-name='branchName'></client-ranking>
           </div>
           <div class='item'>
-            <app-ranking v-if='!branchId'></app-ranking>
-            <pie-chart v-if='branchId && domain=="branch"' :branch-name='branchName'></pie-chart>
+            <pie-chart v-if='branchId && domain=="branch"' ref='frontPie' :branch-name='branchName'></pie-chart>
+            <app-ranking :domain='domain' ref='appRanking' v-else v-model='branchRankType'></app-ranking>
           </div>
           <div class='item'>
-            <capacity-ratio v-if='!branchId'></capacity-ratio>
+
             <stack-chart class='stack-chart' v-if='branchId && domain=="branch"'
                          :branch-name='branchName'></stack-chart>
+            <capacity-ratio ref='capacityRatio' :domain='domain' v-model='areaPropType' v-else></capacity-ratio>
           </div>
         </div>
       </div>
@@ -103,6 +105,16 @@ import AppRanking from '@views/backup/reportCenter/components/AppRanking'
 import CapacityRatio from '@views/backup/reportCenter/components/CapacityRatio'
 import StackChart from '@views/backup/reportCenter/components/StackChart'
 import { getBranchList } from '@api/modules/dashboard/analysis'
+import {
+  getClientTrends,
+  getFrontPie,
+  getDomainScale,
+  getFrontRank,
+  getBranchRank,
+  getAreaPropData,
+  getAreaPropDataProd,
+  getAppSystemRank
+} from '@api/modules/backup/reportCenter/index'
 
 export default {
   name: 'index',
@@ -163,7 +175,10 @@ export default {
       branchList: [],
       branchId: '',
       branchName: '',
-      dateNow: ''
+      dateNow: '',
+      clientNumData: [],
+      branchRankType: 1,
+      areaPropType: 1
 
     }
   },
@@ -180,17 +195,231 @@ export default {
           this.getBranchList()
         }
         this.getBranchName()
-      },
-      immediate: true
+      }
     },
     branchId: {
       handler(val) {
         this.getBranchName()
-      },
-      immediate: true
+      }
+    },
+    branchRankType: {
+      handler(val) {
+        if (this.domain == 'branch') {
+          this.getBranchRank()
+        } else {
+          this.getAppSystemRank()
+        }
+
+      }
+    },
+    areaPropType: {
+      handler(val) {
+        if (this.domain == 'branch' && !this.branchId) {
+          this.getAreaPropData()
+        } else {
+          this.getAreaPropDataProd()
+        }
+
+      }
     }
   },
+  mounted() {
+    this.initCharts()
+  },
   methods: {
+    /**
+     * 获取应用系统排名
+     */
+    async getAppSystemRank() {
+      try {
+        let params = {
+          domain: this.domain,
+          type: this.branchRankType
+        }
+        const res = await getAppSystemRank(params)
+        if (res.code == 200) {
+          if (this.$refs.appRanking) {
+            this.$refs.appRanking.initAppRankList(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e)
+        this.$message.error('获取应用系统排名失败')
+      }
+    },
+    /**
+     * 获取区域占比数据 生产域
+     */
+    async getAreaPropDataProd() {
+      try {
+        let params = {
+          type: this.areaPropType
+        }
+        const res = await getAreaPropDataProd(params)
+        if (res.code == 200) {
+          if (this.$refs.capacityRatio) {
+            this.$refs.capacityRatio.initData(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e)
+        this.$message.error('获取区域占比数据失败')
+      }
+    },
+    /**
+     * 获取区域占比区数据
+     */
+    async getAreaPropData() {
+      try {
+        let params = {
+          type: this.areaPropType
+        }
+        const res = await getAreaPropData(params)
+        if (res.code == 200) {
+          console.log(res, 'res')
+        } else {
+          this.$message.error(res.message)
+        }
+
+      } catch (e) {
+        console.log(e, 'e')
+        this.$message.error('获取区域占比区数据失败')
+      }
+    },
+    /**
+     * 获取分行排名
+     */
+    async getBranchRank() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId,
+          type: this.branchRankType
+        }
+        const res = await getBranchRank(params)
+        if (res.code == 200) {
+          if (this.$refs.appRanking) {
+            this.$refs.appRanking.initAppRankList(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e)
+        this.$message.error('获取分行排名失败')
+      }
+    },
+    /**
+     * 获取前端许可排行
+     */
+    async getFrontRank() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+
+        const res = await getFrontRank(params)
+        if (res.code == 200) {
+          this.$nextTick(() => {
+            if (this.$refs.clientRanking) {
+              this.$refs.clientRanking.initTableData(res.result)
+            }
+          })
+        } else {
+          this.$message.error('获取失败')
+        }
+      } catch (e) {
+        this.$message.error('获取失败')
+      }
+    },
+    /**
+     * 获取规模值
+     */
+    async getDomainScale() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getDomainScale(params)
+        if (res.code == 200) {
+          if (this.domain == 'prod') {
+            this.itemList[0].num = res.result.appSystemNum || 0
+
+          } else {
+            this.itemList[0].num = res.result.branchNum || 0
+          }
+          this.itemList[1].num = res.result.clientNum | 0
+          this.itemList[1].month = this.setProp(res.result.clientMonthlyInc) || ''
+          this.itemList[1].year = this.setProp(res.result.clientYearlyInc) || ''
+          this.itemList[2].num = res.result.licenseUsed || 0
+          this.itemList[2].month = this.setProp(res.result.licUsedMonthlyInc) || ''
+          this.itemList[2].year = this.setProp(res.result.licUsedYearlyInc) || ''
+          this.itemList[3].num = res.result.diskUsed || 0
+          this.itemList[3].month = this.setProp(res.result.diskUsedMonthlyInc) || ''
+          this.itemList[3].year = this.setProp(res.result.diskUsedYearlyInc) || ''
+          this.itemList[4].num = res.result.backupJobNum || 0
+          this.itemList[4].month = this.setProp(res.result.jobNumMonthlyInc) || ''
+          this.itemList[4].year = this.setProp(res.result.jobNumYearlyInc) || ''
+          this.itemList[5].num = res.result.backupJobSize || 0
+          this.itemList[5].month = this.setProp(res.result.backupSizeMonthlyInc) || ''
+          this.itemList[5].year = this.setProp(res.result.backupSizeYearlyInc) || ''
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取失败')
+      }
+    },
+    /**
+     * 获取前端许可数据（数据类型分布）
+     */
+    async getFrontPie() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getFrontPie(params)
+        if (res.code == 200) {
+          this.$nextTick(() => {
+            if (this.$refs.frontPie) {
+              this.$refs.frontPie.initChart(res.result)
+            }
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取数据')
+      }
+    },
+    /**
+     * 获取客户端趋势数据
+     */
+    async getClientTrends() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getClientTrends(params)
+        if (res.code == 200) {
+          if (this.$refs.clientTrend) {
+            this.$refs.clientTrend.initDataSource(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取数据失败')
+      }
+    },
     /**
      * 获取分行列表
      */
@@ -211,7 +440,32 @@ export default {
         this.branchList = []
       }
     },
+    /**
+     * 设置百分比
+     */
+    setProp(num) {
+      return num ? num < 0 ? num + '%' : '+' + num + '%' : ''
+    },
+    /**
+     * 初始化echarts图例
+     */
+    initCharts() {
+      this.getClientTrends()
+      this.getFrontPie()
+      this.getDomainScale()
+      this.getFrontRank()
+      if (this.domain == 'branch') {
+        this.getBranchRank()
+      } else {
+        this.getAppSystemRank()
+      }
+      if (this.domain == 'branch' && !this.branchId) {
+        this.getAreaPropData()
+      } else {
+        this.getAreaPropDataProd()
+      }
 
+    },
 
     /**
      * 获取分行名称
@@ -227,6 +481,7 @@ export default {
       } else {
         this.branchName = '全域'
       }
+      this.initCharts()
 
     },
     /**
@@ -245,6 +500,13 @@ export default {
      */
     domainClick(domain) {
       this.domain = domain
+      if (domain == 'prod') {
+        this.itemList[0].name = '应用系统数量'
+      } else {
+        this.itemList[0].name = '分行数量'
+      }
+      this.initCharts()
+
     },
     /**
      * 获取当前日期精确到秒

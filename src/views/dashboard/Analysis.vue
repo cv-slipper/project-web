@@ -3,7 +3,7 @@
   <div class='main-analysis'>
     <div class='tabs'>
       <div class='tab-list'>
-        <a-tabs class='my-tabs' v-model='domain' @change='branchId=""'>
+        <a-tabs class='my-tabs' v-model='domain' @change='changeDomain'>
           <a-tab-pane key='prod' tab='生产域'>
 
           </a-tab-pane>
@@ -901,6 +901,12 @@ export default {
       } finally {
         this.currentWorkLoading = false
       }
+    },
+    /**
+     * 环境改变
+     */
+    changeDomain() {
+      this.branchId = ''
     },
     /**
      * 获取分行

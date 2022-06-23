@@ -82,7 +82,7 @@ module.exports = {
       '/master-api': {
         // target: 'http://localhost:8083', //请求本地 需要jeecg-boot后台项目
         // target: 'http://alpha.jpaihome.com',//test环境
-        target: 'http://47.103.221.159:8083', //测试
+        target: 'http://101.133.165.239:8083', //测试
         ws: false,
         changeOrigin: true
       }

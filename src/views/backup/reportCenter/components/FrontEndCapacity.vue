@@ -2,7 +2,7 @@
   <div class='front-end-capacity'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-前端容量
+        数据类型分布-{{ branchName == '全域' ? '客户端数量区' : '前端容量区' }}
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -19,6 +19,12 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    data: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
   },
   data() {
@@ -55,74 +61,7 @@ export default {
           }
         },
         tooltip: {},
-        series: [{
-          type: 'bar',
-          name: 'a数据类型',
-          data: [10],
-          coordinateSystem: 'polar',
-          roundCap: true,
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(180, 180, 180, 0.2)'
-          }
-        },
-
-          {
-            type: 'bar',
-            name: 'b数据类型',
-            data: [20],
-            coordinateSystem: 'polar',
-            roundCap: true,
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)'
-            }
-          },
-          {
-            type: 'bar',
-            name: 'c数据类型',
-            data: [15],
-            coordinateSystem: 'polar',
-            roundCap: true,
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)'
-            }
-          },
-          {
-            type: 'bar',
-            name: 'd数据类型',
-            data: [40],
-            coordinateSystem: 'polar',
-            roundCap: true,
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)'
-            }
-          },
-          {
-            type: 'bar',
-            name: 'e数据类型',
-            data: [1000],
-            coordinateSystem: 'polar',
-            roundCap: true,
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)'
-            }
-          },
-          {
-            type: 'bar',
-            name: '其他数据类型',
-            data: [1000],
-            coordinateSystem: 'polar',
-            roundCap: true,
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)'
-            }
-          }
-        ],
+        series: [],
         legend: {
           orient: 'vertical',
           right: 0,
@@ -137,21 +76,14 @@ export default {
               return item.name + ': ' + item.data[0]
             }
           },
-          formatter: name => {
-            this.colorIndex++
-            if (this.colorIndex > 6) {
-              this.colorIndex = 1
-            }
-            return this.getRichArr(this.option.series[this.colorIndex - 1], this.colorIndex - 1, name).join('')
-          },
           textStyle: {
             height: 15,
             lineHeight: 15,
             rich: {
               a: {
                 align: 'left',
-                padding: [0, 20, 0, 0],
-                width: 70,
+                padding: [0, 30, 0, 0],
+                width: 75,
                 fontSize: 12
               },
               b0: {
@@ -191,83 +123,114 @@ export default {
           },
 
           data: [
-            {
-              name: 'a数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              },
-              lineStyle: {
-                type: 'dashed',
-                dashOffset: 30
-              }
-            },
-            {
-              name: 'b数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'c数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'd数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'e数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              }
-            },
-            {
-              name: '其他数据类型',
-              itemStyle: {
-                color: 'white',
-                borderColor: 'red',
-                borderWidth: 3
-              }
-            }
+            // {
+            //   name: 'a数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   },
+            //   lineStyle: {
+            //     type: 'dashed',
+            //     dashOffset: 30
+            //   }
+            // },
+            // {
+            //   name: 'b数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   }
+            // },
+            // {
+            //   name: 'c数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   }
+            // },
+            // {
+            //   name: 'd数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   }
+            // },
+            // {
+            //   name: 'e数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   }
+            // },
+            // {
+            //   name: '其他数据类型',
+            //   itemStyle: {
+            //     color: 'white',
+            //     borderColor: 'red',
+            //     borderWidth: 3
+            //   }
+            // }
           ]
 
         }
       },
-      myChart: null
+      myChart: null,
+      dataSource: []
     }
   },
-  created() {
-
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
-  },
   methods: {
+    initDataSource(data) {
+      this.dataSource = data.reverse()
+      this.$nextTick(() => {
+        this.initChart()
+      })
+    },
     initChart() {
+      if (this.dataSource.length > 0) {
+        this.colorIndex = 0
+        this.option.series = []
+        this.option.legend.data = []
+        for (let index = 0; index < this.dataSource.length; index++) {
+          let item = this.dataSource[index]
+          this.option.series[index] = {
+            type: 'bar',
+            name: item.agent,
+            data: [item.clientRatio],
+            coordinateSystem: 'polar',
+            roundCap: true,
+            showBackground: true
+          }
+          this.option.legend.data[this.dataSource.length - 1 - index] = {
+            name: item.agent,
+            itemStyle: {
+              color: 'white',
+              borderColor: 'red',
+              borderWidth: 3
+            }
+          }
+        }
+        let max = Math.max(...this.option.series.map(item => item.data[0]))
+        let min = Math.min(...this.option.series.map(item => item.data[0]))
+        this.option.angleAxis.max = max + (min * 1.5)
+        this.option.legend.formatter = name => {
+          let item = this.option.series.find(item => item.name == name)
+          let index = this.option.series.findIndex(item => item.name == name)
+          return this.getRichArr(item, index, name).join('')
+        }
+      }
       this.myChart = this.$echarts.init(document.getElementById('front-chart'))
       this.option.series.forEach((item, index) => {
         item.color = this.color[index]
       })
       this.option.legend.data.forEach((item, index) => {
-        item.itemStyle.borderColor = this.color[index]
+        item.itemStyle.borderColor = this.color[this.dataSource.length - 1 - index]
       })
-      console.log(this.option)
+      this.myChart.clear()
       this.myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         this.myChart.resize()

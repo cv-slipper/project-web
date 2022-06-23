@@ -2,7 +2,7 @@
   <div class='pie-chart'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-客户端数量
+        数据类型分布-前端许可用量
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -100,34 +100,34 @@ export default {
             rich: {
               a: {
                 align: 'left',
-                padding: [0, 20, 0, 0],
-                width: 70,
+                padding: [0, 30, 0, 0],
+                width: 75,
                 fontSize: 12
               },
               b0: {
                 align: 'right',
-                color: '#CAC9CA'
+                color: '#3C6BE3'
               },
               b1: {
                 align: 'right',
-                color: '#24D4A6'
+                color: '#ECD61B'
               },
 
               b2: {
                 align: 'right',
-                color: '#00B7EE'
+                color: '#DE430E'
               },
               b3: {
                 align: 'right',
-                color: '#6E69F9'
+                color: '#1BC78B'
               },
               b4: {
                 align: 'right',
-                color: '#1E67F2'
+                color: '#C927B8'
               },
               b5: {
                 align: 'right',
-                color: '#21E5E8'
+                color: '#0FECEE'
               },
               c: {
                 width: 120,
@@ -177,24 +177,25 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
-  },
   methods: {
-    initChart() {
+    initChart(data) {
+      if (data.length > 0) {
+        data.forEach((item, index) => {
+          this.option.series[0].data[index].value = item.usage
+          this.option.series[0].data[index].name = item.agent
+          this.option.legend.data[index].name = item.agent
+        })
+        this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+        this.myChart.setOption(this.option)
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
+      }
 
-      this.myChart = this.$echarts.init(document.getElementById('pieChart'))
-      this.myChart.setOption(this.option)
-      window.addEventListener('resize', () => {
-        this.myChart.resize()
-      })
     },
     getRichArr(item, name) {
       let arr = []
       let index = item.findIndex(ele => ele.name == name)
-      console.log(index)
       switch (index) {
         case 0:
           arr = [
