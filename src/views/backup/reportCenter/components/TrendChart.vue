@@ -109,6 +109,12 @@ export default {
   },
   methods: {
     /**
+     * 初始化chart数据
+     */
+    initChartData(data) {
+      console.log(data, 'data')
+    },
+    /**
      * 获取最大值
      */
     getMax(data) {

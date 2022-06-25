@@ -36,7 +36,6 @@ import GlobalLayout from '@/components/page/GlobalLayout'
 import Contextmenu from '@/components/menu/Contextmenu'
 import { mixin, mixinDevice } from '@/utils/mixin.js'
 import { triggerWindowResizeEvent } from '@/utils/util'
-import Vue from '_vue@2.6.14@vue'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const indexKey = '/dashboard/analysis'

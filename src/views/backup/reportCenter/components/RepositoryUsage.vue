@@ -65,6 +65,11 @@ export default {
       ],
       tableData: []
     }
+  },
+  methods: {
+    initTableData(data) {
+      this.tableData = data
+    }
   }
 }
 </script>

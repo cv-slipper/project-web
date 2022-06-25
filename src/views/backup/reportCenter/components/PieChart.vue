@@ -186,6 +186,7 @@ export default {
           this.option.legend.data[index].name = item.agent
         })
         this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+        
         this.myChart.setOption(this.option)
         window.addEventListener('resize', () => {
           this.myChart.resize()

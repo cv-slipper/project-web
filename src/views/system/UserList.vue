@@ -62,9 +62,8 @@
         </a-row>
       </a-form>
     </div>
-
     <!-- 操作按钮区域 -->
-    <div class="table-operator" style="border-top: 5px">
+    <div class="table-operator" style="border-top: 5px" v-if='!getUserRole()'>
       <a-button @click="handleAdd" type="primary" icon="plus">添加用户</a-button>
       <a-button @click="handleSyncUser" v-has="'user:syncbpm'" type="primary" icon="plus">同步流程</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('用户信息')">导出</a-button>
@@ -78,7 +77,7 @@
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0 && !getUserRole()">
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="1">
             <a-icon type="delete" @click="batchDel"/>
@@ -195,10 +194,10 @@
   import SysUserAgentModal from "./modules/SysUserAgentModal";
   import JInput from '@/components/jeecg/JInput'
   import UserRecycleBinModal from './modules/UserRecycleBinModal'
-
+  import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
   export default {
     name: "UserList",
-    mixins: [JeecgListMixin],
+    mixins: [JeecgListMixin,determineUserMinxin],
     components: {
       SysUserAgentModal,
       UserModal,

@@ -28,7 +28,7 @@
       <div style='display: flex;height:100%;position: relative'>
         <div class='main-left'>
           <div class='item'>
-            <trend-chart :branch-name='branchName'></trend-chart>
+            <trend-chart ref='trendChart' :branch-name='branchName'></trend-chart>
           </div>
           <div class='item'>
             <!--            数据类型分布-客户端数量区-->
@@ -71,7 +71,7 @@
           </div>
           <div class='main-center-bottom'>
             <div :class='["useage-box",{branchActive:branchId && domain=="branch"}]'>
-              <repository-usage :branch-name='branchName'></repository-usage>
+              <repository-usage ref='repositoryUeage' :branch-name='branchName'></repository-usage>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
           </div>
           <div class='item'>
 
-            <stack-chart class='stack-chart' v-if='branchId && domain=="branch"'
+            <stack-chart ref='stackChart' class='stack-chart' v-if='branchId && domain=="branch"'
                          :branch-name='branchName'></stack-chart>
             <capacity-ratio ref='capacityRatio' :domain='domain' v-model='areaPropType' v-else></capacity-ratio>
           </div>
@@ -113,7 +113,10 @@ import {
   getBranchRank,
   getAreaPropData,
   getAreaPropDataProd,
-  getAppSystemRank
+  getAppSystemRank,
+  getDiskUesdData,
+  getAppTrendData,
+  getDiskTrendData
 } from '@api/modules/backup/reportCenter/index'
 
 export default {
@@ -189,6 +192,7 @@ export default {
     }, 1000)
   },
   watch: {
+
     domain: {
       handler(val) {
         if (val == 'branch') {
@@ -227,6 +231,68 @@ export default {
     this.initCharts()
   },
   methods: {
+    /**
+     * 获取存储库增长趋势
+     */
+    async getDiskTrendData() {
+      try {
+        const res = await getDiskTrendData({})
+        if (res.code == 200) {
+          if (this.$refs.stackChart) {
+            this.$refs.stackChart.inintChartData(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+        this.$message.error('湖区存储库增长趋势失败')
+      }
+    },
+    /**
+     * 获取容量及客户端数量趋势图
+     */
+    async getAppTrendData() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getAppTrendData(params)
+        if (res.code == 200) {
+          if (this.$refs.trendChart) {
+            this.$refs.trendChart.initChartData(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+        this.$message.error('获取容量及客户端数量失败')
+      }
+    },
+    /**
+     * 获取存储库使用信息
+     */
+    async getDiskUesdData() {
+      try {
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getDiskUesdData(params)
+        if (res.code == 200) {
+          if (this.$refs.repositoryUeage) {
+            this.$refs.repositoryUeage.initTableData(res.result)
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        console.log(e, 'e')
+        this.$message.error('获取存储库数据失败')
+      }
+    },
     /**
      * 获取应用系统排名
      */
@@ -464,6 +530,9 @@ export default {
       } else {
         this.getAreaPropDataProd()
       }
+      this.getDiskUesdData()
+      this.getAppTrendData()
+      this.getDiskTrendData()
 
     },
 
@@ -736,7 +805,7 @@ export default {
   font-weight: bold;
 }
 
-@media screen and (max-width: 1700px) {
+@media (max-width: 1700px) {
   .group {
     .item {
       width: calc(33% - 10px);

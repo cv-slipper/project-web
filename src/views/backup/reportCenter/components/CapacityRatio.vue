@@ -142,6 +142,10 @@ export default {
         this.option.xAxis.data = legend
         this.option.series[0].data = series
         this.initChart()
+      } else {
+        if (this.myChart) {
+          this.myChart.clear()
+        }
       }
     },
     initChart() {

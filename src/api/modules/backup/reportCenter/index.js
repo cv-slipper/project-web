@@ -80,3 +80,33 @@ export const getAreaPropDataProd = (data) => {
     data
   })
 }
+/**
+ * 获取存储库使用量信息
+ */
+export const getDiskUesdData = (data) => {
+  return axios({
+    url: '/cvReport/libUsedList',
+    method: 'post',
+    data
+  })
+}
+/**
+ * 获取容量及客户端趋势
+ */
+export const getAppTrendData = (data) => {
+  return axios({
+    url: '/cvReport/dataAllCharts',
+    method: 'post',
+    data
+  })
+}
+/**
+ * 存储库增长趋势
+ */
+export const getDiskTrendData = (data) => {
+  return axios({
+    url: '/cvReport/libIncCharts',
+    method: 'post',
+    data
+  })
+}

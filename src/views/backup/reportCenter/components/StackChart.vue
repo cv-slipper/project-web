@@ -84,6 +84,9 @@ export default {
     this.initChart()
   },
   methods: {
+    inintChartData(data) {
+      console.log(data)
+    },
     initChart() {
       let myChart = this.$echarts.init(document.getElementById('stack-chart'))
       myChart.setOption(this.option)

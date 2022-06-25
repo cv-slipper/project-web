@@ -1449,7 +1449,7 @@ export default {
   height: 100%;
 }
 
-@media screen and(max-width: 1700px) {
+@media (max-width: 1700px) {
   .main-analysis {
     height: calc(100% + 193px);
 
