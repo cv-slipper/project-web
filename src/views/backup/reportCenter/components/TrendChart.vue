@@ -112,7 +112,7 @@ export default {
      * 初始化chart数据
      */
     initChartData(data) {
-      console.log(data, 'data')
+      console.log(data, 'trendData')
     },
     /**
      * 获取最大值

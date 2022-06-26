@@ -2,7 +2,7 @@
   <div class='front-end-capacity'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-{{ branchName == '全域' ? '客户端数量区' : '前端容量区' }}
+        数据类型分布-{{ branchName == '全域' ? '客户端数量' : '前端容量' }}
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>

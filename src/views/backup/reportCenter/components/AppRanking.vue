@@ -229,6 +229,12 @@ export default {
       margin-right: 10px;
     }
 
+    .rankingrate {
+      width: 30%;
+      height: 7px;
+      margin-right: 10px;
+    }
+
     .ranking-num {
       width: 20%;
       margin-right: 10px

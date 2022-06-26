@@ -1,6 +1,6 @@
 <template>
 
-  <div class='main-analysis'>
+  <div class='main-analysis' ref='mainAnalysis'>
     <div class='tabs'>
       <div class='tab-list'>
         <a-tabs class='my-tabs' v-model='domain' @change='changeDomain'>
@@ -583,6 +583,9 @@ export default {
       }, 600000)
     }
   },
+  mounted() {
+    this.getScreenWidth()
+  },
   methods: {
     /**
      * 刷新作业
@@ -907,6 +910,15 @@ export default {
      */
     changeDomain() {
       this.branchId = ''
+    },
+    /**
+     *   判断屏幕分辨率和缩放比
+     */
+    getScreenWidth() {
+      let ratio = window.devicePixelRatio
+      let screenWidth = window.screen.width * ratio
+      console.log(screenWidth, 'screenWidth')
+
     },
     /**
      * 获取分行

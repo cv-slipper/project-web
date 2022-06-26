@@ -137,7 +137,7 @@ export default {
     },
     initData(data) {
       if (data.length > 0) {
-        let legend = data.map(item => ({ value: item.groupName }))
+        let legend = data.map(item => ({ value: this.domain == 'prod' ? item.groupName : item.regionName }))
         let series = data.map(item => item.ratio)
         this.option.xAxis.data = legend
         this.option.series[0].data = series

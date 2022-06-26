@@ -22,6 +22,7 @@ export default {
   },
   data() {
     return {
+      color: ['#3C6BE3', '#24D4A4'],
       option: {
         tooltip: {
           trigger: 'axis',
@@ -41,12 +42,10 @@ export default {
           bottom: '3%',
           containLabel: true
         },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-          }
-        ],
+        xAxis: {
+          type: 'category',
+          data: []
+        },
         yAxis: [
           {
             type: 'value'
@@ -80,15 +79,43 @@ export default {
       }
     }
   },
-  mounted() {
-    this.initChart()
-  },
   methods: {
     inintChartData(data) {
-      console.log(data)
+      if (data.length > 0) {
+        let xData = data.map(item => ({ value: item.month }))
+        console.log(xData, 'data')
+        this.option.xAxis.data = xData
+        let yData = {}
+        data.forEach((item, index) => {
+          item.libraries.forEach((ele, i) => {
+            if (yData[ele.name]) {
+              yData[ele.name].push(ele.volume)
+            } else {
+              yData[ele.name] = [ele.volume]
+            }
+
+          })
+        })
+        Object.keys(yData).forEach((item, index) => {
+          this.option.series[index] = {
+            name: item,
+            type: 'bar',
+            barWidth: '40%',
+            stack: 'Ad',
+            color: this.color[index],
+            emphasis: {
+              focus: 'series'
+            },
+            data: yData[item]
+          }
+        })
+        this.initChart()
+      }
     },
     initChart() {
+      console.log(this.option, 'option')
       let myChart = this.$echarts.init(document.getElementById('stack-chart'))
+      myChart.clear()
       myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         myChart.resize()

@@ -204,6 +204,8 @@ export default {
     branchId: {
       handler(val) {
         this.getBranchName()
+        console.log(12)
+        this.initCharts()
       }
     },
     branchRankType: {
@@ -238,6 +240,7 @@ export default {
       try {
         const res = await getDiskTrendData({})
         if (res.code == 200) {
+          console.log(this.$refs.stackChart, 'refs')
           if (this.$refs.stackChart) {
             this.$refs.stackChart.inintChartData(res.result)
           }
@@ -246,7 +249,7 @@ export default {
         }
       } catch (e) {
         console.log(e, 'e')
-        this.$message.error('湖区存储库增长趋势失败')
+        this.$message.error('获取存储库增长趋势失败')
       }
     },
     /**
@@ -346,7 +349,9 @@ export default {
         }
         const res = await getAreaPropData(params)
         if (res.code == 200) {
-          console.log(res, 'res')
+          if (this.$refs.capacityRatio) {
+            this.$refs.capacityRatio.initData(res.result)
+          }
         } else {
           this.$message.error(res.message)
         }

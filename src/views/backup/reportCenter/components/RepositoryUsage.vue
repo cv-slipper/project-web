@@ -35,31 +35,31 @@ export default {
           customRender: (text, record, index) => {
             return index + 1
           },
-          width: 80
+          width: 60
         },
         {
           title: '存储库',
-          dataIndex: 'name',
+          dataIndex: 'libName',
           align: 'center'
         },
         {
           title: '使用量',
-          dataIndex: 'num',
+          dataIndex: 'diskUsed',
           align: 'center'
         },
         {
           title: '环比上月',
-          dataIndex: 'month',
+          dataIndex: 'ratio',
           align: 'center'
         },
         {
           title: '总容量',
-          dataIndex: 'total',
+          dataIndex: 'diskTotal',
           align: 'center'
         },
         {
           title: '预计扩容日期',
-          dataIndex: 'expandDate',
+          dataIndex: 'dateToBeFull',
           align: 'center'
         }
       ],
@@ -68,6 +68,11 @@ export default {
   },
   methods: {
     initTableData(data) {
+      if (data.length > 0) {
+        data.forEach(item => {
+          item.ratio = item.ratio < 0 ? item.ratio + '%' : '+' + item.ratio + '%'
+        })
+      }
       this.tableData = data
     }
   }
