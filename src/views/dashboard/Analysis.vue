@@ -917,7 +917,14 @@ export default {
     getScreenWidth() {
       let ratio = window.devicePixelRatio
       let screenWidth = window.screen.width * ratio
-      console.log(screenWidth, 'screenWidth')
+      if (screenWidth && ratio > 1.25) {
+        this.$refs.mainAnalysis.style.width = '143%'
+        this.$refs.mainAnalysis.style.height = ratio == 1.5 ? '170%' : '210%'
+        this.$refs.mainAnalysis.style.transform = 'scale(0.6)'
+        this.$refs.mainAnalysis.style.position = 'relative'
+        this.$refs.mainAnalysis.style.right = 'calc(24% - 20px)'
+        this.$refs.mainAnalysis.style.bottom = 'calc(26%)'
+      }
 
     },
     /**
