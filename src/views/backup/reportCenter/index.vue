@@ -240,7 +240,6 @@ export default {
       try {
         const res = await getDiskTrendData({})
         if (res.code == 200) {
-          console.log(this.$refs.stackChart, 'refs')
           if (this.$refs.stackChart) {
             this.$refs.stackChart.inintChartData(res.result)
           }
@@ -264,7 +263,10 @@ export default {
         const res = await getAppTrendData(params)
         if (res.code == 200) {
           if (this.$refs.trendChart) {
-            this.$refs.trendChart.initChartData(res.result)
+            this.$nextTick(() => {
+              this.$refs.trendChart.initChartData(res.result)
+            })
+
           }
         } else {
           this.$message.error(res.message)

@@ -16,6 +16,9 @@ export const determineUserMinxin = {
         isNormal = true
       }
       return isNormal
+    },
+    getZoom() {
+      return (1 / document.body.style.zoom)
     }
   }
 }

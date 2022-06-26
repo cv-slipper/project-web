@@ -584,7 +584,7 @@ export default {
     }
   },
   mounted() {
-    this.getScreenWidth()
+    // this.getScreenWidth()
   },
   methods: {
     /**
@@ -917,13 +917,13 @@ export default {
     getScreenWidth() {
       let ratio = window.devicePixelRatio
       let screenWidth = window.screen.width * ratio
-      if (screenWidth && ratio > 1.25) {
+      if (screenWidth == 1920 && ratio > 1.25) {
         this.$refs.mainAnalysis.style.width = '143%'
         this.$refs.mainAnalysis.style.height = ratio == 1.5 ? '170%' : '210%'
-        this.$refs.mainAnalysis.style.transform = 'scale(0.6)'
+        this.$refs.mainAnalysis.style.transform = 'scale(0.7)'
         this.$refs.mainAnalysis.style.position = 'relative'
-        this.$refs.mainAnalysis.style.right = 'calc(24% - 20px)'
-        this.$refs.mainAnalysis.style.bottom = 'calc(26%)'
+        this.$refs.mainAnalysis.style.right = ratio == 1.5 ? 'calc(24% - 26px)' : 'calc(24% - 21px)'
+        this.$refs.mainAnalysis.style.bottom = ratio == 1.5 ? 'calc(26%)' : '31%'
       }
 
     },
@@ -1281,7 +1281,7 @@ export default {
     line-height: 20px;
 
     .title {
-
+      margin-bottom: 5px;
     }
 
     .num {
@@ -1528,11 +1528,11 @@ export default {
         line-height: 1;
 
         .title {
-          transform: scale(0.8);
+          //transform: scale(0.8);
         }
 
         .num {
-          transform: scale(0.9);
+          //transform: scale(0.9);
           font-weight: bold;
           color: #333333;
           position: relative;

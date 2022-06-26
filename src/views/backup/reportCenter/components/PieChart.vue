@@ -7,14 +7,17 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='pieChart'></div>
+    <div id='pieChart' :style='{zoom:getZoom()}'></div>
   </div>
 </template>
 
 <script>
 let useColor = ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE']
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+
 export default {
   name: 'PieChart',
+  mixins: [determineUserMinxin],
   props: {
     branchName: {
       type: String,
@@ -186,7 +189,7 @@ export default {
           this.option.legend.data[index].name = item.agent
         })
         this.myChart = this.$echarts.init(document.getElementById('pieChart'))
-        
+
         this.myChart.setOption(this.option)
         window.addEventListener('resize', () => {
           this.myChart.resize()

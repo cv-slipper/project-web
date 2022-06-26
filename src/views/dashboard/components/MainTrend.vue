@@ -5,14 +5,17 @@
         :class='{one:type=="one",two:type=="two",third:type=="third"}'>昨日：{{ yestDayNum }}</span>
       <span class='ml-10 info' v-if='type!="third"'>同期 {{ yestPercent }}</span>
     </div>
-    <div style='width:100%;height:calc(100% - 25px)'>
+    <div :style='{width:"100%",height:"calc(100% - 25px)",zoom:getZoom()}'>
       <div :id='idName' style='width:100%;height:calc(100% )'></div>
     </div>
   </div>
 </template>
 
 <script>
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+
 export default {
+  mixins: [determineUserMinxin],
   name: 'MainTrend',
   props: {
     idName: {

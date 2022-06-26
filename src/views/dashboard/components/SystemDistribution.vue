@@ -179,16 +179,16 @@ export default {
 
           .system-name {
             width: 100%;
-            height: 80%;
+            height: 100%;
             position: absolute;
-            top: 0;
+            top: -20%;
             left: 0;
             right: 0;
-            bottom: 0;
             margin: auto;
             color: white;
             display: flex;
             justify-content: center;
+            align-items: center;
             font-size: 12px;
           }
 
@@ -435,10 +435,10 @@ export default {
 
           .system-top {
 
-            top: -40%;
+            top: -50%;
 
             .system-name {
-              height: 110%;
+              height: 100%;
               transform: scale(0.8);
             }
           }

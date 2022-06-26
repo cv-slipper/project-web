@@ -7,15 +7,22 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='trend-chart'>
+    <div id='trend-chart' :style='{zoom:getZoom()}'>
 
     </div>
   </div>
 </template>
 
 <script>
+let maxNum = 0
+let getMaxNum = () => {
+  return maxNum
+}
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+
 export default {
   name: 'TrendChart',
+  mixins: [determineUserMinxin],
   props: {
     branchName: {
       type: String,
@@ -23,19 +30,26 @@ export default {
     }
   },
   data() {
+    let that = this
     return {
       option: {
-        color: ['#3C6BE3', '#24D4A4', '#F2E314'],
+        dataset: {
+          source: []
+        },
+        // color: ['#3C6BE3', '#24D4A4', '#F2E314'],
         legend: {
           itemHeight: 10,
           itemWidth: 10,
           data: [{ name: '前端许可用量', icon: 'rect' }, { name: '后端存储用量', icon: 'rect' }, { name: '客户端数量', icon: 'rect' }],
           top: '10%'
         },
+        tooltip: {
+          show: true
+        },
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+
             axisPointer: {
               type: 'shadow'
             }
@@ -43,16 +57,39 @@ export default {
         ],
         yAxis: [
           {
+            type: 'log',
             name: 'TB',
-            type: 'value',
-            min: 0,
-            max: () => {
-              return this.maxNum
+            splitNum: 5,
+
+            axisLabel: {
+              margin: 2,
+              formatter: function(value, index) {
+                if (value >= 10000 && value < 10000000) {
+                  value = parseInt(value / 10000) + '万'
+                } else if (value >= 10000000) {
+                  value = parseInt(value / 10000000) + '千万'
+                }
+                return value
+              }
             }
+
           },
           {
+            type: 'log',
             name: '台',
-            type: 'value'
+            splitNum: 5,
+
+            axisLabel: {
+              margin: 2,
+              formatter: function(value, index) {
+                if (value >= 10000 && value < 10000000) {
+                  value = parseInt(value / 10000) + '万'
+                } else if (value >= 10000000) {
+                  value = parseInt(value / 10000000) + '千万'
+                }
+                return value
+              }
+            }
 
 
           }
@@ -61,25 +98,21 @@ export default {
           {
             name: '前端许可用量',
             type: 'bar',
-
-            data: [
-              2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-            ]
+            barWidth: 20,
+            yAxisIndex: 0
           },
           {
             name: '后端存储用量',
             type: 'bar',
-            yAxisIndex: 1,
-            data: [
-              2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-            ]
+            barWidth: 20,
+            yAxisIndex: 0
           },
           {
             name: '客户端数量',
             type: 'line',
-            showSymbol: false,
-            smooth: true,
-            data: [10.0, 2.2, 40.3, 4.5, 6.3, 70.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+            showSymbol: true,
+            smooth: false,
+            yAxisIndex: 1
           }
         ],
         dataZoom: {
@@ -87,12 +120,14 @@ export default {
           type: 'slider',
           height: 2,
           start: 20,
-          end: 80
-
+          end: 100
         }
       },
       myChart: null,
-      maxNum: 0
+      maxNum: 0,
+      minNum: 0,
+      maxNum1: 0,
+      minNum1: 0
     }
   },
   created() {
@@ -100,11 +135,7 @@ export default {
     this.getMax(data)
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
-    let data = this.option.series.reduce((pre, cur) => pre.concat(cur.data), [])
-    this.set_data(data)
+
 
   },
   methods: {
@@ -112,19 +143,50 @@ export default {
      * 初始化chart数据
      */
     initChartData(data) {
-      console.log(data, 'trendData')
+
+      if (data.length > 0) {
+        let dataSource = []
+        let numberList = []
+        let yAxis1 = data.map(item => item.clientNum)
+        this.maxNum1 = parseInt(Math.max(...yAxis1) * 1.1)
+        this.minNum1 = parseInt(Math.min(...yAxis1) * 0.9)
+        data.forEach((item, index) => {
+          dataSource[index] = []
+          dataSource[index].push(new Date(item.time).getMonth() + 1 + '月')
+          dataSource[index].push(item.foreLicUsed)
+          dataSource[index].push(item.diskUsed)
+          dataSource[index].push(item.clientNum)
+          numberList.push(item.foreLicUsed)
+          numberList.push(item.diskUsed)
+        })
+        this.getMax(numberList)
+        this.option.yAxis[0].interval = parseInt(this.maxNum / 5)
+        this.option.yAxis[1].interval = parseInt(this.maxNum1 / 5)
+        this.option.dataset.source = dataSource
+        console.log(this.option, 'option')
+        setTimeout(() => {
+          this.initChart()
+        }, 10)
+
+      }
     },
     /**
      * 获取最大值
      */
     getMax(data) {
       let max = 0
+      let min = new Date().getTime()
       data.forEach(item => {
         if (item > max) {
           max = item
         }
+        if (item < min) {
+          min = item
+        }
       })
-      this.maxNum = parseInt(max * 1 + 10)
+      this.maxNum = parseInt(max * 1.1)
+      maxNum = this.maxNum
+      this.minNum = parseInt(min * 0.9)
       return max
     },
     set_data(arr_data) {
@@ -152,17 +214,17 @@ export default {
 
       option.yAxis[0].max = y_max
 
-      option.yAxis[1].min = y_min
-
-      option.yAxis[1].max = y_max
+      option.yAxis[1].min = 0
+      option.yAxis[1].max = Math.max(this.option.series[2].data)
       this.$nextTick(() => {
-        this.myChart.setOption(option)
+        this.initChart()
       })
 
 
     },
     initChart() {
       this.myChart = this.$echarts.init(document.getElementById('trend-chart'))
+      // this.myChart.clear()
       this.myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         this.myChart.resize()

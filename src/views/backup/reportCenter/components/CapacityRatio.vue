@@ -12,13 +12,16 @@
 
       <div class='little-title'></div>
     </div>
-    <div id='capacity-radio'></div>
+    <div id='capacity-radio' :style='{zoom:getZoom()}'></div>
   </div>
 </template>
 
 <script>
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+
 export default {
   name: 'CapacityRatio',
+  mixins: [determineUserMinxin],
   props: {
     value: {
       type: Number,

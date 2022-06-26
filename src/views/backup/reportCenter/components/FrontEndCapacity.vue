@@ -7,14 +7,17 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='front-chart'>
+    <div id='front-chart' :style='getZoom()'>
 
     </div>
   </div>
 </template>
 
 <script>
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+
 export default {
+  mixins: [determineUserMinxin],
   props: {
     branchName: {
       type: String,
