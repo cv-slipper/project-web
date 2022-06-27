@@ -71,7 +71,7 @@ export default {
   .container {
     width: 100%;
     min-height: 100%;
-    background: #f0f2f5 url(~@/assets/login-bg.png) no-repeat;
+    background: #f0f2f5 url(~@/assets/login-bg-new.png) no-repeat;
     background-size: 100% 100%;
     position: relative;
 
