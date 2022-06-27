@@ -7,7 +7,7 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='front-chart' :style='getZoom()'>
+    <div id='front-chart' :style='{zoom:getZoom()}'>
 
     </div>
   </div>

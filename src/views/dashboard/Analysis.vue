@@ -140,13 +140,15 @@
                   <div class='fs-12 '>
                     <div class='num fl'> {{ item.num }}
                       <div class='increase-num fl'
-                           v-if='item.increaseNum!=null'>+{{ item.increaseNum
+                           v-if='item.increaseNum!=null'>+{{
+                          item.increaseNum
                         }}
                       </div>
                     </div>
                     <div
                       class='total fl'
-                      v-if='item.total!=null'>/{{ item.total
+                      v-if='item.total!=null'>/{{
+                        item.total
                       }}
                     </div>
                     <div style='clear:both'></div>
@@ -160,12 +162,17 @@
           </div>
           <div class='center-content'>
             <div v-if='domain=="prod"' style='height:100%'>
-              <system-distribution
-                :system-list='systemList'
-                v-if='!systemItem'
-                :system-loading='systemLoading'
-                @gotoSystemInfo='gotoSystemInfo' ref='main'></system-distribution>
-              <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
+              <template v-if='view=="system"'>
+                <system-distribution
+                  :system-list='systemList'
+                  v-if='!systemItem'
+                  :system-loading='systemLoading'
+                  @gotoSystemInfo='gotoSystemInfo' ref='main' @checkView='view="dataCenter"'></system-distribution>
+                <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
+              </template>
+              <template v-else>
+                <data-center-view @checkView='view="system"'></data-center-view>
+              </template>
             </div>
             <div v-else style='height: 100%'>
               <main-map @checkBranch='checkBranch' ref='mainMap'></main-map>
@@ -192,7 +199,8 @@
                     <img src='@/assets/abnormal.png' style='width:20px;height:20px' alt=''>
                     <span class='ml-5'> {{ errorMessageTotal > 0 ? '未处理异常信息' : '无未处理异常信息' }}   <span
                       v-if='errorMessageTotal'
-                      style='color:#DC2929'>  （{{ errorMessageTotal
+                      style='color:#DC2929'>  （{{
+                        errorMessageTotal
                       }}）</span></span>
                   </div>
                   <div>
@@ -314,6 +322,7 @@ import { getCurrentWork, get24HoursWork, getBackupSuccessRate, refreshWork } fro
 import FailedWorkModal from '@views/dashboard/components/modal/FailedWorkModal'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
+import DataCenterView from '@views/dashboard/components/DataCenterView'
 import {
   getDomainScale,
   getDomainTrend,
@@ -336,7 +345,8 @@ export default {
     ErrorMessageModal,
     FailedWorkModal,
     DealWithModal,
-    ExceptionInfoModal
+    ExceptionInfoModal,
+    DataCenterView
   },
   watch: {
     domain: {
@@ -404,7 +414,7 @@ export default {
   },
   data() {
     return {
-
+      view: 'system',
       exceptionItem: {},
       errorMessageTotal: 0,
       dealWithVisible: false,

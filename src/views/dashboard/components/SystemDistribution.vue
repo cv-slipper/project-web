@@ -10,12 +10,12 @@
           <img src='@/assets/system-logo.png' alt='' />
         </div>
         <div class='ml-10 title-text'>
-          <span>{{ view }}备份运行状态</span>
+          <span>应用系统备份运行状态</span>
         </div>
       </div>
       <div class='check-view'>
         <span class='view-button' @click='checkView'>切换至</span>
-        <span>{{ view == '应用系统' ? '数据中心' : '应用系统' }}视图</span>
+        <span>数据中心视图</span>
       </div>
     </div>
     <div class='left-colund'>
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     checkView() {
-      this.view = this.view == '应用系统' ? '数据中心' : '应用系统'
+      this.$emit('checkView')
     },
     gotoSystemInfo(item) {
       this.$emit('gotoSystemInfo', item)
