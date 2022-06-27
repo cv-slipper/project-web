@@ -31,6 +31,22 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
+          },
+          formatter: (params) => {
+            let color = ['#3C6BE3', '#24D4A4']
+            let html = `
+              <div>
+                  <div class='stack-title'>${params[0].name}</div>
+                  ${params.map((item, index) => {
+              return `<div>
+                          <span style='display:inline-block;width: 5px;height: 5px;border-radius: 50%;overflow: hidden;background:${color[index]} '></span>
+                           <span>${item.seriesName}：</span>
+                            <span>${item.value}${item.data.unit}</span>
+                                                     </div>`
+            }).join('')}
+              </div>
+            `
+            return html
           }
         },
         legend: {
@@ -55,29 +71,29 @@ export default {
           }
         ],
         series: [
-
-          {
-            name: '存储库1',
-            type: 'bar',
-            barWidth: '40%',
-            stack: 'Ad',
-            color: '#3C6BE3',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [120, 132, 101, 134, 90, 230, 210, 230, 210, 230, 210, 230]
-          },
-          {
-            name: '存储库2',
-            type: 'bar',
-            barWidth: '40%',
-            stack: 'Ad',
-            color: '#24D4A4',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [220, 182, 191, 234, 290, 330, 310, 230, 210, 230, 210, 230]
-          }
+          //
+          // {
+          //   name: '存储库1',
+          //   type: 'bar',
+          //   barWidth: '40%',
+          //   stack: 'Ad',
+          //   color: '#3C6BE3',
+          //   emphasis: {
+          //     focus: 'series'
+          //   },
+          //   data: [120, 132, 101, 134, 90, 230, 210, 230, 210, 230, 210, 230]
+          // },
+          // {
+          //   name: '存储库2',
+          //   type: 'bar',
+          //   barWidth: '40%',
+          //   stack: 'Ad',
+          //   color: '#24D4A4',
+          //   emphasis: {
+          //     focus: 'series'
+          //   },
+          //   data: [220, 182, 191, 234, 290, 330, 310, 230, 210, 230, 210, 230]
+          // }
         ]
       }
     }
@@ -85,18 +101,16 @@ export default {
   methods: {
     inintChartData(data) {
       if (data.length > 0) {
-        let xData = data.map(item => ({ value: item.month }))
-        console.log(xData, 'data')
+        let xData = data.map(item => ({ value: new Date(item.month).getMonth() + 1 + '月份' }))
         this.option.xAxis.data = xData
         let yData = {}
         data.forEach((item, index) => {
           item.libraries.forEach((ele, i) => {
             if (yData[ele.name]) {
-              yData[ele.name].push(ele.volume)
+              yData[ele.name].push({ value: ele.volume, unit: item.unit })
             } else {
-              yData[ele.name] = [ele.volume]
+              yData[ele.name] = [{ value: ele.volume, unit: item.unit }]
             }
-
           })
         })
         Object.keys(yData).forEach((item, index) => {

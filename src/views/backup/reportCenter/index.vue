@@ -238,7 +238,11 @@ export default {
      */
     async getDiskTrendData() {
       try {
-        const res = await getDiskTrendData({})
+        let params = {
+          domain: this.domain,
+          branchId: this.branchId
+        }
+        const res = await getDiskTrendData(params)
         if (res.code == 200) {
           if (this.$refs.stackChart) {
             this.$refs.stackChart.inintChartData(res.result)
