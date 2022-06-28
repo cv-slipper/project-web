@@ -147,7 +147,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 30px;
+    bottom: 10%;
     margin: auto;
     height: 55%;
     background: url("../../../assets/main-bottom.png") no-repeat;
@@ -411,42 +411,42 @@ export default {
   margin: auto
 }
 
-@media screen and(max-width: 1700px) {
-  .person {
-    bottom: 25%
-  }
-
-  .system {
-    .service {
-      width: 180px;
-      height: 100px;
-    }
-
-    .right-clound {
-      right: 10%;
-    }
-
-    .system-group {
-      .item-box {
-        bottom: 10%;
-
-        .item {
-          width: calc(20% - 12px);
-
-          .system-top {
-
-            top: -50%;
-
-            .system-name {
-              height: 100%;
-              transform: scale(0.8);
-            }
-          }
-        }
-      }
-
-
-    }
-  }
-}
+//@media screen and(max-width: 1700px) {
+//  .person {
+//    bottom: 25%
+//  }
+//
+//  .system {
+//    .service {
+//      width: 180px;
+//      height: 100px;
+//    }
+//
+//    .right-clound {
+//      right: 10%;
+//    }
+//
+//    .system-group {
+//      .item-box {
+//        bottom: 10%;
+//
+//        .item {
+//          width: calc(20% - 12px);
+//
+//          .system-top {
+//
+//            top: -50%;
+//
+//            .system-name {
+//              height: 100%;
+//              transform: scale(0.8);
+//            }
+//          }
+//        }
+//      }
+//
+//
+//    }
+//  }
+//}
 </style>

@@ -7,7 +7,7 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='pieChart' :style='{zoom:getZoom()}'></div>
+    <div id='pieChart' :style='{zoom:zoom}'></div>
   </div>
 </template>
 
@@ -40,6 +40,7 @@ export default {
           icon: 'circle',
           itemWidth: 10,
           itemHeight: 10,
+          type: 'scroll',//这句
           formatter: name => {
             this.colorIndex++
             if (this.colorIndex > 7) {
@@ -180,6 +181,7 @@ export default {
       }
     }
   },
+
   methods: {
     initChart(data) {
       if (data.length > 0) {
@@ -190,7 +192,7 @@ export default {
         })
         this.myChart = this.$echarts.init(document.getElementById('pieChart'))
 
-        this.myChart.setOption(this.option)
+        this.myChart.setOption(this.option, true)
         window.addEventListener('resize', () => {
           this.myChart.resize()
         })

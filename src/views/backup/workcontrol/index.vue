@@ -35,7 +35,7 @@
 
     </div>
     <div class='table-box mt-20'>
-      <div class='searchParams'>
+      <div class='searchParams' v-if='!getUserRole()'>
         <div class='fl'>
           <a-checkbox-group @change='jobTypeChange' :value='jobType' :options='workCheckOpt'></a-checkbox-group>
         </div>
@@ -98,7 +98,7 @@
         </div>
         <div style='clear:both'></div>
       </div>
-
+      <div style='height: 20px' v-else></div>
       <div style='padding:0 20px;background:white'>
         <a-table
           :columns='columns'
@@ -156,7 +156,7 @@
 import BranchSearch from '@comp/searchParms/BranchSearch'
 import { getWorkList, pauseWork, playWork, refreshWork, stopWork } from '@api/modules/workcontrol/index'
 import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
-
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
 
 export default {
   name: 'index',
@@ -164,6 +164,7 @@ export default {
     BranchSearch,
     WorkControlInfoModal
   },
+  mixins: [determineUserMinxin],
   data() {
     return {
 

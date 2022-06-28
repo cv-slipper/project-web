@@ -7,8 +7,8 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='front-chart' :style='{zoom:getZoom()}'>
 
+    <div id='front-chart' :style='{zoom:zoom}'>
     </div>
   </div>
 </template>
@@ -72,6 +72,7 @@ export default {
           icon: 'circle',
           itemWidth: 10,
           itemHeight: 10,
+          type: 'scroll',//这句
           tooltip: {
             show: true,
             formatter: (params) => {
@@ -82,6 +83,7 @@ export default {
           textStyle: {
             height: 15,
             lineHeight: 15,
+            fontSize: 12,
             rich: {
               a: {
                 align: 'left',
@@ -91,34 +93,41 @@ export default {
               },
               b0: {
                 align: 'right',
-                color: '#CAC9CA'
+                color: '#CAC9CA',
+                fontSize: 12
               },
               b1: {
                 align: 'right',
-                color: '#24D4A6'
+                color: '#24D4A6',
+                fontSize: 12
               },
 
               b2: {
                 align: 'right',
-                color: '#00B7EE'
+                color: '#00B7EE',
+                fontSize: 12
               },
               b3: {
                 align: 'right',
-                color: '#6E69F9'
+                color: '#6E69F9',
+                fontSize: 12
               },
               b4: {
                 align: 'right',
-                color: '#1E67F2'
+                color: '#1E67F2',
+                fontSize: 12
               },
               b5: {
                 align: 'right',
-                color: '#21E5E8'
+                color: '#21E5E8',
+                fontSize: 12
               },
               c: {
                 width: 120,
                 height: 0.5,
                 borderColor: '#CAC9CA',
                 borderWidth: 0.5,
+                fontSize: 12,
                 borderType: 'dashed'
               }
             }
@@ -226,15 +235,15 @@ export default {
           return this.getRichArr(item, index, name).join('')
         }
       }
-      this.myChart = this.$echarts.init(document.getElementById('front-chart'))
       this.option.series.forEach((item, index) => {
         item.color = this.color[index]
       })
       this.option.legend.data.forEach((item, index) => {
         item.itemStyle.borderColor = this.color[this.dataSource.length - 1 - index]
       })
+      this.myChart = this.$echarts.init(document.getElementById('front-chart'))
       this.myChart.clear()
-      this.myChart.setOption(this.option)
+      this.myChart.setOption(this.option, true)
       window.addEventListener('resize', () => {
         this.myChart.resize()
       })

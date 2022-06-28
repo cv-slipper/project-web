@@ -10,7 +10,7 @@
         <span v-if='isDesktop()'>{{ nickname() }}</span>
         <a-icon type='down' class='ml-10' style='color:#333333' />
       </span>
-      <a-menu slot='overlay' class='user-dropdown-menu-wrapper'>
+      <a-menu slot='overlay' class='user-dropdown-menu-wrapper' style='width:120px'>
         <a-menu-item key='4' @click='updatePassword'>
           <a-icon type='setting' />
           <span>密码修改</span>

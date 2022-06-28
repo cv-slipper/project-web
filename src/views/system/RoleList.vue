@@ -29,7 +29,8 @@
     </div>
 
     <!-- 操作按钮区域 -->
-    <div class="table-operator" style="margin-top: 5px">
+
+    <div class="table-operator" style="margin-top: 5px" v-if='!getUserRole()'>
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('角色信息')">导出</a-button>
       <a-upload
@@ -113,10 +114,11 @@
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import JDate from '@/components/jeecg/JDate'
   import SysRoleDesignModal from './modules/SysRoleDesignModal'
+  import {determineUserMinxin} from '@/mixins/DetermineUserMinxin'
 
   export default {
     name: "RoleList",
-    mixins:[JeecgListMixin],
+    mixins:[JeecgListMixin,determineUserMinxin],
     components: {
       SysRoleDesignModal,
       RoleModal,

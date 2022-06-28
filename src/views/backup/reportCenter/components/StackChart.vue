@@ -7,7 +7,7 @@
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='stack-chart' :style='{zoom:getZoom()}'></div>
+    <div id='stack-chart' :style='{zoom:zoom}'></div>
   </div>
 </template>
 

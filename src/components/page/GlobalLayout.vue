@@ -184,7 +184,7 @@ export default {
 <style lang='less'>
 body {
   // 打开滚动条固定显示
-  overflow-y: scroll;
+  overflow-y: auto;
 
   &.colorWeak {
     filter: invert(80%);
@@ -636,7 +636,7 @@ body {
   padding: 4px 0;
 
   .ant-dropdown-menu-item {
-    width: 160px;
+    width: 100%;
   }
 
   .ant-dropdown-menu-item > .anticon:first-child,

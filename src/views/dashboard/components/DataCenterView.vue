@@ -161,7 +161,7 @@ export default {
 <style scoped lang='less'>
 
 .data-center_view {
-  width: 90%;
+  width: 93%;
   position: absolute;
   left: 0;
   right: 0;
@@ -211,13 +211,13 @@ export default {
       .item:nth-child(3) {
         margin-top: 30%;
         position: absolute;
-        bottom: 10%;
+        bottom: 5%;
         left: 0;
       }
 
       .item:nth-child(4) {
         position: absolute;
-        bottom: 10%;
+        bottom: 5%;
         right: 0;
       }
 
@@ -270,10 +270,8 @@ export default {
       width: 120px;
       height: 100%;
       position: absolute;
-      right: 5%;
-      top: 0;
-      bottom: 0;
-      margin: auto;
+      right: 2%;
+      bottom: 10%;
       display: flex;
       align-items: center;
 
@@ -390,10 +388,8 @@ export default {
       width: 120px;
       height: 100%;
       position: absolute;
-      left: 5%;
-      top: 0;
-      bottom: 0;
-      margin: auto;
+      left: 2%;
+      bottom: 10%;
       display: flex;
       align-items: center;
 

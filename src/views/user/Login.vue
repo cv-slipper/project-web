@@ -69,7 +69,8 @@
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col :span='8' style='text-align: right'>
+          <a-col :span='8'
+                 style='text-align: right;display: flex;justify-content: space-around;align-items: center;height: 55px'>
             <img v-if='requestCodeSuccess' style='margin-top: 2px;' :src='randCodeImage'
                  @click='handleChangeCheckCode' />
             <img v-else style='margin-top: 2px;' src='../../assets/checkcode.png' @click='handleChangeCheckCode' />
@@ -452,6 +453,7 @@ export default {
       this.inputCodeContent = e.target.value
     },
     departConfirm(res) {
+      console.log(res, 'res')
       if (res.success) {
         let multi_depart = res.result.multi_depart
         //0:无部门 1:一个部门 2:多个部门

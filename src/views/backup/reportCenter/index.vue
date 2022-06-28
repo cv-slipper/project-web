@@ -1,6 +1,6 @@
 <template>
   <div class='reportCenter'>
-    <div class='center-inner'>
+    <div class='center-inner' ref='reportCenter'>
       <div class='title'>
         <div class='left'>
           <span v-if='domain=="prod"'>
@@ -57,10 +57,12 @@
                   <div class='year'>
                     <template v-if='item.type==1'>
                       <div>环比上月 <span
-                        :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{ item.month
+                        :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{
+                          item.month
                         }}</span></div>
                       <div>环比去年 <span
-                        :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{ item.year
+                        :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{
+                          item.year
                         }}</span></div>
                     </template>
                   </div>
@@ -230,6 +232,11 @@ export default {
     }
   },
   mounted() {
+    // if (window.devicePixelRatio * window.screen.width == 1920) {
+    //   this.$refs.reportCenter.style.height = 'calc(100%)'
+    // } else {
+    //   this.$refs.reportCenter.style.height = 'calc(100% + 200px)'
+    // }
     this.initCharts()
   },
   methods: {
@@ -816,32 +823,32 @@ export default {
   font-weight: bold;
 }
 
-@media (max-width: 1700px) {
-  .group {
-    .item {
-      width: calc(33% - 10px);
-
-      .year {
-        transform: scale(0.9);
-        line-height: 20px;
-      }
-    }
-
-    .item:nth-child(n+4) {
-      margin-top: 10px;
-    }
-  }
-
-  .reportCenter {
-    overflow-y: auto;
-
-    .center-inner {
-      height: calc(100% + 200px);
-    }
-  }
-
-
-}
+//@media (max-width: 1700px) {
+//  .group {
+//    .item {
+//      width: calc(33% - 10px);
+//
+//      .year {
+//        transform: scale(0.9);
+//        line-height: 20px;
+//      }
+//    }
+//
+//    .item:nth-child(n+4) {
+//      margin-top: 10px;
+//    }
+//  }
+//
+//  .reportCenter {
+//    overflow-y: auto;
+//
+//    .center-inner {
+//      //height: calc(100% + 200px);
+//    }
+//  }
+//
+//
+//}
 
 .useage-box {
   width: 90%;

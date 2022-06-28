@@ -14,23 +14,7 @@
         <div class='desc'>
         </div>
       </div>
-
       <route-view></route-view>
-
-      <div class='footer'>
-        <div class='links'>
-          <!--          <a href="http://doc.jeecg.com" target="_blank">帮助</a>-->
-          <!--          <a href="https://github.com/zhangdaiscott/jeecg-boot" target="_blank">隐私</a>-->
-          <!--          <a href="https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE" target="_blank">条款</a>-->
-          <a href='' target='_blank'>帮助</a>
-          <a href='' target='_blank'>隐私</a>
-          <a href='' target='_blank'>条款</a>
-
-        </div>
-        <div class='copyright'>
-          Copyright &copy; 2021 出品
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -56,6 +40,8 @@ export default {
 </script>
 
 <style lang='less' scoped>
+
+
 #userLayout.user-layout-wrapper {
   height: 100%;
 

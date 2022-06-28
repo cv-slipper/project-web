@@ -21,7 +21,7 @@
           </li>
         </ul>
         <div class='buttons mt-20'>
-
+          <template v-if='!getUserRole()'>
           <a-button class='ml-10' disabled v-if='judgeBtnPermission("pausedStatusList")'>
             <a-icon type='pause' style='font-size:14px' />
             暂停
@@ -42,10 +42,11 @@
             <a-icon type='stop' />
             终止
           </a-button>
-          <a-button v-else class='ml-10 error-btn' @click='confirm("stop","终止")'>
+          <a-button v-else class='ml-10 error-btn' @click='confirm("stop","终止") '>
             <a-icon type='stop' />
             终止
           </a-button>
+          </template>
           <a-button type='link' @click='lookEvent'>查看作业相关事件</a-button>
 <!--          <a-button type='link'>查看作业日志</a-button>-->
 <!--          <a-button type='link'>查看RMAN日志</a-button>-->
@@ -61,10 +62,13 @@
 <script>
 import { getWorkDetail, pauseWork, playWork, stopWork } from '@/api/modules/workcontrol/index.js'
 import WorkEventListModal from '@views/backup/workcontrol/components/modal/WorkEventListModal'
+import {determineUserMinxin} from '@/mixins/DetermineUserMinxin'
+
 export default {
   components: {
     WorkEventListModal
   },
+  mixins:[determineUserMinxin],
   props: {
     visible: {
       type: Boolean,

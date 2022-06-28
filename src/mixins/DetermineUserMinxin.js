@@ -3,14 +3,21 @@ import Vue from 'vue'
 
 export const determineUserMinxin = {
   data() {
-    return {}
+    return {
+      zoom: 0
+    }
+  },
+  mounted() {
+    this.zoom = this.getZoom()
+    window.addEventListener('resize', () => {
+      this.zoom = 1 / document.body.style.zoom
+    })
   },
   methods: {
     getUserRole() {
       let isNormal = null
-      let userInfo = Vue.ls.get(USER_INFO)
-      if (Object.keys(userInfo).length > 0) {
-        let roleCode = userInfo.roleCode || []
+      let roleCode = Vue.ls.get('RoleCode')
+      if ((roleCode).length > 0) {
         isNormal = roleCode.indexOf('normal') == -1 ? false : true
       } else {
         isNormal = true
@@ -18,7 +25,8 @@ export const determineUserMinxin = {
       return isNormal
     },
     getZoom() {
-      return (1 / document.body.style.zoom)
+      let zoom = (1 / document.body.style.zoom)
+      return zoom
     }
   }
 }

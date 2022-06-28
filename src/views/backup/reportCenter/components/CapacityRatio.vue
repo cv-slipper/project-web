@@ -12,7 +12,7 @@
 
       <div class='little-title'></div>
     </div>
-    <div id='capacity-radio' :style='{zoom:getZoom()}'></div>
+    <div id='capacity-radio' :style='{zoom:zoom}'></div>
   </div>
 </template>
 

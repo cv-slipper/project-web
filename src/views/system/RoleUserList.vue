@@ -31,7 +31,7 @@
           </a-form>
         </div>
         <!-- 操作按钮区域 -->
-        <div class='table-operator' style='margin: 5px 0 10px 2px'>
+        <div class='table-operator' style='margin: 5px 0 10px 2px' v-if='!getUserRole()'>
           <a-button @click='handleAdd' type='primary' icon='plus'>新建角色</a-button>
           <!--<a-button @click="handleEdit(model1)" type="primary" icon="plus">角色编辑</a-button>-->
           <a-upload
@@ -124,6 +124,7 @@
             </a-row>
           </a-form>
         </div>
+
         <!-- 操作按钮区域 -->
         <div class='table-operator' :md='24' :sm='24'>
           <a-button @click='handleAdd2' type='primary' icon='plus' style='margin-top: 16px'>新增用户</a-button>
@@ -146,7 +147,8 @@
         <div>
           <div class='ant-alert ant-alert-info' style='margin-bottom: 16px;'>
             <i class='anticon anticon-info-circle ant-alert-icon'></i> 已选择 <a style='font-weight: 600'>{{
-              selectedRowKeys2.length }}</a>项
+              selectedRowKeys2.length
+            }}</a>项
             <a style='margin-left: 24px' @click='onClearSelected2'>清空</a>
           </div>
           <a-table
@@ -342,7 +344,57 @@ export default {
     }
   },
   created() {
-    this.getUserRole()
+    if (!this.getUserRole()) {
+      this.columns = [
+        {
+          title: '角色编码',
+          align: 'center',
+          dataIndex: 'roleCode'
+        },
+        {
+          title: '角色名称',
+          align: 'center',
+          dataIndex: 'roleName'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          align: 'center',
+          sorter: true,
+          customRender: (text) => {
+            return moment(text).format('YYYY-MM-DD')
+          }
+        },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          align: 'center',
+          scopedSlots: { customRender: 'action' }
+        }
+      ]
+    } else {
+      this.columns = [
+        {
+          title: '角色编码',
+          align: 'center',
+          dataIndex: 'roleCode'
+        },
+        {
+          title: '角色名称',
+          align: 'center',
+          dataIndex: 'roleName'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          align: 'center',
+          sorter: true,
+          customRender: (text) => {
+            return moment(text).format('YYYY-MM-DD')
+          }
+        }
+      ]
+    }
   },
   methods: {
     onSelectChange2(selectedRowKeys, selectionRows) {
