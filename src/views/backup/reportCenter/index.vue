@@ -744,6 +744,7 @@ export default {
 
   .main-center-top {
     height: calc(66% - 2px);
+    overflow: hidden;
     background: url("../../../assets/data-center-bg.png") no-repeat;
     background-size: 100% 100%;
     position: relative;

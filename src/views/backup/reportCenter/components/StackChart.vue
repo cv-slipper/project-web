@@ -50,10 +50,13 @@ export default {
           }
         },
         legend: {
-          itemHeight: 10,
-          itemWidth: 10,
+          itemHeight: 5,
+          itemWidth: 5,
           left: 'center',
-          top: '20px'
+          top: 20,
+          textStyle: {
+            fontSize: 8
+          }
         },
         grid: {
           left: '3%',

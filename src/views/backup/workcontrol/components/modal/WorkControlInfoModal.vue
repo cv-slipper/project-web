@@ -369,7 +369,7 @@ ul {
 }
 
 .buttons {
-  width: 95%;
+  width: 80%;
   margin: 20px auto;
   margin-top: 40px;
   display: flex;

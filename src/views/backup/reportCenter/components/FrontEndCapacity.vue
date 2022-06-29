@@ -47,9 +47,7 @@ export default {
           show: false,
           max: 1500,
           startAngle: 90,
-
           clockwise: false
-
         },
         radiusAxis: {
           type: 'category',
@@ -70,8 +68,8 @@ export default {
           right: 0,
           top: 'middle',
           icon: 'circle',
-          itemWidth: 10,
-          itemHeight: 10,
+          itemWidth: 8,
+          itemHeight: 8,
           type: 'scroll',//这句
           tooltip: {
             show: true,
@@ -81,15 +79,15 @@ export default {
             }
           },
           textStyle: {
-            height: 15,
-            lineHeight: 15,
-            fontSize: 12,
+            height: 8,
+            lineHeight: 8,
+            fontSize: 8,
             rich: {
               a: {
                 align: 'left',
-                padding: [0, 30, 0, 0],
-                width: 75,
-                fontSize: 12
+                padding: [0, 20, 0, 0],
+                width: 60,
+                fontSize: 8
               },
               b0: {
                 align: 'right',
@@ -99,35 +97,35 @@ export default {
               b1: {
                 align: 'right',
                 color: '#24D4A6',
-                fontSize: 12
+                fontSize: 8
               },
 
               b2: {
                 align: 'right',
                 color: '#00B7EE',
-                fontSize: 12
+                fontSize: 8
               },
               b3: {
                 align: 'right',
                 color: '#6E69F9',
-                fontSize: 12
+                fontSize: 8
               },
               b4: {
                 align: 'right',
                 color: '#1E67F2',
-                fontSize: 12
+                fontSize: 8
               },
               b5: {
                 align: 'right',
                 color: '#21E5E8',
-                fontSize: 12
+                fontSize: 8
               },
               c: {
                 width: 120,
                 height: 0.5,
                 borderColor: '#CAC9CA',
                 borderWidth: 0.5,
-                fontSize: 12,
+                fontSize: 8,
                 borderType: 'dashed'
               }
             }

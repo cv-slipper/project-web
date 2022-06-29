@@ -2,7 +2,7 @@
   <div class='trend-chart'>
     <div class='trend-chart-title'>
       <div>
-        容量及客户端数量趋势区
+        容量及客户端数量趋势
       </div>
       <div class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -41,7 +41,13 @@ export default {
           itemHeight: 10,
           itemWidth: 10,
           data: [{ name: '前端许可用量', icon: 'rect' }, { name: '后端存储用量', icon: 'rect' }, { name: '客户端数量', icon: 'rect' }],
-          top: '10%'
+          top: '5%',
+          textStyle: {
+            fontSize: 8
+          }
+        },
+        grid: {
+          bottom: 28
         },
         tooltip: {
           show: true
@@ -118,9 +124,10 @@ export default {
         dataZoom: {
           show: true,
           type: 'slider',
-          height: 2,
+          height: 3,
           start: 20,
-          end: 100
+          end: 100,
+          bottom: '0'
         }
       },
       myChart: null,

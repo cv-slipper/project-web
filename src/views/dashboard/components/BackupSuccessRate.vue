@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='flex-center ' style=''>
-      <div style='margin: 4% 0 0 10%'>
+      <div style='margin: 0 0 0 5%'>
         <a-progress :width='width' type='circle' :percent='detail.successRatio'
                     :strokeColor='{"0%":"#0055FF", "100%":"#59ABFF"}'>
           <template #format='percent'>

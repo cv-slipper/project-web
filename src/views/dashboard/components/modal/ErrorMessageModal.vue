@@ -136,6 +136,7 @@ export default {
   watch: {
     visible(val) {
       if (val) {
+        this.pagination.current = 1
         if (this.type) {
           this.searchParams.domain = this.type
           this.searchParams.system = this.id ? [this.id] : []
@@ -162,9 +163,13 @@ export default {
       handler(val) {
         if (this.searchParams.domain == 'prod') {
           this.columns[3].title = '应用系统'
+          this.columns[3].dataIndex = 'appSystemName'
+          this.columns[3].key = 'appSystemName'
           this.getSystemListByBranch()
         } else {
           this.columns[3].title = '分行'
+          this.columns[3].dataIndex = 'branchName'
+          this.columns[3].key = 'branchName'
           this.getBranchList()
         }
       }
@@ -172,11 +177,7 @@ export default {
     getDomain: {
       immediate: false,
       handler(val) {
-        if (val == 'prod') {
-          this.getSystemListByBranch()
-        } else {
-          this.getBranchList()
-        }
+
       }
     }
   },
@@ -375,7 +376,19 @@ export default {
      * 获取异常信息列表
      */
     async getExceptionPage() {
+
       try {
+        if (this.searchParams.domain == 'prod') {
+          this.columns[3].title = '应用系统'
+          this.columns[3].dataIndex = 'appSystemName'
+          this.columns[3].key = 'appSystemName'
+
+        } else {
+          this.columns[3].title = '分行'
+          this.columns[3].dataIndex = 'branchName'
+          this.columns[3].key = 'branchName'
+
+        }
         this.loading = true
         const res = await getExceptionPage({
           current: this.pagination.current,

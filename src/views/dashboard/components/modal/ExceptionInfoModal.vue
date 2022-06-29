@@ -3,7 +3,7 @@
     <a-modal width='40%' :visible='visible' :footer='false' @cancel='cancel'>
       <div slot='title' style='display: flex;align-items: center'>
         <img src='@/assets/sclogo.png' style='width:19px;height:20px' alt='' />
-        <span class='ml-10'>作业详情</span>
+        <span class='ml-10'>{{ title }}详情</span>
       </div>
       <a-spin v-if='detailLoading' />
       <div v-else>
@@ -21,16 +21,32 @@
             </li>
 
           </template>
+          <a-divider>处理信息</a-divider>
+          <template v-for='(item,index) in allLabel'>
+            <li style='display:block' :key='index+"312"+new Date().getTime()' v-if='item.type=="textarea"'>
+              <div>{{ item.label }}</div>
+              <div>
+                {{ getValue(item.value) }}
+              </div>
+            </li>
+            <li :key='index+"312"+new Date().getTime()' v-else>
+              <span class='label'>{{ item.label }}</span>
+              <span class='content'>{{ getValue(item.value) }} </span>
+            </li>
+
+          </template>
         </ul>
         <div class='buttons mt-20'>
-          <!--          <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>-->
-          <!--            <a-icon type='pause' style='font-size:14px' />-->
-          <!--            处理-->
-          <!--          </a-button>-->
-          <!--          <a-button class='ml-10 success-btn' @click='neglect'>-->
-          <!--            <a-icon type='caret-right' />-->
-          <!--            忽略-->
-          <!--          </a-button>-->
+          <template v-if='detail.handled==0'>
+            <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>
+              <a-icon type='pause' style='font-size:14px' />
+              处理
+            </a-button>
+            <a-button class='ml-10 success-btn' @click='neglect'>
+              <a-icon type='caret-right' />
+              忽略
+            </a-button>
+          </template>
           <a-button
             v-if='Object.keys(detailItem).length>0?detailItem.exceptionType!="异常事件":false'
             type='link'
@@ -74,9 +90,11 @@ export default {
         if (val) {
           this.getExceptionDetail()
           if (this.typeList.find(item => item.label == this.detailItem.exceptionType).value == 1) {
-            this.labelList = this.exceptionWorkList.concat(this.allLabel)
+            this.labelList = this.exceptionWorkList
+            this.title = '异常作业'
           } else if (this.typeList.find(item => item.label == this.detailItem.exceptionType).value == 2) {
-            this.labelList = this.exceptionEventList.concat(this.allLabel)
+            this.labelList = this.exceptionEventList
+            this.title = '异常事件'
           }
         }
       },
@@ -85,6 +103,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       eventDetailItem: {},
       eventVisible: false,
       dealWithVisible: false,
@@ -103,12 +122,16 @@ export default {
       ],
       exceptionWorkList: [
         {
-          label: '作业ID：',
-          value: 'jobId'
+          label: '异常ID：',
+          value: 'exceptionId'
         },
         {
-          label: '操作类型：',
-          value: 'type'
+          label: '严重程度：',
+          value: 'severity'
+        },
+        {
+          label: '异常发现时间',
+          value: 'occurrenceTime'
         },
         {
           label: '备份域：',
@@ -142,17 +165,18 @@ export default {
           label: '作业类型：',
           value: 'jobType'
         },
-        {
-          label: '阶段：',
-          value: 'currentPhaseName'
-        },
+
         {
           label: '开始时间：',
           value: 'jobStartTime'
         },
         {
-          label: '经过时长：',
-          value: 'duration'
+          label: '结束时间：',
+          value: 'jobEndTime'
+        },
+        {
+          label: '介质服务器：',
+          value: 'mediaAgentName'
         },
         {
           label: '存储策略：',
@@ -166,10 +190,7 @@ export default {
           label: '数据写入量：',
           value: 'dataWritten'
         },
-        {
-          label: '介质服务器：',
-          value: 'mediaAgentName'
-        },
+
         {
           label: '状态：',
           value: 'state'
@@ -292,11 +313,12 @@ export default {
         }
         let res = await getExceptionDetail(params)
         if (res.code == 200) {
-          this.detail = res.result
+          this.detail = res.result || {}
+          console.log(this.detail, 'detail')
           let index = this.labelList.findIndex(ele => ele.label.indexOf('应用系统') != -1)
+          console.log(index)
           this.labelList[index].label = this.detail.domain == 'prod' ? '应用系统' : '分行'
           this.labelList[index].value = this.detail.domain == 'prod' ? 'applicationSystem' : 'branchName'
-          console.log(this.labelList, 'labelList')
         } else {
           this.detail = {}
           this.$message.error(res.message)
@@ -403,7 +425,7 @@ ul {
 }
 
 .buttons {
-  width: 95%;
+  width: 80%;
   margin: 20px auto;
   margin-top: 40px;
   display: flex;

@@ -259,7 +259,7 @@
               <div slot='title'>
                 <div>
                   <img src='@/assets/worknum.png' style='width:20px;height:20px' alt=''>
-                  <span class='ml-5'>每日备份数据量（TB）</span>
+                  <span class='ml-5'>每日备份数据量{{ xdataunit == '' ? '' : '（' + xdataunit + '）' }}</span>
                 </div>
               </div>
               <div style='width:100%;' class='chart'>
@@ -274,7 +274,7 @@
               <div slot='title'>
                 <div>
                   <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
-                  <span class='ml-5'>每日磁盘/云储存占用量（TB）</span>
+                  <span class='ml-5'>每日磁盘/云储存占用量{{ xdiskunit == '' ? '' : '（' + xdiskunit + '）' }}</span>
                 </div>
               </div>
               <div style='width:100%;' class='chart'>
@@ -414,13 +414,15 @@ export default {
   },
   data() {
     return {
+      xdataunit: '',
+      xdiskunit: '',
       view: 'system',
       exceptionItem: {},
       errorMessageTotal: 0,
       dealWithVisible: false,
       failedWorkVisible: false,
       indexStyle: 1,
-      domain: 'prod',
+      domain: '',
       branchId: '',
       rateTime: '604800',
       exceptionVisible: false,
@@ -463,7 +465,7 @@ export default {
       branchListData: [
         {
           title: '',
-          src: require('@/assets/app.png')
+          src: require('@/assets/branch-logo.png')
         },
         {
           title: '客户端',
@@ -475,14 +477,12 @@ export default {
         {
           title: '前端许可',
           num: '0',
-          total: '0',
           unit: 'TB',
           src: require('@/assets/front.png')
         },
         {
           title: '总行存储',
           num: '0',
-          total: '-',
           unit: 'TB',
           src: require('@/assets/storage.png')
         },
@@ -583,6 +583,7 @@ export default {
   },
 
   created() {
+    this.domain = 'prod'
     //十分钟刷新一次
     this.init()
     if (this.timer) {
@@ -703,6 +704,8 @@ export default {
             let xData = xDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
             let xdataData = xdataDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
             let xdiskData = xdiskDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
+            this.xdataunit = dataData.unit || ''
+            this.xdiskunit = xdiskData.unit || ''
             let yData = workData.itemList.map((item) => {
               return {
                 name: item.name,
@@ -829,16 +832,15 @@ export default {
               this.listData[4].increaseNum = res.result.increaseDisk || 0
             } else {
               this.listData[2].num = res.result.foreLicenseUsed
-              this.listData[2].total = res.result.foreLicenseTotal
+              // this.listData[2].total = res.result.foreLicenseTotal
               this.listData[0].num = ''
               this.listData[4].num = res.result.branchStorageUsed || 0
               this.listData[4].total = res.result.branchStorageTotal || 0
               this.listData[4].increaseNum = res.result.branchStorageInc || 0
               this.listData[3].num = res.result.headStorage || 0
               this.listData[3].increaseNum = res.result.headStorageInc || 0
-              this.listData[3].total = '-'
+              this.listData[3].total = null
             }
-
           }
 
         } else {
@@ -1002,7 +1004,11 @@ export default {
 
     gotoDealwith() {
       this.$router.push({
-        name: 'backup-exception-ProcessHistoryList'
+        name: 'backup-exception-ProcessHistoryList',
+        params: {
+          domain: this.domain,
+          branchId: this.branchId
+        }
       })
     },
     gotoWorkControl(state = '') {
@@ -1048,6 +1054,7 @@ export default {
           this.$refs.mainMap.getBranchMapList()
         })
       }
+      this.getExceptionList()
 
     },
     dealWithOk(reason) {
@@ -1438,7 +1445,7 @@ export default {
 }
 
 /deep/ .rate .ant-card-body {
-  padding: 30px 15px !important;
+  padding: 15px !important;
 }
 
 .error-action {

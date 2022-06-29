@@ -1,9 +1,9 @@
 <template>
   <div class='main'>
-    <keep-alive>
-      <router-view v-if='keepAlive' />
+    <keep-alive v-if='keepAlive'>
+      <router-view />
     </keep-alive>
-    <router-view v-if='!keepAlive' />
+    <router-view v-else />
   </div>
 </template>
 

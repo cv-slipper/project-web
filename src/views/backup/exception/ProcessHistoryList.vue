@@ -319,9 +319,24 @@ export default {
           this.getBranchList()
         }
       }
+    },
+    '$route'(to, from) {
+      if (Object.keys(this.$route.params).length == 0) {
+        this.domain = 'prod'
+      } else {
+        this.domain = this.$route.params.domain
+        this.systemIds = this.$route.params.branchId == '' ? [] : [this.$route.params.branchId]
+      }
+      this.getExceptionPage()
     }
   },
   created() {
+    if (Object.keys(this.$route.params).length == 0) {
+      this.domain = 'prod'
+    } else {
+      this.domain = this.$route.params.domain
+      this.systemIds = this.$route.params.branchId == '' ? [] : [{ id: this.$route.params.branchId }]
+    }
     this.getExceptionPage()
     if (this.domain == 'prod') {
       this.columns[4].title = '应用系统'

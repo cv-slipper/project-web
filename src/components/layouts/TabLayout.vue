@@ -20,12 +20,12 @@
     </a-tabs>
     <div class='boxMain' style='margin: 20px 20px 0;margin-top:0;height:calc(100% - 40px)'>
       <transition name='page-toggle'>
-        <keep-alive v-if='multipage'>
+        <keep-alive>
           <router-view v-if='reloadFlag' />
         </keep-alive>
-        <template v-else>
-          <router-view v-if='reloadFlag' />
-        </template>
+        <!--        <template v-else>-->
+        <!--          <router-view v-if='reloadFlag' />-->
+        <!--        </template>-->
       </transition>
     </div>
   </global-layout>

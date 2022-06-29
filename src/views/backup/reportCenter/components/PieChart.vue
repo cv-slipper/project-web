@@ -38,8 +38,8 @@ export default {
           top: 'center',
           orient: 'vertical',
           icon: 'circle',
-          itemWidth: 10,
-          itemHeight: 10,
+          itemWidth: 8,
+          itemHeight: 8,
           type: 'scroll',//这句
           formatter: name => {
             this.colorIndex++
@@ -99,46 +99,53 @@ export default {
             }
           ],
           textStyle: {
-            height: 15,
-            lineHeight: 15,
+            height: 8,
+            lineHeight: 8,
             rich: {
               a: {
                 align: 'left',
                 padding: [0, 30, 0, 0],
                 width: 75,
-                fontSize: 12
+                fontSize: 8
               },
               b0: {
                 align: 'right',
-                color: '#3C6BE3'
+                color: '#3C6BE3',
+                fontSize: 8
               },
               b1: {
                 align: 'right',
-                color: '#ECD61B'
+                color: '#ECD61B',
+                fontSize: 8
               },
 
               b2: {
                 align: 'right',
-                color: '#DE430E'
+                color: '#DE430E',
+                fontSize: 8
               },
               b3: {
                 align: 'right',
-                color: '#1BC78B'
+                color: '#1BC78B',
+                fontSize: 8
               },
               b4: {
                 align: 'right',
-                color: '#C927B8'
+                color: '#C927B8',
+                fontSize: 8
               },
               b5: {
                 align: 'right',
-                color: '#0FECEE'
+                color: '#0FECEE',
+                fontSize: 8
               },
               c: {
                 width: 120,
                 height: 0.5,
                 borderColor: '#CAC9CA',
                 borderWidth: 0.5,
-                borderType: 'dashed'
+                borderType: 'dashed',
+                fontSize: 8
               }
             }
           }

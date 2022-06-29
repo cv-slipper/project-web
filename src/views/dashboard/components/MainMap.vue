@@ -67,7 +67,14 @@ export default {
           res.result = this.recursive(res.result)
           this.areaPoints = res.result || []
           this.allPoints = res.result.map(item => item.children).flat(2) || []
-          this.initMap()
+          if (this.map) {
+            let zoom = this.map.getZoom()
+            let center = this.map.getCenter()
+            this.initMap(zoom, [center.lng, center.lat])
+          } else {
+            this.initMap()
+          }
+
         } else {
           this.$message.error(res.message)
         }
@@ -108,10 +115,12 @@ export default {
           this.map.setZoomAndCenter(4, [108.316721, 37.38724])
         }
       }
+      this.domEvent()
       this.$emit('checkBranch', item)
       this.mapListVisible = false
     },
     openBranchModal() {
+      this.getBranchMapList()
       this.mapListVisible = true
     },
     clearInfoWindow() {
@@ -135,6 +144,36 @@ export default {
         }, ms)
       }
     },
+    domEvent() {
+      setTimeout(() => {
+
+        let all = document.getElementsByClassName('amap-marker')
+        if (all.length > 0) {
+          for (let i = 0; i < all.length; i++) {
+            let ele = all[i]
+            if (ele.innerText.indexOf('区域') != -1) {
+              ele.onclick = (e) => {
+                let index = this.areaPoints.findIndex(item => ele.innerText.indexOf(item.name) != -1)
+                this.map.setZoomAndCenter(6, this.areaPoints[index].center)
+              }
+            } else {
+              ele.onclick = () => {
+                let i = this.allPoints.findIndex(item => ele.innerText.indexOf(item.branchName) != -1)
+                let key = 'allPoints'
+                this.branchItem = this[key][i]
+                this.map.remove(this.bigAreaMarkers)
+                this.map.remove(this.allMarkers)
+                this.allMarkers = this.initAllMarker()
+                this.map.add(this.allMarkers)
+                this.domEvent()
+                this.$emit('checkBranch', this[key][i])
+              }
+            }
+          }
+        }
+      }, 100)
+
+    },
     dealWithMarkers() {
       this.map.remove(this.bigAreaMarkers)
       this.map.remove(this.allMarkers)
@@ -150,6 +189,7 @@ export default {
         this.map.remove(this.bigAreaMarkers)
         this.map.add(this.bigAreaMarkers)
       }
+      this.domEvent()
     },
     setInfoWindow() {
       this.bigAreaMarkers.forEach(item => {
@@ -182,9 +222,7 @@ export default {
       })
       return arr
     },
-    initMap() {
-
-
+    initMap(zoom = 4.1, center = [108.316721, 37.38724]) {
       const disCountry = new AMap.DistrictLayer.Country({
         zIndex: 10,
         depth: 1,
@@ -195,27 +233,25 @@ export default {
 
       })
       this.map = new AMap.Map('container', {
-        zoom: 4.1,//级别
+        zoom: zoom,//级别
         resizeEnable: true,
-        center: [108.316721, 37.38724],//中心点坐标
-        features: [],
+        center: center,//中心点坐标
         layers: [disCountry],
         zooms: [4, 8],
-        isHotspot: false,
         defaultCursor: 'pointer',
-        touchZoomCenter: 1,
-        pitch: 0,
-        showIndoorMap: false,
         mapStyle: 'amap://styles/light'
       })
       this.bigAreaMarkers = this.initAreaMarker()
       this.allMarkers = this.initAllMarker()
       this.map.add(this.bigAreaMarkers)
-
+      this.dealWithMarkers()
       this.map.on('zoomend', (e) => {
         // this.debounce(this.dealWithMarkers, 10)()
       })
       this.map.on('zoomchange', () => {
+        this.debounce(this.dealWithMarkers, 10)()
+      })
+      this.map.on('dragend', () => {
         this.debounce(this.dealWithMarkers, 10)()
       })
     },
@@ -232,10 +268,10 @@ export default {
         let infoWindow = this.getInfoWindowTemplate(this.areaPoints[i])
         var marker = new AMap.Marker({
           position: this.areaPoints[i].center,
-          content: `<div class='execption-box' style='position: relative'>${content}${infoWindow}</div>`,
+          content: `<div class=' execption-box area${i}' style='position: relative'>${content}${infoWindow}</div>`,
           visible: true,
-          offset: new AMap.Pixel(-32, -32)
-
+          offset: new AMap.Pixel(-32, -32),
+          zIndex: 10000000000000
         })
         let position = this.areaPoints[i].exceptionNum == 0 ? 'top' : 'bottom'
         marker.setLabel(
@@ -244,7 +280,9 @@ export default {
             direction: position
           }
         )
-
+        marker.on('dblclick', () => {
+          console.log(123)
+        })
         marker.on('click', (e) => {
           this.litttleAreaPoints = this.areaPoints[i].children
           this.map.setZoomAndCenter(6, this.areaPoints[i].center)
@@ -360,7 +398,7 @@ export default {
 }
 
 /deep/ .exception-content {
-  width: 155px;
+  width: 175px;
   background: white;
   position: absolute;
   bottom: 100%;
@@ -425,9 +463,4 @@ export default {
   display: block;
 }
 
-@media screen and(max-width: 1700px) {
-  /deep/ .exception-content {
-    font-size: 12px;
-  }
-}
 </style>
