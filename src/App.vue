@@ -36,8 +36,15 @@ export default {
   },
   mounted() {
     this.refreshScale()
+    if (navigator.appVersion.indexOf("Mac") == -1) {
+      this.setScreenScale()
+    }
+
     window.addEventListener('resize', () => {
       this.refreshScale()
+      if (navigator.appVersion.indexOf("Mac") == -1) {
+        this.setScreenScale()
+      }
     })
   },
   methods: {
@@ -45,7 +52,11 @@ export default {
       var devicewidth = document.documentElement.clientWidth//获取当前分辨率下的可是区域宽度
       var scale = devicewidth / 1920 // 分母——设计稿的尺寸
       document.body.style.zoom = scale//放大缩小相应倍数
+    },
+    setScreenScale() {
+      document.body.style.zoom = 1 / window.devicePixelRatio
     }
+
 
   }
 }

@@ -147,18 +147,18 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 10%;
+    bottom: 0;
     margin: auto;
-    height: 55%;
+    height: 60%;
     background: url("../../../assets/main-bottom.png") no-repeat;
     background-size: 100% 100%;
 
     .item-box {
       width: 65%;
-      height: 63%;
+      height: 75%;
       position: absolute;
       left: 0;
-      bottom: 15%;
+      bottom: 11%;
       right: 0;
       margin: auto;
       display: flex;

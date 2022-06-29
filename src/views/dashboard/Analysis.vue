@@ -1325,7 +1325,7 @@ export default {
 
 .center-content {
   width: 100%;
-  height: calc(100% - 33% - 115px);
+  height: calc(100% - 33% - 116px);
   background: white;
 }
 
@@ -1369,7 +1369,7 @@ export default {
   height: 100%;
 
   .item {
-    height: calc(33% - 6px);
+    height: calc(33% - 5px);
   }
 
   .ant-card {

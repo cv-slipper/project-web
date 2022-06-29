@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='flex-center ' style=''>
-      <div>
+      <div style='margin: 4% 0 0 10%'>
         <a-progress :width='width' type='circle' :percent='detail.successRatio'
                     :strokeColor='{"0%":"#0055FF", "100%":"#59ABFF"}'>
           <template #format='percent'>
@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    
+
   },
   methods: {}
 }
@@ -59,12 +59,6 @@ export default {
 .count {
   color: #666666;
 
-}
-
-@media (max-width: 1440px) {
-  .label {
-    font-size: 14px;
-  }
 }
 
 </style>

@@ -57,7 +57,7 @@ module.exports = {
       postcss: {
         plugins: [
           require('postcss-plugin-px2rem')({
-            rootValue: 16, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
+            rootValue: 20, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
             propList: ['*'],
             unitPrecision: 5, //允许REM单位增长到的十进制数字。
             propWhiteList: [],  //默认值是一个空数组，这意味着禁用白名单并启用所有属性。
@@ -100,7 +100,7 @@ module.exports = {
       '/master-api': {
         // target: 'http://localhost:8083', //请求本地 需要jeecg-boot后台项目
         // target: 'http://alpha.jpaihome.com',//test环境
-        target: 'http://101.133.165.239:8087', //测试
+        target: 'http://47.116.12.207:8087', //测试
         ws: false,
         changeOrigin: true
       }
