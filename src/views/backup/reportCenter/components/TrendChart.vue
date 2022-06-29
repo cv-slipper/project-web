@@ -47,6 +47,7 @@ export default {
           }
         },
         grid: {
+          top: 30,
           bottom: 28
         },
         tooltip: {
@@ -66,7 +67,9 @@ export default {
             type: 'log',
             name: 'TB',
             splitNum: 5,
-
+            nameTextStyle: {
+              fontSize: 10
+            },
             axisLabel: {
               margin: 2,
               formatter: function(value, index) {
@@ -76,7 +79,8 @@ export default {
                   value = parseInt(value / 10000000) + '千万'
                 }
                 return value
-              }
+              },
+              fontSize: 8
             }
 
           },
@@ -84,7 +88,9 @@ export default {
             type: 'log',
             name: '台',
             splitNum: 5,
-
+            nameTextStyle: {
+              fontSize: 10
+            },
             axisLabel: {
               margin: 2,
               formatter: function(value, index) {
@@ -94,7 +100,8 @@ export default {
                   value = parseInt(value / 10000000) + '千万'
                 }
                 return value
-              }
+              },
+              fontSize: 8
             }
 
 

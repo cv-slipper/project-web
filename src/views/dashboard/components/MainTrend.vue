@@ -34,9 +34,9 @@ export default {
       yestPercent: '+0%',
       option: {
         grid: {
-          top: '20px',
-          left: '20px',
-          right: '20px',
+          top: '5px',
+          left: '10px',
+          right: '10px',
           bottom: '20px'
         },
         tooltip: {
@@ -50,7 +50,8 @@ export default {
           },
           axisLabel: {
             interval: 0,
-            showMaxLabel: false
+            showMaxLabel: false,
+            fontSize: 8
           },
           boundaryGap: false
         },

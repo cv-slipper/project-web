@@ -1391,6 +1391,8 @@ export default {
 
 /deep/ .right-chart .ant-card-body {
   height: calc(100% - 53px) !important;
+  padding-top: 5px !important;
+  padding-bottom: 2px !important;
 }
 
 /deep/ .right-chart .ant-card-head {
