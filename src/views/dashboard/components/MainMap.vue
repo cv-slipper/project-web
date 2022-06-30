@@ -260,7 +260,7 @@ export default {
       let normal = `<div style='position: relative'>
                         <img style='width:65px;height:65px' src='${require('@/assets/normal-new.png')}' />
                      </div>`
-      let warning = `<img style='width:65px;height:65px' src='${require('@/assets/warning-new.png')}' />`
+      let warning = `<img style='width:75px;height:75px' src='${require('@/assets/warning-new.png')}' />`
 
 
       for (let i = 0; i < this.areaPoints.length; i++) {
@@ -293,8 +293,8 @@ export default {
     },
     initAllMarker(key = 'allPoints') {
       let markers = []
-      let normal = '<img style="width:50px;height:50px" src=' + require('@/assets/normal-new.png') + ' />'
-      let warning = '<img style="width:50px;height:50px" src=' + require('@/assets/warning-new.png') + ' />'
+      let normal = '<img style="width:65px;height:65px" src=' + require('@/assets/normal-new.png') + ' />'
+      let warning = '<img style="width:65px;height:65px" src=' + require('@/assets/warning-new.png') + ' />'
       for (let i = 0; i < this[key].length; i++) {
         let content = this[key][i].exceptionNum == 0 ? normal : warning
         let marker = new AMap.Marker({

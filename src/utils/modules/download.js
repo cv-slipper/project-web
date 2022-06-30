@@ -11,16 +11,17 @@ export const downloadCsv = (header, data, fileName = '导出结果.csv') => {
   const whiteList = ['操作', '序号']
   header = header.map(item => whiteList.includes(item.title) ? null : item).filter(item => item)
   var csvContent = 'data:text/csv;charset=utf-8,\ufeff'
-  const _header = header.map(h => h.title).join(',')
+  const _header = header.map(h => h.title)
   const keys = header.map(item => item.dataIndex)
   csvContent += _header + '\n'
   data.forEach((item, index) => {
     let dataString = ''
     for (let i = 0; i < keys.length; i++) {
-      dataString += (item[keys[i]] || '') + ','
+      dataString += (item[keys[i]] || '').replace(',', '，') + ','
     }
     csvContent += index < data.length ? dataString.replace(/,$/, '\n') : dataString.replace(/,$/, '')
   })
+  console.log(_header, csvContent, 'data')
   const a = document.createElement('a')
   a.href = encodeURI(csvContent)
   a.download = fileName

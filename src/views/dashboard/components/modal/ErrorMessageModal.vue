@@ -62,11 +62,13 @@
         :data-source='data'
         :loading='loading'
         :bordered='true'
-        :scroll='{x:"100%"}'
+        :scroll='{x:false}'
         rowKey='id'
         :pagination='pagination'
         @change='tableChange'
-        :row-selection='{selectedRowKeys,onChange:rowSelectionChange,columnWidth:30}'>
+        :row-selection='{selectedRowKeys,onChange:rowSelectionChange,columnWidth:30}'
+        :components='drag(columns)'
+      >
         >
         <template #action='row'>
           <div class=''>
@@ -102,9 +104,11 @@ import {
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import BranchSearch from '@comp/searchParms/BranchSearch'
 import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
+import tableDragResize from '@/mixins/TableDragResize'
 
 export default {
   name: 'ErrorMessageModal',
+  mixins: [tableDragResize],
   components: {
     DealWithModal,
     BranchSearch,
@@ -525,5 +529,24 @@ export default {
   background: #EDF3FE !important;
   font-size: 14px !important;
   color: #3E3E3E !important;
+}
+</style>
+<style lang='less' scoped>
+
+::v-deep .table-draggable-handle {
+  border: 1px solid red;
+  height: 100% !important;
+  left: auto !important;
+  right: -5px;
+  cursor: col-resize;
+  touch-action: none;
+  border: none;
+  position: absolute;
+  transform: none !important;
+  bottom: 0;
+}
+
+::v-deep .resize-table-th {
+  position: relative;
 }
 </style>

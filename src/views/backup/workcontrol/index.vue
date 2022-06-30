@@ -105,10 +105,12 @@
           :data-source='dataSource'
           :loading='loading'
           row-key='jobId'
+          bordered
           :row-selection='{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }'
           :pagination='pagination'
           :scroll='{x:"100%"}'
           @change='onPaginationChange'
+          :components='drag(columns)'
         >
           <template #action='row'>
             <div class='flex-center' style='justify-content: space-around'>
@@ -157,6 +159,7 @@ import BranchSearch from '@comp/searchParms/BranchSearch'
 import { getWorkList, pauseWork, playWork, refreshWork, stopWork } from '@api/modules/workcontrol/index'
 import WorkControlInfoModal from '@views/backup/workcontrol/components/modal/WorkControlInfoModal'
 import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
+import tableDragResize from '@/mixins/TableDragResize'
 
 export default {
   name: 'index',
@@ -164,7 +167,7 @@ export default {
     BranchSearch,
     WorkControlInfoModal
   },
-  mixins: [determineUserMinxin],
+  mixins: [determineUserMinxin, tableDragResize],
   data() {
     return {
 
@@ -258,6 +261,7 @@ export default {
           type: 'index',
           width: 60,
           align: 'center',
+          key: 'index',
           customRender: (text, row, index) => {
             return index + 1
           }
@@ -341,8 +345,8 @@ export default {
         },
         {
           title: '进度',
-          key: 'rate',
-          dataIndex: 'rate',
+          key: 'percentComplete',
+          dataIndex: 'percentComplete',
           width: 100,
           align: 'center',
           scopedSlots: {
@@ -681,7 +685,25 @@ export default {
   }
 }
 </script>
+<style lang='less' scoped>
 
+::v-deep .table-draggable-handle {
+  border: 1px solid red;
+  height: 100% !important;
+  left: auto !important;
+  right: -5px;
+  cursor: col-resize;
+  touch-action: none;
+  border: none;
+  position: absolute;
+  transform: none !important;
+  bottom: 0;
+}
+
+::v-deep .resize-table-th {
+  position: relative;
+}
+</style>
 <style scoped>
 .warning-btn {
   background: #e6a23c !important;

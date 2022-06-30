@@ -11,8 +11,8 @@
           <template v-for='(item,index) in labelList'>
             <li style='display:block' :key='index+new Date().getTime()' v-if='item.type=="textarea"'>
               <div>{{ item.label }}</div>
-              <div class='mt-10'>
-                {{ getValue(item.value) }}
+              <div class='mt-10' v-html='getValue(item.value)'>
+
               </div>
             </li>
             <li :key='index' v-else>
@@ -318,10 +318,14 @@ export default {
         }
         let res = await getExceptionDetail(params)
         if (res.code == 200) {
+          res.result.jobStartTime = res.result.jobStartTime ? this.dateFormat(res.result.jobStartTime) : null
+          res.result.jobEndTime = res.result.jobEndTime ? this.dateFormat(res.result.jobEndTime) : null
+          res.result.eventTime = res.result.eventTime ? this.dateFormat(res.result.eventTime) : null
+
           this.detail = res.result || {}
-          console.log(this.detail, 'detail')
-          let index = this.labelList.findIndex(ele => ele.label.indexOf('应用系统') != -1)
-          console.log(index)
+          let systemIndex = this.labelList.findIndex(ele => ele.label.indexOf('应用系统') != -1)
+          let branchIndex = this.labelList.findIndex(ele => ele.label.indexOf('分行') != -1)
+          let index = systemIndex == -1 ? branchIndex : systemIndex
           this.labelList[index].label = this.detail.domain == 'prod' ? '应用系统' : '分行'
           this.labelList[index].value = this.detail.domain == 'prod' ? 'applicationSystem' : 'branchName'
         } else {
@@ -334,6 +338,16 @@ export default {
         this.detailLoading = false
         this.$forceUpdate()
       }
+    },
+    dateFormat(dateTime) {
+      let date = new Date(dateTime)
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let day = date.getDate()
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let second = date.getSeconds()
+      return year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + ' ' + (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + ':' + (second < 10 ? '0' + second : second)
     },
     getValue(key) {
       let value = ''

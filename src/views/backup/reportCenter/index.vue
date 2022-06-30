@@ -56,14 +56,20 @@
                   </div>
                   <div class='year'>
                     <template v-if='item.type==1'>
-                      <div>环比上月 <span
-                        :class='{success:item.month.indexOf("-")!=-1,error:item.month.indexOf("-"==-1)}'>{{
-                          item.month
-                        }}</span></div>
-                      <div>环比去年 <span
-                        :class='{success:item.year.indexOf("-")!=-1,error:item.year.indexOf("-")==-1}'>{{
-                          item.year
-                        }}</span></div>
+                      <div>环比上月
+                        <span v-if='parseFloat(item.month)*1==0' style='color: black'>{{ item.month }}</span>
+                        <span v-if='parseFloat(item.month)*1>0' class='success'>{{ item.month }}</span>
+                        <span v-if='parseFloat(item.month)*1<0' class='error'>{{ item.month }}</span>
+                        <!--                        <span-->
+                        <!--                          :class='{success:item.month.indexOf("-")==-1,error:item.month.indexOf("-"!=-1)}'>{{-->
+                        <!--                            item.month-->
+                        <!--                          }}</span>-->
+                      </div>
+                      <div>环比去年
+                        <span v-if='parseFloat(item.year)*1==0' style='color: black'>{{ item.year }}</span>
+                        <span v-if='parseFloat(item.year)*1>0' class='success'>{{ item.year }}</span>
+                        <span v-if='parseFloat(item.year)*1<0' class='error'>{{ item.year }}</span>
+                      </div>
                     </template>
                   </div>
                 </template>

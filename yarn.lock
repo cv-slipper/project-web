@@ -12346,6 +12346,11 @@
   "resolved" "https://registry.npmjs.org/vue-cropper/-/vue-cropper-0.4.9.tgz"
   "version" "0.4.9"
 
+"vue-draggable-resizable@^2.3.0":
+  "integrity" "sha512-77CLRj1TPwB30pwsjOf3pkd1UzYanCdKXbqhILJ0Oo5QQl50lvBfyQCXxMFzwWwTc3sbBbQH3FfWSV+BkoSElA=="
+  "resolved" "https://registry.npmjs.org/vue-draggable-resizable/-/vue-draggable-resizable-2.3.0.tgz"
+  "version" "2.3.0"
+
 "vue-eslint-parser@^2.0.3":
   "integrity" "sha512-ZezcU71Owm84xVF6gfurBQUGg8WQ+WZGxgDEQu1IHFBZNx7BFZg3L1yHxrCBNNwbwFtE1GuvfJKMtb6Xuwc/Bw=="
   "resolved" "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz"

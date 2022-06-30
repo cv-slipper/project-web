@@ -83,7 +83,9 @@
         :loading='loading'
         :pagination='pagination'
         :scroll='{x:"100%"}'
+        bordered
         @change='tableChange'
+        :components='drag(columns)'
       >
         <template #action='row'>
           <div>
@@ -114,8 +116,10 @@ import { downloadCsv } from '@/utils/modules/download'
 import { getChargingList } from '@api/modules/backupdata/CvChargingApi'
 import { getUserList } from '@api/modules/common'
 import ExceptionInfoModal from '@views/dashboard/components/modal/ExceptionInfoModal'
+import tableDragResize from '@/mixins/TableDragResize'
 
 export default {
+  mixins: [tableDragResize],
   data() {
     return {
       exceptionItem: {},
@@ -180,6 +184,7 @@ export default {
           type: 'index',
           width: 80,
           align: 'center',
+          key: 'index',
           customRender: (text, row, index) => {
             return index + 1
           }
@@ -442,6 +447,7 @@ export default {
       this.pagination.current = page.current
       this.getExceptionPage()
     },
+
     async exportCsv() {
       let params = {
         current: 1,
@@ -502,5 +508,25 @@ export default {
 <style scoped lang='less'>
 .table-box {
   background: white;
+}
+
+</style>
+<style lang='less' scoped>
+
+::v-deep .table-draggable-handle {
+  border: 1px solid red;
+  height: 100% !important;
+  left: auto !important;
+  right: -5px;
+  cursor: col-resize;
+  touch-action: none;
+  border: none;
+  position: absolute;
+  transform: none !important;
+  bottom: 0;
+}
+
+::v-deep .resize-table-th {
+  position: relative;
 }
 </style>

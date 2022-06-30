@@ -188,7 +188,7 @@ export default {
     async pauseWork() {
       try {
         let params = {
-          domain: this.domain,
+          domain: this.detail.domain=='分行域'?'branch':'prod',
           jobIds: this.id
         }
         let res = await pauseWork(params)
@@ -208,7 +208,7 @@ export default {
     async playWork() {
       try {
         let params = {
-          domain: this.domain,
+          domain: this.detail.domain=='分行域'?'branch':'prod',
           jobIds: this.id
         }
         let res = await playWork(params)
@@ -222,6 +222,16 @@ export default {
         this.$message.error('恢复作业失败')
       }
     },
+    dateFormat(dateTime) {
+      let date = new Date(dateTime)
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let day = date.getDate()
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let second = date.getSeconds()
+      return year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + ' ' + (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + ':' + (second < 10 ? '0' + second : second)
+    },
     /**
      * 获取作业详情
      */
@@ -230,6 +240,10 @@ export default {
       try {
         let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
+          let dateTime = res.result.jobStartTime?new Date(res.result.jobStartTime):''
+          res.result.jobStartTime = dateTime?this.dateFormat(dateTime):''
+          res.result.duration=res.result.duration*360+'秒'
+          console.log(res.result)
           this.detail = res.result
         } else {
           this.detail = {}
@@ -249,7 +263,7 @@ export default {
     async stopWork() {
       try {
         let params = {
-          domain: this.domain,
+          domain: this.detail.domain=='分行域'?'branch':'prod',
           jobIds: this.id
         }
         let res = await stopWork(params)

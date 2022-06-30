@@ -10,15 +10,15 @@
         <span v-if='isDesktop()'>{{ nickname() }}</span>
         <a-icon type='down' class='ml-10' style='color:#333333' />
       </span>
-      <a-menu slot='overlay' class='user-dropdown-menu-wrapper' style='width:120px'>
+      <a-menu slot='overlay' class='user-dropdown-menu-wrapper' style='width:100px'>
         <a-menu-item key='4' @click='updatePassword'>
           <a-icon type='setting' />
           <span>密码修改</span>
         </a-menu-item>
-        <a-menu-item key='5' @click='updateCurrentDepart'>
-          <a-icon type='cluster' />
-          <span>切换部门</span>
-        </a-menu-item>
+        <!--        <a-menu-item key='5' @click='updateCurrentDepart'>-->
+        <!--          <a-icon type='cluster' />-->
+        <!--          <span>切换部门</span>-->
+        <!--        </a-menu-item>-->
         <a-menu-item key='6' @click='handleLogout'>
           <a-icon type='logout' />
           <span v-if='isDesktop()'>&nbsp;退出登录</span>

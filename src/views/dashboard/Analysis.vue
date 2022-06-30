@@ -139,8 +139,10 @@
                   <div style='clear:both'></div>
                   <div class='fs-12 '>
                     <div class='num fl'> {{ item.num }}
-                      <div class='increase-num fl'
-                           v-if='item.increaseNum!=null'>+{{
+                      <div
+                        :class='["increase-num fl",]'
+                        :ref="'increaseNum' +index"
+                        v-if='item.increaseNum!=null'>{{
                           item.increaseNum
                         }}
                       </div>
@@ -168,7 +170,8 @@
                   v-if='!systemItem'
                   :system-loading='systemLoading'
                   @gotoSystemInfo='gotoSystemInfo' ref='main' @checkView='view="dataCenter"'></system-distribution>
-                <system-info v-else :system-item='systemItem' @back='systemBack' ref='mainInfo'></system-info>
+                <system-info v-else @dealWithSuccess='dealWithSuccess()' :system-item='systemItem' @back='systemBack'
+                             ref='mainInfo'></system-info>
               </template>
               <template v-else>
                 <data-center-view @checkView='view="system"'></data-center-view>
@@ -705,7 +708,7 @@ export default {
             let xdataData = xdataDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
             let xdiskData = xdiskDataTime.map(item => new Date(item * 1).getMonth() + 1 + '/' + new Date(item * 1).getDate())
             this.xdataunit = dataData.unit || ''
-            this.xdiskunit = xdiskData.unit || ''
+            this.xdiskunit = diskData.unit || ''
             let yData = workData.itemList.map((item) => {
               return {
                 name: item.name,
@@ -796,6 +799,13 @@ export default {
         this.$message.error('获取系统趋势图失败')
       }
     },
+
+    /**
+     * 设置百分比
+     */
+    setProp(num) {
+      return num ? num < 0 ? num + '%' : '+' + num : ''
+    },
     /**
      * 获取系统规模值
      */
@@ -815,10 +825,11 @@ export default {
           this.listData[3].total = res.result.foreLicenseTotal || 0
           this.listData[4].num = res.result.diskStorageUsed || 0
           this.listData[4].total = res.result.diskStorageTotal || 0
-          this.listData[1].increaseNum = res.result.increaseClient || 0
-          this.listData[4].increaseNum = res.result.increaseDisk || 0
+          this.listData[1].increaseNum = this.setProp(res.result.increaseClient || 0)
+          this.listData[4].increaseNum = this.setProp(res.result.increaseDisk || 0)
           if (this.domain == 'prod') {
-
+            this.setScaleStyle(res.result.increaseClient, 'increaseNum1')
+            this.setScaleStyle(res.result.increaseDisk, 'increaseNum4')
           } else {
             if (!this.branchId) {
               this.listData[0].num = res.result.branchNum || 0
@@ -828,18 +839,22 @@ export default {
               this.listData[3].total = res.result.foreLicenseTotal || 0
               this.listData[4].num = res.result.diskStorageUsed || 0
               this.listData[4].total = res.result.diskStorageTotal || 0
-              this.listData[1].increaseNum = res.result.increaseClient || 0
-              this.listData[4].increaseNum = res.result.increaseDisk || 0
+              this.listData[1].increaseNum = this.setProp(res.result.increaseClient || 0)
+              this.listData[4].increaseNum = this.setProp(res.result.increaseDisk || 0)
+              this.setScaleStyle(res.result.increaseClient, 'increaseNum1')
+              this.setScaleStyle(res.result.increaseDisk, 'increaseNum4')
             } else {
               this.listData[2].num = res.result.foreLicenseUsed
               // this.listData[2].total = res.result.foreLicenseTotal
               this.listData[0].num = ''
               this.listData[4].num = res.result.branchStorageUsed || 0
               this.listData[4].total = res.result.branchStorageTotal || 0
-              this.listData[4].increaseNum = res.result.branchStorageInc || 0
+              this.listData[4].increaseNum = this.setProp(res.result.branchStorageInc || 0)
               this.listData[3].num = res.result.headStorage || 0
-              this.listData[3].increaseNum = res.result.headStorageInc || 0
+              this.listData[3].increaseNum = this.setProp(res.result.headStorageInc || 0)
               this.listData[3].total = null
+              this.setScaleStyle(res.result.headStorageInc, 'increaseNum3', 2)
+              this.setScaleStyle(res.result.branchStorageInc, 'increaseNum4')
             }
           }
 
@@ -916,6 +931,20 @@ export default {
       } finally {
         this.currentWorkLoading = false
       }
+    },
+    /**
+     * 修改样式
+     */
+    setScaleStyle(num, ref, type = 1) {
+      let color = parseFloat(num) * 1 == 0 ? 'black' : num > 0 ? '#1BC78B' : '#FF5252'
+      this.$nextTick(() => {
+        if (type == 2) {
+          this.$refs[ref][0].style.top = '0'
+          this.$refs[ref][0].style.right = '-150%'
+        }
+        this.$refs[ref][0].style.color = color
+      })
+
     },
     /**
      * 环境改变
@@ -997,6 +1026,18 @@ export default {
       this.getDomainTrend()
       this.getSystemList()
       this.getExceptionList()
+      this.$nextTick(() => {
+        if (this.domain == 'prod') {
+          if (this.$refs.mainInfo) {
+            this.$refs.mainInfo.getSystemDetail()
+          }
+        } else {
+          if (this.$refs.mainMap) {
+            this.$refs.mainMap.getBranchMapList()
+          }
+        }
+      })
+
     },
     /**
      * 查看处理记录

@@ -126,6 +126,7 @@ export default {
     },
     dealWithSuccess() {
       this.getSystemDetail()
+      this.$emit('dealWithSuccess')
     }
   }
 }
