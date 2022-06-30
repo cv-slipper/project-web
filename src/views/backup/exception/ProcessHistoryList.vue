@@ -166,8 +166,8 @@ export default {
           label: '全部'
         },
         {
-          value: '0',
-          label: '未处理'
+          value: '2',
+          label: '已忽略'
         },
         {
           value: '1',

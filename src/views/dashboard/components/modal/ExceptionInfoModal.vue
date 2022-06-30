@@ -11,7 +11,7 @@
           <template v-for='(item,index) in labelList'>
             <li style='display:block' :key='index+new Date().getTime()' v-if='item.type=="textarea"'>
               <div>{{ item.label }}</div>
-              <div>
+              <div class='mt-10'>
                 {{ getValue(item.value) }}
               </div>
             </li>
@@ -305,11 +305,16 @@ export default {
     async getExceptionDetail() {
       this.detailLoading = true
       try {
+        let type = this.typeList.find(item => item.label == this.detailItem.exceptionType).value
         let params = {
-          jobId: this.detailItem.jobId,
           id: this.detailItem.id,
           domain: this.detailItem.domain,
-          type: this.typeList.find(item => item.label == this.detailItem.exceptionType).value
+          type
+        }
+        if (type == 1) {
+          params.jobId = this.detailItem.jobId
+        } else if (type == 2) {
+          params.eventId = this.detailItem.eventId
         }
         let res = await getExceptionDetail(params)
         if (res.code == 200) {

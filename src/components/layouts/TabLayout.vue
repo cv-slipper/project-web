@@ -20,12 +20,7 @@
     </a-tabs>
     <div class='boxMain' style='margin: 20px 20px 0;margin-top:0;height:calc(100% - 40px)'>
       <transition name='page-toggle'>
-        <keep-alive>
-          <router-view v-if='reloadFlag' />
-        </keep-alive>
-        <!--        <template v-else>-->
-        <!--          <router-view v-if='reloadFlag' />-->
-        <!--        </template>-->
+        <route-view></route-view>
       </transition>
     </div>
   </global-layout>
@@ -37,6 +32,7 @@ import Contextmenu from '@/components/menu/Contextmenu'
 import { mixin, mixinDevice } from '@/utils/mixin.js'
 import { triggerWindowResizeEvent } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import RouteView from '@comp/layouts/RouteView'
 
 const indexKey = '/dashboard/analysis'
 
@@ -44,7 +40,8 @@ export default {
   name: 'TabLayout',
   components: {
     GlobalLayout,
-    Contextmenu
+    Contextmenu,
+    RouteView
   },
   mixins: [mixin, mixinDevice],
   data() {

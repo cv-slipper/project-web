@@ -70,10 +70,11 @@
             </a-form-item>
           </a-col>
           <a-col :span='8'
-                 style='text-align: right;display: flex;justify-content: space-around;align-items: center;height: 55px'>
-            <img v-if='requestCodeSuccess' style='margin-top: 2px;' :src='randCodeImage'
+                 style='text-align: right;height: 44px'>
+            <img v-if='requestCodeSuccess' style='width: 90%;height:44px' :src='randCodeImage'
                  @click='handleChangeCheckCode' />
-            <img v-else style='margin-top: 2px;' src='../../assets/checkcode.png' @click='handleChangeCheckCode' />
+            <img style='width: 90%;height:44px' v-else src='../../assets/checkcode.png'
+                 @click='handleChangeCheckCode' />
           </a-col>
         </a-row>
 
