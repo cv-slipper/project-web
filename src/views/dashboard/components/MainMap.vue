@@ -70,7 +70,15 @@ export default {
           if (this.map) {
             let zoom = this.map.getZoom()
             let center = this.map.getCenter()
-            this.initMap(zoom, [center.lng, center.lat])
+            let lat = 0, lng = 0
+            try {
+              lat = center.lat
+              lng = center.lng
+            } catch (e) {
+              lng = 108.316721
+              lat = 37.38724
+            }
+            this.initMap(zoom, [lng, lat])
           } else {
             this.initMap()
           }
@@ -276,7 +284,7 @@ export default {
         let position = this.areaPoints[i].exceptionNum == 0 ? 'top' : 'bottom'
         marker.setLabel(
           {
-            content: '<div class="area-label">' + this.areaPoints[i].name + '区域</div>',
+            content: `<div class='area-label ${position == 'top' ? 'markerlabel-normal' : 'area-warning'}'> ${this.areaPoints[i].name}区域</div>`,
             direction: position
           }
         )
@@ -306,7 +314,7 @@ export default {
         let isActive = this[key][i].name == (this.branchItem ? this.branchItem.name : 'null') ? 'active-label' : ''
         marker.setLabel(
           {
-            content: '<div class="' + isActive + '" >' + this[key][i].name + '</div>',
+            content: '<div class="markerlabel-normal ' + +isActive + '" >' + this[key][i].name + '</div>',
             direction: 'top'
           }
         )
@@ -330,6 +338,16 @@ export default {
 </script>
 
 <style scoped lang='less'>
+/deep/ .area-warning {
+  position: relative;
+  top: -20px;
+}
+
+/deep/ .markerlabel-normal {
+  position: relative;
+  top: 15px;
+}
+
 /deep/ .area-label {
   background: rgba(0, 0, 0, 0);
   color: black !important;

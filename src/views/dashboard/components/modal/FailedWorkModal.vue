@@ -63,6 +63,11 @@ export default {
       immediate: true,
       handler(val) {
         if (val) {
+          if (this.domain == 'prod') {
+            this.columns[4].title = '应用系统'
+          } else {
+            this.columns[4].title = '分行'
+          }
           this.getWorkList()
         }
       }

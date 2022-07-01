@@ -35,11 +35,11 @@
 
     </div>
     <div class='table-box mt-20'>
-      <div class='searchParams' v-if='!getUserRole()'>
+      <div class='searchParams'>
         <div class='fl'>
           <a-checkbox-group @change='jobTypeChange' :value='jobType' :options='workCheckOpt'></a-checkbox-group>
         </div>
-        <div class='fr'>
+        <div class='fr' v-if='!getUserRole()'>
           <a-button v-if='judgeStatus("pausedStatusList")' class='ml-10' disabled>
             <a-icon type='pause' style='font-size:14px' />
             暂停
@@ -98,7 +98,6 @@
         </div>
         <div style='clear:both'></div>
       </div>
-      <div style='height: 20px' v-else></div>
       <div style='padding:0 20px;background:white'>
         <a-table
           :columns='columns'
@@ -331,8 +330,8 @@ export default {
         },
         {
           title: '阶段',
-          key: 'currentPhase',
-          dataIndex: 'currentPhase',
+          key: 'currentPhaseName',
+          dataIndex: 'currentPhaseName',
           width: 80,
           align: 'center'
         },
@@ -440,8 +439,6 @@ export default {
   watch: {
     '$route'(to, from) {
       if (Object.keys(this.$route.params).length == 0) {
-        this.domain = 'prod'
-        this.state = []
       } else {
         this.domain = this.$route.params.domain
         this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]
@@ -453,8 +450,6 @@ export default {
   },
   created() {
     if (Object.keys(this.$route.params).length == 0) {
-      this.domain = 'prod'
-      this.state = []
     } else {
       this.domain = this.$route.params.domain
       this.state = this.$route.params.state == '' ? [] : [this.$route.params.state]

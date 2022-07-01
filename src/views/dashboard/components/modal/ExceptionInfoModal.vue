@@ -142,6 +142,14 @@ export default {
           value: 'applicationSystem'
         },
         {
+          label: '作业ID：',
+          value: 'jobId'
+        },
+        {
+          label: '操作类型：',
+          value: 'type'
+        },
+        {
           label: '客户端：',
           value: 'client'
         },

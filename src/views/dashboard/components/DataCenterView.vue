@@ -326,7 +326,7 @@ export default {
 
     .right-serve_group {
       width: calc(92% - 120px);
-      height: 100%;
+      height: 98%;
       position: absolute;
       left: calc(120px + 5%);
       display: flex;
@@ -334,26 +334,25 @@ export default {
       align-items: center;
       flex-wrap: wrap;
 
-      .item {
-
-
-      }
 
       .item {
         width: calc(33% - 3px);
+        height: calc(33% - 3px);
+
 
         img {
-          width: 100%;
+          height: 100%;
           object-fit: cover;
         }
 
         .close {
-          width: 100%;
+          height: 100%;
           object-fit: cover;
         }
 
         .normal {
           width: 100%;
+          height: 100%;
           position: relative;
         }
 
@@ -362,7 +361,8 @@ export default {
         }
 
         .service-name_top {
-          width: 100%;
+          //width: 100%;
+          height: 60%;
           position: absolute;
           bottom: 100%;
 

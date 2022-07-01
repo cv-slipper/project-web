@@ -1019,24 +1019,33 @@ export default {
      * 页面初始化
      */
     init() {
-      this.getCurrentWork()
-      this.get24HoursWork()
-      this.getBackupSuccessRate()
-      this.getDomainScale()
-      this.getDomainTrend()
-      this.getSystemList()
-      this.getExceptionList()
-      this.$nextTick(() => {
-        if (this.domain == 'prod') {
-          if (this.$refs.mainInfo) {
-            this.$refs.mainInfo.getSystemDetail()
-          }
-        } else {
-          if (this.$refs.mainMap) {
-            this.$refs.mainMap.getBranchMapList()
-          }
-        }
-      })
+      try {
+        this.getCurrentWork()
+        this.get24HoursWork()
+        this.getBackupSuccessRate()
+        this.getDomainScale()
+        this.getDomainTrend()
+        this.getSystemList()
+        this.getExceptionList()
+
+        this.$nextTick(() => {
+          setTimeout(() => {
+            if (this.domain == 'prod') {
+              if (this.$refs.mainInfo) {
+                this.$refs.mainInfo.getSystemDetail()
+              }
+            } else {
+              if (this.$refs.mainMap) {
+                this.$refs.mainMap.getBranchMapList()
+              }
+            }
+          }, 200)
+
+        })
+      } catch (e) {
+        console.log(e, 'mainError')
+      }
+
 
     },
     /**

@@ -125,7 +125,10 @@ export default {
     },
     'activePage': function(key) {
       let index = this.linkList.lastIndexOf(key)
-      let waitRouter = this.pageList[index]
+      let waitRouter = (this.pageList[index])
+      if (waitRouter.params != null && Object.keys(waitRouter.params).length > 0) {
+        waitRouter.params = {}
+      }
       this.$router.push(Object.assign({}, waitRouter))
       this.changeTitle(waitRouter.meta.title)
     },
