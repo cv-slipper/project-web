@@ -4,10 +4,14 @@
       <div>
         存储库使用信息
       </div>
-      <div class='info-text'>当前：{{ branchName }}</div>
+      <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div class='useage-table'>
+    <a-spin v-if='loading' size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div class='useage-table' v-else>
       <a-table
         style='height: 100%'
         :columns='columns'
@@ -25,6 +29,14 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    domain: {
+      type: String,
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -82,6 +94,7 @@ export default {
 <style scoped lang='less'>
 .repository-usage {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;

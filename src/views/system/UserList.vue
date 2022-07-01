@@ -65,17 +65,17 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px" v-if='!getUserRole()'>
       <a-button @click="handleAdd" type="primary" icon="plus">添加用户</a-button>
-      <a-button @click="handleSyncUser" v-has="'user:syncbpm'" type="primary" icon="plus">同步流程</a-button>
+<!--      <a-button @click="handleSyncUser" v-has="'user:syncbpm'" type="primary" icon="plus">同步流程</a-button>-->
       <a-button type="primary" icon="download" @click="handleExportXls('用户信息')">导出</a-button>
-      <a-upload
-        name="file"
-        :showUploadList="false"
-        :multiple="false"
-        :headers="tokenHeader"
-        :action="importExcelUrl"
-        @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
+<!--      <a-upload-->
+<!--        name="file"-->
+<!--        :showUploadList="false"-->
+<!--        :multiple="false"-->
+<!--        :headers="tokenHeader"-->
+<!--        :action="importExcelUrl"-->
+<!--        @change="handleImportExcel">-->
+<!--        <a-button type="primary" icon="import">导入</a-button>-->
+<!--      </a-upload>-->
       <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0 && !getUserRole()">
         <a-menu slot="overlay" @click="handleMenuClick">
@@ -117,6 +117,13 @@
         :loading="loading"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange">
+        <template #tooltip='data'>
+          <a-tooltip>
+            <div class='text-ellipsis'>
+              {{data}}
+            </div>
+          </a-tooltip>
+        </template>
 
         <template slot="avatarslot" slot-scope="text, record, index">
           <div class="anty-img-wrap">
@@ -160,9 +167,9 @@
                 </a-popconfirm>
               </a-menu-item>
 
-              <a-menu-item>
-                <a href="javascript:;" @click="handleAgentSettings(record.username)">代理人</a>
-              </a-menu-item>
+<!--              <a-menu-item>-->
+<!--                <a href="javascript:;" @click="handleAgentSettings(record.username)">代理人</a>-->
+<!--              </a-menu-item>-->
             </template>
             </a-menu>
           </a-dropdown>
@@ -250,10 +257,13 @@
             sorter: true
           },
           {
-            title: '生日',
+            title: '角色',
             align: "center",
             width: 100,
-            dataIndex: 'birthday'
+            dataIndex: 'roleName',
+            scopedSlots: {
+              customRender: 'tooltip'
+            }
           },
           {
             title: '手机号码',

@@ -334,8 +334,8 @@ export default {
           let systemIndex = this.labelList.findIndex(ele => ele.label.indexOf('应用系统') != -1)
           let branchIndex = this.labelList.findIndex(ele => ele.label.indexOf('分行') != -1)
           let index = systemIndex == -1 ? branchIndex : systemIndex
-          this.labelList[index].label = this.detail.domain == 'prod' ? '应用系统' : '分行'
-          this.labelList[index].value = this.detail.domain == 'prod' ? 'applicationSystem' : 'branchName'
+          this.labelList[index].label = this.detail.domain == '生产域' ? '应用系统' : '分行'
+          this.labelList[index].value = this.detail.domain == '生产域' ? 'applicationSystem' : 'branchName'
         } else {
           this.detail = {}
           this.$message.error(res.message)

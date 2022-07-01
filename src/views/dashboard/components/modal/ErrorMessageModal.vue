@@ -67,7 +67,7 @@
         :pagination='pagination'
         @change='tableChange'
         :row-selection='{selectedRowKeys,onChange:rowSelectionChange,columnWidth:30}'
-        :components='drag(columns)'
+
       >
         >
         <template #action='row'>
@@ -217,7 +217,7 @@ export default {
           title: '备份域',
           key: 'domain',
           dataIndex: 'domain',
-          width: 50,
+          width: 100,
           align: 'center'
         },
         {
@@ -246,7 +246,7 @@ export default {
           key: 'exceptionType',
           dataIndex: 'exceptionType',
           align: 'center',
-          width: 60
+          width: 100
         }, {
           title: '描述',
           key: 'description',
@@ -260,7 +260,7 @@ export default {
           title: '操作',
           key: 'action',
           align: 'center',
-          width: 80,
+          width: 100,
           scopedSlots: {
             customRender: 'action'
           }

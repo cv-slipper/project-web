@@ -12,7 +12,12 @@
 
       <div class='little-title'></div>
     </div>
-    <div class='app-content'>
+    <a-spin v-if='loading'
+            size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div class='app-content' v-else>
       <ul v-if='appRankList.length>0' class='cs'>
         <li v-for='(item,index) in appRankList' :key='index'>
           <div class='ranking-img'>
@@ -31,7 +36,7 @@
             {{ item.value }}
           </div>
           <div class='proportion'>
-            <span>{{ item.ratio }}</span>
+            <span>环比上月{{ item.ratio }}</span>
           </div>
         </li>
       </ul>
@@ -53,6 +58,10 @@ export default {
     domain: {
       type: String,
       default: 'prod'
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -105,6 +114,7 @@ export default {
 <style scoped lang='less'>
 .app-ranking {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;
@@ -259,7 +269,7 @@ export default {
 }
 
 .rankingname {
-  width: 80px;
+  width: 100px;
   font-size: 12px;
   color: #666666;
   margin-left: 10px;

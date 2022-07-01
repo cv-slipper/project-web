@@ -6,7 +6,6 @@
           <div class='flex-center fl'>
             <div class='label fl'>分行:</div>
             <branch-search
-
               style='width:240px'
               class='fl ml-10'
               v-model='branchIds'></branch-search>
@@ -16,7 +15,7 @@
         <a-col :span='12'>
           <div class='fr'>
             <!--            <a-button type='primary' class='fl' @click='updateChargingFee'> 费用更新</a-button>-->
-            <a-button type='primary' class='fl ml-10' @click='openInfoModel("add")'>新增</a-button>
+            <a-button v-if='!getUserRole()' type='primary' class='fl ml-10' @click='openInfoModel("add")'>新增</a-button>
             <a-button type='default' class='fl ml-10' @click='exportExcel'>导出</a-button>
           </div>
 
@@ -72,10 +71,11 @@ import BillingSetInfoModal from './components/BillingSetInfoModal'
 import { getChargingList, deleteCharging, updateChargingFee } from '@/api/modules/backupdata/CvChargingApi.js'
 import { downloadCsv } from '@/utils/modules/download'
 import BranchSearch from '@/components/searchParms/BranchSearch.vue'
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
 
 export default {
   name: 'CvChargingSetList',
-  mixins: [mixinDevice],
+  mixins: [mixinDevice, determineUserMinxin],
   components: {
     JDictSelectTag,
     BillingSetInfoModal,
@@ -243,6 +243,61 @@ export default {
     }
   },
   created() {
+    if (!this.getUserRole()) {
+      this.columns = [
+        {
+          title: '分行名称',
+          align: 'center',
+          dataIndex: 'branchName'
+        },
+        {
+          title: '服务费单价（元/台）',
+          align: 'center',
+          dataIndex: 'serverPrice'
+        },
+        {
+          title: '前端许可单价（元/GB）',
+          align: 'center',
+          dataIndex: 'foreLicensePrice'
+        },
+        {
+          title: '存储写入量单价（元/GB)',
+          align: 'center',
+          dataIndex: 'backLicensePrice'
+        },
+        {
+          title: '操作',
+          align: 'center',
+          // fixed:"right",
+          width: 100,
+          scopedSlots: { customRender: 'action' }
+        }
+      ]
+    } else {
+      this.columns = [
+        {
+          title: '分行名称',
+          align: 'center',
+          dataIndex: 'branchName'
+        },
+        {
+          title: '服务费单价（元/台）',
+          align: 'center',
+          dataIndex: 'serverPrice'
+        },
+        {
+          title: '前端许可单价（元/GB）',
+          align: 'center',
+          dataIndex: 'foreLicensePrice'
+        },
+        {
+          title: '存储写入量单价（元/GB)',
+          align: 'center',
+          dataIndex: 'backLicensePrice'
+        }
+      ]
+    }
+
     this.getChargingList()
   }
 }

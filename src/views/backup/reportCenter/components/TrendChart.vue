@@ -4,10 +4,14 @@
       <div>
         容量及客户端数量趋势
       </div>
-      <div class='info-text'>当前：{{ branchName }}</div>
+      <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='trend-chart' :style='{zoom:zoom}'>
+    <a-spin v-if='loading' size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div v-else id='trend-chart' :style='{zoom:zoom}'>
 
     </div>
   </div>
@@ -27,6 +31,14 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    domain: {
+      type: String,
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -166,7 +178,7 @@ export default {
         this.minNum1 = parseInt(Math.min(...yAxis1) * 0.9)
         data.forEach((item, index) => {
           dataSource[index] = []
-          dataSource[index].push(new Date(item.time).getMonth() + 1 + '月')
+          dataSource[index].push(new Date(item.time).getFullYear() + '-' + (new Date(item.time).getMonth() + 1 < 10 ? ('0' + (new Date(item.time).getMonth() + 1)) : new Date(item.time).getMonth() + 1))
           dataSource[index].push(item.foreLicUsed)
           dataSource[index].push(item.diskUsed)
           dataSource[index].push(item.clientNum)
@@ -251,6 +263,7 @@ export default {
 <style scoped lang='less'>
 .trend-chart {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;

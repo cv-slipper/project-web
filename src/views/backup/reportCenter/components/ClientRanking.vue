@@ -4,12 +4,16 @@
       <div>
         客户端前端许可用量排名
       </div>
-      <div class='info-text'>
+      <div v-if='domain!="prod"' class='info-text'>
         当前：{{ branchName }}
       </div>
       <div class='little-title'></div>
     </div>
-    <div class='table-box mt-10'>
+    <a-spin v-if='loading' size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div v-else class='table-box mt-10'>
       <a-table
         :columns='columns'
         :data-source='tableData'
@@ -35,6 +39,14 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    domain: {
+      type: String,
+      deafult: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -84,6 +96,7 @@ export default {
 <style scoped lang='less'>
 .client-ranking {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;

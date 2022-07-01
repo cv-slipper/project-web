@@ -18,7 +18,17 @@ export const determineUserMinxin = {
       let isNormal = null
       let roleCode = Vue.ls.get('RoleCode')
       if ((roleCode).length > 0) {
-        isNormal = roleCode.indexOf('normal') == -1 ? false : true
+        isNormal = roleCode.indexOf('Operator') == -1 ? false : true
+      } else {
+        isNormal = true
+      }
+      return isNormal
+    },
+    isDev() {
+      let isNormal = null
+      let roleCode = Vue.ls.get('RoleCode')
+      if ((roleCode).length > 0) {
+        isNormal = roleCode.indexOf('Developer') == -1 ? false : true
       } else {
         isNormal = true
       }

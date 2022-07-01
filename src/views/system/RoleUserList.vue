@@ -31,18 +31,18 @@
           </a-form>
         </div>
         <!-- 操作按钮区域 -->
-        <div class='table-operator' style='margin: 5px 0 10px 2px' v-if='!getUserRole()'>
-          <a-button @click='handleAdd' type='primary' icon='plus'>新建角色</a-button>
+        <div class='table-operator' style='margin: 5px 0 10px 2px'>
+          <!--          <a-button @click='handleAdd' type='primary' icon='plus'>新建角色</a-button>-->
           <!--<a-button @click="handleEdit(model1)" type="primary" icon="plus">角色编辑</a-button>-->
-          <a-upload
-            name='file'
-            :showUploadList='false'
-            :multiple='false'
-            :headers='tokenHeader'
-            :action='importExcelUrl'
-            @change='handleImportExcel'>
-            <a-button type='primary' icon='import'>导入</a-button>
-          </a-upload>
+          <!--          <a-upload-->
+          <!--            name='file'-->
+          <!--            :showUploadList='false'-->
+          <!--            :multiple='false'-->
+          <!--            :headers='tokenHeader'-->
+          <!--            :action='importExcelUrl'-->
+          <!--            @change='handleImportExcel'>-->
+          <!--            <a-button type='primary' icon='import'>导入</a-button>-->
+          <!--          </a-upload>-->
           <a-button type='primary' icon='download' @click="handleExportXls('角色管理')">导出</a-button>
         </div>
 
@@ -67,12 +67,12 @@
             @change='handleTableChange'>
             <span slot='action' slot-scope='text, record'>
               <a @click='handleOpen(record)'>用户</a>
-              <a-divider type='vertical' />
+              <a-divider type='vertical' v-if='isDev()' />
 
-              <a @click='handleDesign(record.id)'>工单授权</a>
-              <a-divider type='vertical' />
+              <!--              <a @click='handleDesign(record.id)'>工单授权</a>-->
+              <!--              <a-divider type='vertical' />-->
 
-              <a-dropdown>
+              <a-dropdown v-if='isDev()'>
                 <a class='ant-dropdown-link'>
                   更多 <a-icon type='down' />
                 </a>
@@ -126,7 +126,7 @@
         </div>
 
         <!-- 操作按钮区域 -->
-        <div class='table-operator' :md='24' :sm='24'>
+        <div class='table-operator' :md='24' :sm='24' v-if='!getUserRole()'>
           <a-button @click='handleAdd2' type='primary' icon='plus' style='margin-top: 16px'>新增用户</a-button>
           <!--<a-button @click="handleEdit2" type="primary" icon="edit" style="margin-top: 16px">用户编辑</a-button>-->
           <a-button @click='handleAddUserRole' type='primary' icon='plus' style='margin-top: 16px'>已有用户</a-button>
@@ -345,6 +345,32 @@ export default {
   },
   created() {
     if (!this.getUserRole()) {
+      this.columns2 = [{
+        title: '用户账号',
+        align: 'center',
+        dataIndex: 'username',
+        width: 120
+      },
+        {
+          title: '用户名称',
+          align: 'center',
+          width: 100,
+          dataIndex: 'realname'
+        },
+        {
+          title: '状态',
+          align: 'center',
+          width: 80,
+          dataIndex: 'status_dictText'
+        },
+
+        {
+          title: '操作',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' },
+          align: 'center',
+          width: 120
+        }]
       this.columns = [
         {
           title: '角色编码',
@@ -373,6 +399,24 @@ export default {
         }
       ]
     } else {
+      [{
+        title: '用户账号',
+        align: 'center',
+        dataIndex: 'username',
+        width: 120
+      },
+        {
+          title: '用户名称',
+          align: 'center',
+          width: 100,
+          dataIndex: 'realname'
+        },
+        {
+          title: '状态',
+          align: 'center',
+          width: 80,
+          dataIndex: 'status_dictText'
+        }]
       this.columns = [
         {
           title: '角色编码',

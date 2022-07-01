@@ -12,7 +12,11 @@
 
       <div class='little-title'></div>
     </div>
-    <div id='capacity-radio' :style='{zoom:zoom}'></div>
+    <a-spin v-if='loading' size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div v-else id='capacity-radio' :style='{zoom:zoom}'></div>
   </div>
 </template>
 
@@ -30,6 +34,10 @@ export default {
     domain: {
       type: String,
       default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -192,6 +200,7 @@ export default {
 <style scoped lang='less'>
 .capacity-radio {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;

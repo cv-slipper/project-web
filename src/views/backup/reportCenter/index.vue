@@ -28,14 +28,17 @@
       <div style='display: flex;height:100%;position: relative'>
         <div class='main-left'>
           <div class='item'>
-            <trend-chart ref='trendChart' :branch-name='branchName'></trend-chart>
+            <trend-chart :loading='trendChartLoading' :domain='domain' ref='trendChart'
+                         :branch-name='branchName'></trend-chart>
           </div>
           <div class='item'>
             <!--            数据类型分布-客户端数量区-->
-            <front-end-capacity ref='clientTrend' :data='clientNumData' :branch-name='branchName'></front-end-capacity>
+            <front-end-capacity :loading='frontEndLoading' :domain='domain' ref='clientTrend' :data='clientNumData'
+                                :branch-name='branchName'></front-end-capacity>
           </div>
           <div class='item'>
-            <pie-chart ref='frontPie' v-if='!branchId || domain=="prod"' :branch-name='branchName'></pie-chart>
+            <pie-chart :loading='pieChartLoading' :domain='domain' ref='frontPie' v-if='!branchId || domain=="prod"'
+                       :branch-name='branchName'></pie-chart>
           </div>
         </div>
         <div class='main-center'>
@@ -79,23 +82,29 @@
           </div>
           <div class='main-center-bottom'>
             <div :class='["useage-box",{branchActive:branchId && domain=="branch"}]'>
-              <repository-usage ref='repositoryUeage' :branch-name='branchName'></repository-usage>
+              <repository-usage :loading='repositoryUseageLoading' ref='repositoryUeage' :domain='domain'
+                                :branch-name='branchName'></repository-usage>
             </div>
           </div>
         </div>
         <div class='main-left'>
           <div class='item'>
-            <client-ranking ref='clientRanking' :branch-name='branchName'></client-ranking>
+            <client-ranking :loading='clilentRankingLoading' :domain='domain' ref='clientRanking'
+                            :branch-name='branchName'></client-ranking>
           </div>
           <div class='item'>
-            <pie-chart v-if='branchId && domain=="branch"' ref='frontPie' :branch-name='branchName'></pie-chart>
-            <app-ranking :domain='domain' ref='appRanking' v-else v-model='branchRankType'></app-ranking>
+            <pie-chart :loading='pieChartLoading' v-if='branchId && domain=="branch"' ref='frontPie'
+                       :branch-name='branchName'></pie-chart>
+            <app-ranking :loading='appRankingLoading' :domain='domain' ref='appRanking' v-else
+                         v-model='branchRankType'></app-ranking>
           </div>
           <div class='item'>
 
-            <stack-chart ref='stackChart' class='stack-chart' v-if='branchId && domain=="branch"'
+            <stack-chart :loading='stackChartLoading' ref='stackChart' class='stack-chart'
+                         v-if='branchId && domain=="branch"'
                          :branch-name='branchName'></stack-chart>
-            <capacity-ratio ref='capacityRatio' :domain='domain' v-model='areaPropType' v-else></capacity-ratio>
+            <capacity-ratio :loading='capacityRatioLoading' ref='capacityRatio' :domain='domain' v-model='areaPropType'
+                            v-else></capacity-ratio>
           </div>
         </div>
       </div>
@@ -141,6 +150,14 @@ export default {
   },
   data() {
     return {
+      trendChartLoading: true,
+      frontEndLoading: true,
+      pieChartLoading: true,
+      repositoryUseageLoading: true,
+      clilentRankingLoading: true,
+      appRankingLoading: true,
+      stackChartLoading: true,
+      capacityRatioLoading: true,
       domain: 'prod',
       itemList: [
         {
@@ -250,32 +267,39 @@ export default {
      * 获取存储库增长趋势
      */
     async getDiskTrendData() {
+      this.stackChartLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getDiskTrendData(params)
         if (res.code == 200) {
-          if (this.$refs.stackChart) {
-            this.$refs.stackChart.inintChartData(res.result)
-          }
+          this.stackChartLoading = false
+          setTimeout(() => {
+            if (this.$refs.stackChart) {
+              this.$refs.stackChart.inintChartData(res.result)
+            }
+          }, 100)
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         console.log(e, 'e')
         this.$message.error('获取存储库增长趋势失败')
+      } finally {
+        this.stackChartLoading = false
       }
     },
     /**
      * 获取容量及客户端数量趋势图
      */
     async getAppTrendData() {
+      this.trendChartLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getAppTrendData(params)
         if (res.code == 200) {
@@ -291,34 +315,42 @@ export default {
       } catch (e) {
         console.log(e, 'e')
         this.$message.error('获取容量及客户端数量失败')
+      } finally {
+        this.trendChartLoading = false
       }
     },
     /**
      * 获取存储库使用信息
      */
     async getDiskUesdData() {
+      this.repositoryUseageLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getDiskUesdData(params)
         if (res.code == 200) {
-          if (this.$refs.repositoryUeage) {
-            this.$refs.repositoryUeage.initTableData(res.result)
-          }
+          this.$nextTick(() => {
+            if (this.$refs.repositoryUeage) {
+              this.$refs.repositoryUeage.initTableData(res.result)
+            }
+          })
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         console.log(e, 'e')
         this.$message.error('获取存储库数据失败')
+      } finally {
+        this.repositoryUseageLoading = false
       }
     },
     /**
      * 获取应用系统排名
      */
     async getAppSystemRank() {
+      this.appRankingLoading = true
       try {
         let params = {
           domain: this.domain,
@@ -326,36 +358,46 @@ export default {
         }
         const res = await getAppSystemRank(params)
         if (res.code == 200) {
-          if (this.$refs.appRanking) {
-            this.$refs.appRanking.initAppRankList(res.result)
-          }
+          this.$nextTick(() => {
+            if (this.$refs.appRanking) {
+              this.$refs.appRanking.initAppRankList(res.result)
+            }
+          })
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         console.log(e)
         this.$message.error('获取应用系统排名失败')
+      } finally {
+        this.appRankingLoading = false
       }
     },
     /**
      * 获取区域占比数据 生产域
      */
     async getAreaPropDataProd() {
+      this.capacityRatioLoading = true
       try {
         let params = {
           type: this.areaPropType
         }
         const res = await getAreaPropDataProd(params)
         if (res.code == 200) {
-          if (this.$refs.capacityRatio) {
-            this.$refs.capacityRatio.initData(res.result)
-          }
+          setTimeout(() => {
+            if (this.$refs.capacityRatio) {
+              this.$refs.capacityRatio.initData(res.result)
+            }
+          }, 100)
+
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         console.log(e)
         this.$message.error('获取区域占比数据失败')
+      } finally {
+        this.capacityRatioLoading = false
       }
     },
     /**
@@ -387,7 +429,7 @@ export default {
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId,
+          branchId: this.domain == 'prod' ? '' : this.branchId,
           type: this.branchRankType
         }
         const res = await getBranchRank(params)
@@ -407,10 +449,11 @@ export default {
      * 获取前端许可排行
      */
     async getFrontRank() {
+      this.clilentRankingLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
 
         const res = await getFrontRank(params)
@@ -425,6 +468,8 @@ export default {
         }
       } catch (e) {
         this.$message.error('获取失败')
+      } finally {
+        this.clilentRankingLoading = false
       }
     },
     /**
@@ -434,7 +479,7 @@ export default {
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getDomainScale(params)
         if (res.code == 200) {
@@ -470,44 +515,53 @@ export default {
      * 获取前端许可数据（数据类型分布）
      */
     async getFrontPie() {
+      this.pieChartLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getFrontPie(params)
         if (res.code == 200) {
-          this.$nextTick(() => {
+          setTimeout(() => {
             if (this.$refs.frontPie) {
               this.$refs.frontPie.initChart(res.result)
             }
-          })
+          }, 100)
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         this.$message.error('获取数据')
+      } finally {
+        this.pieChartLoading = false
       }
     },
     /**
      * 获取客户端趋势数据
      */
     async getClientTrends() {
+      this.frontEndLoading = true
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.domain == 'prod' ? '' : this.branchId
         }
         const res = await getClientTrends(params)
         if (res.code == 200) {
-          if (this.$refs.clientTrend) {
-            this.$refs.clientTrend.initDataSource(res.result)
-          }
+          this.$nextTick(() => {
+            if (this.$refs.clientTrend) {
+              this.$refs.clientTrend.initDataSource(res.result)
+            }
+          })
+
         } else {
           this.$message.error(res.message)
         }
       } catch (e) {
         this.$message.error('获取数据失败')
+      } finally {
+        this.frontEndLoading = false
       }
     },
     /**

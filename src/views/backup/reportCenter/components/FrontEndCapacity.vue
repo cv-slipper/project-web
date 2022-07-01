@@ -4,11 +4,14 @@
       <div>
         数据类型分布-{{ branchName == '全域' ? '客户端数量' : '前端容量' }}
       </div>
-      <div class='info-text'>当前：{{ branchName }}</div>
+      <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
+    <a-spin v-if='loading' size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
-    <div id='front-chart' :style='{zoom:zoom}'>
+    </a-spin>
+    <div v-else id='front-chart' :style='{zoom:zoom}'>
     </div>
   </div>
 </template>
@@ -28,6 +31,14 @@ export default {
       default: function() {
         return []
       }
+    },
+    domain: {
+      type: String,
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -300,6 +311,7 @@ export default {
 <style scoped lang='less'>
 .front-end-capacity {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;

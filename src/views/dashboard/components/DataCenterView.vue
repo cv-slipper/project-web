@@ -24,7 +24,6 @@
           <div class='service-name'>
             <div class='service-name_top'>
               <div>数据中心</div>
-              <img src='@/assets/dataCenterView/datacenter-title.png' alt='' />
             </div>
             <img src='@/assets/dataCenterView/data-center-left.png' alt='' />
           </div>
@@ -53,7 +52,6 @@
           <div class='service-name'>
             <div class='service-name_top'>
               <div>数据中心</div>
-              <img src='@/assets/dataCenterView/datacenter-title.png' alt='' />
             </div>
             <img src='@/assets/dataCenterView/data-center-right.png' alt='' />
           </div>
@@ -280,9 +278,11 @@ export default {
       }
 
       .service-name_top {
-        width: 100%;
+        width: 10px;
         position: absolute;
-        bottom: 100%;
+        bottom: 20%;
+        height: 100%;
+        right: 10%;
 
         div {
           width: 100%;
@@ -294,7 +294,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-around;
-          color: white;
+          color: #4A70FF;
         }
       }
 
@@ -406,9 +406,11 @@ export default {
       }
 
       .service-name_top {
-        width: 100%;
+        width: 10px;
+        height: 100%;
         position: absolute;
-        bottom: 100%;
+        bottom: 20%;
+        left: 10%;
 
         div {
           width: 100%;
@@ -420,7 +422,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-around;
-          color: white;
+          color: #4A70FF;
         }
       }
 

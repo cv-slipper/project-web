@@ -4,10 +4,15 @@
       <div>
         数据类型分布-前端许可用量
       </div>
-      <div class='info-text'>当前：{{ branchName }}</div>
+      <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
     </div>
-    <div id='pieChart' :style='{zoom:zoom}'></div>
+    <a-spin v-if='loading'
+            size='large'
+            style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
+
+    </a-spin>
+    <div v-else id='pieChart' :style='{zoom:zoom}'></div>
   </div>
 </template>
 
@@ -22,6 +27,14 @@ export default {
     branchName: {
       type: String,
       default: ''
+    },
+    domain: {
+      type: String,
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -261,6 +274,7 @@ export default {
 <style scoped lang='less'>
 .pie-chart {
   height: 100%;
+  position: relative;
 
   .trend-chart-title {
     font-size: 16px;
