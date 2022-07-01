@@ -15,41 +15,41 @@
           </li>
           <li style='display:block'>
             <div>失败原因/等待原因：</div>
-            <div>
-             {{getValue('reason')}}</a-input>
+            <div v-html='getValue("reason")'>
+
             </div>
           </li>
         </ul>
         <div class='buttons mt-20'>
           <template v-if='!getUserRole()'>
-          <a-button class='ml-10' disabled v-if='judgeBtnPermission("pausedStatusList")'>
-            <a-icon type='pause' style='font-size:14px' />
-            暂停
-          </a-button>
-          <a-button v-else class='ml-10 warning-btn' @click='confirm("pause","暂停")'>
-            <a-icon type='pause' style='font-size:14px' />
-            暂停
-          </a-button>
-          <a-button class='ml-10 ' disabled v-if='judgeBtnPermission("playStatusList")'>
-            <a-icon type='caret-right' />
-            继续
-          </a-button>
-          <a-button v-else class='ml-10 success-btn' @click='confirm("play","继续")'>
-            <a-icon type='caret-right' />
-            继续
-          </a-button>
-          <a-button class='ml-10' disabled v-if='judgeBtnPermission("stopStatusList")'>
-            <a-icon type='stop' />
-            终止
-          </a-button>
-          <a-button v-else class='ml-10 error-btn' @click='confirm("stop","终止") '>
-            <a-icon type='stop' />
-            终止
-          </a-button>
+            <a-button class='ml-10' disabled v-if='judgeBtnPermission("pausedStatusList")'>
+              <a-icon type='pause' style='font-size:14px' />
+              暂停
+            </a-button>
+            <a-button v-else class='ml-10 warning-btn' @click='confirm("pause","暂停")'>
+              <a-icon type='pause' style='font-size:14px' />
+              暂停
+            </a-button>
+            <a-button class='ml-10 ' disabled v-if='judgeBtnPermission("playStatusList")'>
+              <a-icon type='caret-right' />
+              继续
+            </a-button>
+            <a-button v-else class='ml-10 success-btn' @click='confirm("play","继续")'>
+              <a-icon type='caret-right' />
+              继续
+            </a-button>
+            <a-button class='ml-10' disabled v-if='judgeBtnPermission("stopStatusList")'>
+              <a-icon type='stop' />
+              终止
+            </a-button>
+            <a-button v-else class='ml-10 error-btn' @click='confirm("stop","终止") '>
+              <a-icon type='stop' />
+              终止
+            </a-button>
           </template>
           <a-button type='link' @click='lookEvent'>查看作业相关事件</a-button>
-<!--          <a-button type='link'>查看作业日志</a-button>-->
-<!--          <a-button type='link'>查看RMAN日志</a-button>-->
+          <!--          <a-button type='link'>查看作业日志</a-button>-->
+          <!--          <a-button type='link'>查看RMAN日志</a-button>-->
         </div>
         <work-event-list-modal
           :visible='eventListVisible'
@@ -62,13 +62,13 @@
 <script>
 import { getWorkDetail, pauseWork, playWork, stopWork } from '@/api/modules/workcontrol/index.js'
 import WorkEventListModal from '@views/backup/workcontrol/components/modal/WorkEventListModal'
-import {determineUserMinxin} from '@/mixins/DetermineUserMinxin'
+import { determineUserMinxin } from '@/mixins/DetermineUserMinxin'
 
 export default {
   components: {
     WorkEventListModal
   },
-  mixins:[determineUserMinxin],
+  mixins: [determineUserMinxin],
   props: {
     visible: {
       type: Boolean,
@@ -188,7 +188,7 @@ export default {
     async pauseWork() {
       try {
         let params = {
-          domain: this.detail.domain=='分行域'?'branch':'prod',
+          domain: this.detail.domain == '分行域' ? 'branch' : 'prod',
           jobIds: this.id
         }
         let res = await pauseWork(params)
@@ -208,7 +208,7 @@ export default {
     async playWork() {
       try {
         let params = {
-          domain: this.detail.domain=='分行域'?'branch':'prod',
+          domain: this.detail.domain == '分行域' ? 'branch' : 'prod',
           jobIds: this.id
         }
         let res = await playWork(params)
@@ -240,9 +240,9 @@ export default {
       try {
         let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
-          let dateTime = res.result.jobStartTime?new Date(res.result.jobStartTime):''
-          res.result.jobStartTime = dateTime?this.dateFormat(dateTime):''
-          res.result.duration=res.result.duration*360+'秒'
+          let dateTime = res.result.jobStartTime ? new Date(res.result.jobStartTime) : ''
+          res.result.jobStartTime = dateTime ? this.dateFormat(dateTime) : ''
+          res.result.duration = res.result.duration * 360 + '秒'
           console.log(res.result)
           this.detail = res.result
         } else {
@@ -263,7 +263,7 @@ export default {
     async stopWork() {
       try {
         let params = {
-          domain: this.detail.domain=='分行域'?'branch':'prod',
+          domain: this.detail.domain == '分行域' ? 'branch' : 'prod',
           jobIds: this.id
         }
         let res = await stopWork(params)
