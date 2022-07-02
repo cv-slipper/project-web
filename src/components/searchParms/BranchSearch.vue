@@ -93,7 +93,11 @@ export default {
     async getBranchList() {
       const res = await getBranchList()
       if (res.code == 200) {
-        console.log(res, 'res')
+        if (res.result.length > 0) {
+          res.result.forEach(item => {
+            item.name = item.abbreviation
+          })
+        }
         this.branchList = res.result || []
       } else {
         this.$message.error(res.message)
