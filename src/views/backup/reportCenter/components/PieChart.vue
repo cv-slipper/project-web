@@ -12,7 +12,14 @@
             style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
     </a-spin>
-    <div v-else id='pieChart' :style='{zoom:zoom}'></div>
+    <template v-else>
+      <div v-if='chartData.length>0' id='pieChart' :style='{zoom:zoom}'></div>
+      <a-empty v-else
+               :description='false'
+               style='position: absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;display: flex;justify-content: space-around;align-items: center' />
+
+    </template>
+
   </div>
 </template>
 
@@ -39,9 +46,13 @@ export default {
   },
   data() {
     return {
+      chartData: [],
       colorIndex: 0,
       color: ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE'],
       myChart: null,
+      grid: {
+        left: 0
+      },
       option: {
         tooltip: {
           trigger: 'item'
@@ -51,8 +62,8 @@ export default {
           top: 'center',
           orient: 'vertical',
           icon: 'circle',
-          itemWidth: 8,
-          itemHeight: 8,
+          itemWidth: 6,
+          itemHeight: 6,
           type: 'scroll',//这句
           formatter: name => {
             this.colorIndex++
@@ -61,64 +72,14 @@ export default {
             }
             return this.getRichArr(this.option.series[0].data, name).join('')
           },
-          data: [
-            {
-              name: 'Search Engine',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[0],
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'Direct',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[1],
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'Email',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[2],
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'Union Ads',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[3],
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'Video Ads',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[4],
-                borderWidth: 3
-              }
-            },
-            {
-              name: 'other',
-              itemStyle: {
-                color: 'white',
-                borderColor: useColor[5],
-                borderWidth: 3
-              }
-            }
-          ],
+          data: [],
           textStyle: {
             height: 8,
             lineHeight: 8,
             rich: {
               a: {
                 align: 'left',
-                padding: [0, 30, 0, 0],
-                width: 75,
+                width: 104,
                 fontSize: 8
               },
               b0: {
@@ -180,7 +141,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '16',
+                fontSize: 8,
                 fontWeight: 'bold',
                 formatter: '{d}%\n{b}'
               }
@@ -188,14 +149,7 @@ export default {
             labelLine: {
               show: false
             },
-            data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' },
-              { value: 400, name: 'other' }
-            ]
+            data: []
           }
         ]
       }
@@ -204,15 +158,30 @@ export default {
 
   methods: {
     initChart(data) {
+      this.chartData = data || []
       if (data.length > 0) {
+        this.option.legend.data = []
+        this.option.series[0].data = []
         data.forEach((item, index) => {
-          this.option.series[0].data[index].value = item.usage
-          this.option.series[0].data[index].name = item.agent
-          this.option.legend.data[index].name = item.agent
+          this.option.series[0].data[index] = {
+            value: item.usage,
+            name: item.agent
+          }
+          this.option.legend.data[index] = {
+            name: item.agent,
+            itemStyle: {
+              color: 'white',
+              borderColor: useColor[index],
+              borderWidth: 2
+            }
+          }
         })
-        this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+        this.$nextTick(() => {
+          this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+          this.myChart.clear()
+          this.myChart.setOption(this.option, true)
+        })
 
-        this.myChart.setOption(this.option, true)
         window.addEventListener('resize', () => {
           this.myChart.resize()
         })

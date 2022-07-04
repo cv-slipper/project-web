@@ -16,7 +16,14 @@
             style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
     </a-spin>
-    <div v-else id='capacity-radio' :style='{zoom:zoom}'></div>
+    <template v-else>
+      <div v-if='chartData.length>0' id='capacity-radio' :style='{zoom:zoom}'></div>
+      <a-empty v-else
+               :description='false'
+               style='position: absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;display: flex;justify-content: space-around;align-items: center' />
+
+    </template>
+
   </div>
 </template>
 
@@ -71,8 +78,8 @@ export default {
               label: '前端'
             },
             {
-              value: 2,
-              label: '后端'
+              value: 3,
+              label: '客户端数量'
             }
           ]
         }
@@ -82,6 +89,7 @@ export default {
   },
   data() {
     return {
+      chartData: [],
       values: '',
       myChart: null,
       dataList: [
@@ -106,15 +114,23 @@ export default {
             //x轴文字的配置
             show: true,
             interval: 0,//使x轴文字显示全
-            rotate: 0
+            rotate: 0,
+            fontSize: 8
           }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+
+          axisLabel: {
+            margin: 2,
+            fontSize: 8
+          }
         },
         grid: {
-          bottom: '50px',
-          top: '30px'
+          bottom: 28,
+          top: 30,
+          left: 15,
+          right: 5
         },
 
         series: [
@@ -134,7 +150,8 @@ export default {
               show: true,
               position: 'top',
               formatter: '{c}%',
-              color: '#666666'
+              color: '#666666',
+              fontSize: 8
             }
 
           }
@@ -147,6 +164,7 @@ export default {
       this.$emit('input', this.values)
     },
     initData(data) {
+      this.chartData = data || []
       if (data.length > 0) {
         let legend = data.map(item => ({ value: this.domain == 'prod' ? item.groupName : item.regionName }))
         let series = data.map(item => item.ratio)
@@ -180,18 +198,21 @@ export default {
           )
         }
       }
-      this.myChart = this.$echarts.init(document.getElementById('capacity-radio'))
-      this.myChart.clear()
-      this.myChart.setOption(this.option)
-      window.addEventListener('resize', () => {
-        if (window.screen.width == 1920) {
-          this.option.xAxis.axisLabel.rotate = 0
-        } else {
-          this.option.xAxis.axisLabel.rotate = 30
-        }
+      this.$nextTick(() => {
+        this.myChart = this.$echarts.init(document.getElementById('capacity-radio'))
+        this.myChart.clear()
         this.myChart.setOption(this.option)
-        this.myChart.resize()
+        window.addEventListener('resize', () => {
+          if (window.screen.width == 1920) {
+            this.option.xAxis.axisLabel.rotate = 0
+          } else {
+            this.option.xAxis.axisLabel.rotate = 30
+          }
+          this.myChart.setOption(this.option)
+          this.myChart.resize()
+        })
       })
+
     }
   }
 }

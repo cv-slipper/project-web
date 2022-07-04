@@ -2,7 +2,7 @@
   <div class='front-end-capacity'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-{{ branchName == '全域' ? '客户端数量' : '前端容量' }}
+        数据类型分布-{{ domain == 'branch' && branchName != '全域' ? '前端容量' : '客户端数量' }}
       </div>
       <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -11,8 +11,15 @@
             style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
     </a-spin>
-    <div v-else id='front-chart' :style='{zoom:zoom}'>
-    </div>
+    <template v-else>
+      <div v-if='dataSource.length>0' id='front-chart' :style='{zoom:zoom}'>
+      </div>
+      <a-empty v-else
+               :description='false'
+               style='position: absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;display: flex;justify-content: space-around;align-items: center' />
+
+    </template>
+
   </div>
 </template>
 
@@ -79,14 +86,14 @@ export default {
           right: 0,
           top: 'middle',
           icon: 'circle',
-          itemWidth: 8,
-          itemHeight: 8,
+          itemWidth: 6,
+          itemHeight: 6,
           type: 'scroll',//这句
           tooltip: {
             show: true,
             formatter: (params) => {
               let item = this.option.series.find(item => item.name == params.name)
-              return item.name + ': ' + item.data[0]
+              return item.name + ': ' + item.data[0] + '%'
             }
           },
           textStyle: {
@@ -95,15 +102,14 @@ export default {
             fontSize: 8,
             rich: {
               a: {
+                width: 95,
                 align: 'left',
-                padding: [0, 20, 0, 0],
-                width: 60,
                 fontSize: 8
               },
               b0: {
                 align: 'right',
                 color: '#CAC9CA',
-                fontSize: 12
+                fontSize: 8
               },
               b1: {
                 align: 'right',
@@ -220,6 +226,7 @@ export default {
           let item = this.dataSource[index]
           this.option.series[index] = {
             type: 'bar',
+            barWidth: 3,
             name: item.agent,
             data: [item.clientRatio],
             coordinateSystem: 'polar',
@@ -231,31 +238,35 @@ export default {
             itemStyle: {
               color: 'white',
               borderColor: 'red',
-              borderWidth: 3
+              borderWidth: 2
             }
           }
         }
         let max = Math.max(...this.option.series.map(item => item.data[0]))
         let min = Math.min(...this.option.series.map(item => item.data[0]))
-        this.option.angleAxis.max = max + (min * 1.5)
+        this.option.angleAxis.max = max * 1.2
         this.option.legend.formatter = name => {
           let item = this.option.series.find(item => item.name == name)
           let index = this.option.series.findIndex(item => item.name == name)
+
           return this.getRichArr(item, index, name).join('')
         }
+        this.option.series.forEach((item, index) => {
+          item.color = this.color[index]
+        })
+        this.option.legend.data.forEach((item, index) => {
+
+          item.itemStyle.borderColor = this.color[this.dataSource.length - 1 - index]
+        })
+
+        this.myChart = this.$echarts.init(document.getElementById('front-chart'))
+        this.myChart.clear()
+        this.myChart.setOption(this.option, true)
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
       }
-      this.option.series.forEach((item, index) => {
-        item.color = this.color[index]
-      })
-      this.option.legend.data.forEach((item, index) => {
-        item.itemStyle.borderColor = this.color[this.dataSource.length - 1 - index]
-      })
-      this.myChart = this.$echarts.init(document.getElementById('front-chart'))
-      this.myChart.clear()
-      this.myChart.setOption(this.option, true)
-      window.addEventListener('resize', () => {
-        this.myChart.resize()
-      })
+
     },
     getRichArr(item, index, name) {
       let arr = []
@@ -263,45 +274,45 @@ export default {
         case 0:
           arr = [
             '{a|' + name + '}',
-            '{b0|' + item.data[0] + '}\n'
+            '{b0|' + item.data[0] + '%}\n'
           ]
           break
         case 1:
           arr = [
             '{a|' + name + '}',
-            '{b1|' + item.data[0] + '}\n'
+            '{b1|' + item.data[0] + '%}\n'
           ]
           break
         case 2:
           arr =
             [
               '{a|' + name + '}',
-              '{b2|' + item.data[0] + '}\n'
+              '{b2|' + item.data[0] + '%}\n'
             ]
           break
         case 3:
           arr =
             [
               '{a|' + name + '}',
-              '{b3|' + item.data[0] + '}\n'
+              '{b3|' + item.data[0] + '%}\n'
             ]
           break
         case 4:
           arr =
             [
               '{a|' + name + '}',
-              '{b4|' + item.data[0] + '}\n'
+              '{b4|' + item.data[0] + '%}\n'
             ]
           break
         case 5:
           arr =
             [
               '{a|' + name + '}',
-              '{b5|' + item.data[0] + '} \n'
+              '{b5|' + item.data[0] + '%} \n'
             ]
           break
       }
-      index != 5 && arr.push('{c|}')
+      index != 0 && arr.push('{c|}')
       return arr
     }
   }

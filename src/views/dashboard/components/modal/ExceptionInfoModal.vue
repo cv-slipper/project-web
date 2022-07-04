@@ -151,7 +151,7 @@ export default {
         },
         {
           label: '客户端：',
-          value: 'client'
+          value: 'clientName'
         },
         {
           label: '代理类型：',
@@ -244,11 +244,11 @@ export default {
         },
         {
           label: '事件代码：',
-          value: 'eventCode'
+          value: 'eventCodeString'
         },
         {
           label: '服务器：',
-          value: 'client'
+          value: 'clientName'
 
         },
         {

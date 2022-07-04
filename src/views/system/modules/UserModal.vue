@@ -23,7 +23,7 @@
       <a-form :form='form'>
 
         <a-form-item label='用户账号' :labelCol='labelCol' :wrapperCol='wrapperCol'>
-          <a-input placeholder='请输入用户账号' v-decorator.trim="[ 'username', validatorRules.username]"
+          <a-input placeholder='请输入用户账号' v-decorator.trim="['username', validatorRules.username]"
                    :readOnly='!!model.id' />
         </a-form-item>
 
@@ -223,13 +223,7 @@ export default {
           }]
         },
         roles: {},
-        //  sex:{initialValue:((!this.model.sex)?"": (this.model.sex+""))}
-        workNo: {
-          rules: [
-            { required: true, message: '请输入工号' },
-            { validator: this.validateWorkNo }
-          ]
-        },
+
         selectedRole: {
           rules: [
             {
@@ -306,9 +300,18 @@ export default {
       })
     },
     loadUserRoles(userid) {
+      let that = this
       queryUserRole({ userid: userid }).then((res) => {
         if (res.success) {
           this.selectedRole = res.result
+          let selectedRole = res.result
+          let params = {
+            selectedRole
+          }
+          that.$nextTick(() => {
+            that.form.setFieldsValue({ 'selectedRole': selectedRole })
+          })
+
         } else {
           console.log(res.message)
         }
@@ -323,11 +326,13 @@ export default {
       this.resultDepartOptions = []
       this.departId = []
       this.departIdShow = false
+      this.form.resetFields()
     },
     add() {
       this.picUrl = ''
       this.refresh()
-      this.edit({ activitiSync: '1' })
+      this.visible = true
+      // this.edit({ activitiSync: '1' })
     },
     edit(record) {
       this.resetScreenSize() // 调用此方法,根据屏幕宽度自适应调整抽屉的宽度

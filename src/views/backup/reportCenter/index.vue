@@ -6,7 +6,7 @@
           <span v-if='domain=="prod"'>
           {{ getWeekDay() }}
             </span>
-          <a-select v-else style='width:150px' v-model='branchId'>
+          <a-select v-else show-search style='width:150px' :filter-option='filterOption' v-model='branchId'>
             <a-select-option v-for='item in branchList' :value='item.id' :key='item.id'>
               {{ item.abbreviation }}
             </a-select-option>
@@ -282,9 +282,19 @@ export default {
             }
           }, 100)
         } else {
+          setTimeout(() => {
+            if (this.$refs.stackChart) {
+              this.$refs.stackChart.inintChartData([])
+            }
+          }, 100)
           this.$message.error(res.message)
         }
       } catch (e) {
+        setTimeout(() => {
+          if (this.$refs.stackChart) {
+            this.$refs.stackChart.inintChartData([])
+          }
+        }, 100)
         console.log(e, 'e')
         this.$message.error('获取存储库增长趋势失败')
       } finally {
@@ -303,16 +313,25 @@ export default {
         }
         const res = await getAppTrendData(params)
         if (res.code == 200) {
-          if (this.$refs.trendChart) {
-            this.$nextTick(() => {
+          this.$nextTick(() => {
+            if (this.$refs.trendChart) {
               this.$refs.trendChart.initChartData(res.result)
-            })
-
-          }
+            }
+          })
         } else {
+          this.$nextTick(() => {
+            if (this.$refs.trendChart) {
+              this.$refs.trendChart.initChartData([])
+            }
+          })
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.trendChart) {
+            this.$refs.trendChart.initChartData([])
+          }
+        })
         console.log(e, 'e')
         this.$message.error('获取容量及客户端数量失败')
       } finally {
@@ -337,9 +356,19 @@ export default {
             }
           })
         } else {
+          this.$nextTick(() => {
+            if (this.$refs.repositoryUeage) {
+              this.$refs.repositoryUeage.initTableData([])
+            }
+          })
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.repositoryUeage) {
+            this.$refs.repositoryUeage.initTableData([])
+          }
+        })
         console.log(e, 'e')
         this.$message.error('获取存储库数据失败')
       } finally {
@@ -364,9 +393,19 @@ export default {
             }
           })
         } else {
+          this.$nextTick(() => {
+            if (this.$refs.appRanking) {
+              this.$refs.appRanking.initAppRankList([])
+            }
+          })
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.appRanking) {
+            this.$refs.appRanking.initAppRankList([])
+          }
+        })
         console.log(e)
         this.$message.error('获取应用系统排名失败')
       } finally {
@@ -391,9 +430,19 @@ export default {
           }, 100)
 
         } else {
+          setTimeout(() => {
+            if (this.$refs.capacityRatio) {
+              this.$refs.capacityRatio.initData([])
+            }
+          }, 100)
           this.$message.error(res.message)
         }
       } catch (e) {
+        setTimeout(() => {
+          if (this.$refs.capacityRatio) {
+            this.$refs.capacityRatio.initData([])
+          }
+        }, 100)
         console.log(e)
         this.$message.error('获取区域占比数据失败')
       } finally {
@@ -410,14 +459,27 @@ export default {
         }
         const res = await getAreaPropData(params)
         if (res.code == 200) {
-          if (this.$refs.capacityRatio) {
-            this.$refs.capacityRatio.initData(res.result)
-          }
+          setTimeout(() => {
+            if (this.$refs.capacityRatio) {
+              this.$refs.capacityRatio.initData(res.result)
+            }
+          }, 100)
+
         } else {
+          setTimeout(() => {
+            if (this.$refs.capacityRatio) {
+              this.$refs.capacityRatio.initData([])
+            }
+          }, 100)
           this.$message.error(res.message)
         }
 
       } catch (e) {
+        setTimeout(() => {
+          if (this.$refs.capacityRatio) {
+            this.$refs.capacityRatio.initData([])
+          }
+        }, 100)
         console.log(e, 'e')
         this.$message.error('获取区域占比区数据失败')
       }
@@ -434,13 +496,26 @@ export default {
         }
         const res = await getBranchRank(params)
         if (res.code == 200) {
-          if (this.$refs.appRanking) {
-            this.$refs.appRanking.initAppRankList(res.result)
-          }
+          this.$nextTick(() => {
+            if (this.$refs.appRanking) {
+              this.$refs.appRanking.initAppRankList(res.result)
+            }
+          })
+
         } else {
+          this.$nextTick(() => {
+            if (this.$refs.appRanking) {
+              this.$refs.appRanking.initAppRankList(res.result)
+            }
+          })
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.appRanking) {
+            this.$refs.appRanking.initAppRankList([])
+          }
+        })
         console.log(e)
         this.$message.error('获取分行排名失败')
       }
@@ -464,9 +539,19 @@ export default {
             }
           })
         } else {
-          this.$message.error('获取失败')
+          this.$nextTick(() => {
+            if (this.$refs.clientRanking) {
+              this.$refs.clientRanking.initTableData([])
+            }
+          })
+          this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.clientRanking) {
+            this.$refs.clientRanking.initTableData([])
+          }
+        })
         this.$message.error('获取失败')
       } finally {
         this.clilentRankingLoading = false
@@ -529,9 +614,19 @@ export default {
             }
           }, 100)
         } else {
+          setTimeout(() => {
+            if (this.$refs.frontPie) {
+              this.$refs.frontPie.initChart([])
+            }
+          }, 100)
           this.$message.error(res.message)
         }
       } catch (e) {
+        setTimeout(() => {
+          if (this.$refs.frontPie) {
+            this.$refs.frontPie.initChart([])
+          }
+        }, 100)
         this.$message.error('获取数据')
       } finally {
         this.pieChartLoading = false
@@ -556,9 +651,19 @@ export default {
           })
 
         } else {
+          this.$nextTick(() => {
+            if (this.$refs.clientTrend) {
+              this.$refs.clientTrend.initDataSource([])
+            }
+          })
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.$nextTick(() => {
+          if (this.$refs.clientTrend) {
+            this.$refs.clientTrend.initDataSource([])
+          }
+        })
         this.$message.error('获取数据失败')
       } finally {
         this.frontEndLoading = false
@@ -585,10 +690,18 @@ export default {
       }
     },
     /**
+     * 过滤分行
+     */
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input) >= 0
+      )
+    },
+    /**
      * 设置百分比
      */
     setProp(num) {
-      return num ? num < 0 ? num + '%' : '+' + num + '%' : ''
+      return num ? num < 0 ? num + '%' : '+' + num + '%' : '+0%'
     },
     /**
      * 初始化echarts图例

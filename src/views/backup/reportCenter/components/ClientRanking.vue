@@ -15,9 +15,11 @@
     </a-spin>
     <div v-else class='table-box mt-10'>
       <a-table
+        height='100%'
         :columns='columns'
         :data-source='tableData'
         :pagination='false'
+        :scroll='{y:"100%"}'
       >
         <template #ranking='row'>
           <div class='rank-slot'>
@@ -42,11 +44,24 @@ export default {
     },
     domain: {
       type: String,
-      deafult: ''
+      deafult: 'prod'
     },
     loading: {
       type: Boolean,
       default: false
+    }
+  },
+  watch: {
+    domain: {
+      handler(val) {
+
+        if (val == 'prod') {
+          this.columns[2].title = '应用系统'
+        } else {
+          this.columns[2].title = '分行名称'
+        }
+      },
+      immediate: true
     }
   },
   data() {
@@ -81,6 +96,7 @@ export default {
       tableData: []
     }
   },
+
   methods: {
     initTableData(data) {
       data.forEach((item, index) => {
@@ -190,24 +206,42 @@ export default {
   }
 }
 
-@media screen and(max-width: 1700px) {
-  /deep/ .table-box table thead tr th {
-    padding: 15px 5px !important;
-    font-size: 12px !important;
-  }
-
-  /deep/ .table-box table tbody tr td {
-    padding: 15px 5px !important;
-    font-size: 12px !important;
-  }
-
-  /deep/ .table-box .ant-table-tbody > tr > td {
-    border-bottom: none !important;
-    padding: 15px 5px !important;
-  }
-}
 
 /deep/ .ant-select-dropdown {
   z-index: 9999;
+}
+
+/deep/ .ant-table-wrapper {
+  height: 100% !important;
+}
+
+/deep/ .ant-spin-container {
+  height: 100%;
+}
+
+/deep/ .ant-spin-nested-loading {
+  height: 100%;
+}
+
+/deep/ .ant-table {
+  height: 100%;
+}
+
+/deep/ .ant-table-content {
+  height: 100%;
+}
+
+/deep/ .ant-table-scroll {
+  height: 100%;
+  overflow: hidden;
+}
+
+/deep/ .ant-table-header {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+/deep/ .ant-table-body {
+  overflow-y: auto !important;
+  background: rgba(0, 0, 0, 0) !important;
 }
 </style>

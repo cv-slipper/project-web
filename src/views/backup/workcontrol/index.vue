@@ -530,7 +530,7 @@ export default {
             jobIds: this.selectedRowKeys.join(',')
           })
           if (res.code == 200) {
-            this.$message.success('暂停成功')
+            this.$message.success('操作成功')
             this.getWorkList()
           } else {
             this.$message.error(res.message)
@@ -555,7 +555,7 @@ export default {
             jobIds: this.selectedRowKeys.join(',')
           })
           if (res.code == 200) {
-            this.$message.success('恢复成功')
+            this.$message.success('操作成功')
             this.getWorkList()
           } else {
             this.$message.error(res.message)
@@ -582,7 +582,7 @@ export default {
             jobIds: this.selectedRowKeys.join(',')
           })
           if (res.code == 200) {
-            this.$message.success('恢复成功')
+            this.$message.success('操作成功')
             this.getWorkList()
           } else {
             this.$message.error(res.message)

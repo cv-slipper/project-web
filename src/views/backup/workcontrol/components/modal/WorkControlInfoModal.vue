@@ -232,6 +232,28 @@ export default {
       let second = date.getSeconds()
       return year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + ' ' + (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + ':' + (second < 10 ? '0' + second : second)
     },
+    formatSeconds(value) {
+      var theTime = parseInt(value)// 秒
+      var theTime1 = 0// 分
+      var theTime2 = 0// 小时
+      if (theTime > 60) {
+        theTime1 = parseInt(theTime / 60)
+        theTime = parseInt(theTime % 60)
+        if (theTime1 > 60) {
+          theTime2 = parseInt(theTime1 / 60)
+          theTime1 = parseInt(theTime1 % 60)
+        }
+      }
+      var result = '' + parseInt(theTime) + '秒'
+      if (theTime1 > 0) {
+        result = '' + parseInt(theTime1) + '分' + result
+      }
+      if (theTime2 > 0) {
+        result = '' + parseInt(theTime2) + '小时' + result
+      }
+
+      return result
+    },
     /**
      * 获取作业详情
      */
@@ -241,8 +263,8 @@ export default {
         let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
           let dateTime = res.result.jobStartTime ? new Date(res.result.jobStartTime) : ''
-          res.result.jobStartTime = dateTime ? this.dateFormat(dateTime) : ''
-          res.result.duration = res.result.duration * 360 + '秒'
+          res.result.jobStartTime = dateTime ? this.dateFormat(dateTime * 1000) : ''
+          res.result.duration = this.formatSeconds(res.result.duration)
           console.log(res.result)
           this.detail = res.result
         } else {

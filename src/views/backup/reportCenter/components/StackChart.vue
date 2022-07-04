@@ -11,7 +11,14 @@
             style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
     </a-spin>
-    <div v-else id='stack-chart' :style='{zoom:zoom}'></div>
+    <template v-else>
+      <div v-if='chartData.length>0' id='stack-chart' :style='{zoom:zoom}'></div>
+      <a-empty v-else
+               :description='false'
+               style='position: absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;display: flex;justify-content: space-around;align-items: center' />
+
+    </template>
+
   </div>
 </template>
 
@@ -33,6 +40,7 @@ export default {
   },
   data() {
     return {
+      chartData: [],
       color: ['#3C6BE3', '#24D4A4'],
       option: {
         tooltip: {
@@ -111,6 +119,7 @@ export default {
   },
   methods: {
     inintChartData(data) {
+      this.chartData = data || []
       if (data.length > 0) {
         let xData = data.map(item => ({ value: new Date(item.month).getMonth() + 1 + '月份' }))
         this.option.xAxis.data = xData

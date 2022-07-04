@@ -443,6 +443,11 @@ export default {
     },
     domainChange(val) {
       this.searchParams.system = []
+      if (this.searchParams.domain == 'prod') {
+        this.getSystemListByBranch()
+      } else {
+        this.getBranchList()
+      }
     },
     dealWith(type) {
       this.dealWithType = type

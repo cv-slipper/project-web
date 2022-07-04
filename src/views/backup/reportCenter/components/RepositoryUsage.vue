@@ -13,10 +13,10 @@
     </a-spin>
     <div class='useage-table' v-else>
       <a-table
-        style='height: 100%'
         :columns='columns'
         :data-source='tableData'
         :pagination='false'
+        :scroll='{y:"100%"}'
       ></a-table>
     </div>
   </div>
@@ -39,6 +39,91 @@ export default {
       default: false
     }
   },
+  watch: {
+    domain: {
+      handler(val) {
+        if (val == 'prod') {
+          this.columns = [
+            {
+              title: '序号',
+              customRender: (text, record, index) => {
+                return index + 1
+              },
+              width: 60
+            },
+            {
+              title: '存储库',
+              dataIndex: 'libName',
+              align: 'center',
+              width: 120
+            },
+            {
+              title: '使用量',
+              dataIndex: 'diskUsed',
+              align: 'center'
+            },
+            {
+              title: '环比上月',
+              dataIndex: 'ratio',
+              align: 'center'
+            },
+            {
+              title: '总容量',
+              dataIndex: 'diskTotal',
+              align: 'center'
+            },
+            {
+              title: '预计扩容日期',
+              dataIndex: 'dateToBeFull',
+              align: 'center'
+            }
+          ]
+        } else {
+          this.columns = [
+            {
+              title: '序号',
+              customRender: (text, record, index) => {
+                return index + 1
+              },
+              width: 60
+            },
+            {
+              title: '存储库',
+              dataIndex: 'libName',
+              align: 'center',
+              width: 180
+            },
+            {
+              title: '所属分行',
+              dataIndex: 'branchName',
+              align: 'center'
+            },
+            {
+              title: '使用量',
+              dataIndex: 'diskUsed',
+              align: 'center'
+            },
+            {
+              title: '环比上月',
+              dataIndex: 'ratio',
+              align: 'center'
+            },
+            {
+              title: '总容量',
+              dataIndex: 'diskTotal',
+              align: 'center'
+            },
+            {
+              title: '预计扩容日期',
+              dataIndex: 'dateToBeFull',
+              align: 'center'
+            }
+          ]
+        }
+      },
+      immediate: true
+    }
+  },
   data() {
     return {
       columns: [
@@ -52,6 +137,11 @@ export default {
         {
           title: '存储库',
           dataIndex: 'libName',
+          align: 'center'
+        },
+        {
+          title: '所属分行',
+          dataIndex: 'branchName',
           align: 'center'
         },
         {
@@ -126,17 +216,16 @@ export default {
 
 .useage-table {
   height: calc(100% - 35px);
-  overflow-y: auto;
 }
 
-/deep/ .useage-table::-webkit-scrollbar, .info::-webkit-scrollbar {
+/deep/ .ant-table-body::-webkit-scrollbar, .info::-webkit-scrollbar {
   height: 9px;
   width: 5px;
   background-color: #4d64bd;
 }
 
 // 滚动条颜色
-/deep/ .useage-table::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
+/deep/ .ant-table-body::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: #3475EF;
 }
@@ -167,4 +256,37 @@ export default {
   background: rgba(10, 51, 126, 0.09) !important;
 }
 
+/deep/ .ant-table-wrapper {
+  height: 100% !important;
+}
+
+/deep/ .ant-spin-container {
+  height: 100%;
+}
+
+/deep/ .ant-spin-nested-loading {
+  height: 100%;
+}
+
+/deep/ .ant-table {
+  height: 100%;
+}
+
+/deep/ .ant-table-content {
+  height: 100%;
+}
+
+/deep/ .ant-table-scroll {
+  height: 100%;
+  overflow: hidden;
+}
+
+/deep/ .ant-table-header {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+/deep/ .ant-table-body {
+  overflow-y: auto !important;
+  background: rgba(0, 0, 0, 0) !important;
+}
 </style>

@@ -35,8 +35,8 @@
           <div class='ranking-num'>
             {{ item.value }}
           </div>
-          <div class='proportion'>
-            <span>环比上月{{ item.ratio }}</span>
+          <div class='proportion' v-if='domain!="prod"'>
+            <span>环比上月{{ item.ratio }}{{ item.displayValue || '' }}</span>
           </div>
         </li>
       </ul>
@@ -70,6 +70,40 @@ export default {
         this.values = val
       },
       immediate: true
+    },
+    domain: {
+      handler(val) {
+        this.values = 1
+        if (val == 'prod') {
+          this.dataList = [
+            {
+              value: 1,
+              label: '前端'
+            },
+            {
+              value: 3,
+              label: '客户端数量'
+            }
+          ]
+        } else {
+          this.dataList = [
+            {
+              value: 1,
+              label: '前端'
+            },
+            {
+              value: 2,
+              label: '后端'
+            },
+            {
+              value: 3,
+              label: '客户端数量'
+            }
+          ]
+        }
+      },
+      immediate: true
+
     }
   },
   data() {

@@ -11,9 +11,15 @@
             style='position: absolute;left:0;right:0;top:0;bottom: 0;margin:auto;display: flex;align-items: center;justify-content: space-around'>
 
     </a-spin>
-    <div v-else id='trend-chart' :style='{zoom:zoom}'>
+    <template v-else>
+      <div v-if='chartData.length>0' id='trend-chart' :style='{zoom:zoom}'>
 
-    </div>
+      </div>
+      <a-empty v-else
+               :description='false'
+               style='position: absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;display: flex;justify-content: space-around;align-items: center' />
+    </template>
+
   </div>
 </template>
 
@@ -48,10 +54,10 @@ export default {
         dataset: {
           source: []
         },
-        // color: ['#3C6BE3', '#24D4A4', '#F2E314'],
+        color: ['#3C6BE3', '#24D4A4', '#F2E314'],
         legend: {
-          itemHeight: 10,
-          itemWidth: 10,
+          itemHeight: 8,
+          itemWidth: 8,
           data: [{ name: '前端许可用量', icon: 'rect' }, { name: '后端存储用量', icon: 'rect' }, { name: '客户端数量', icon: 'rect' }],
           top: '5%',
           textStyle: {
@@ -68,17 +74,27 @@ export default {
         xAxis: [
           {
             type: 'category',
-
+            interval: 0,
             axisPointer: {
               type: 'shadow'
+            },
+            axisLabel: {
+              //x轴文字的配置
+              show: true,
+              interval: 0,//使x轴文字显示全
+              rotate: 0,
+              fontSize: 8
             }
           }
         ],
         yAxis: [
           {
-            type: 'log',
+            type: 'value',
             name: 'TB',
-            splitNum: 5,
+
+            splitLine: {
+              show: false
+            },
             nameTextStyle: {
               fontSize: 10
             },
@@ -97,11 +113,13 @@ export default {
 
           },
           {
-            type: 'log',
+            type: 'value',
             name: '台',
-            splitNum: 5,
             nameTextStyle: {
               fontSize: 10
+            },
+            splitLine: {
+              show: false
             },
             axisLabel: {
               margin: 2,
@@ -123,14 +141,17 @@ export default {
           {
             name: '前端许可用量',
             type: 'bar',
-            barWidth: 20,
-            yAxisIndex: 0
+            barWidth: 10,
+
+            yAxisIndex: 0,
+            barMinHeight: 2
           },
           {
             name: '后端存储用量',
             type: 'bar',
-            barWidth: 20,
-            yAxisIndex: 0
+            barWidth: 10,
+            yAxisIndex: 0,
+            barMinHeight: 2
           },
           {
             name: '客户端数量',
@@ -144,11 +165,12 @@ export default {
           show: true,
           type: 'slider',
           height: 3,
-          start: 20,
+          start: 50,
           end: 100,
           bottom: '0'
         }
       },
+      chartData: [],
       myChart: null,
       maxNum: 0,
       minNum: 0,
@@ -157,25 +179,23 @@ export default {
     }
   },
   created() {
-    let data = this.option.series.reduce((pre, cur) => pre.concat(cur.data), [])
-    this.getMax(data)
+    // let data = this.option.series.reduce((pre, cur) => pre.concat(cur.data), [])
+    // this.getMax(data)
   },
   mounted() {
-
-
   },
   methods: {
     /**
      * 初始化chart数据
      */
     initChartData(data) {
-
+      this.chartData = data || []
       if (data.length > 0) {
         let dataSource = []
         let numberList = []
         let yAxis1 = data.map(item => item.clientNum)
-        this.maxNum1 = parseInt(Math.max(...yAxis1) * 1.1)
-        this.minNum1 = parseInt(Math.min(...yAxis1) * 0.9)
+        this.maxNum1 = parseInt(Math.max(...yAxis1) * 1.5)
+        this.minNum1 = parseInt(Math.min(...yAxis1) * 0.5)
         data.forEach((item, index) => {
           dataSource[index] = []
           dataSource[index].push(new Date(item.time).getFullYear() + '-' + (new Date(item.time).getMonth() + 1 < 10 ? ('0' + (new Date(item.time).getMonth() + 1)) : new Date(item.time).getMonth() + 1))
@@ -186,10 +206,8 @@ export default {
           numberList.push(item.diskUsed)
         })
         this.getMax(numberList)
-        this.option.yAxis[0].interval = parseInt(this.maxNum / 5)
-        this.option.yAxis[1].interval = parseInt(this.maxNum1 / 5)
         this.option.dataset.source = dataSource
-        console.log(this.option, 'option')
+        console.log(this.maxNum, 'maxnum')
         setTimeout(() => {
           this.initChart()
         }, 10)
@@ -210,9 +228,9 @@ export default {
           min = item
         }
       })
-      this.maxNum = parseInt(max * 1.1)
+      this.maxNum = parseInt((this.maxNum - this.minNum) / 5) ? parseFloat(max * 1.5).toFixed(1) : parseInt(max * 1.5)
       maxNum = this.maxNum
-      this.minNum = parseInt(min * 0.9)
+      this.minNum = parseInt(min * 0.5)
       return max
     },
     set_data(arr_data) {
@@ -250,7 +268,8 @@ export default {
     },
     initChart() {
       this.myChart = this.$echarts.init(document.getElementById('trend-chart'))
-      // this.myChart.clear()
+      this.myChart.clear()
+      console.log(this.option, 'option')
       this.myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         this.myChart.resize()
