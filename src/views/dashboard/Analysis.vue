@@ -804,7 +804,7 @@ export default {
      * 设置百分比
      */
     setProp(num) {
-      return num ? num < 0 ? num + '%' : '+' + num : ''
+      return num ? parseInt(num) < 0 ? num : '+' + num : '+0'
     },
     /**
      * 获取系统规模值

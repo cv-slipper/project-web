@@ -244,4 +244,16 @@ export default {
   overflow-y: auto !important;
   background: rgba(0, 0, 0, 0) !important;
 }
+
+/deep/ .ant-table-body::-webkit-scrollbar, .info::-webkit-scrollbar {
+  height: 9px;
+  width: 5px;
+  background-color: #4d64bd;
+}
+
+// 滚动条颜色
+/deep/ .ant-table-body::-webkit-scrollbar-thumb, .info::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #3475EF;
+}
 </style>

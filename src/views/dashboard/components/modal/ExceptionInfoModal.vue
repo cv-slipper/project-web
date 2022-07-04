@@ -37,7 +37,7 @@
           </template>
         </ul>
         <div class='buttons mt-20'>
-          <template v-if='detail.handled==0'>
+          <template v-if='detail.handled=="未处理"'>
             <a-button class='ml-10 warning-btn' @click='dealWithVisible = true'>
               <a-icon type='pause' style='font-size:14px' />
               处理
