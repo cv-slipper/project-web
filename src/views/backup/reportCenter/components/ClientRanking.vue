@@ -72,11 +72,13 @@ export default {
           title: ' ',
           scopedSlots: {
             customRender: 'ranking'
-          }
+          },
+          width: 30
         },
         {
           title: '客户端名称',
           dataIndex: 'clientName'
+
 
         },
         {

@@ -111,7 +111,7 @@ export default {
               show: false
             },
             nameTextStyle: {
-              fontSize: 10
+              fontSize: 8
             },
             axisLabel: {
               margin: 2,
@@ -133,7 +133,7 @@ export default {
             splitNum: 4,
             minInterval: 1,
             nameTextStyle: {
-              fontSize: 10
+              fontSize: 8
             },
             splitLine: {
               show: false
