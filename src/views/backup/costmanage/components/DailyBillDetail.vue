@@ -284,12 +284,12 @@ export default {
           dataIndex: 'clientName',
           align: 'center'
         },
-        {
-          title: '作业ID',
-          key: 'jobId',
-          dataIndex: 'jobId',
-          align: 'center'
-        },
+        // {
+        //   title: '作业ID',
+        //   key: 'jobId',
+        //   dataIndex: 'jobId',
+        //   align: 'center'
+        // },
         {
           title: '写入存储库',
           key: 'library',
@@ -341,8 +341,8 @@ export default {
         const res = await getBackFee(params)
         if (res.code === 200) {
           this.thirdDataSource = [res.result.summary]
-          this.thirdInfoDataSource = res.result.clientList.list || []
-          this.thirdPage.total = res.result.clientList.totalSize || 0
+          this.thirdInfoDataSource = res.result.clientList ? (res.result.clientList.list || []) : []
+          this.thirdPage.total = res.result.clientList ? res.result.clientList.totalSize : 0
 
         } else {
           this.$message.error(res.message)
@@ -371,8 +371,8 @@ export default {
         let res = await getFrontFee(params)
         if (res.code == 200) {
           this.secondDataSource = [res.result.summary]
-          this.secondInfoDataSource = res.result.clientList.list || []
-          this.secondPage.total = res.result.clientList.totalSize
+          this.secondInfoDataSource = res.result.clientList ? (res.result.clientList.list || []) : []
+          this.secondPage.total = res.result.clientList ? res.result.clientList.totalSize : 0
         } else {
           this.$message.error(res.message)
 
@@ -398,8 +398,8 @@ export default {
         const res = await getServiceFee(params)
         if (res.code == 200) {
           this.firstDataSource = [res.result.summary] || []
-          this.firstInfoDataSource = res.result.clientList.list || []
-          this.firstPage.total = res.result.clientList.totalSize
+          this.firstInfoDataSource = res.result.clientList ? (res.result.clientList.list || []) : []
+          this.firstPage.total = res.result.clientList ? res.result.clientList.totalSize : 0
         } else {
           this.$message.error(res.message)
         }
@@ -436,8 +436,10 @@ export default {
       this.firstPage.current = 1
       this.firstPage.pageSize = 10
       Promise.all([this.getServiceFee(), this.getFrontendFee(), this.getBackFee()]).then(() => {
-        let total = (this.firstDataSource[0].total || 0) + (this.secondDataSource[0].total || 0) + (this.thirdDataSource[0].total || 0)
+        let total = (this.firstDataSource[0] ? this.firstDataSource[0].total : 0) + (this.secondDataSource[0] ? this.secondDataSource[0].total : 0) + (this.thirdDataSource[0] ? this.thirdDataSource[0].total : 0)
         this.$emit('total', total.toFixed(2))
+      }).catch(err => {
+        console.log(err, 'err')
       })
     }
   }
@@ -478,6 +480,6 @@ export default {
 }
 
 /deep/ .backTable table tbody td {
-  padding: 30px 20px !important;
+  padding: 40px 20px !important;
 }
 </style>

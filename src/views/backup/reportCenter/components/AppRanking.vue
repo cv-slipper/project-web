@@ -33,7 +33,7 @@
           <a-progress :percent='item.prop' :class='{rankingrate:domain=="branch",prodRate:domain=="prod"}'
                       stroke-color='#3C6BE3' :show-info='false' />
           <div class='ranking-num'>
-            {{ item.value }}{{ item.displayValue || '' }}
+            {{ item.displayValue || '' }}
           </div>
           <div class='proportion' v-if='!(domain=="prod" && values==3)'>
             <span>环比上月{{ item.ratio }}</span>

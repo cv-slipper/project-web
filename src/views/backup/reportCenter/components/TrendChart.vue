@@ -69,7 +69,20 @@ export default {
           bottom: 28
         },
         tooltip: {
-          show: true
+          show: true,
+          formatter: (params) => {
+            let force = params.data[1] >= 1024 ? parseInt(params.data[1] / 1024) + 'TB' : params.data[1] + 'GB'
+            let disk = params.data[2] >= 1024 ? parseInt(params.data[2] / 1024) + 'TB' : params.data[2] + 'GB'
+            return `
+               <div>${params.data[0]}</div>
+               <div>前端许可用量：${force}</div>
+               <div>后端存储用量：${disk}</div>
+               <div>客户端数量：${params.data[3]}</div>
+            `
+          },
+          position: function(point) {
+            return [point[0], '0']
+          }
         },
         xAxis: [
           {
@@ -90,7 +103,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: 'TB',
+            name: 'GB',
             splitNum: 4,
             minInterval: 1,
 
@@ -160,8 +173,8 @@ export default {
           {
             name: '客户端数量',
             type: 'line',
-            showSymbol: true,
-            smooth: false,
+            showSymbol: false,
+            smooth: true,
             yAxisIndex: 1
           }
         ],
@@ -198,7 +211,7 @@ export default {
         let dataSource = []
         let numberList = []
         let yAxis1 = data.map(item => item.clientNum)
-        this.maxNum1 = parseInt(Math.max(...yAxis1) * 1.5)
+        this.maxNum1 = parseInt(Math.max(...yAxis1) * 1.2)
         this.minNum1 = parseInt(Math.min(...yAxis1) * 0.5)
         data.forEach((item, index) => {
           dataSource[index] = []
@@ -212,10 +225,10 @@ export default {
         this.getMax(numberList)
         this.option.dataset.source = dataSource
         this.option.yAxis[0].max = this.maxNum
-        this.option.yAxis[0].interval = (this.maxNum / 4)
+        this.option.yAxis[0].interval = parseInt(this.maxNum / 4)
 
         this.option.yAxis[1].max = this.maxNum1
-        this.option.yAxis[1].interval = (this.maxNum1 / 4)
+        this.option.yAxis[1].interval = parseInt(this.maxNum1 / 4)
         setTimeout(() => {
           this.initChart()
         }, 10)
@@ -236,7 +249,7 @@ export default {
           min = item
         }
       })
-      this.maxNum = parseInt((this.maxNum - this.minNum) / 5) ? parseFloat(max * 1.5).toFixed(1) : parseInt(max * 1.5)
+      this.maxNum = parseInt((this.maxNum - this.minNum) / 5) == 0 ? parseFloat(max * 1.2).toFixed(1) : parseInt(max * 1.2)
       maxNum = this.maxNum
       this.minNum = parseInt(min * 0.5)
       return max

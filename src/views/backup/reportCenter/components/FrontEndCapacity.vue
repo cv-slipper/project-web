@@ -89,6 +89,10 @@ export default {
           itemWidth: 6,
           itemHeight: 6,
           type: 'scroll',//这句
+          pageIconSize: 8,
+          pageTextStyle: {
+            fontSize: 8
+          },
           tooltip: {
             show: true,
             formatter: (params) => {
