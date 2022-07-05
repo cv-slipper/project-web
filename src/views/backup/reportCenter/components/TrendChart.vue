@@ -71,8 +71,8 @@ export default {
         tooltip: {
           show: true,
           formatter: (params) => {
-            let force = params.data[1] >= 1024 ? parseInt(params.data[1] / 1024) + 'TB' : params.data[1] + 'GB'
-            let disk = params.data[2] >= 1024 ? parseInt(params.data[2] / 1024) + 'TB' : params.data[2] + 'GB'
+            let force = params.data[1] >= 1024 ? (params.data[1] / 1024).toFixed(2) + 'TB' : params.data[1] + 'GB'
+            let disk = params.data[2] >= 1024 ? (params.data[2] / 1024).toFixed(2) + 'TB' : params.data[2] + 'GB'
             return `
                <div>${params.data[0]}</div>
                <div>前端许可用量：${force}</div>
