@@ -91,6 +91,8 @@ export default {
           {
             type: 'value',
             name: 'TB',
+            splitNum: 4,
+            minInterval: 1,
 
             splitLine: {
               show: false
@@ -115,6 +117,8 @@ export default {
           {
             type: 'value',
             name: '台',
+            splitNum: 4,
+            minInterval: 1,
             nameTextStyle: {
               fontSize: 10
             },
@@ -207,7 +211,11 @@ export default {
         })
         this.getMax(numberList)
         this.option.dataset.source = dataSource
-        console.log(this.maxNum, 'maxnum')
+        this.option.yAxis[0].max = this.maxNum
+        this.option.yAxis[0].interval = (this.maxNum / 4)
+
+        this.option.yAxis[1].max = this.maxNum1
+        this.option.yAxis[1].interval = (this.maxNum1 / 4)
         setTimeout(() => {
           this.initChart()
         }, 10)

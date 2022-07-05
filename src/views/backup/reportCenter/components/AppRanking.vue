@@ -33,10 +33,10 @@
           <a-progress :percent='item.prop' :class='{rankingrate:domain=="branch",prodRate:domain=="prod"}'
                       stroke-color='#3C6BE3' :show-info='false' />
           <div class='ranking-num'>
-            {{ item.value }}
+            {{ item.value }}{{ item.displayValue || '' }}
           </div>
-          <div class='proportion' v-if='domain!="prod"'>
-            <span>环比上月{{ item.ratio }}{{ item.displayValue || '' }}</span>
+          <div class='proportion' v-if='!(domain=="prod" && values==3)'>
+            <span>环比上月{{ item.ratio }}</span>
           </div>
         </li>
       </ul>
@@ -268,19 +268,19 @@ export default {
     }
 
     .prodRate {
-      width: 30%;
+      width: 25%;
       height: 7px;
       margin-right: 10px;
     }
 
     .rankingrate {
-      width: 30%;
+      width: 25%;
       height: 7px;
       margin-right: 10px;
     }
 
     .ranking-num {
-      width: 20%;
+      width: 25%;
       margin-right: 10px
     }
 

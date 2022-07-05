@@ -69,7 +69,7 @@ export default {
           itemHeight: 5,
           itemWidth: 5,
           left: 'center',
-          top: 20,
+          top: 5,
           textStyle: {
             fontSize: 8
           }
@@ -78,6 +78,7 @@ export default {
           left: '3%',
           right: '4%',
           bottom: '3%',
+          top: 30,
           containLabel: true
         },
         xAxis: {
@@ -124,6 +125,7 @@ export default {
         let xData = data.map(item => ({ value: new Date(item.month).getMonth() + 1 + '月份' }))
         this.option.xAxis.data = xData
         let yData = {}
+        let unit = data[0].unit || ''
         data.forEach((item, index) => {
           item.libraries.forEach((ele, i) => {
             if (yData[ele.name]) {
@@ -146,6 +148,7 @@ export default {
             data: yData[item]
           }
         })
+        this.option.yAxis[0].name = unit
         this.initChart()
       }
     },

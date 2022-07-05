@@ -129,8 +129,8 @@ export default {
             name: '',
             type: 'pie',
             color: ['#3C6BE3', '#ECD61B', '#DE430E', '#1BC78B', '#C927B8', '#0FECEE'],
-            radius: ['50%', '70%'],
-            center: ['27%', 'center'],
+            radius: ['40%', '60%'],
+            center: ['26%', 'center'],
             avoidLabelOverlap: false,
             clockwise: false,
             label: {
@@ -195,41 +195,41 @@ export default {
         case 0:
           arr = [
             '{a|' + name + '}',
-            '{b0|' + item[index].value + '}\n'
+            '{b0|' + item[index].value + '%}\n'
           ]
           break
         case 1:
           arr = [
             '{a|' + name + '}',
-            '{b1|' + item[index].value + '}\n'
+            '{b1|' + item[index].value + '%}\n'
           ]
           break
         case 2:
           arr =
             [
               '{a|' + name + '}',
-              '{b2|' + item[index].value + '}\n'
+              '{b2|' + item[index].value + '%}\n'
             ]
           break
         case 3:
           arr =
             [
               '{a|' + name + '}',
-              '{b3|' + item[index].value + '}\n'
+              '{b3|' + item[index].value + '%}\n'
             ]
           break
         case 4:
           arr =
             [
               '{a|' + name + '}',
-              '{b4|' + item[index].value + '}\n'
+              '{b4|' + item[index].value + '%}\n'
             ]
           break
         case 5:
           arr =
             [
               '{a|' + name + '}',
-              '{b5|' + item[index].value + '} \n'
+              '{b5|' + item[index].value + '%}\n'
             ]
           break
       }

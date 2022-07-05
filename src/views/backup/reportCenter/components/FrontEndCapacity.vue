@@ -2,7 +2,7 @@
   <div class='front-end-capacity'>
     <div class='trend-chart-title'>
       <div>
-        数据类型分布-{{ domain == 'branch' && branchName != '全域' ? '前端容量' : '客户端数量' }}
+        数据类型分布-客户端数量
       </div>
       <div v-if='domain!="prod"' class='info-text'>当前：{{ branchName }}</div>
       <div class='little-title'></div>
@@ -54,7 +54,7 @@ export default {
       color: ['#CAC9CA', '#24D4A6', '#00B7EE', '#6E69F9', '#1E67F2', '#21E5E8'],
       option: {
         polar: {
-          radius: [30, '70%'],
+          radius: [15, '70%'],
           center: ['26%', 'center']
         },
         grid: {

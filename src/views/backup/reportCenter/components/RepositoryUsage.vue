@@ -74,7 +74,7 @@ export default {
             },
             {
               title: '预计扩容日期',
-              dataIndex: 'dateToBeFull',
+              dataIndex: 'expansionDate',
               align: 'center'
             }
           ]
