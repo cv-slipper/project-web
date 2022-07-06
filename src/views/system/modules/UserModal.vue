@@ -7,7 +7,7 @@
     :closable='true'
     @close='handleCancel'
     :visible='visible'
-    style='height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;'>
+    style='height: 100%'>
 
     <template slot='title'>
       <div style='width: 100%;'>
@@ -274,7 +274,10 @@ export default {
   created() {
     const token = Vue.ls.get(ACCESS_TOKEN)
     this.headers = { 'X-Access-Token': token }
-
+    console.log(this.form, 'from')
+  },
+  mounted() {
+    console.log(this.form, 'form')
   },
   computed: {
     uploadAction: function() {
@@ -330,17 +333,23 @@ export default {
       this.resultDepartOptions = []
       this.departId = []
       this.departIdShow = false
+
       this.$nextTick(() => {
-        this.form.resetFields()
+        setTimeout(() => {
+          this.form.resetFields()
+        }, 1000)
+
       })
 
     },
     add() {
+
       this.picUrl = ''
       this.refresh()
       this.visible = true
       this.initialRoleList()
       // this.edit({ activitiSync: '1' })
+
     },
     edit(record) {
       this.resetScreenSize() // 调用此方法,根据屏幕宽度自适应调整抽屉的宽度
@@ -669,7 +678,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang='less'>
 .avatar-uploader > .ant-upload {
   width: 104px;
   height: 104px;
@@ -700,5 +709,9 @@ export default {
   left: 0;
   background: #fff;
   border-radius: 0 0 2px 2px;
+}
+
+/deep/ .ant-drawer {
+  height: 100% !important;
 }
 </style>
