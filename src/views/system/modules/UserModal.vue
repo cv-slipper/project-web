@@ -195,18 +195,22 @@ export default {
         username: {
           rules: [{
             required: true, message: '请输入用户账号!'
-          }, {
-            validator: this.validateUsername
-          }]
+          },
+            {
+              validator: this.validateUsername
+            }
+          ]
         },
         password: {
           rules: [{
             required: true,
             pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,./]).{8,}$/,
             message: '密码由8位数字、大小写字母和特殊符号组成!'
-          }, {
-            validator: this.validateToNextPassword
-          }]
+          },
+            {
+              validator: this.validateToNextPassword
+            }
+          ]
         },
         confirmpassword: {
           rules: [{
@@ -326,12 +330,16 @@ export default {
       this.resultDepartOptions = []
       this.departId = []
       this.departIdShow = false
-      this.form.resetFields()
+      this.$nextTick(() => {
+        this.form.resetFields()
+      })
+
     },
     add() {
       this.picUrl = ''
       this.refresh()
       this.visible = true
+      this.initialRoleList()
       // this.edit({ activitiSync: '1' })
     },
     edit(record) {
@@ -498,20 +506,20 @@ export default {
         //update-begin--Author:kangxiaolin  Date:20190826 for：[05] 手机号不支持199号码段--------------------
         if (new RegExp(/^1[3|4|5|7|8|9][0-9]\d{8}$/).test(value)) {
           //update-end--Author:kangxiaolin  Date:20190826 for：[05] 手机号不支持199号码段--------------------
-
-          var params = {
-            tableName: 'sys_user',
-            fieldName: 'phone',
-            fieldVal: value,
-            dataId: this.userId
-          }
-          duplicateCheck(params).then((res) => {
-            if (res.success) {
-              callback()
-            } else {
-              callback('手机号已存在!')
-            }
-          })
+          callback()
+          // var params = {
+          //   tableName: 'sys_user',
+          //   fieldName: 'phone',
+          //   fieldVal: value,
+          //   dataId: this.userId
+          // }
+          // duplicateCheck(params).then((res) => {
+          //   if (res.success) {
+          //     callback()
+          //   } else {
+          //     callback('手机号已存在!')
+          //   }
+          // })
         } else {
           callback('请输入正确格式的手机号码!')
         }
@@ -522,20 +530,21 @@ export default {
         callback()
       } else {
         if (new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(value)) {
-          var params = {
-            tableName: 'sys_user',
-            fieldName: 'email',
-            fieldVal: value,
-            dataId: this.userId
-          }
-          duplicateCheck(params).then((res) => {
-            console.log(res)
-            if (res.success) {
-              callback()
-            } else {
-              callback('邮箱已存在!')
-            }
-          })
+          // var params = {
+          //   tableName: 'sys_user',
+          //   fieldName: 'email',
+          //   fieldVal: value,
+          //   dataId: this.userId
+          // }
+          // duplicateCheck(params).then((res) => {
+          //   console.log(res)
+          //   if (res.success) {
+          //     callback()
+          //   } else {
+          //     callback('邮箱已存在!')
+          //   }
+          // })
+          callback()
         } else {
           callback('请输入正确格式的邮箱!')
         }
@@ -548,13 +557,14 @@ export default {
         fieldVal: value,
         dataId: this.userId
       }
-      duplicateCheck(params).then((res) => {
-        if (res.success) {
-          callback()
-        } else {
-          callback('用户名已存在!')
-        }
-      })
+      // duplicateCheck(params).then((res) => {
+      //   if (res.success) {
+      //     callback()
+      //   } else {
+      //     callback('用户名已存在!')
+      //   }
+      // })
+      callback()
     },
     validateWorkNo(rule, value, callback) {
       var params = {
