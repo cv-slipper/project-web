@@ -227,6 +227,9 @@ export default {
         this.getMax(numberList)
         this.maxNum = parseInt(this.maxNum % 4 == 0 ? this.maxNum : this.maxNum + (4 - this.maxNum % 4))
         // this.maxNum1 = this.maxNum1 % 4 == 0 ? this.maxNum1 : this.maxNum1 + (4 - this.maxNum1 % 4)
+        if (dataSource.length > 0) {
+          dataSource.sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+        }
         this.option.dataset.source = dataSource
         this.option.yAxis[0].max = this.maxNum
         this.option.yAxis[0].interval = parseInt(this.maxNum / 4)

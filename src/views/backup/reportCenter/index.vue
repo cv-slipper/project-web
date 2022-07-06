@@ -169,36 +169,36 @@ export default {
           num: 1090,
           name: '客户端数量',
           type: 1,
-          month: '+16.8%',
-          year: '+16.8%'
+          month: '',
+          year: ''
         },
         {
-          num: '140TB',
+          num: '',
           name: '许可使用量',
           type: 1,
-          month: '+16.8%',
-          year: '-16.8%'
+          month: '',
+          year: ''
         },
         {
-          num: '150TB',
+          num: '',
           name: '存储用量',
           type: 1,
-          month: '+16.8%',
-          year: '+16.8%'
+          month: '',
+          year: ''
         },
         {
           num: 1963,
           name: '日均备份作业量',
           type: 1,
-          month: '+16.8%',
-          year: '+16.8%'
+          month: '',
+          year: ''
         },
         {
           num: 1963,
           name: '日均备份数据量',
           type: 1,
-          month: '+16.8%',
-          year: '+16.8%'
+          month: '',
+          year: ''
         }
       ],
       branchList: [],

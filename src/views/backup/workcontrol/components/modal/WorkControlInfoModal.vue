@@ -263,9 +263,8 @@ export default {
         let res = await getWorkDetail({ jobId: this.id, domain: this.domain })
         if (res.code == 200) {
           let dateTime = res.result.jobStartTime ? new Date(res.result.jobStartTime) : ''
-          res.result.jobStartTime = dateTime ? this.dateFormat(dateTime * 1000) : ''
+          res.result.jobStartTime = dateTime ? this.dateFormat(dateTime) : ''
           res.result.duration = this.formatSeconds(res.result.duration)
-          console.log(res.result)
           this.detail = res.result
         } else {
           this.detail = {}
