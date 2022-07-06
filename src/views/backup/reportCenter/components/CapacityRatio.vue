@@ -4,7 +4,6 @@
       <div>
         {{ values == 1 ? '前端许可用量' : values == 2 ? '后端存储用量' : '客户端数量' }}各{{ domain == 'prod' ? '应用群组' : '区域' }}占比
       </div>
-
       <a-select v-model='values' class='select' @change='selectChange'>
         <a-select-option v-for='(item,index) in dataList' :value='item.value' :key='index'>{{ item.label }}
         </a-select-option>

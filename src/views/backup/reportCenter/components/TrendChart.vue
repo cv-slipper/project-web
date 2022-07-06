@@ -74,10 +74,12 @@ export default {
             let force = params.data[1] >= 1024 ? (params.data[1] / 1024).toFixed(2) + 'TB' : params.data[1] + 'GB'
             let disk = params.data[2] >= 1024 ? (params.data[2] / 1024).toFixed(2) + 'TB' : params.data[2] + 'GB'
             return `
-               <div>${params.data[0]}</div>
+              <div style='font-size: 8px !important;'>
+               <div >${params.data[0]}</div>
                <div>前端许可用量：${force}</div>
                <div>后端存储用量：${disk}</div>
                <div>客户端数量：${params.data[3]}</div>
+               </div>
             `
           },
           position: function(point) {
@@ -116,8 +118,8 @@ export default {
             axisLabel: {
               margin: 2,
               formatter: function(value, index) {
-                if (value >= 10000 && value < 10000000) {
-                  value = parseInt(value / 10000) + '万'
+                if (value >= 1000 && value < 10000000) {
+                  value = parseInt(value / 1000) + 'k'
                 } else if (value >= 10000000) {
                   value = parseInt(value / 10000000) + '千万'
                 }
@@ -223,12 +225,15 @@ export default {
           numberList.push(item.diskUsed)
         })
         this.getMax(numberList)
+        this.maxNum = parseInt(this.maxNum % 4 == 0 ? this.maxNum : this.maxNum + (4 - this.maxNum % 4))
+        // this.maxNum1 = this.maxNum1 % 4 == 0 ? this.maxNum1 : this.maxNum1 + (4 - this.maxNum1 % 4)
         this.option.dataset.source = dataSource
         this.option.yAxis[0].max = this.maxNum
         this.option.yAxis[0].interval = parseInt(this.maxNum / 4)
 
         this.option.yAxis[1].max = this.maxNum1
-        this.option.yAxis[1].interval = parseInt(this.maxNum1 / 4)
+        this.option.yAxis[1].min = this.minNum1
+        this.option.yAxis[1].interval = parseInt((this.maxNum1 - this.minNum1) / 4)
         setTimeout(() => {
           this.initChart()
         }, 10)

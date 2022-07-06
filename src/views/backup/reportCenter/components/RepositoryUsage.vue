@@ -170,6 +170,7 @@ export default {
   },
   methods: {
     initTableData(data) {
+
       if (data.length > 0) {
         data.forEach(item => {
           item.ratio = item.ratio < 0 ? item.ratio + '%' : '+' + item.ratio + '%'
@@ -286,6 +287,7 @@ export default {
 }
 
 /deep/ .ant-table-body {
+  height: calc(100% - 44px);
   overflow-y: auto !important;
   background: rgba(0, 0, 0, 0) !important;
 }

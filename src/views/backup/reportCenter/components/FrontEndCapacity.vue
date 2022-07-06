@@ -216,6 +216,7 @@ export default {
   },
   methods: {
     initDataSource(data) {
+      console.log(data, 'data')
       this.dataSource = data.reverse()
       this.$nextTick(() => {
         this.initChart()

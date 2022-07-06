@@ -61,8 +61,8 @@
                     <template v-if='item.type==1'>
                       <div>环比上月
                         <span v-if='parseFloat(item.month)*1==0' style='color: black'>{{ item.month }}</span>
-                        <span v-if='parseFloat(item.month)*1>0' class='success'>{{ item.month }}</span>
-                        <span v-if='parseFloat(item.month)*1<0' class='error'>{{ item.month }}</span>
+                        <span v-if='parseFloat(item.month)*1>0' class='error'>{{ item.month }}</span>
+                        <span v-if='parseFloat(item.month)*1<0' class='success'>{{ item.month }}</span>
                         <!--                        <span-->
                         <!--                          :class='{success:item.month.indexOf("-")==-1,error:item.month.indexOf("-"!=-1)}'>{{-->
                         <!--                            item.month-->
@@ -70,8 +70,8 @@
                       </div>
                       <div>环比去年
                         <span v-if='parseFloat(item.year)*1==0' style='color: black'>{{ item.year }}</span>
-                        <span v-if='parseFloat(item.year)*1>0' class='success'>{{ item.year }}</span>
-                        <span v-if='parseFloat(item.year)*1<0' class='error'>{{ item.year }}</span>
+                        <span v-if='parseFloat(item.year)*1>0' class='error'>{{ item.year }}</span>
+                        <span v-if='parseFloat(item.year)*1<0' class='success'>{{ item.year }}</span>
                       </div>
                     </template>
                   </div>
@@ -103,6 +103,7 @@
             <stack-chart :loading='stackChartLoading' ref='stackChart' class='stack-chart'
                          v-if='branchId && domain=="branch"'
                          :branch-name='branchName'></stack-chart>
+
             <capacity-ratio :loading='capacityRatioLoading' ref='capacityRatio' :domain='domain' v-model='areaPropType'
                             v-else></capacity-ratio>
           </div>
@@ -765,6 +766,8 @@ export default {
       } else {
         this.itemList[0].name = '分行数量'
       }
+      this.areaPropType = 1
+      this.branchRankType = 1
       this.initCharts()
 
     },

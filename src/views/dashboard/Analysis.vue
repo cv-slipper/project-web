@@ -277,7 +277,7 @@
               <div slot='title'>
                 <div>
                   <img src='@/assets/clound.png' style='width:20px;height:20px' alt=''>
-                  <span class='ml-5'>每日磁盘/云储存占用量{{ xdiskunit == '' ? '' : '（' + xdiskunit + '）' }}</span>
+                  <span class='ml-5'>每日磁盘/云存储占用量{{ xdiskunit == '' ? '' : '（' + xdiskunit + '）' }}</span>
                 </div>
               </div>
               <div style='width:100%;' class='chart'>
@@ -936,7 +936,7 @@ export default {
      * 修改样式
      */
     setScaleStyle(num, ref, type = 1) {
-      let color = parseFloat(num) * 1 == 0 ? 'black' : num > 0 ? '#1BC78B' : '#FF5252'
+      let color = parseFloat(num) * 1 == 0 ? 'black' : num > 0 ? '#FF5252' : '#1BC78B'
       this.$nextTick(() => {
         if (type == 2) {
           this.$refs[ref][0].style.top = '0'

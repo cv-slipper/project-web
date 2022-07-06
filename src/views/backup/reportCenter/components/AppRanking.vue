@@ -73,7 +73,6 @@ export default {
     },
     domain: {
       handler(val) {
-        this.values = 1
         if (val == 'prod') {
           this.dataList = [
             {
