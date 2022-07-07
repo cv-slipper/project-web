@@ -75,15 +75,18 @@ export default {
             let disk = params.data[2] >= 1024 ? (params.data[2] / 1024).toFixed(2) + 'TB' : params.data[2] + 'GB'
             return `
               <div style='font-size: 8px !important;'>
-               <div >${params.data[0]}</div>
-               <div>前端许可用量：${force}</div>
-               <div>后端存储用量：${disk}</div>
-               <div>客户端数量：${params.data[3]}</div>
+               <div style='margin-top: 4px'>${params.data[0]}</div>
+               <div style='margin-top: 4px'>前端许可用量：${force}</div>
+               <div style='margin-top: 4px'>后端存储用量：${disk}</div>
+               <div style='margin-top: 4px'>客户端数量：${params.data[3]}</div>
                </div>
             `
           },
           position: function(point) {
             return [point[0], '0']
+          },
+          textStyle: {
+            fontSize: 8
           }
         },
         xAxis: [
@@ -298,7 +301,6 @@ export default {
     initChart() {
       this.myChart = this.$echarts.init(document.getElementById('trend-chart'))
       this.myChart.clear()
-      console.log(this.option, 'option')
       this.myChart.setOption(this.option)
       window.addEventListener('resize', () => {
         this.myChart.resize()

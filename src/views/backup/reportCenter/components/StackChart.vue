@@ -54,10 +54,11 @@ export default {
               <div>
                   <div class='stack-title'>${params[0].name}</div>
                   ${params.map((item, index) => {
+              console.log(item, 'item')
               return `<div>
                           <span style='display:inline-block;width: 5px;height: 5px;border-radius: 50%;overflow: hidden;background:${color[index]} '></span>
                            <span>${item.seriesName}：</span>
-                            <span>${item.value}${item.data.unit}</span>
+                            <span>${item.value * 1 < 1024 ? item.value + 'GB' : (item.value / 1024).toFixed(2) + 'TB'}</span>
                                                      </div>`
             }).join('')}
               </div>
@@ -87,7 +88,18 @@ export default {
         },
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            axisLabel: {
+              formatter: function(value, index) {
+                if (value >= 1000 && value < 10000000) {
+                  value = parseInt(value / 1000) + 'k'
+                } else if (value >= 10000000) {
+                  value = parseInt(value / 10000000) + '千万'
+                }
+                return value
+              },
+              fontSize: 8
+            }
           }
         ],
         series: [
@@ -122,6 +134,8 @@ export default {
     inintChartData(data) {
       this.chartData = data || []
       if (data.length > 0) {
+        this.option.series = []
+        this.option.xAxis.data = []
         let xData = data.map(item => ({ value: new Date(item.month).getMonth() + 1 + '月份' }))
         this.option.xAxis.data = xData
         let yData = {}

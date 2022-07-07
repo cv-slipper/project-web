@@ -106,9 +106,16 @@ export default {
         }
       ],
       option: {
+        tooltip: {
+          show: true,
+          formatter: '{b}：{c}%',
+          textStyle: {
+            fontSize: 8
+          }
+        },
         xAxis: {
           type: 'category',
-          data: [],
+          // data: [],
           axisLabel: {
             //x轴文字的配置
             show: true,
@@ -126,7 +133,7 @@ export default {
           }
         },
         grid: {
-          bottom: 28,
+          bottom: 32,
           top: 15,
           left: 15,
           right: 5
@@ -136,7 +143,13 @@ export default {
           {
             data: [],
             type: 'pictorialBar',
-            symbol: 'triangle',
+            symbol: function(value, params) {
+              if (params.value > 0) {
+                return 'triangle'
+              } else {
+                return 'none'
+              }
+            },
             color: new this.$echarts.graphic.LinearGradient(
               0, 0, 0, 1,
               [
@@ -166,7 +179,9 @@ export default {
       this.chartData = data || []
       if (data.length > 0) {
         let legend = data.map(item => ({ value: this.domain == 'prod' ? item.groupName : item.regionName }))
-        let series = data.map(item => item.ratio)
+        let series = data.map(item => {
+          return { value: item.ratio, name: this.domain == 'prod' ? item.groupName : item.regionName }
+        })
         this.option.xAxis.data = legend
         this.option.series[0].data = series
         this.initChart()
@@ -180,12 +195,14 @@ export default {
       if (window.screen.width == 1920) {
         this.option.xAxis.axisLabel.rotate = 0
       } else {
-        this.option.xAxis.axisLabel.rotate = 30
+        this.option.xAxis.axisLabel.rotate = 25
       }
-      let max = Math.max(...this.option.series[0].data)
-      let index = this.option.series[0].data.indexOf(max)
+      let max = Math.max(...this.option.series[0].data.map(item => item.value))
+      let index = this.option.series[0].data.findIndex(item => item.value = max)
+      let name = this.option.series[0].data[index].name
       this.option.series[0].data[index] = {
         value: max,
+        name,
         itemStyle: {
           color: new this.$echarts.graphic.LinearGradient(
             0, 0, 0, 1,

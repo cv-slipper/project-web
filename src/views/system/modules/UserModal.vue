@@ -345,11 +345,10 @@ export default {
     add() {
 
       this.picUrl = ''
-      this.refresh()
-      this.visible = true
-      this.initialRoleList()
-      // this.edit({ activitiSync: '1' })
 
+      this.visible = true
+      this.edit({ activitiSync: '1' })
+      this.refresh()
     },
     edit(record) {
       this.resetScreenSize() // 调用此方法,根据屏幕宽度自适应调整抽屉的宽度

@@ -72,6 +72,7 @@ export default {
   watch: {
     systemList: {
       handler(val) {
+        console.log(val, 'val')
         this.dataList = val
       },
       deep: true,

@@ -1093,12 +1093,13 @@ export default {
     dealWithSuccess() {
       if (this.domain == 'prod') {
         if (!this.systemItem) {
-          this.getSystemList()
+         
         } else {
           this.$nextTick(() => {
             this.$refs.mainInfo.getSystemDetail()
           })
         }
+        this.getSystemList()
       } else {
         this.$nextTick(() => {
           this.$refs.mainMap.getBranchMapList()

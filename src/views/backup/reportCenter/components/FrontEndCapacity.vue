@@ -60,7 +60,11 @@ export default {
         grid: {
           left: '0'
         },
-
+        tooltip: {
+          textStyle: {
+            fontSize: 8
+          }
+        },
         angleAxis: {
           show: false,
           max: 1500,
@@ -79,7 +83,6 @@ export default {
             show: false
           }
         },
-        tooltip: {},
         series: [],
         legend: {
           orient: 'vertical',
@@ -97,7 +100,14 @@ export default {
             show: true,
             formatter: (params) => {
               let item = this.option.series.find(item => item.name == params.name)
-              return item.name + ': ' + item.data[0] + '%'
+              return `
+                <div>${item.name}</div>
+                <div style='margin-top: 4px'>数量：${item.clientNum}</div>
+                <div style='margin-top: 4px'>占比：${item.data[0]}%</div>
+              `
+            },
+            textStyle: {
+              fontSize: 8
             }
           },
           textStyle: {
@@ -216,7 +226,6 @@ export default {
   },
   methods: {
     initDataSource(data) {
-      console.log(data, 'data')
       this.dataSource = data.reverse()
       this.$nextTick(() => {
         this.initChart()
@@ -234,6 +243,7 @@ export default {
             barWidth: 3,
             name: item.agent,
             data: [item.clientRatio],
+            clientNum: item.clientNum,
             coordinateSystem: 'polar',
             roundCap: true,
             showBackground: true

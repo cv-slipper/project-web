@@ -147,7 +147,9 @@ export default {
                 show: true,
                 fontSize: 8,
                 fontWeight: 'bold',
-                formatter: '{d}%\n{b}'
+                formatter: params => {
+                  return params.data.value + '%' + '\n' + params.data.num + 'M' + '\n' + params.data.name
+                }
               }
             },
             labelLine: {
@@ -162,6 +164,7 @@ export default {
 
   methods: {
     initChart(data) {
+      console.log(data, 'data')
       this.chartData = data || []
       if (data.length > 0) {
         this.option.legend.data = []
@@ -169,7 +172,8 @@ export default {
         data.forEach((item, index) => {
           this.option.series[0].data[index] = {
             value: item.usage,
-            name: item.agent
+            name: item.agent,
+            num: item.value
           }
           this.option.legend.data[index] = {
             name: item.agent,

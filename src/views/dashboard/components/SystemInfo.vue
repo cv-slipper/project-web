@@ -101,6 +101,8 @@ export default {
       try {
         let res = await getSystemDetail({ groupName: this.systemItem.groupName })
         if (res.code === 200) {
+          res.result.sort((a, b) => b.exceptionNum * 1 - a.exceptionNum * 1)
+          console.log(res.result, 'result')
           this.systemList = res.result
         } else {
           this.$message.error(res.message)
