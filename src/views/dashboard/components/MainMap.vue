@@ -314,7 +314,7 @@ export default {
         let isActive = this[key][i].name == (this.branchItem ? this.branchItem.name : 'null') ? 'active-label' : ''
         marker.setLabel(
           {
-            content: '<div class="markerlabel-normal ' + +isActive + '" >' + this[key][i].name + '</div>',
+            content: '<div class="markerlabel-normal ' + isActive + '" >' + this[key][i].name + '</div>',
             direction: 'top'
           }
         )
