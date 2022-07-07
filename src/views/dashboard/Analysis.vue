@@ -14,14 +14,23 @@
       </div>
       <div class='reload mr-20' style='cursor:pointer'>
         <div class='flex-center'>
-          <!--          <div class='flex-center'>-->
-          <!--            <img src='@/assets/reseterror.png' width='20px' height='20px' alt=''>-->
-          <!--            <span style='margin-left:5px'>同步异常</span>-->
-          <!--          </div>-->
-          <div class='flex-center ml-10 ' @click='init()'>
-            <img src='@/assets/reload.png' width='20px' height='20px' alt=''>
-            <span style='margin-left:5px'>同步正常</span>
-          </div>
+          <a-popover placement='left'>
+            <template slot='content'>
+              <p v-for='(item,index) in messageList' :class='{success:item.status==1,error:item.status!=1}'
+                 :key='index'>
+                <span>{{ item.name }}：</span>
+                <span class='ml-10'>{{ item.time }}</span>
+              </p>
+            </template>
+            <div class='flex-center ml-10 ' @click='init()' v-if='messageList.every(item=>item.status==1)'>
+              <img src='@/assets/reload.png' width='20px' height='20px' alt=''>
+              <span style='margin-left:5px'>同步正常</span>
+            </div>
+            <div class='flex-center' v-else @click='init()'>
+              <img src='@/assets/reseterror.png' width='20px' height='20px' alt=''>
+              <span style='margin-left:5px'>同步异常</span>
+            </div>
+          </a-popover>
         </div>
       </div>
     </div>
@@ -331,7 +340,8 @@ import {
   getDomainTrend,
   getSystemList,
   getExceptionList,
-  handleException
+  handleException,
+  getExcetion
 } from '@api/modules/dashboard/analysis.js'
 
 export default {
@@ -581,7 +591,8 @@ export default {
       timer: null,
       systemLoading: false,
       dealWithRow: {},
-      exceptionType: ''
+      exceptionType: '',
+      messageList: []
     }
   },
 
@@ -601,6 +612,23 @@ export default {
     this.getScreenWidth()
   },
   methods: {
+    /**
+     * 同步信息
+     */
+    async getExcetion() {
+      try {
+        let res = await getExcetion({ domain: this.domain })
+        if (res.code == 200) {
+          this.messageList = res.result || []
+        } else {
+          this.$message.error(res.message)
+          this.messageList = []
+        }
+      } catch {
+        this.messageList = []
+        this.$message.error('获取同步信息失败')
+      }
+    },
     /**
      * 刷新作业
      */
@@ -936,7 +964,7 @@ export default {
      * 修改样式
      */
     setScaleStyle(num, ref, type = 1) {
-      let color = parseFloat(num) * 1 == 0 ? 'black' : num > 0 ? '#FF5252' : '#1BC78B'
+      let color = parseFloat(num) == 0 ? 'black' : parseFloat(num) > 0 ? '#FF5252' : '#1BC78B'
       this.$nextTick(() => {
         if (type == 2) {
           this.$refs[ref][0].style.top = '0'
@@ -1027,7 +1055,7 @@ export default {
         this.getDomainTrend()
         this.getSystemList()
         this.getExceptionList()
-
+        this.getExcetion()
         this.$nextTick(() => {
           setTimeout(() => {
             if (this.domain == 'prod') {
@@ -1093,7 +1121,7 @@ export default {
     dealWithSuccess() {
       if (this.domain == 'prod') {
         if (!this.systemItem) {
-         
+
         } else {
           this.$nextTick(() => {
             this.$refs.mainInfo.getSystemDetail()
@@ -1506,6 +1534,14 @@ export default {
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+}
+
+.success {
+  color: #1ABA71;
+}
+
+.error {
+  color: #F17366
 }
 
 .no-error-message {

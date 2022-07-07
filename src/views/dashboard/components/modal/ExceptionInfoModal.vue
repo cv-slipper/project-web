@@ -341,6 +341,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch (e) {
+        this.detail = {}
         console.log(e, 'e')
       } finally {
         this.detailLoading = false

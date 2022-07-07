@@ -97,7 +97,9 @@ export default {
     '$route': function(newRoute) {
 
       //console.log("新的路由",newRoute)
-
+      if (newRoute.fullPath == '/backup/reportCenter') {
+        return
+      }
       this.activePage = newRoute.fullPath
       if (!this.multipage) {
         this.linkList = [newRoute.fullPath]

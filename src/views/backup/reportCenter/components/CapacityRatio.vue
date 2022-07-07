@@ -184,6 +184,7 @@ export default {
         })
         this.option.xAxis.data = legend
         this.option.series[0].data = series
+
         this.initChart()
       } else {
         if (this.myChart) {
@@ -198,22 +199,29 @@ export default {
         this.option.xAxis.axisLabel.rotate = 25
       }
       let max = Math.max(...this.option.series[0].data.map(item => item.value))
-      let index = this.option.series[0].data.findIndex(item => item.value = max)
-      let name = this.option.series[0].data[index].name
-      this.option.series[0].data[index] = {
-        value: max,
-        name,
-        itemStyle: {
-          color: new this.$echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [
-              { offset: 1, color: '#E4ECFA' },
-              { offset: 0, color: '#14E0CE' },
-              { offset: 0.8, color: '#E4ECFA' }
-            ]
-          )
+      let indexs = []
+      this.option.series[0].data.forEach((item, index) => {
+        if (item.value == max) {
+          indexs.push(index)
         }
+      })
+      if (indexs.length > 0) {
+        indexs.forEach((item) => {
+          this.option.series[0].data[item].itemStyle = {
+            color: new this.$echarts.graphic.LinearGradient(
+              0, 0, 0, 1,
+              [
+                { offset: 1, color: '#E4ECFA' },
+                { offset: 0, color: '#14E0CE' },
+                { offset: 0.8, color: '#E4ECFA' }
+              ]
+            )
+          }
+        })
       }
+      console.log(this.option.series[0].data, 'data')
+
+
       this.$nextTick(() => {
         this.myChart = this.$echarts.init(document.getElementById('capacity-radio'))
         this.myChart.clear()

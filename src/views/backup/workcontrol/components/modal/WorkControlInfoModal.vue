@@ -271,6 +271,7 @@ export default {
           this.$message.error(res.message)
         }
       } catch {
+        this.detail = {}
         this.$message.error('获取作业详情失败')
       } finally {
         this.detailLoading = false

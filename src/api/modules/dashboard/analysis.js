@@ -149,3 +149,15 @@ export function getBranchMapList() {
     data: {}
   })
 }
+
+/**
+ * 同步
+ */
+export function getExcetion(params) {
+
+  return axios({
+    url: '/domain/syncStatus',
+    method: 'get',
+    params
+  })
+}

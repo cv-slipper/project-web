@@ -148,7 +148,16 @@ export default {
                 fontSize: 8,
                 fontWeight: 'bold',
                 formatter: params => {
-                  return params.data.value + '%' + '\n' + params.data.num + 'M' + '\n' + params.data.name
+                  let oldnum = params.data.num
+                  let num = ''
+                  if (oldnum >= 1024 && oldnum < 1048576) {
+                    num = (oldnum / 1024).toFixed(2) + 'GB'
+                  } else if (oldnum >= 1048176) {
+                    num = (oldnum / 1048576).toFixed(2) + 'TB'
+                  } else {
+                    num = oldnum + 'MB'
+                  }
+                  return params.data.value + '%' + '\n' + num + '\n' + params.data.name
                 }
               }
             },

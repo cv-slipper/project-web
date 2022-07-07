@@ -22,7 +22,9 @@
           </div>
         </div>
         <div class='right'>
-          {{ dateNow }}
+          <span>{{ dateNow }}</span>
+          <span><a-icon @click='windowClose' style='font-size: 20px;cursor: pointer;margin-left: 5px'
+                        type='close-circle' /></span>
         </div>
       </div>
       <div style='display: flex;height:100%;position: relative'>
@@ -755,6 +757,9 @@ export default {
       let day = date.getDay()
       return '星期' + weekDay[day]
     },
+    windowClose() {
+      window.close()
+    },
     /**
      * 切换域
      * @param {string} domain
@@ -836,6 +841,9 @@ export default {
       font-weight: 400;
       color: #666666;
       width: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
     .center {

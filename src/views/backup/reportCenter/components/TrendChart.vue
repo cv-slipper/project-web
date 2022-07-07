@@ -187,9 +187,10 @@ export default {
           show: true,
           type: 'slider',
           height: 3,
-          start: 50,
+          start: 60,
           end: 100,
-          bottom: '0'
+          bottom: '0',
+          zoomLock: true
         }
       },
       chartData: [],
