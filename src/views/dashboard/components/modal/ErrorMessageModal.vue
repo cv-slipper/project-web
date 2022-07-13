@@ -87,6 +87,7 @@
       </a-table>
       <deal-with-modal :visible='dealWithVisible' @cancel='dealWithVisible = false' @ok='handleOk'></deal-with-modal>
       <exception-info-modal
+        @dealWithSuccess='dealWithSuccess'
         :visible='exceptionInfoVisible'
         @cancel='exceptionInfoVisible=false'
         :detail-item='detailItem'></exception-info-modal>
@@ -416,6 +417,10 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    dealWithSuccess() {
+      this.getExceptionPage()
+      this.emit('dealWithSuccess')
     },
     goToInfo(row) {
       this.detailItem = row

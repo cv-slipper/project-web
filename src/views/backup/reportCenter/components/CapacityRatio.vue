@@ -176,6 +176,7 @@ export default {
       this.$emit('input', this.values)
     },
     initData(data) {
+      console.log(data, 'data')
       this.chartData = data || []
       if (data.length > 0) {
         let legend = data.map(item => ({ value: this.domain == 'prod' ? item.groupName : item.regionName }))

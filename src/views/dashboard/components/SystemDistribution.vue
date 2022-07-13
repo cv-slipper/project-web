@@ -72,7 +72,6 @@ export default {
   watch: {
     systemList: {
       handler(val) {
-        console.log(val, 'val')
         this.dataList = val
       },
       deep: true,
@@ -86,6 +85,9 @@ export default {
     }
   },
   methods: {
+    getData() {
+      return this.dataList.sort((a, b) => a.groupId - b.groupId)
+    },
     checkView() {
       this.$emit('checkView')
     },

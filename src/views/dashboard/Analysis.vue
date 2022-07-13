@@ -315,7 +315,9 @@
     <exception-info-modal
       :detail-item='exceptionItem'
       :visible='exceptionVisible'
-      @cancel='exceptionVisible = false'></exception-info-modal>
+      @cancel='exceptionVisible = false'
+      @dealWithSuccess='dealWithSuccess'
+    ></exception-info-modal>
   </div>
 
 </template>
@@ -703,7 +705,7 @@ export default {
         }
         const res = await getSystemList(params)
         if (res.code === 200) {
-          this.systemList = res.result
+          this.systemList = res.result.sort((a, b) => a.groupId - b.groupId)
         } else {
           this.$message.error(res.message)
         }

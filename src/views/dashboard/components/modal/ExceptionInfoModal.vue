@@ -298,6 +298,7 @@ export default {
         if (res.code == 200) {
           this.$message.success('处理成功')
           this.getExceptionDetail()
+          this.$emit('dealWithSuccess')
         } else {
           this.$message.error(res.message)
         }

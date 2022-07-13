@@ -75,7 +75,7 @@ export default {
               lat = center.lat
               lng = center.lng
             } catch (e) {
-              lng = 109.316721
+              lng = 105.316721
               lat = 37.38724
             }
             this.initMap(zoom, [lng, lat])
@@ -118,9 +118,9 @@ export default {
         let zoom = this.map.getZoom()
 
         if (zoom == 4) {
-          this.map.setZoomAndCenter(3.5, [109.316721, 37.38724])
+          this.map.setZoomAndCenter(3.5, [105.316721, 37.38724])
         } else {
-          this.map.setZoomAndCenter(4, [109.316721, 37.38724])
+          this.map.setZoomAndCenter(4, [105.316721, 37.38724])
         }
       }
       this.domEvent()
@@ -230,7 +230,7 @@ export default {
       })
       return arr
     },
-    initMap(zoom = 4.1, center = [109.316721, 37.38724]) {
+    initMap(zoom = 4.1, center = [105.316721, 37.38724]) {
       const disCountry = new AMap.DistrictLayer.Country({
         zIndex: 10,
         depth: 1,

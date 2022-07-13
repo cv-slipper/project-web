@@ -55,8 +55,16 @@
           :labelCol='labelCol'
           :wrapperCol='wrapperCol'
           label='状态'>
-          <j-dict-select-tag type='radioButton' v-decorator="[ 'status', {'initialValue':0}]" :trigger-change='true'
-                             dictCode='quartz_status' />
+          <a-radio-group v-decorator="[ 'status', {'initialValue':0}]">
+            <a-radio :value='0'>
+              启动
+            </a-radio>
+            <a-radio :value='-1'>
+              暂停
+            </a-radio>
+          </a-radio-group>
+          <!--          <j-dict-select-tag type='radioButton' v-decorator="[ 'status', {'initialValue':0}]" :trigger-change='true'-->
+          <!--                             dictCode='quartz_status' />-->
         </a-form-item>
       </a-form>
     </a-spin>
@@ -114,6 +122,7 @@ export default {
       this.edit({})
     },
     edit(record) {
+      console.log(record, 'record')
       let that = this
       that.form.resetFields()
       this.model = Object.assign({}, record)
