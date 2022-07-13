@@ -336,7 +336,7 @@ export default {
 
 
       .item {
-        width: calc(33% - 3px);
+        width: calc(33% - 4px);
         height: calc(33% - 3px);
 
 
@@ -362,7 +362,7 @@ export default {
         }
 
         .service-name_top {
-          //width: 100%;
+          width: 100%;
           height: 60%;
           position: absolute;
           bottom: 100%;
