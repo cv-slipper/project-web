@@ -21,3 +21,15 @@ export function getUserList() {
     method: 'get'
   })
 }
+
+/**
+ * 初始化接口
+ */
+export function initSystem(params) {
+
+  return axios({
+    url: '/cvAppSystem/initInfo',
+    method: 'get',
+    params
+  })
+}

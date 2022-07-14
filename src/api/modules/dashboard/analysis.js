@@ -66,7 +66,7 @@ export function getExceptionPage(data) {
  */
 export function getExceptionList(data) {
   return axios({
-    url: '/cvException/list',
+    url: '/cvException/page',
     method: 'post',
     data
   })

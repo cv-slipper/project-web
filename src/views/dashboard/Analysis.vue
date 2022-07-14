@@ -224,7 +224,7 @@
                 </div>
 
               </div>
-              <div style='height:100%;overflow-y:scroll' class='my-scroll'>
+              <div style='height:100%;overflow-y:scroll' class='my-scroll' @scroll='lazyLoading' ref='execption'>
 
                 <a-table
                   :columns='columns'
@@ -579,6 +579,8 @@ export default {
         waitingNum: 0,
         suspendedNum: 0
       },
+      page_count: 0,
+      page: 1,
       dailyWorkDetail: {
         completedNum: 0,
         failedNum: 0
@@ -611,6 +613,8 @@ export default {
     }
   },
   mounted() {
+
+
     this.getScreenWidth()
   },
   methods: {
@@ -679,12 +683,15 @@ export default {
       try {
         let params = {
           domain: this.domain,
-          branchId: this.branchId
+          branchId: this.branchId,
+          current: this.page,
+          pageSize: 10
         }
         let res = await getExceptionList(params)
         if (res.code == 200) {
-          this.data = res.result || []
-          this.errorMessageTotal = res.result.length || 0
+          this.data = [...this.data, ...(res.result.list || [])]
+          this.errorMessageTotal = res.result.totalSize || 0
+          this.page_count = res.result.totalPage || 0
         } else {
           this.$message.error(res.message)
         }
@@ -829,7 +836,19 @@ export default {
         this.$message.error('获取系统趋势图失败')
       }
     },
-
+    // 滚动加载
+    lazyLoading(e) {
+      const scrollTop = e.target.scrollTop // 滚动条滚动时，距离顶部的距离
+      const windowHeight = e.target.clientHeight // 可视区的高度
+      const scrollHeight = e.target.scrollHeight // 滚动条的总高度
+      console.log(scrollTop, windowHeight, scrollHeight, 'scrolltop')
+      // 滚动条到底部
+      if (scrollTop + windowHeight >= scrollHeight) {
+        this.page++
+        if (this.page > this.page_count) return
+        this.getExceptionList()
+      }
+    },
     /**
      * 设置百分比
      */
@@ -1049,6 +1068,9 @@ export default {
      * 页面初始化
      */
     init() {
+      this.data = []
+      this.page = 1
+      this.page_count = 0
       try {
         this.getCurrentWork()
         this.get24HoursWork()

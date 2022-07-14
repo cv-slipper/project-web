@@ -103,9 +103,9 @@
           </a-select>
         </a-form-item>
         <!-- update--end--autor:wangshuai-----date:20200108------for：新增身份和负责部门------ -->
-        <a-form-item label='头像' :labelCol='labelCol' :wrapperCol='wrapperCol'>
-          <j-image-upload class='avatar-uploader' text='上传' v-model='fileList'></j-image-upload>
-        </a-form-item>
+        <!--        <a-form-item label='头像' :labelCol='labelCol' :wrapperCol='wrapperCol'>-->
+        <!--          <j-image-upload class='avatar-uploader' text='上传' v-model='fileList'></j-image-upload>-->
+        <!--        </a-form-item>-->
 
         <a-form-item label='生日' :labelCol='labelCol' :wrapperCol='wrapperCol'>
           <a-date-picker

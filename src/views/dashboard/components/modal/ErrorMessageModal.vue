@@ -420,7 +420,7 @@ export default {
     },
     dealWithSuccess() {
       this.getExceptionPage()
-      this.emit('dealWithSuccess')
+      this.$emit('dealWithSuccess')
     },
     goToInfo(row) {
       this.detailItem = row

@@ -6,7 +6,7 @@
     <a-icon type='bell' style='font-size: 18px;cursor:pointer;margin:0 10px'></a-icon>
     <a-dropdown>
       <span class='action action-full ant-dropdown-link user-dropdown-menu'>
-        <a-avatar shape='square' class='avatar' size='small' :src='getAvatar()' />
+        <img shape='square' class='avatar' size='small' src='@/assets/user.svg' />
         <span v-if='isDesktop()'>{{ nickname() }}</span>
         <a-icon type='down' class='ml-10' style='color:#333333' />
       </span>
