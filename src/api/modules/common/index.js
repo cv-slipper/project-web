@@ -33,3 +33,15 @@ export function initSystem(params) {
     params
   })
 }
+
+/**
+ * 获取手机验证码
+ */
+export function getPhoneCode(params) {
+
+  return axios({
+    url: '/cvAppSystem/initInfo',
+    method: 'get',
+    params
+  })
+}

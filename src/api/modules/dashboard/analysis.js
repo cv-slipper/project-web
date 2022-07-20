@@ -161,3 +161,25 @@ export function getExcetion(params) {
     params
   })
 }
+
+/**
+ * 获取机房信息数据
+ */
+export function getRoomInfo() {
+  return axios({
+    url: '/domain/roomInfo',
+    method: 'post',
+    data: {}
+  })
+}
+
+/**
+ * 获取机房异常列表数据
+ */
+export function getRoomExecption(data) {
+  return axios({
+    url: '/domain/roomExceptions',
+    method: 'post',
+    data
+  })
+}

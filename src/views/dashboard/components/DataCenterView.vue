@@ -11,10 +11,11 @@
 
           <div class='item' v-for='(item,index) in leftData' :key='index'>
             <img class='close' v-if='item.state==1' src='@/assets/dataCenterView/close-service.png' alt='' />
-            <div v-else class='normal'>
+            <div v-else class='normal' @click='openRoomExecptionModal(item,1)'>
               <div class='service-name_top'>
-                <div>机房</div>
-                <img src='@/assets/dataCenterView/service-title.png' alt='' />
+                <div>{{ item.name }}</div>
+                <img v-if='item.exceptionNum==0' src='@/assets/dataCenterView/service-title.png' alt='' />
+                <img v-else src='@/assets/warning-message.gif' alt='' />
               </div>
               <img src='@/assets/dataCenterView/service.gif' alt='' />
             </div>
@@ -23,7 +24,7 @@
         <div class='left-service'>
           <div class='service-name'>
             <div class='service-name_top'>
-              <div>数据中心</div>
+              <div>{{ leftTitle }}</div>
             </div>
             <img src='@/assets/dataCenterView/data-center-left.png' alt='' />
           </div>
@@ -38,10 +39,11 @@
 
           <div class='item' v-for='(item,index) in rightData' :key='index'>
             <img class='close' v-if='item.state==1' src='@/assets/dataCenterView/close-service.png' alt='' />
-            <div v-else class='normal'>
+            <div v-else class='normal' @click='openRoomExecptionModal(item,2)'>
               <div class='service-name_top'>
-                <div>机房</div>
-                <img src='@/assets/dataCenterView/service-title.png' alt='' />
+                <div>{{ item.name }}</div>
+                <img v-if='item.exceptionNum==0' src='@/assets/dataCenterView/service-title.png' alt='' />
+                <img v-else src='@/assets/warning-message.gif' alt='' />
               </div>
               <img src='@/assets/dataCenterView/service.gif' alt='' />
             </div>
@@ -51,7 +53,7 @@
           <img class='women' src='@/assets/dataCenterView/women.png' alt='' />
           <div class='service-name'>
             <div class='service-name_top'>
-              <div>数据中心</div>
+              <div>{{ rightTitle }}</div>
             </div>
             <img src='@/assets/dataCenterView/data-center-right.png' alt='' />
           </div>
@@ -81,15 +83,21 @@
     <div class='star'>
       <img src='@/assets/star.png' alt='' />
     </div>
-
+    <room-execption-modal ref='roomExecption'></room-execption-modal>
   </div>
 
 
 </template>
 
 <script>
+import { getRoomInfo, getRoomExecption } from '@api/modules/dashboard/analysis'
+import roomExecptionModal from '@views/dashboard/components/modal/RoomExecptionModal'
+
 export default {
   name: 'DataCenterView',
+  components: {
+    roomExecptionModal
+  },
   props: {
 
     systemLoading: {
@@ -117,15 +125,77 @@ export default {
       view: '应用系统',
       dataList: [],
       leftData: [{}, {}, { state: 1 }, { state: 1 }],
-      rightData: [{}, {}, {}, {}, {}, {}, {}, { state: 1 }, { state: 1 }]
+      rightData: [{}, {}, {}, {}, {}, {}, {}, { state: 1 }, { state: 1 }],
+      leftTitle: '',
+      rightTitle: ''
     }
   },
   methods: {
+    /**
+     * 获取机房异常客户端
+     */
+    async getRoomExecption({ name, id }, dataName) {
+      try {
+        const res = await getRoomExecption({ roomId: id })
+        if (res.code == 200) {
+          this.$nextTick(() => {
+            if (this.$refs.roomExecption) {
+              this.$refs.roomExecption.open(dataName, name, id, res.result || [])
+            }
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      } catch (e) {
+        this.$message.error('获取机房异常客户端列表失败')
+      }
+    },
+    /**
+     * 获取机房信息
+     */
+    async getRoomInfo() {
+      try {
+        const res = await getRoomInfo()
+        if (res.code == 200) {
+          if (res.result.length > 0) {
+            this.initData((res.result[0].roomInfos || []), (res.result[1].roomInfos || []), (res.result[0].siteName || ''), (res.result[1].siteName || ''))
+          } else {
+            this.initData()
+          }
+        } else {
+          this.$message.error(res.message)
+          this.initData()
+        }
+      } catch (e) {
+        this.initData()
+        this.$message.error('获取机房信息失败')
+      }
+    },
+    /**
+     * 初始化数据
+     */
+    initData(leftData = [], rightData = [], leftTitle = '', rightTitle = '') {
+      this.leftData = leftData
+      this.rightData = rightData
+      this.leftTitle = leftTitle
+      this.rightTitle = rightTitle
+      let leftNum = 4 - leftData.length
+      let rightNum = 9 - rightData.length
+      for (let i = 0; i < leftNum; i++) {
+        this.leftData.push({ state: 1 })
+      }
+      for (let i = 0; i < rightNum; i++) {
+        this.rightData.push({ state: 1 })
+      }
+    },
     checkView() {
       this.$emit('checkView')
     },
     gotoSystemInfo(item) {
       this.$emit('gotoSystemInfo', item)
+    },
+    openRoomExecptionModal(item, type = 1) {
+      this.getRoomExecption(item, type == 1 ? this.leftTitle : this.rightTitle)
     },
     getStyle(index) {
       let style = {
@@ -235,6 +305,7 @@ export default {
         .normal {
           width: 100%;
           position: relative;
+          cursor: pointer !important;
         }
 
         .service-name {
@@ -355,6 +426,7 @@ export default {
           width: 100%;
           height: 100%;
           position: relative;
+          cursor: pointer !important;
         }
 
         .service-name {

@@ -41,7 +41,10 @@
         <a-form-item label='用户姓名' :labelCol='labelCol' :wrapperCol='wrapperCol'>
           <a-input placeholder='请输入用户姓名' v-decorator.trim="[ 'realname', validatorRules.realname]" />
         </a-form-item>
-
+        <a-form-item label='手机号码' :labelCol='labelCol' :wrapperCol='wrapperCol'>
+          <a-input placeholder='请输入手机号码' :disabled="isDisabledAuth('user:form:phone')"
+                   v-decorator="[ 'phone', validatorRules.phone]" />
+        </a-form-item>
         <a-form-item label='工号' :labelCol='labelCol' :wrapperCol='wrapperCol'>
           <a-input placeholder='请输入工号' v-decorator.trim="[ 'workNo', validatorRules.workNo]" />
         </a-form-item>
@@ -126,10 +129,6 @@
           <a-input placeholder='请输入邮箱' v-decorator="[ 'email', validatorRules.email]" />
         </a-form-item>
 
-        <a-form-item label='手机号码' :labelCol='labelCol' :wrapperCol='wrapperCol'>
-          <a-input placeholder='请输入手机号码' :disabled="isDisabledAuth('user:form:phone')"
-                   v-decorator="[ 'phone', validatorRules.phone]" />
-        </a-form-item>
 
         <a-form-item label='座机' :labelCol='labelCol' :wrapperCol='wrapperCol'>
           <a-input placeholder='请输入座机' v-decorator="[ 'telephone', validatorRules.telephone]" />
@@ -220,7 +219,7 @@ export default {
           }]
         },
         realname: { rules: [{ required: true, message: '请输入用户名称!' }] },
-        phone: { rules: [{ validator: this.validatePhone }] },
+        phone: { rules: [{ required: true, message: '请输入手机号码' }, { validator: this.validatePhone }] },
         email: {
           rules: [{
             validator: this.validateEmail

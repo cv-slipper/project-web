@@ -70,7 +70,14 @@
             </a-form-item>
           </a-col>
           <a-col :span='8'
-                 style='text-align: right;height: 44px'>
+          >
+            <!--            <div style='height:44px;display: flex;justify-content: space-around;align-items: center'>-->
+            <!--              <a-button size='large' :disabled='phoneCodeDisabled' type='primary' @click='getPhoneCode'>{{-->
+            <!--                  time == 60 ? '获取验证码' : time + 's重新发送'-->
+            <!--                }}-->
+            <!--              </a-button>-->
+            <!--            </div>-->
+
             <img v-if='requestCodeSuccess' style='width: 90%;height:44px' :src='randCodeImage'
                  @click='handleChangeCheckCode' />
             <img style='width: 90%;height:44px' v-else src='../../assets/checkcode.png'
@@ -116,9 +123,9 @@
         <!--      </a-tabs>-->
 
         <a-form-item>
-          <a-checkbox v-decorator="['rememberMe', {initialValue: true, valuePropName: 'checked'}]">
-            <span style='color:white'>自动登陆</span>
-          </a-checkbox>
+          <!--          <a-checkbox v-decorator="['rememberMe', {initialValue: true, valuePropName: 'checked'}]">-->
+          <!--            <span style='color:white'>自动登陆</span>-->
+          <!--          </a-checkbox>-->
           <!--        <router-link :to="{ name: 'alteration'}" class="forge-password" style="float: right;">-->
           <!--          忘记密码-->
           <!--        </router-link>-->
@@ -248,7 +255,10 @@ export default {
       validate_status: '',
       currdatetime: '',
       randCodeImage: '',
-      requestCodeSuccess: false
+      requestCodeSuccess: false,
+      time: 60,
+      timer: null,
+      phoneCodeDisabled: false
     }
   },
   created() {
@@ -261,6 +271,25 @@ export default {
     // update-end- --- author:scott ------ date:20190805 ---- for:密码加密逻辑暂时注释掉，有点问题
   },
   methods: {
+    /**
+     * 获取手机验证码
+     */
+    getPhoneCode() {
+      this.phoneCodeDisabled = true
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(() => {
+        console.log(this.time, 'time')
+        if (this.time === 0) {
+          clearInterval(this.timer)
+          this.phoneCodeDisabled = false
+          this.time = 60
+        } else {
+          this.time--
+        }
+      }, 1000)
+    },
     ...mapActions(['Login', 'Logout', 'PhoneLogin', 'ThirdLogin']),
     //第三方登录
     onThirdLogin(source) {
@@ -538,6 +567,9 @@ export default {
 </script>
 
 <style lang='less' scoped>
+/deep/ .ant-btn-primary[disabled] {
+  color: white !important;
+}
 
 .main {
   width: 499px;

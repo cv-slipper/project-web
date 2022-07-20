@@ -178,12 +178,13 @@
                   :system-list='systemList'
                   v-if='!systemItem'
                   :system-loading='systemLoading'
-                  @gotoSystemInfo='gotoSystemInfo' ref='main' @checkView='view="dataCenter"'></system-distribution>
+                  @gotoSystemInfo='gotoSystemInfo' ref='main'
+                  @checkView='checkView("dataCenter")'></system-distribution>
                 <system-info v-else @dealWithSuccess='dealWithSuccess()' :system-item='systemItem' @back='systemBack'
                              ref='mainInfo'></system-info>
               </template>
               <template v-else>
-                <data-center-view @checkView='view="system"'></data-center-view>
+                <data-center-view ref='roomInfo' @checkView='checkView("system")'></data-center-view>
               </template>
             </div>
             <div v-else style='height: 100%'>
@@ -343,7 +344,7 @@ import {
   getSystemList,
   getExceptionList,
   handleException,
-  getExcetion
+  getExcetio
 } from '@api/modules/dashboard/analysis.js'
 
 export default {
@@ -618,6 +619,7 @@ export default {
     this.getScreenWidth()
   },
   methods: {
+
     /**
      * 同步信息
      */
@@ -685,7 +687,8 @@ export default {
           domain: this.domain,
           branchId: this.branchId,
           current: this.page,
-          pageSize: 10
+          pageSize: 10,
+          handled: 0
         }
         let res = await getExceptionList(params)
         if (res.code == 200) {
@@ -1014,6 +1017,16 @@ export default {
       // }
 
     },
+    checkView(value) {
+      this.view = value
+      if (value == 'dataCenter') {
+        this.$nextTick(() => {
+          this.$refs.roomInfo.getRoomInfo()
+        })
+      } else {
+        this.getSystemList()
+      }
+    },
     /**
      * 获取分行
      * @param item
@@ -1072,6 +1085,7 @@ export default {
       this.page = 1
       this.page_count = 0
       try {
+
         this.getCurrentWork()
         this.get24HoursWork()
         this.getBackupSuccessRate()
@@ -1086,6 +1100,10 @@ export default {
               if (this.$refs.mainInfo) {
                 this.$refs.mainInfo.getSystemDetail()
               }
+              if (this.$refs.roomInfo) {
+                this.$refs.roomInfo.getRoomInfo()
+              }
+
             } else {
               if (this.$refs.mainMap) {
                 this.$refs.mainMap.getBranchMapList()

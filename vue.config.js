@@ -1,5 +1,6 @@
 const path = require('path')
 const CompressionPlugin = require('compression-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -36,10 +37,20 @@ module.exports = {
 
     //生产环境，开启js\css压缩
     if (process.env.NODE_ENV === 'production') {
-      config.plugin('compressionPlugin').use(new CompressionPlugin({
-        test: /\.js$|.\css|.\less/, // 匹配文件名
-        threshold: 10240, // 对超过10k的数据压缩
-        deleteOriginalAssets: false // 不删除源文件
+
+
+      config.plugin('TerserPlugin').use(new TerserPlugin({
+        test: new RegExp('\\.(' + ['js'].join('|') + ')$'),
+        terserOptions: {
+          compress: {
+            arguments: true,
+            dead_code: true
+          },
+          toplevel: true,
+          keep_classnames: true,
+          keep_fnames: true
+
+        }
       }))
     }
 

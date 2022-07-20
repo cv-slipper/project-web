@@ -30,6 +30,30 @@
             </a-select-option>
           </a-select>
         </div>
+        <!--        <div class='label ml-10'>关联客户端：</div>-->
+        <!--        <div class='content ml-10'>-->
+        <!--          <a-select style='width:100px'>-->
+        <!--            <a-select-option></a-select-option>-->
+        <!--          </a-select>-->
+        <!--        </div>-->
+        <div class='label ml-10'>数据中心：</div>
+        <div class='content ml-10'>
+          <a-select style='width:100px' v-model='dataCenters' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='(item,index) in dataCenterList' :key='index' :value='item.id'>{{
+                item.label
+              }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>机房：</div>
+        <div class='content ml-10'>
+          <a-select style='width:100px' v-model='rooms' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='(item,index) in roomList' :key='index' :value='item.id'>{{
+                item.name
+              }}
+            </a-select-option>
+          </a-select>
+        </div>
         <div class='label ml-10'>处理状态：</div>
         <div class='content ml-5'>
           <a-select style='width:100px' v-model='state'>
@@ -45,6 +69,7 @@
             </a-select-option>
           </a-select>
         </div>
+
       </div>
     </div>
     <div class='searchParams'>
@@ -109,7 +134,8 @@
 import {
   getExceptionPage,
   getSystemListByBranch,
-  getBranchList
+  getBranchList,
+  getRoomInfo
 } from '@api/modules/dashboard/analysis.js'
 import moment from 'moment'
 import { downloadCsv } from '@/utils/modules/download'
@@ -122,6 +148,10 @@ export default {
   mixins: [tableDragResize],
   data() {
     return {
+      dataCenters: [],
+      rooms: [],
+      dataCenterList: [],
+      roomList: [],
       exceptionItem: {},
       exceptionVisible: false,
       moment,
@@ -222,6 +252,27 @@ export default {
           scopedSlots: {
             customRender: 'tooltip'
           }
+        },
+        // {
+        //   title: '相关客户端',
+        //   key: 'associatedClient',
+        //   dataIndex: 'associatedClient',
+        //   align: 'center',
+        //   width: 150
+        // },
+        {
+          title: '相关数据中心',
+          key: 'dataSite',
+          dataIndex: 'dataSite',
+          align: 'center',
+          width: 200
+        },
+        {
+          title: '相关机房',
+          key: 'machineRoom',
+          dataIndex: 'machineRoom',
+          align: 'center',
+          width: 100
         },
         {
           title: '发生时间',
@@ -353,8 +404,33 @@ export default {
       this.columns[4].dataIndex = 'branchName'
     }
     this.getUserList()
+    this.getRoomInfo()
   },
   methods: {
+    /**
+     *  获取数据中心视图筛选数据
+     */
+    async getRoomInfo() {
+      try {
+        const res = await getRoomInfo()
+        if (res.code == 200) {
+          this.dataCenterList = []
+          this.roomList = []
+          res.result.forEach(item => {
+            this.dataCenterList.push({ id: item.siteName, label: item.siteName })
+            this.roomList.push(...item.roomInfos)
+          })
+        } else {
+          this.$message.error(res.message)
+          this.dataCenterList = []
+          this.roomList = []
+        }
+      } catch (e) {
+        this.$message.error('获取数据中心及机房失败')
+        this.dataCenterList = []
+        this.roomList = []
+      }
+    },
     /**
      * 获取用户列表
      */
@@ -422,7 +498,9 @@ export default {
           occurrenceEndTime: this.exceptionTime.length == 0 ? '' : this.exceptionTime[1]['_d'].getTime(),
           handledStartTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[0]['_d'].getTime(),
           handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime(),
-          handledUser: this.handledUser.join(',')
+          handledUser: this.handledUser.join(','),
+          dataSite: this.dataCenters.join(','),
+          machineRoom: this.rooms.join(',')
         })
         if (res.code == 200) {
           console.log(this.columns[4], 'this.columns[4]')

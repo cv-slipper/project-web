@@ -8,7 +8,7 @@
       <div class='form-item'>
         <div class='label'>异常类型：</div>
         <div class='content'>
-          <a-select mode='multiple' v-model='exceptionTypes' style='width:200px'>
+          <a-select mode='multiple' v-model='exceptionTypes' style='width:100px'>
             <a-select-option v-for='item in types' :key='item.value' :value='item.value'
             >{{ item.label }}
             </a-select-option>
@@ -16,7 +16,7 @@
         </div>
         <div class='label ml-10'>严重程度：</div>
         <div class='content'>
-          <a-select mode='multiple' v-model='severities' style='width:200px'>
+          <a-select mode='multiple' v-model='severities' style='width:100px'>
             <a-select-option v-for='item in levels' :key='item.value' :value='item.value'
             >{{ item.label }}
             </a-select-option>
@@ -24,7 +24,7 @@
         </div>
         <div class='label ml-10'>备份域：</div>
         <div class='content'>
-          <a-select v-model='searchParams.domain' style='width:200px' @change='domainChange'>
+          <a-select v-model='searchParams.domain' style='width:100px' @change='domainChange'>
             <a-select-option
               v-for='(item,index) in backupDomains'
               :key='index'
@@ -35,12 +35,30 @@
         </div>
         <div class='label ml-10'>{{ searchParams.domain == 'prod' ? '应用系统：' : '分行：' }}</div>
         <div class='content'>
-          <a-select mode='multiple' :filter-option='filterOption' v-model='searchParams.system' style='width:200px'>
+          <a-select mode='multiple' :filter-option='filterOption' v-model='searchParams.system' style='width:150px'>
             <a-select-option
               v-for='(item,index) in systems'
               :key='index'
               :value='item.id'
             >{{ item.abbreviation }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>数据中心：</div>
+        <div class='content ml-10'>
+          <a-select style='width:150px' v-model='dataCenters' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='(item,index) in dataCenterList' :key='index' :value='item.id'>{{
+                item.label
+              }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class='label ml-10'>机房：</div>
+        <div class='content ml-10'>
+          <a-select style='width:100px' v-model='rooms' mode='multiple' :filter-option='filterOption'>
+            <a-select-option v-for='(item,index) in roomList' :key='index' :value='item.id'>{{
+                item.name
+              }}
             </a-select-option>
           </a-select>
         </div>
@@ -62,7 +80,7 @@
         :data-source='data'
         :loading='loading'
         :bordered='true'
-        :scroll='{x:false}'
+        :scroll='{x:"100%"}'
         rowKey='id'
         :pagination='pagination'
         @change='tableChange'
@@ -100,7 +118,8 @@ import {
   getExceptionPage,
   handleException,
   getSystemListByBranch,
-  getBranchList
+  getBranchList,
+  getRoomInfo
 } from '@api/modules/dashboard/analysis.js'
 import DealWithModal from '@views/dashboard/components/modal/DealWithModal'
 import BranchSearch from '@comp/searchParms/BranchSearch'
@@ -136,11 +155,20 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    dataName: {
+      type: String,
+      default: ''
+    },
+    roomId: {
+      type: String,
+      default: ''
     }
   },
   watch: {
     visible(val) {
       if (val) {
+        this.getRoomInfo()
         this.pagination.current = 1
         if (this.type) {
           this.searchParams.domain = this.type
@@ -160,6 +188,9 @@ export default {
           this.columns[3].key = 'branchName'
           this.getBranchList()
         }
+        this.rooms = this.roomId ? [this.roomId] : []
+        this.dataCenters = this.dataName ? [this.dataName] : []
+
         this.getExceptionPage()
       }
     },
@@ -188,6 +219,10 @@ export default {
   },
   data() {
     return {
+      dataCenters: [],
+      rooms: [],
+      dataCenterList: [],
+      roomList: [],
       exceptionInfoVisible: false,
       detailItem: {},
       severities: [],
@@ -230,6 +265,20 @@ export default {
           scopedSlots: {
             customRender: 'tooltip'
           }
+        },
+        {
+          title: '相关数据中心',
+          key: 'dataSite',
+          dataIndex: 'dataSite',
+          align: 'center',
+          width: 150
+        },
+        {
+          title: '相关机房',
+          key: 'machineRoom',
+          dataIndex: 'machineRoom',
+          align: 'center',
+          width: 100
         },
         {
           title: '发生时间',
@@ -322,6 +371,30 @@ export default {
   },
   methods: {
     /**
+     *  获取数据中心视图筛选数据
+     */
+    async getRoomInfo() {
+      try {
+        const res = await getRoomInfo()
+        if (res.code == 200) {
+          this.dataCenterList = []
+          this.roomList = []
+          res.result.forEach(item => {
+            this.dataCenterList.push({ id: item.siteName, label: item.siteName })
+            this.roomList.push(...item.roomInfos)
+          })
+        } else {
+          this.$message.error(res.message)
+          this.dataCenterList = []
+          this.roomList = []
+        }
+      } catch (e) {
+        this.$message.error('获取数据中心及机房失败')
+        this.dataCenterList = []
+        this.roomList = []
+      }
+    },
+    /**
      * 获取系统列表
      */
     async getSystemListByBranch() {
@@ -403,7 +476,9 @@ export default {
           branchId: this.searchParams.domain == 'branch' ? this.searchParams.system.join(',') : '',
           exceptionType: this.exceptionTypes.join(','),
           severity: this.severities.join(','),
-          handled: 0
+          handled: 0,
+          dataSite: this.dataCenters.join(','),
+          machineRoom: this.rooms.join(',')
         })
         if (res.code == 200) {
           this.data = res.result.list || []

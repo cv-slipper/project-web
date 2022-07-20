@@ -142,6 +142,18 @@ export default {
           value: 'applicationSystem'
         },
         {
+          label: '关联客户端',
+          value: 'associatedClient'
+        },
+        {
+          label: '相关数据中心',
+          value: 'dataSite'
+        },
+        {
+          label: '相关机房',
+          value: 'machineRoom'
+        },
+        {
           label: '作业ID：',
           value: 'jobId'
         },
@@ -229,6 +241,18 @@ export default {
         {
           label: '应用系统：',
           value: 'applicationSystem'
+        },
+        {
+          label: '关联客户端',
+          value: 'associatedClient'
+        },
+        {
+          label: '相关数据中心',
+          value: 'dataSite'
+        },
+        {
+          label: '相关机房',
+          value: 'machineRoom'
         },
         {
           label: '事件ID：',
