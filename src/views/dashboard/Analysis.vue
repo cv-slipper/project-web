@@ -344,7 +344,7 @@ import {
   getSystemList,
   getExceptionList,
   handleException,
-  getExcetio
+  getExcetion
 } from '@api/modules/dashboard/analysis.js'
 
 export default {
@@ -632,7 +632,8 @@ export default {
           this.$message.error(res.message)
           this.messageList = []
         }
-      } catch {
+      } catch (e) {
+        console.log(e, 'e')
         this.messageList = []
         this.$message.error('获取同步信息失败')
       }

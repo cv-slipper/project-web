@@ -253,13 +253,13 @@ export default {
             customRender: 'tooltip'
           }
         },
-        // {
-        //   title: '相关客户端',
-        //   key: 'associatedClient',
-        //   dataIndex: 'associatedClient',
-        //   align: 'center',
-        //   width: 150
-        // },
+        {
+          title: '相关客户端',
+          key: 'associatedClient',
+          dataIndex: 'associatedClient',
+          align: 'center',
+          width: 150
+        },
         {
           title: '相关数据中心',
           key: 'dataSite',
