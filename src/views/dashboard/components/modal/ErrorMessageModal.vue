@@ -44,6 +44,13 @@
             </a-select-option>
           </a-select>
         </div>
+        <div class='label ml-10'>关联客户端：</div>
+        <div class='content ml-10'>
+          <a-select v-model='clientIds' mode='multiple' style='width:100px'>
+            <a-select-option v-for='(item,index) in getClientList()' :key='index' :value='item.value'>{{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
         <div class='label ml-10'>数据中心：</div>
         <div class='content ml-10'>
           <a-select style='width:150px' v-model='dataCenters' mode='multiple' :filter-option='filterOption'>
@@ -140,6 +147,7 @@ export default {
     }
   },
   props: {
+
     visible: {
       type: Boolean,
       default: false
@@ -161,6 +169,14 @@ export default {
       default: ''
     },
     roomId: {
+      type: String,
+      default: ''
+    },
+    clientId: {
+      type: String | Number,
+      default: ''
+    },
+    clientName: {
       type: String,
       default: ''
     }
@@ -190,7 +206,7 @@ export default {
         }
         this.rooms = this.roomId ? [this.roomId] : []
         this.dataCenters = this.dataName ? [this.dataName] : []
-
+        this.clientIds = this.clientId ? [this.clientId] : []
         this.getExceptionPage()
       }
     },
@@ -219,6 +235,7 @@ export default {
   },
   data() {
     return {
+      clientIds: [],
       dataCenters: [],
       rooms: [],
       dataCenterList: [],
@@ -499,6 +516,14 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    getClientList() {
+      let lists = []
+      if (this.clientIds.length > 0) {
+        lists = [{ value: this.clientId, label: this.clientName }]
+      }
+      console.log(lists, 'lists')
+      return lists
     },
     dealWithSuccess() {
       this.getExceptionPage()

@@ -438,7 +438,7 @@ export default {
       dealWithVisible: false,
       failedWorkVisible: false,
       indexStyle: 1,
-      domain: '',
+      domain: 'prod',
       branchId: '',
       rateTime: '604800',
       exceptionVisible: false,
@@ -602,9 +602,6 @@ export default {
   },
 
   created() {
-    this.domain = 'prod'
-    //十分钟刷新一次
-    this.init()
     if (this.timer) {
       clearInterval(this.timer)
     } else {
@@ -661,7 +658,6 @@ export default {
      * 处理异常
      */
     async handleException(params) {
-
       try {
         const res = await handleException(params)
         if (res.code == 200) {
@@ -683,6 +679,7 @@ export default {
      */
     async getExceptionList() {
       this.loading = true
+
       try {
         let params = {
           domain: this.domain,
@@ -704,6 +701,7 @@ export default {
       } finally {
         this.loading = false
       }
+      console.log(this.data, 'data')
     },
     /**
      * 获取系统列表
@@ -845,7 +843,6 @@ export default {
       const scrollTop = e.target.scrollTop // 滚动条滚动时，距离顶部的距离
       const windowHeight = e.target.clientHeight // 可视区的高度
       const scrollHeight = e.target.scrollHeight // 滚动条的总高度
-      console.log(scrollTop, windowHeight, scrollHeight, 'scrolltop')
       // 滚动条到底部
       if (scrollTop + windowHeight >= scrollHeight) {
         this.page++
@@ -1004,6 +1001,10 @@ export default {
      */
     changeDomain() {
       this.branchId = ''
+      this.page = 1
+      this.$nextTick(() => {
+        document.querySelector('.my-scroll').scrollTo(0, 0)
+      })
     },
     /**
      *   判断屏幕分辨率和缩放比

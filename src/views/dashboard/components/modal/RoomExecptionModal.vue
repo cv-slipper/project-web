@@ -19,7 +19,8 @@
         </a-table>
       </div>
     </a-modal>
-    <error-message-modal :visible='errorVisible' :room-id='id' :data-name='dataName'
+    <error-message-modal :client-name='clientName' :client-id='clientId' :visible='errorVisible' :room-id='id'
+                         :data-name='dataName'
                          @cancel='errorVisible=false'></error-message-modal>
   </div>
 </template>
@@ -34,9 +35,11 @@ export default {
   },
   data() {
     return {
+      clientId: '',
       visible: false,
       errorVisible: false,
       title: '',
+      clientName: '',
       columns: [
         {
           title: '名称',
@@ -95,6 +98,8 @@ export default {
       this.visible = false
     },
     goToInfo(row) {
+      this.clientId = row.id
+      this.clientName = row.clientName
       this.errorVisible = true
     }
   }
