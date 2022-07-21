@@ -500,7 +500,7 @@ export default {
           handledEndTime: this.dealWithTime.length == 0 ? '' : this.dealWithTime[1]['_d'].getTime(),
           handledUser: this.handledUser.join(','),
           dataSite: this.dataCenters.join(','),
-          machineRoom: this.rooms.join(',')
+          roomId: this.rooms.join(',')
         })
         if (res.code == 200) {
           console.log(this.columns[4], 'this.columns[4]')

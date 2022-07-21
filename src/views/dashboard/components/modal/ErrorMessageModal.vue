@@ -478,7 +478,7 @@ export default {
           severity: this.severities.join(','),
           handled: 0,
           dataSite: this.dataCenters.join(','),
-          machineRoom: this.rooms.join(',')
+          roomId: this.rooms.join(',')
         })
         if (res.code == 200) {
           this.data = res.result.list || []
