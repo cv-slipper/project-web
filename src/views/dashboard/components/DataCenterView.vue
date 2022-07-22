@@ -158,6 +158,11 @@ export default {
         const res = await getRoomInfo()
         if (res.code == 200) {
           if (res.result.length > 0) {
+            res.resullt = res.result.sort((a, b) => a.siteId - b.siteId)
+            res.resullt.forEach(item => {
+              item.roomInfos = item.roomInfos.sort((a, b) => a.roomId - b.roomId)
+            })
+            console.log(res.result, 'result')
             this.initData((res.result[0].roomInfos || []), (res.result[1].roomInfos || []), (res.result[0].siteName || ''), (res.result[1].siteName || ''))
           } else {
             this.initData()
